@@ -1,7 +1,7 @@
 import { ITag } from "../models/tag";
 import { environmentVariables } from "../environmentVariables";
-import Axios from "axios";
 import { IBoardPriority } from "../models/boardPriority";
+import { axiosInstance } from "../hooks/useAxiosInterceptor";
 
 export interface IPriorityApi {
     getPrioritiesForBoard(
@@ -22,32 +22,9 @@ export interface IPriorityApi {
     getAllTagsForBoard(companyId: string, boardId: string): Promise<ITag[]>;
 }
 
-const priorities = [
-    "Sev 1",
-    "Sev 2",
-    "Sev 3",
-    "Sev 4",
-    "Sev 5",
-    "Q1 Features",
-    "Q2 Features",
-];
-
-const allTagsForBoard = [
-    "Sev 1",
-    "Sev 2",
-    "Sev 3",
-    "Sev 4",
-    "Sev 5",
-    "Q1 Features",
-    "Q2 Features",
-    "UI Defect",
-    "Board Creation",
-    "Customer Meetings",
-];
-
 export class PriorityApi implements IPriorityApi {
     public async getPrioritiesForBoard(companyId: string, boardId: string) {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getPriorityListForBoard`,
             {
                 headers: {
@@ -71,7 +48,7 @@ export class PriorityApi implements IPriorityApi {
         boardId: string,
         updatedPriorities: string[]
     ) {
-        await Axios.post(
+        await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updatePriorityListForBoard`,
             {
                 priorities: updatedPriorities,
@@ -94,7 +71,7 @@ export class PriorityApi implements IPriorityApi {
         tagName: string,
         tagColor: string
     ) {
-        const axiosResponse = await Axios.post(
+        const axiosResponse = await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createTagForBoard`,
             {
                 tagName,
@@ -118,7 +95,7 @@ export class PriorityApi implements IPriorityApi {
     }
 
     public async getAllTagsForBoard(companyId: string, boardId: string) {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getAllTagsForBoard`,
             {
                 headers: {

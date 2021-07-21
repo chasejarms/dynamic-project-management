@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { App } from "./oneTimeComponents/app";
+import { WrappedApp } from "./oneTimeComponents/wrappedApp";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <WrappedApp />
     </React.StrictMode>,
     document.getElementById("root")
 );

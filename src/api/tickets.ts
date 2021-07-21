@@ -1,10 +1,10 @@
 import { ITicket } from "../models/ticket";
 import { ITicketCreateRequest } from "../models/ticket/ticketCreateRequest";
-import Axios from "axios";
 import { environmentVariables } from "../environmentVariables";
 import { TicketType } from "../models/ticket/ticketType";
 import { IGetDoneTicketsResponse } from "../models/getDoneTicketsResponse";
 import { ITicketUpdateRequest } from "../models/ticketUpdateRequest";
+import { axiosInstance } from "../hooks/useAxiosInterceptor";
 
 export interface ITicketsApi {
     createTicket(
@@ -73,7 +73,7 @@ export class TicketsApi implements ITicketsApi {
         boardId: string,
         ticketCreateRequest: ITicketCreateRequest
     ) {
-        const axiosResponse = await Axios.post(
+        const axiosResponse = await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createTicketForBoard`,
             {
                 ticket: ticketCreateRequest,
@@ -95,7 +95,7 @@ export class TicketsApi implements ITicketsApi {
     }
 
     public async getInProgressTickets(companyId: string, boardId: string) {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getInProgressTicketsForBoard`,
             {
                 headers: {
@@ -118,7 +118,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         updatedColumnId: string
     ): Promise<void> {
-        await Axios.post(
+        await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateColumnOnTicket`,
             {
                 columnId: updatedColumnId,
@@ -142,7 +142,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         ticketType: TicketType
     ): Promise<void> {
-        await Axios.delete(
+        await axiosInstance.delete(
             `${environmentVariables.baseAuthenticatedApiUrl}/deleteTicket`,
             {
                 headers: {
@@ -164,7 +164,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         ticketType: TicketType
     ): Promise<void> {
-        await Axios.post(
+        await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/markTicketAsDone`,
             {},
             {
@@ -186,7 +186,7 @@ export class TicketsApi implements ITicketsApi {
         boardId: string,
         lastEvaluatedKey?: string
     ): Promise<IGetDoneTicketsResponse> {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getDoneTickets`,
             {
                 headers: {
@@ -209,7 +209,7 @@ export class TicketsApi implements ITicketsApi {
         boardId: string,
         ticketId: string
     ): Promise<ITicket> {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketInformationById`,
             {
                 headers: {
@@ -231,7 +231,7 @@ export class TicketsApi implements ITicketsApi {
         ticketBelongsTo: string,
         ticketUpdateRequest: ITicketUpdateRequest
     ): Promise<ITicket> {
-        const axiosResponse = await Axios.post(
+        const axiosResponse = await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateTicketForBoard`,
             ticketUpdateRequest,
             {
@@ -252,7 +252,7 @@ export class TicketsApi implements ITicketsApi {
         companyId: string,
         boardId: string
     ): Promise<ITicket[]> {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getBacklogTicketsForBoard`,
             {
                 headers: {
@@ -276,7 +276,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         columnId: string
     ) {
-        await Axios.post(
+        await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/moveNonInProgressTicketToInProgress`,
             {},
             {

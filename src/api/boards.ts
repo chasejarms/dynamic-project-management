@@ -1,6 +1,6 @@
 import { IBoard } from "../models/board";
-import Axios from "axios";
 import { environmentVariables } from "../environmentVariables";
+import { axiosInstance } from "../hooks/useAxiosInterceptor";
 
 export interface IBoardApi {
     getBoardsForCompany(companyId: string): Promise<IBoard[]>;
@@ -13,7 +13,7 @@ export interface IBoardApi {
 
 export class BoardApi implements IBoardApi {
     public async getBoardsForCompany(companyId: string) {
-        const axiosResponse = await Axios.get(
+        const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/boards`,
             {
                 headers: {
@@ -35,7 +35,7 @@ export class BoardApi implements IBoardApi {
         boardName: string,
         boardDescription: string
     ) {
-        const axiosResponse = await Axios.post(
+        const axiosResponse = await axiosInstance.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/board`,
             {
                 companyId,

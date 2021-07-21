@@ -1,6 +1,6 @@
 import { ISignUpRequest } from "../models/signUpRequest";
-import Axios from "axios";
 import { environmentVariables } from "../environmentVariables";
+import { axiosInstance } from "../hooks/useAxiosInterceptor";
 
 export interface ISignUpApi {
     signUp(request: ISignUpRequest): Promise<any>;
@@ -8,7 +8,7 @@ export interface ISignUpApi {
 
 export class SignUpApi implements ISignUpApi {
     public signUp(request: ISignUpRequest) {
-        return Axios.post(
+        return axiosInstance.post(
             `${environmentVariables.basePublicApiUrl}/sign-up-new-user`,
             request
         );

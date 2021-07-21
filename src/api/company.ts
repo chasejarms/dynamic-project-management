@@ -1,6 +1,6 @@
 import { ICompany } from "../models/company";
-import Axios from "axios";
 import { environmentVariables } from "../environmentVariables";
+import { axiosInstance } from "../hooks/useAxiosInterceptor";
 
 export interface ICompanyApi {
     getCompanies(): Promise<ICompany[]>;
@@ -8,13 +8,8 @@ export interface ICompanyApi {
 
 export class CompanyApi implements ICompanyApi {
     public async getCompanies(): Promise<ICompany[]> {
-        const axiosResponse = await Axios.get(
-            `${environmentVariables.baseAuthenticatedApiUrl}/companies`,
-            {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
-            }
+        const axiosResponse = await axiosInstance.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/companies`
         );
         const data = axiosResponse.data as { items: ICompany[] };
         return data.items;

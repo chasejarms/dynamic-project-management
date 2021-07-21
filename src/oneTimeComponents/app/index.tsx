@@ -1,44 +1,32 @@
 import React from "react";
 
-import {
-    BrowserRouter as Router,
-    Redirect,
-    Route,
-    Switch,
-} from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { DevelopmentSignIn } from "../developmentSignIn";
 import { Companies } from "../companies";
-import { ThemeProvider, CssBaseline } from "@material-ui/core";
-import { createTheme } from "@material-ui/core/styles";
-
-const theme = createTheme({});
+import { useAxiosInterceptor } from "../../hooks/useAxiosInterceptor";
 
 export function App() {
+    useAxiosInterceptor();
+
     return (
-        <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <Router>
-                <Switch>
-                    <Route path="/development-sign-in" exact>
-                        <DevelopmentSignIn />
-                    </Route>
-                    <Route path="/companies" exact>
-                        <Companies />
-                    </Route>
-                    <Route
-                        render={() => {
-                            return (
-                                <Redirect
-                                    to={{
-                                        pathname: "/development-sign-in",
-                                    }}
-                                ></Redirect>
-                            );
-                        }}
-                    />
-                </Switch>
-            </Router>
-        </ThemeProvider>
+        <Switch>
+            <Route path="/development-sign-in" exact>
+                <DevelopmentSignIn />
+            </Route>
+            <Route path="/companies" exact>
+                <Companies />
+            </Route>
+            <Route
+                render={() => {
+                    return (
+                        <Redirect
+                            to={{
+                                pathname: "/development-sign-in",
+                            }}
+                        ></Redirect>
+                    );
+                }}
+            />
+        </Switch>
     );
 }
