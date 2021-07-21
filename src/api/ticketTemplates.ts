@@ -1,7 +1,7 @@
 import { ITicketTemplate } from "../models/ticketTemplate";
 import { environmentVariables } from "../environmentVariables";
 import { ITicketTemplateCreateRequest } from "../models/ticketTemplate/ticketTemplateCreateRequest";
-import { axiosInstance } from "../hooks/useAxiosInterceptor";
+import Axios from "axios";
 
 export interface ITicketTemplatesApi {
     getTicketTemplatesForBoard(
@@ -27,7 +27,7 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         companyId: string,
         boardId: string
     ): Promise<ITicketTemplate[]> {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketTemplatesForBoard`,
             {
                 params: {
@@ -47,7 +47,7 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         boardId: string,
         ticketTemplateId: string
     ): Promise<void> {
-        await axiosInstance.delete(
+        await Axios.delete(
             `${environmentVariables.baseAuthenticatedApiUrl}/deleteTicketTemplateForBoard`,
             {
                 params: {
@@ -64,7 +64,7 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         boardId: string,
         ticketTemplateCreateRequest: ITicketTemplateCreateRequest
     ): Promise<ITicketTemplate> {
-        const axiosResponse = await axiosInstance.post(
+        const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createTicketTemplateForBoard`,
             {
                 ticketTemplate: ticketTemplateCreateRequest,

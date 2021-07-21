@@ -1,6 +1,6 @@
 import { ICompany } from "../models/company";
 import { environmentVariables } from "../environmentVariables";
-import { axiosInstance } from "../hooks/useAxiosInterceptor";
+import Axios from "axios";
 
 export interface ICompanyApi {
     getCompanies(): Promise<ICompany[]>;
@@ -8,7 +8,7 @@ export interface ICompanyApi {
 
 export class CompanyApi implements ICompanyApi {
     public async getCompanies(): Promise<ICompany[]> {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/companies`
         );
         const data = axiosResponse.data as { items: ICompany[] };

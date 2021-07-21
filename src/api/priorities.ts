@@ -1,7 +1,7 @@
 import { ITag } from "../models/tag";
 import { environmentVariables } from "../environmentVariables";
 import { IBoardPriority } from "../models/boardPriority";
-import { axiosInstance } from "../hooks/useAxiosInterceptor";
+import Axios from "axios";
 
 export interface IPriorityApi {
     getPrioritiesForBoard(
@@ -24,7 +24,7 @@ export interface IPriorityApi {
 
 export class PriorityApi implements IPriorityApi {
     public async getPrioritiesForBoard(companyId: string, boardId: string) {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getPriorityListForBoard`,
             {
                 params: {
@@ -45,7 +45,7 @@ export class PriorityApi implements IPriorityApi {
         boardId: string,
         updatedPriorities: string[]
     ) {
-        await axiosInstance.post(
+        await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updatePriorityListForBoard`,
             {
                 priorities: updatedPriorities,
@@ -65,7 +65,7 @@ export class PriorityApi implements IPriorityApi {
         tagName: string,
         tagColor: string
     ) {
-        const axiosResponse = await axiosInstance.post(
+        const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createTagForBoard`,
             {
                 tagName,
@@ -86,7 +86,7 @@ export class PriorityApi implements IPriorityApi {
     }
 
     public async getAllTagsForBoard(companyId: string, boardId: string) {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getAllTagsForBoard`,
             {
                 params: {

@@ -4,7 +4,7 @@ import { environmentVariables } from "../environmentVariables";
 import { TicketType } from "../models/ticket/ticketType";
 import { IGetDoneTicketsResponse } from "../models/getDoneTicketsResponse";
 import { ITicketUpdateRequest } from "../models/ticketUpdateRequest";
-import { axiosInstance } from "../hooks/useAxiosInterceptor";
+import Axios from "axios";
 
 export interface ITicketsApi {
     createTicket(
@@ -73,7 +73,7 @@ export class TicketsApi implements ITicketsApi {
         boardId: string,
         ticketCreateRequest: ITicketCreateRequest
     ) {
-        const axiosResponse = await axiosInstance.post(
+        const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createTicketForBoard`,
             {
                 ticket: ticketCreateRequest,
@@ -92,7 +92,7 @@ export class TicketsApi implements ITicketsApi {
     }
 
     public async getInProgressTickets(companyId: string, boardId: string) {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getInProgressTicketsForBoard`,
             {
                 params: {
@@ -112,7 +112,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         updatedColumnId: string
     ): Promise<void> {
-        await axiosInstance.post(
+        await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateColumnOnTicket`,
             {
                 columnId: updatedColumnId,
@@ -133,7 +133,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         ticketType: TicketType
     ): Promise<void> {
-        await axiosInstance.delete(
+        await Axios.delete(
             `${environmentVariables.baseAuthenticatedApiUrl}/deleteTicket`,
             {
                 params: {
@@ -152,7 +152,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         ticketType: TicketType
     ): Promise<void> {
-        await axiosInstance.post(
+        await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/markTicketAsDone`,
             {},
             {
@@ -171,7 +171,7 @@ export class TicketsApi implements ITicketsApi {
         boardId: string,
         lastEvaluatedKey?: string
     ): Promise<IGetDoneTicketsResponse> {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getDoneTickets`,
             {
                 params: {
@@ -191,7 +191,7 @@ export class TicketsApi implements ITicketsApi {
         boardId: string,
         ticketId: string
     ): Promise<ITicket> {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketInformationById`,
             {
                 params: {
@@ -210,7 +210,7 @@ export class TicketsApi implements ITicketsApi {
         ticketBelongsTo: string,
         ticketUpdateRequest: ITicketUpdateRequest
     ): Promise<ITicket> {
-        const axiosResponse = await axiosInstance.post(
+        const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateTicketForBoard`,
             ticketUpdateRequest,
             {
@@ -228,7 +228,7 @@ export class TicketsApi implements ITicketsApi {
         companyId: string,
         boardId: string
     ): Promise<ITicket[]> {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getBacklogTicketsForBoard`,
             {
                 params: {
@@ -249,7 +249,7 @@ export class TicketsApi implements ITicketsApi {
         ticketId: string,
         columnId: string
     ) {
-        await axiosInstance.post(
+        await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/moveNonInProgressTicketToInProgress`,
             {},
             {

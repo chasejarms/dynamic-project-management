@@ -1,6 +1,6 @@
 import { IColumn } from "../models/column";
 import { environmentVariables } from "../environmentVariables";
-import { axiosInstance } from "../hooks/useAxiosInterceptor";
+import Axios from "axios";
 
 export interface IColumnsApi {
     getColumns(companyId: string, boardId: string): Promise<IColumn[]>;
@@ -16,7 +16,7 @@ export class ColumnsApi implements IColumnsApi {
         companyId: string,
         boardId: string
     ): Promise<IColumn[]> {
-        const axiosResponse = await axiosInstance.get(
+        const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getBoardColumnInformation`,
             {
                 params: {
@@ -35,7 +35,7 @@ export class ColumnsApi implements IColumnsApi {
         boardId: string,
         columns: IColumn[]
     ) {
-        const axiosResponse = await axiosInstance.post(
+        const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateBoardColumnInformation`,
             {
                 columns,
