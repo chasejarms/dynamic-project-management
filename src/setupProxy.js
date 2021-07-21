@@ -7,6 +7,7 @@ module.exports = function (app) {
             target:
                 "https://b2ouopcfb7.execute-api.us-east-1.amazonaws.com/Prod/",
             changeOrigin: true,
+            pathRewrite: { "^/api/public": "" },
         })
     );
     app.use(
@@ -15,6 +16,7 @@ module.exports = function (app) {
             target:
                 "https://tnj4vxar72.execute-api.us-east-1.amazonaws.com/Prod/",
             changeOrigin: true,
+            pathRewrite: { "^/api/authenticated": "" },
         })
     );
 };
