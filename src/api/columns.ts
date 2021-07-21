@@ -19,9 +19,6 @@ export class ColumnsApi implements IColumnsApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getBoardColumnInformation`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -44,9 +41,6 @@ export class ColumnsApi implements IColumnsApi {
                 columns,
             },
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,

@@ -30,9 +30,6 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketTemplatesForBoard`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -53,9 +50,6 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         await axiosInstance.delete(
             `${environmentVariables.baseAuthenticatedApiUrl}/deleteTicketTemplateForBoard`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -76,9 +70,6 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
                 ticketTemplate: ticketTemplateCreateRequest,
             },
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,

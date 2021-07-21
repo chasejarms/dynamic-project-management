@@ -16,9 +16,6 @@ export class BoardApi implements IBoardApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/boards`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                 },
@@ -41,11 +38,6 @@ export class BoardApi implements IBoardApi {
                 companyId,
                 boardName,
                 boardDescription,
-            },
-            {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
             }
         );
         return axiosResponse.data as IBoard;

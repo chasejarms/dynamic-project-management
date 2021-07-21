@@ -79,9 +79,6 @@ export class TicketsApi implements ITicketsApi {
                 ticket: ticketCreateRequest,
             },
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -98,9 +95,6 @@ export class TicketsApi implements ITicketsApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getInProgressTicketsForBoard`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -124,9 +118,6 @@ export class TicketsApi implements ITicketsApi {
                 columnId: updatedColumnId,
             },
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -145,9 +136,6 @@ export class TicketsApi implements ITicketsApi {
         await axiosInstance.delete(
             `${environmentVariables.baseAuthenticatedApiUrl}/deleteTicket`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -168,9 +156,6 @@ export class TicketsApi implements ITicketsApi {
             `${environmentVariables.baseAuthenticatedApiUrl}/markTicketAsDone`,
             {},
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -189,9 +174,6 @@ export class TicketsApi implements ITicketsApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getDoneTickets`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -212,9 +194,6 @@ export class TicketsApi implements ITicketsApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketInformationById`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -235,9 +214,6 @@ export class TicketsApi implements ITicketsApi {
             `${environmentVariables.baseAuthenticatedApiUrl}/updateTicketForBoard`,
             ticketUpdateRequest,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     itemId: ticketItemId,
                     belongsTo: ticketBelongsTo,
@@ -255,9 +231,6 @@ export class TicketsApi implements ITicketsApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getBacklogTicketsForBoard`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -280,9 +253,6 @@ export class TicketsApi implements ITicketsApi {
             `${environmentVariables.baseAuthenticatedApiUrl}/moveNonInProgressTicketToInProgress`,
             {},
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,

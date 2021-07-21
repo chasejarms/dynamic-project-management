@@ -27,9 +27,6 @@ export class PriorityApi implements IPriorityApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getPriorityListForBoard`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -54,9 +51,6 @@ export class PriorityApi implements IPriorityApi {
                 priorities: updatedPriorities,
             },
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -78,9 +72,6 @@ export class PriorityApi implements IPriorityApi {
                 tagColor,
             },
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
@@ -98,9 +89,6 @@ export class PriorityApi implements IPriorityApi {
         const axiosResponse = await axiosInstance.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getAllTagsForBoard`,
             {
-                headers: {
-                    AuthHeader: `${localStorage.getItem("token") || ""}`,
-                },
                 params: {
                     companyId,
                     boardId,
