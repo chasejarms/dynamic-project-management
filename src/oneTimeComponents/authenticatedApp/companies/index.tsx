@@ -12,8 +12,8 @@ import {
     Theme,
 } from "@material-ui/core";
 import { AxiosError } from "axios";
-import { ICompany } from "../../models/company";
-import { Api } from "../../api";
+import { ICompany } from "../../../models/company";
+import { Api } from "../../../api";
 import { useHistory } from "react-router-dom";
 
 export function Companies() {

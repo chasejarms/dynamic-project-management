@@ -1,27 +1,27 @@
 import React from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
-import { DevelopmentSignIn } from "../developmentSignIn";
-import { Companies } from "../companies";
+import { SignIn } from "../signIn";
 import { useAxiosInterceptor } from "../../hooks/useAxiosInterceptor";
+import { AuthenticatedApp } from "../authenticatedApp";
 
 export function App() {
     useAxiosInterceptor();
 
     return (
         <Switch>
-            <Route path="/development-sign-in" exact>
-                <DevelopmentSignIn />
+            <Route path="/sign-in" exact>
+                <SignIn />
             </Route>
-            <Route path="/companies" exact>
-                <Companies />
+            <Route path="/app">
+                <AuthenticatedApp />
             </Route>
             <Route
                 render={() => {
                     return (
                         <Redirect
                             to={{
-                                pathname: "/development-sign-in",
+                                pathname: "/sign-in",
                             }}
                         ></Redirect>
                     );

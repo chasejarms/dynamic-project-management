@@ -13,7 +13,7 @@ import { controlsAreValid } from "../../utils/controlsAreValid";
 import { userPool } from "../../classes/UserPool";
 import { FullPageContainer } from "../../components/fullPageContainer";
 
-export function DevelopmentSignIn() {
+export function SignIn() {
     const emailControl = useControl({
         value: "",
         onChange: (
@@ -81,7 +81,7 @@ export function DevelopmentSignIn() {
                 const token = result.getIdToken().getJwtToken();
 
                 localStorage.setItem("token", token);
-                routerHistory.push("/companies");
+                routerHistory.push("/app/companies");
             },
             onFailure: function (err) {
                 if (didCancel) return;
