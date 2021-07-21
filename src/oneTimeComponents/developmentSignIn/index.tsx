@@ -1,4 +1,5 @@
-import { css } from "@emotion/core";
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar } from "@material-ui/core";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
@@ -10,6 +11,7 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { WrappedButton } from "../../components/wrappedButton";
 import { controlsAreValid } from "../../utils/controlsAreValid";
 import { userPool } from "../../classes/UserPool";
+import { FullPageContainer } from "../../components/fullPageContainer";
 
 export function DevelopmentSignIn() {
     const emailControl = useControl({
@@ -126,45 +128,49 @@ export function DevelopmentSignIn() {
     }
 
     return (
-        <div css={classes.pageContainer}>
-            <div css={classes.credentialsContainer}>
-                <div css={classes.signUpContainer}>
-                    <Typography variant="h5">Sign In</Typography>
+        <FullPageContainer>
+            <div css={classes.pageContainer}>
+                <div css={classes.credentialsContainer}>
+                    <div css={classes.signUpContainer}>
+                        <Typography variant="h5">Sign In</Typography>
+                    </div>
+                    <WrappedTextField
+                        value={emailControl.value}
+                        label="Email"
+                        onChange={emailControl.onChange}
+                        error={showEmailError ? emailControl.errorMessage : ""}
+                    />
+                    <WrappedTextField
+                        value={passwordControl.value}
+                        label="Password"
+                        onChange={passwordControl.onChange}
+                        type="password"
+                        error={
+                            showPasswordError
+                                ? passwordControl.errorMessage
+                                : ""
+                        }
+                    />
+                    <div css={classes.signInButtonContainer}>
+                        <WrappedButton
+                            variant="contained"
+                            color="primary"
+                            onClick={triggerSignIn}
+                            disabled={controlsAreInvalid || isSigningIn}
+                            showSpinner={isSigningIn}
+                        >
+                            Sign In
+                        </WrappedButton>
+                    </div>
+                    <Snackbar
+                        open={snackbarMetadata.open}
+                        onClose={onCloseSnackbar}
+                        message={snackbarMetadata.message}
+                    />
+                    {/* TODO: probably put an error message in here to handle errors */}
                 </div>
-                <WrappedTextField
-                    value={emailControl.value}
-                    label="Email"
-                    onChange={emailControl.onChange}
-                    error={showEmailError ? emailControl.errorMessage : ""}
-                />
-                <WrappedTextField
-                    value={passwordControl.value}
-                    label="Password"
-                    onChange={passwordControl.onChange}
-                    type="password"
-                    error={
-                        showPasswordError ? passwordControl.errorMessage : ""
-                    }
-                />
-                <div css={classes.signInButtonContainer}>
-                    <WrappedButton
-                        variant="contained"
-                        color="primary"
-                        onClick={triggerSignIn}
-                        disabled={controlsAreInvalid || isSigningIn}
-                        showSpinner={isSigningIn}
-                    >
-                        Sign In
-                    </WrappedButton>
-                </div>
-                <Snackbar
-                    open={snackbarMetadata.open}
-                    onClose={onCloseSnackbar}
-                    message={snackbarMetadata.message}
-                />
-                {/* TODO: probably put an error message in here to handle errors */}
             </div>
-        </div>
+        </FullPageContainer>
     );
 }
 

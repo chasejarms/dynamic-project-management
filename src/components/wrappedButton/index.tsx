@@ -1,4 +1,5 @@
-import { css } from "@emotion/core";
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { ButtonProps, Button, CircularProgress } from "@material-ui/core";
 
 export interface IWrappedButtonProps

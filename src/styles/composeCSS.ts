@@ -1,4 +1,4 @@
-import { SerializedStyles } from "@emotion/core";
+import { SerializedStyles } from "@emotion/react";
 
 type IComposeCSSParameter = SerializedStyles | false;
 
