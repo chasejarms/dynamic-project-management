@@ -17,7 +17,7 @@ export function BoardContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Board",
-            route: `/app/company/${companyId}/board/${boardId}`,
+            route: `/app/company/${companyId}/board/${boardId}/tickets`,
         },
         {
             text: "Create Ticket",

@@ -73,23 +73,6 @@ export function Boards() {
         };
     }
 
-    const navItems: IAuthenticatedNavItem[] = [
-        {
-            text: "Boards",
-            route: `/app/company/${companyId}/boards`,
-        },
-    ];
-
-    const [createBoardDialogIsOpen, setCreateBoardDialogIsOpen] = useState(
-        false
-    );
-    function openCreateBoardDialog() {
-        setCreateBoardDialogIsOpen(true);
-    }
-    function closeCreateBoardDialog() {
-        setCreateBoardDialogIsOpen(false);
-    }
-
     const boardNameControl = useControl({
         value: "",
         onChange: (
@@ -197,56 +180,6 @@ export function Boards() {
                     })}
                 </div>
             )}
-            <Dialog
-                open={createBoardDialogIsOpen}
-                onClose={closeCreateBoardDialog}
-                disableBackdropClick={isCreatingBoard}
-            >
-                <DialogTitle>Create Board</DialogTitle>
-                <DialogContent>
-                    <div css={classes.columnInputContainer}>
-                        <WrappedTextField
-                            value={boardNameControl.value}
-                            label="Board Name"
-                            onChange={boardNameControl.onChange}
-                            error={
-                                showBoardNameError
-                                    ? boardNameControl.errorMessage
-                                    : ""
-                            }
-                        />
-                    </div>
-                    <div css={classes.columnInputContainer}>
-                        <WrappedTextField
-                            value={boardDescriptionControl.value}
-                            label="Board Description"
-                            onChange={boardDescriptionControl.onChange}
-                            error={
-                                showBoardDescriptionError
-                                    ? boardDescriptionControl.errorMessage
-                                    : ""
-                            }
-                        />
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <WrappedButton
-                        onClick={closeCreateBoardDialog}
-                        disabled={isCreatingBoard}
-                    >
-                        Close
-                    </WrappedButton>
-                    <WrappedButton
-                        variant="contained"
-                        onClick={createBoard}
-                        color="primary"
-                        disabled={!formIsValid || isCreatingBoard}
-                        showSpinner={isCreatingBoard}
-                    >
-                        Create
-                    </WrappedButton>
-                </DialogActions>
-            </Dialog>
         </BoardsContainer>
     );
 }
