@@ -84,14 +84,14 @@ export function AuthenticatedPageContainer(
         if (!!boardId) {
             breadcrumbs.push({
                 text: "Board",
-                route: `/app/company/${companyId}/board/${boardId}`,
+                route: `/app/company/${companyId}/board/${boardId}/tickets`,
             });
         }
 
         if (!!ticketId) {
             breadcrumbs.push({
                 text: "Ticket",
-                route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}`,
+                route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
             });
         }
 

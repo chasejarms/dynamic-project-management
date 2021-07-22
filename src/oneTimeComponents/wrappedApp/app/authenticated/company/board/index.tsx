@@ -7,6 +7,7 @@ import { Columns } from "./columns";
 import { CompletedTickets } from "./completedTickets";
 import { CreateTicket } from "./createTicket";
 import { Priorities } from "./priorities";
+import { Ticket } from "./ticket";
 import { TicketTemplates } from "./ticketTemplates";
 
 export function Board() {
@@ -34,6 +35,9 @@ export function Board() {
             </Route>
             <Route path={`${url}/completed-tickets`} exact>
                 <CompletedTickets />
+            </Route>
+            <Route path={`${url}/ticket/:ticketId`}>
+                <Ticket />
             </Route>
         </Switch>
     );
