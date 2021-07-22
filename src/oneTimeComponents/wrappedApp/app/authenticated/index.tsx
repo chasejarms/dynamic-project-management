@@ -1,15 +1,13 @@
 import React from "react";
 
-import { Route, Switch, useRouteMatch, useParams } from "react-router-dom";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { Companies } from "./companies";
+import Board from "./company/board";
 import { Boards } from "./company/boards";
 import { CreateBoard } from "./company/createBoard";
 
 export function Authenticated() {
     const { url } = useRouteMatch();
-    const { companyId } = useParams<{
-        companyId: string;
-    }>();
 
     return (
         <Switch>
@@ -19,8 +17,11 @@ export function Authenticated() {
             <Route path={`${url}/company/:companyId/boards`} exact>
                 <Boards />
             </Route>
-            <Route path={`${url}/company/:companyId/boards/create-board`}>
+            <Route path={`${url}/company/:companyId/boards/create-board`} exact>
                 <CreateBoard />
+            </Route>
+            <Route path={`${url}/company/:companyId/board/:boardId`}>
+                <Board />
             </Route>
         </Switch>
     );
