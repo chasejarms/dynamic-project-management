@@ -5,6 +5,7 @@ import { BoardHome } from "./boardHome";
 import Columns from "./columns";
 import { CreateTicket } from "./createTicket";
 import { Priorities } from "./priorities";
+import { TicketTemplates } from "./ticketTemplates";
 
 export function Board() {
     const { url } = useRouteMatch();
@@ -22,6 +23,9 @@ export function Board() {
             </Route>
             <Route path={`${url}/columns`} exact>
                 <Columns />
+            </Route>
+            <Route path={`${url}/ticket-templates`} exact>
+                <TicketTemplates />
             </Route>
         </Switch>
     );
