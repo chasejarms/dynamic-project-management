@@ -11,23 +11,18 @@ import {
     useTheme,
     Theme,
     makeStyles,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
+    IconButton,
 } from "@material-ui/core";
 import { AxiosError } from "axios";
 import { Api } from "../../../../../../api";
 import { ControlValidator } from "../../../../../../classes/ControlValidator";
-import { IAuthenticatedNavItem } from "../../../../../../components/authenticatedPageContainer";
-import { WrappedButton } from "../../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../../components/wrappedTextField";
-import { useControl } from "../../../../../../hooks/useControl";
 import { IBoard } from "../../../../../../models/board";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { BoardsContainer } from "../../../../../../components/boardsContainer";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { MoreHoriz } from "@material-ui/icons";
+import { useControl } from "../../../../../../hooks/useControl";
 
 const useStyles = makeStyles({
     createBoardContainer: {
@@ -158,10 +153,24 @@ export function Boards() {
                         return (
                             <Card key={board.id}>
                                 <CardContent>
-                                    <div css={classes.titleContainer}>
-                                        <Typography variant="h5">
-                                            {board.name}
-                                        </Typography>
+                                    <div
+                                        css={
+                                            classes.titleAndActionIconContainer
+                                        }
+                                    >
+                                        <div css={classes.titleContainer}>
+                                            <Typography variant="h5">
+                                                {board.name}
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => null}
+                                            >
+                                                <MoreHoriz />
+                                            </IconButton>
+                                        </div>
                                     </div>
                                     <Typography>{board.description}</Typography>
                                 </CardContent>
@@ -208,7 +217,17 @@ const createClasses = (theme: Theme) => {
     `;
 
     const titleContainer = css`
+        flex-grow: 1;
         margin-bottom: ${theme.spacing() * 2}px;
+    `;
+
+    const titleAndActionIconContainer = css`
+        display: flex;
+        flex-direction: row;
+    `;
+
+    const actionIconContainer = css`
+        flex: 0 0 auto;
     `;
 
     const addBoardContainer = css`
@@ -230,5 +249,7 @@ const createClasses = (theme: Theme) => {
         titleContainer,
         addBoardContainer,
         columnInputContainer,
+        actionIconContainer,
+        titleAndActionIconContainer,
     };
 };

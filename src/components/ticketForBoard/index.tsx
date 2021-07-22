@@ -24,6 +24,10 @@ import { doneColumnReservedId } from "../../constants/reservedColumnIds";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
+import {
+    IIndentedAction,
+    QuickActionsPopoverContent,
+} from "../quickActionsPopoverContent";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -278,6 +282,57 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         );
     }
 
+    const indentedActions: IIndentedAction[] = [
+        {
+            header: "Quick Actions",
+            informationForMenuItems: [
+                {
+                    text: "View Ticket",
+                    onClick: navigateToTicketPage,
+                },
+                {
+                    text: "Delete Ticket",
+                    onClick: onClickDeleteTicketMenuItem,
+                },
+            ],
+        },
+        {
+            header: "Move To Column",
+            informationForMenuItems:
+                props.adjustColumnOptions?.columnOptions
+                    .filter((column) => {
+                        const isDoneColumn = column.id === doneColumnReservedId;
+                        const canMarkTicketAsDone = !!props.adjustColumnOptions
+                            ?.onMarkTicketAsDone;
+
+                        const isInCurrentColumn =
+                            column.id === props.ticket.columnId;
+
+                        return (
+                            !(isDoneColumn && !canMarkTicketAsDone) &&
+                            !isInCurrentColumn
+                        );
+                    })
+                    .map((column) => {
+                        const isDoneColumn = column.id === doneColumnReservedId;
+
+                        const ticketIsInDoneOrBacklogState =
+                            props.ticketType !== TicketType.InProgress;
+
+                        const onClick = isDoneColumn
+                            ? moveTicketToDoneColumn
+                            : ticketIsInDoneOrBacklogState
+                            ? moveNonInProgressTicketToInProgress(column)
+                            : moveTicketToNewColumn(column);
+
+                        return {
+                            text: column.name,
+                            onClick,
+                        };
+                    }) || [],
+        },
+    ];
+
     return (
         <div
             css={composeCSS(
@@ -316,111 +371,9 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                     setMoreOptionsIsOpen(false);
                                 }}
                             >
-                                <Paper elevation={4}>
-                                    <div
-                                        css={
-                                            classes.moreOptionsContentContainer
-                                        }
-                                    >
-                                        <div
-                                            css={
-                                                classes.moreOptionsTextContainer
-                                            }
-                                        >
-                                            <Typography
-                                                className={
-                                                    materialClasses.moreOptionsHeaderText
-                                                }
-                                            >
-                                                Quick Actions
-                                            </Typography>
-                                        </div>
-                                        <MenuItem
-                                            onClick={navigateToTicketPage}
-                                            className={
-                                                materialClasses.menuItemRoot
-                                            }
-                                        >
-                                            View Ticket
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={
-                                                onClickDeleteTicketMenuItem
-                                            }
-                                            className={
-                                                materialClasses.menuItemRoot
-                                            }
-                                        >
-                                            Delete Ticket
-                                        </MenuItem>
-                                        {!!props.adjustColumnOptions && (
-                                            <>
-                                                <div
-                                                    css={
-                                                        classes.moreOptionsTextContainer
-                                                    }
-                                                >
-                                                    <Typography
-                                                        className={
-                                                            materialClasses.moreOptionsHeaderText
-                                                        }
-                                                    >
-                                                        Move To Column
-                                                    </Typography>
-                                                </div>
-                                                {props.adjustColumnOptions?.columnOptions
-                                                    .filter((column) => {
-                                                        return (
-                                                            column.id !==
-                                                            props.ticket
-                                                                .columnId
-                                                        );
-                                                    })
-                                                    .map((column) => {
-                                                        const isDoneColumn =
-                                                            column.id ===
-                                                            doneColumnReservedId;
-                                                        const canMarkTicketAsDone = !!props
-                                                            .adjustColumnOptions
-                                                            ?.onMarkTicketAsDone;
-
-                                                        if (
-                                                            isDoneColumn &&
-                                                            !canMarkTicketAsDone
-                                                        )
-                                                            return;
-
-                                                        const ticketIsInDoneOrBacklogState =
-                                                            props.ticketType !==
-                                                            TicketType.InProgress;
-
-                                                        const onClick = isDoneColumn
-                                                            ? moveTicketToDoneColumn
-                                                            : ticketIsInDoneOrBacklogState
-                                                            ? moveNonInProgressTicketToInProgress(
-                                                                  column
-                                                              )
-                                                            : moveTicketToNewColumn(
-                                                                  column
-                                                              );
-                                                        return (
-                                                            <MenuItem
-                                                                onClick={
-                                                                    onClick
-                                                                }
-                                                                className={
-                                                                    materialClasses.menuItemRoot
-                                                                }
-                                                                key={column.id}
-                                                            >
-                                                                {column.name}
-                                                            </MenuItem>
-                                                        );
-                                                    })}
-                                            </>
-                                        )}
-                                    </div>
-                                </Paper>
+                                <QuickActionsPopoverContent
+                                    indentedActions={indentedActions}
+                                />
                             </Popover>
                         </div>
                         {!!props.showCompletedDate && (
