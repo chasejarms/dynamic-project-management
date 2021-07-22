@@ -4,16 +4,18 @@ import { Typography, Snackbar } from "@material-ui/core";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
-import { useHistory } from "react-router-dom";
+import { ControlValidator } from "../../../../classes/ControlValidator";
+import { userPool } from "../../../../classes/UserPool";
+import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
+import { WrappedButton } from "../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../components/wrappedTextField";
 import { useControl } from "../../../../hooks/useControl";
-import { ControlValidator } from "../../../../classes/ControlValidator";
-import { WrappedButton } from "../../../../components/wrappedButton";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
-import { userPool } from "../../../../classes/UserPool";
-import { FullPageContainer } from "../../../../components/fullPageContainer";
+import { useHistory } from "react-router-dom";
 
 export function SignIn() {
+    const history = useHistory();
+
     const emailControl = useControl({
         value: "",
         onChange: (
@@ -53,8 +55,6 @@ export function SignIn() {
         setIsSigningIn(true);
     }
 
-    const routerHistory = useHistory();
-
     useEffect(() => {
         if (!isSigningIn) return;
 
@@ -81,7 +81,7 @@ export function SignIn() {
                 const token = result.getIdToken().getJwtToken();
 
                 localStorage.setItem("token", token);
-                routerHistory.push("/app/companies");
+                history.push("/app/companies");
             },
             onFailure: function (err) {
                 if (didCancel) return;
@@ -128,7 +128,7 @@ export function SignIn() {
     }
 
     return (
-        <FullPageContainer>
+        <NonAuthenticatedPageContainer makeFullPage>
             <div css={classes.pageContainer}>
                 <div css={classes.credentialsContainer}>
                     <div css={classes.signUpContainer}>
@@ -170,7 +170,7 @@ export function SignIn() {
                     {/* TODO: probably put an error message in here to handle errors */}
                 </div>
             </div>
-        </FullPageContainer>
+        </NonAuthenticatedPageContainer>
     );
 }
 
