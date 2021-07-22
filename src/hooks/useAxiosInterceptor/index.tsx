@@ -2,6 +2,9 @@ import { useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { HttpStatusCode } from "../../models/httpStatusCode";
 import Axios from "axios";
+import { environmentVariables } from "../../environmentVariables";
+import { cognitoUserSingleton } from "../../classes/CognitoUserSingleton";
+import { CognitoUserSession } from "amazon-cognito-identity-js";
 
 export const useAxiosInterceptor = () => {
     const history = useHistory();
@@ -16,9 +19,46 @@ export const useAxiosInterceptor = () => {
             return Promise.reject(error);
         });
 
-        Axios.interceptors.request.use((config) => {
+        Axios.interceptors.request.use(async (config) => {
             config.headers["AuthHeader"] = localStorage.getItem("token") || "";
-            return config;
+
+            const isAuthenticatedApi = config?.url?.startsWith(
+                environmentVariables.baseAuthenticatedApiUrl || "unused"
+            );
+            if (isAuthenticatedApi) {
+                const session = await new Promise<CognitoUserSession | null>(
+                    (resolve, reject) => {
+                        cognitoUserSingleton.cognitoUser.getSession(
+                            (
+                                error: Error | null,
+                                session: CognitoUserSession | null
+                            ) => {
+                                resolve(session);
+                            }
+                        );
+                    }
+                );
+
+                if (session === null) {
+                    return config;
+                }
+
+                const refreshToken = session.getRefreshToken();
+                await new Promise<void>((resolve, reject) => {
+                    cognitoUserSingleton.cognitoUser.refreshSession(
+                        refreshToken,
+                        (error, session) => {
+                            localStorage.setItem(
+                                "token",
+                                session.getIdToken().getJwtToken()
+                            );
+                            resolve();
+                        }
+                    );
+                });
+            }
+
+            return Promise.resolve(config);
         });
     }, []);
 };

@@ -12,6 +12,7 @@ import { WrappedTextField } from "../../../../components/wrappedTextField";
 import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
+import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
 
 export function SignIn() {
     const history = useHistory();
@@ -72,40 +73,46 @@ export function SignIn() {
             Username: emailControl.value,
             Pool: userPool,
         };
-        var cognitoUser = new AWSCognitoIdentity.CognitoUser(userData);
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function (result) {
-                if (didCancel) return;
+        cognitoUserSingleton.cognitoUser = new AWSCognitoIdentity.CognitoUser(
+            userData
+        );
+        cognitoUserSingleton.cognitoUser.authenticateUser(
+            authenticationDetails,
+            {
+                onSuccess: function (result) {
+                    if (didCancel) return;
 
-                AWS.config.region = "us-east-1";
-                const token = result.getIdToken().getJwtToken();
+                    AWS.config.region = "us-east-1";
+                    const token = result.getIdToken().getJwtToken();
 
-                localStorage.setItem("token", token);
-                history.push("/app/companies");
-            },
-            onFailure: function (err) {
-                if (didCancel) return;
-                setIsSigningIn(false);
-                console.log("err: ", err);
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("userEmail", emailControl.value);
+                    history.push("/app/companies");
+                },
+                onFailure: function (err) {
+                    if (didCancel) return;
+                    setIsSigningIn(false);
+                    console.log("err: ", err);
 
-                if (!err || !err.code) return;
+                    if (!err || !err.code) return;
 
-                if (err.code === "UserNotConfirmedException") {
-                    setSnackbarMetadata({
-                        open: true,
-                        message:
-                            "Your email needs to be verified. After verifying your email, please log in again.",
-                    });
-                }
+                    if (err.code === "UserNotConfirmedException") {
+                        setSnackbarMetadata({
+                            open: true,
+                            message:
+                                "Your email needs to be verified. After verifying your email, please log in again.",
+                        });
+                    }
 
-                if (err.code === "NotAuthorizedException") {
-                    setSnackbarMetadata({
-                        open: true,
-                        message: "Incorrect username or password",
-                    });
-                }
-            },
-        });
+                    if (err.code === "NotAuthorizedException") {
+                        setSnackbarMetadata({
+                            open: true,
+                            message: "Incorrect username or password",
+                        });
+                    }
+                },
+            }
+        );
 
         return () => {
             didCancel = true;
