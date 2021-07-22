@@ -8,17 +8,15 @@ import { IWrappedButtonProps } from "../../../../../../components/wrappedButton"
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../../../../../../components/bottomPageToolbar";
+import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 
 export function CreateBoard() {
     const classes = createClasses();
 
     const history = useHistory();
-    const { companyId, boardId } = useParams<{
-        companyId: string;
-        boardId: string;
-    }>();
+    const { companyId, boardId } = useAppRouterParams();
 
     const boardNameControl = useControl({
         value: "",

@@ -12,7 +12,8 @@ import {
 import { ArrowForwardIos } from "@material-ui/icons";
 import { composeCSS } from "../../styles/composeCSS";
 import { WrappedButton } from "../wrappedButton";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 
 const useStyles = makeStyles({
     drawer: {
@@ -49,11 +50,7 @@ export function AuthenticatedPageContainer(
     const history = useHistory();
     const location = useLocation();
 
-    const { companyId, boardId, ticketId } = useParams<{
-        companyId?: string;
-        boardId?: string;
-        ticketId?: string;
-    }>();
+    const { companyId, boardId, ticketId } = useAppRouterParams();
 
     function navigateToRoute(route: string) {
         return () => {

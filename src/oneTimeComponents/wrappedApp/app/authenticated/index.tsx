@@ -2,7 +2,7 @@ import React from "react";
 
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { Companies } from "./companies";
-import Board from "./company/board";
+import { Board } from "./company/board";
 import { Boards } from "./company/boards";
 import { CreateBoard } from "./company/createBoard";
 

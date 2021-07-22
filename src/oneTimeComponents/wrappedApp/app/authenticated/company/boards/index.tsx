@@ -25,8 +25,9 @@ import { WrappedTextField } from "../../../../../../components/wrappedTextField"
 import { useControl } from "../../../../../../hooks/useControl";
 import { IBoard } from "../../../../../../models/board";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { BoardsContainer } from "../../../../../../components/boardsContainer";
+import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 
 const useStyles = makeStyles({
     createBoardContainer: {
@@ -39,9 +40,7 @@ export function Boards() {
     const materialStyles = useStyles();
     const classes = createClasses(theme);
     const history = useHistory();
-    const { companyId } = useParams<{
-        companyId?: string;
-    }>();
+    const { companyId } = useAppRouterParams();
 
     const [isLoadingBoards, setIsLoadingBoards] = useState(true);
     const [boards, setBoards] = useState<IBoard[]>([]);
@@ -70,7 +69,7 @@ export function Boards() {
 
     function openBoard(boardId: string) {
         return () => {
-            history.push(`/app/company/${companyId}/board/${boardId}`);
+            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
         };
     }
 

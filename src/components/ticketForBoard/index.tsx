@@ -22,7 +22,8 @@ import { ConfirmDialog } from "../confirmDialog";
 import { TicketType } from "../../models/ticket/ticketType";
 import { doneColumnReservedId } from "../../constants/reservedColumnIds";
 import { format } from "date-fns";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -59,10 +60,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     const materialClasses = useStyles();
 
     const history = useHistory();
-    const { companyId, boardId } = useParams<{
-        companyId: string;
-        boardId: string;
-    }>();
+    const { companyId, boardId } = useAppRouterParams();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false);

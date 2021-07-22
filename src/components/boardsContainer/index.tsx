@@ -1,20 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
+import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
 } from "../authenticatedPageContainer";
-import { useParams } from "react-router-dom";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;
 }
 
 export function BoardsContainer(props: IBoardContainerProps) {
-    const { companyId } = useParams<{
-        companyId: string;
-    }>();
+    const { companyId } = useAppRouterParams();
 
     const navItems: IAuthenticatedNavItem[] = [
         {
