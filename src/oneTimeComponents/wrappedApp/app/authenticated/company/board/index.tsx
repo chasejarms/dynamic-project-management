@@ -2,6 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
 import { BoardHome } from "./boardHome";
+import Columns from "./columns";
 import { CreateTicket } from "./createTicket";
 import { Priorities } from "./priorities";
 
@@ -18,6 +19,9 @@ export function Board() {
             </Route>
             <Route path={`${url}/priorities`} exact>
                 <Priorities />
+            </Route>
+            <Route path={`${url}/columns`} exact>
+                <Columns />
             </Route>
         </Switch>
     );
