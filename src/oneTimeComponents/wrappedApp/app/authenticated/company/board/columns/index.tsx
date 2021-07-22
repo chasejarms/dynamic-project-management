@@ -22,7 +22,7 @@ import { IColumn } from "../../../../../../../models/column";
 import { generateUniqueId } from "../../../../../../../utils/generateUniqueId";
 import { EditableColumnCard } from "../../../../../../../components/editableColumnCard";
 
-export default function Columns() {
+export function Columns() {
     const classes = createClasses();
 
     const { boardId, companyId } = useAppRouterParams();

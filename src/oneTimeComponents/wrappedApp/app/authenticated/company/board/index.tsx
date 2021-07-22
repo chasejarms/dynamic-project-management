@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
+import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
-import Columns from "./columns";
+import { Columns } from "./columns";
 import { CreateTicket } from "./createTicket";
 import { Priorities } from "./priorities";
 import { TicketTemplates } from "./ticketTemplates";
@@ -26,6 +27,9 @@ export function Board() {
             </Route>
             <Route path={`${url}/ticket-templates`} exact>
                 <TicketTemplates />
+            </Route>
+            <Route path={`${url}/backlog-tickets`} exact>
+                <BacklogTickets />
             </Route>
         </Switch>
     );
