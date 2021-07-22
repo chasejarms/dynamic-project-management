@@ -5,13 +5,13 @@ import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
 import { useHistory } from "react-router-dom";
-import { WrappedTextField } from "../../components/wrappedTextField";
-import { useControl } from "../../hooks/useControl";
-import { ControlValidator } from "../../classes/ControlValidator";
-import { WrappedButton } from "../../components/wrappedButton";
-import { controlsAreValid } from "../../utils/controlsAreValid";
-import { userPool } from "../../classes/UserPool";
-import { FullPageContainer } from "../../components/fullPageContainer";
+import { WrappedTextField } from "../../../../components/wrappedTextField";
+import { useControl } from "../../../../hooks/useControl";
+import { ControlValidator } from "../../../../classes/ControlValidator";
+import { WrappedButton } from "../../../../components/wrappedButton";
+import { controlsAreValid } from "../../../../utils/controlsAreValid";
+import { userPool } from "../../../../classes/UserPool";
+import { FullPageContainer } from "../../../../components/fullPageContainer";
 
 export function SignIn() {
     const emailControl = useControl({

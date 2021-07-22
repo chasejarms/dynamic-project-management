@@ -12,8 +12,8 @@ import {
     Theme,
 } from "@material-ui/core";
 import { AxiosError } from "axios";
-import { ICompany } from "../../../models/company";
-import { Api } from "../../../api";
+import { ICompany } from "../../../../../models/company";
+import { Api } from "../../../../../api";
 import { useHistory } from "react-router-dom";
 
 export function Companies() {
@@ -53,9 +53,7 @@ export function Companies() {
 
     function openBoards(companyId: string) {
         return () => {
-            console.log("would be opening boards");
-            // comment this back in after the api call is working correctly
-            // history.push(`/company/${companyId}/boards`);
+            history.push(`/app/company/${companyId}/boards`);
         };
     }
 

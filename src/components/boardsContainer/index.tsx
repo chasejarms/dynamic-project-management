@@ -1,0 +1,34 @@
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
+import React from "react";
+import {
+    AuthenticatedPageContainer,
+    IAuthenticatedNavItem,
+} from "../authenticatedPageContainer";
+import { useParams } from "react-router-dom";
+
+export interface IBoardContainerProps {
+    children: React.ReactNode;
+}
+
+export function BoardsContainer(props: IBoardContainerProps) {
+    const { companyId } = useParams<{
+        companyId: string;
+    }>();
+
+    const navItems: IAuthenticatedNavItem[] = [
+        {
+            text: "Boards",
+            route: `/app/company/${companyId}/boards`,
+        },
+        {
+            text: "Create Board",
+            route: `/app/company/${companyId}/boards/create-board`,
+        },
+    ];
+    return (
+        <AuthenticatedPageContainer navItems={navItems}>
+            {props.children}
+        </AuthenticatedPageContainer>
+    );
+}
