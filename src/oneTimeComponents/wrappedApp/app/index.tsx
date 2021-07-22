@@ -6,6 +6,8 @@ import { useAxiosInterceptor } from "../../../hooks/useAxiosInterceptor";
 import { Authenticated } from "./authenticated";
 import { useRouterDebug } from "../../../hooks/useRouterDebug";
 import { Home } from "./home";
+import { Pricing } from "./pricing";
+import { Contact } from "./contact";
 
 export function App() {
     useAxiosInterceptor();
@@ -15,6 +17,12 @@ export function App() {
         <Switch>
             <Route path="/" exact>
                 <Home />
+            </Route>
+            <Route path="/pricing" exact>
+                <Pricing />
+            </Route>
+            <Route path="/contact" exact>
+                <Contact />
             </Route>
             <Route path="/sign-in" exact>
                 <SignIn />

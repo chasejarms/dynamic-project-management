@@ -14,10 +14,7 @@ export function Home() {
     }
 
     return (
-        <NonAuthenticatedPageContainer
-            title="Elastic Agile"
-            description="The best resource on the web for mastering SQL queries."
-        >
+        <NonAuthenticatedPageContainer>
             <div css={classes.pageContent}>
                 <div>
                     <div css={classes.bottomMargin24}>

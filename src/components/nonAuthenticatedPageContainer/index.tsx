@@ -6,8 +6,6 @@ import { composeCSS } from "../../styles/composeCSS";
 
 interface INonAuthenticatedPageContainerProps {
     children: React.ReactNode;
-    title: string;
-    description: string;
     makeFullPage?: boolean;
 }
 
