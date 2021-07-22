@@ -5,6 +5,7 @@ import { SignIn } from "./signIn";
 import { useAxiosInterceptor } from "../../../hooks/useAxiosInterceptor";
 import { Authenticated } from "./authenticated";
 import { useRouterDebug } from "../../../hooks/useRouterDebug";
+import { Home } from "./home";
 
 export function App() {
     useAxiosInterceptor();
@@ -12,6 +13,9 @@ export function App() {
 
     return (
         <Switch>
+            <Route path="/" exact>
+                <Home />
+            </Route>
             <Route path="/sign-in" exact>
                 <SignIn />
             </Route>
