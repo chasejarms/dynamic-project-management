@@ -1,5 +1,8 @@
-export interface IBoard {
+import { IDefaultPrimaryTableModel } from "./sharedModels/defaultPrimaryTableModel";
+
+export interface IBoard extends IDefaultPrimaryTableModel {
     name: string;
-    id: string;
     description: string;
+    hasBeenDeleted?: boolean;
+    shortenedItemId: string;
 }

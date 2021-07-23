@@ -44,7 +44,9 @@ export function Boards() {
         return () => {
             setBoards((boards) => {
                 return boards.filter((compareBoard) => {
-                    return compareBoard.id !== board.id;
+                    return (
+                        compareBoard.shortenedItemId !== board.shortenedItemId
+                    );
                 });
             });
         };
@@ -70,12 +72,15 @@ export function Boards() {
         if (!boardToDelete || !isDeletingBoard) return;
 
         Api.board
-            .deleteBoardForCompany(companyId, boardToDelete.id)
+            .deleteBoardForCompany(companyId, boardToDelete.shortenedItemId)
             .then(() => {
                 if (didCancel) return;
                 setBoards((previousBoards) => {
                     return previousBoards.filter((compareBoard) => {
-                        return compareBoard.id !== boardToDelete.id;
+                        return (
+                            compareBoard.shortenedItemId !==
+                            boardToDelete.shortenedItemId
+                        );
                     });
                 });
             })
@@ -104,7 +109,7 @@ export function Boards() {
                     {boards!.map((board) => {
                         return (
                             <BoardForCompany
-                                key={board.id}
+                                key={board.shortenedItemId}
                                 board={board}
                                 onClickDeleteBoardAction={onClickDeleteBoardAction(
                                     board

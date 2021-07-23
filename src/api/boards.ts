@@ -10,6 +10,7 @@ export interface IBoardApi {
         boardDescription: string
     ): Promise<IBoard>;
     deleteBoardForCompany(companyId: string, boardId: string): Promise<void>;
+    getBoardForCompany(companyId: string, boardId: string): Promise<IBoard>;
 }
 
 export class BoardApi implements IBoardApi {
@@ -57,5 +58,22 @@ export class BoardApi implements IBoardApi {
                 },
             }
         );
+    }
+
+    public async getBoardForCompany(
+        companyId: string,
+        boardId: string
+    ): Promise<IBoard> {
+        const axiosResponse = await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/getBoardForCompany`,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                },
+            }
+        );
+
+        return axiosResponse.data as IBoard;
     }
 }

@@ -76,7 +76,10 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
             </CardContent>
             <CardActions>
                 <div css={classes.actionButtonContainer}>
-                    <Button onClick={openBoard(board.id)} color="primary">
+                    <Button
+                        onClick={openBoard(board.shortenedItemId)}
+                        color="primary"
+                    >
                         Open Board
                     </Button>
                 </div>

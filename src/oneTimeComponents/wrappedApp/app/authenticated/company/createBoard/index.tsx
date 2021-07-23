@@ -78,7 +78,7 @@ export function CreateBoard() {
             )
             .then((board) => {
                 if (didCancel) return;
-                openBoard(board.id);
+                openBoard(board.shortenedItemId);
             })
             .catch(() => {
                 if (didCancel) return;
