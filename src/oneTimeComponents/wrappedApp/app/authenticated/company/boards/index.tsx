@@ -1,40 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useEffect, useState, ChangeEvent } from "react";
-import {
-    CircularProgress,
-    Card,
-    CardActions,
-    Typography,
-    CardContent,
-    Button,
-    useTheme,
-    Theme,
-    makeStyles,
-    IconButton,
-} from "@material-ui/core";
+import { useEffect, useState } from "react";
+import { CircularProgress, useTheme, Theme } from "@material-ui/core";
 import { AxiosError } from "axios";
 import { Api } from "../../../../../../api";
-import { ControlValidator } from "../../../../../../classes/ControlValidator";
 import { IBoard } from "../../../../../../models/board";
-import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
-import { useHistory } from "react-router-dom";
 import { BoardsContainer } from "../../../../../../components/boardsContainer";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
-import { MoreHoriz } from "@material-ui/icons";
-import { useControl } from "../../../../../../hooks/useControl";
-
-const useStyles = makeStyles({
-    createBoardContainer: {
-        height: "100%",
-    },
-});
+import { BoardForCompany } from "../../../../../../components/boardForCompany";
+import { ConfirmDialog } from "../../../../../../components/confirmDialog";
 
 export function Boards() {
     const theme = useTheme();
-    const materialStyles = useStyles();
     const classes = createClasses(theme);
-    const history = useHistory();
     const { companyId } = useAppRouterParams();
 
     const [isLoadingBoards, setIsLoadingBoards] = useState(true);
@@ -62,84 +40,58 @@ export function Boards() {
         };
     }, [companyId]);
 
-    function openBoard(boardId: string) {
+    function onDeleteBoard(board: IBoard) {
         return () => {
-            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+            setBoards((boards) => {
+                return boards.filter((compareBoard) => {
+                    return compareBoard.id !== board.id;
+                });
+            });
         };
     }
 
-    const boardNameControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (boardName: string) => {
-            return ControlValidator.string()
-                .required("Board name is required")
-                .max(40, "Maximum board length is 40 characters")
-                .validate(boardName);
-        },
-    });
+    const [boardToDelete, setBoardToDelete] = useState<IBoard | null>();
+    function onCloseConfirmDialog() {
+        setBoardToDelete(null);
+    }
 
-    const boardDescriptionControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (boardDescription: string) => {
-            return ControlValidator.string()
-                .max(90, "Maximum board description is 90 characters")
-                .validate(boardDescription);
-        },
-    });
-
-    const [isCreatingBoard, setIsCreatingBoard] = useState(false);
-    function createBoard() {
-        setIsCreatingBoard(true);
+    const [isDeletingBoard, setIsDeletingBoard] = useState(false);
+    function onClickConfirmDeleteBoard() {
+        setIsDeletingBoard(true);
+    }
+    function onClickDeleteBoardAction(board: IBoard) {
+        return () => {
+            setBoardToDelete(board);
+        };
     }
 
     useEffect(() => {
-        if (!isCreatingBoard) return;
-
         let didCancel = false;
+        if (!boardToDelete || !isDeletingBoard) return;
 
         Api.board
-            .createBoardForCompany(
-                companyId as string,
-                boardNameControl.value,
-                boardDescriptionControl.value
-            )
-            .then((board) => {
+            .deleteBoardForCompany(companyId, boardToDelete.id)
+            .then(() => {
                 if (didCancel) return;
-                openBoard(board.id);
+                setBoards((previousBoards) => {
+                    return previousBoards.filter((compareBoard) => {
+                        return compareBoard.id !== boardToDelete.id;
+                    });
+                });
             })
             .catch(() => {
                 if (didCancel) return;
-                // probably do something here;
             })
             .finally(() => {
                 if (didCancel) return;
-                setIsCreatingBoard(false);
+                setBoardToDelete(null);
+                setIsDeletingBoard(false);
             });
 
         return () => {
             didCancel = true;
         };
-        // create the board
-    }, [isCreatingBoard]);
-
-    const showBoardNameError =
-        boardNameControl.isTouched && boardNameControl.isValid;
-    const showBoardDescriptionError =
-        boardDescriptionControl.isTouched && boardDescriptionControl.isValid;
-    const formIsValid = controlsAreValid(
-        boardNameControl,
-        boardDescriptionControl
-    );
+    }, [boardToDelete, isDeletingBoard]);
 
     return (
         <BoardsContainer>
@@ -151,44 +103,26 @@ export function Boards() {
                 <div css={classes.contentContainer}>
                     {boards!.map((board) => {
                         return (
-                            <Card key={board.id}>
-                                <CardContent>
-                                    <div
-                                        css={
-                                            classes.titleAndActionIconContainer
-                                        }
-                                    >
-                                        <div css={classes.titleContainer}>
-                                            <Typography variant="h5">
-                                                {board.name}
-                                            </Typography>
-                                        </div>
-                                        <div>
-                                            <IconButton
-                                                size="small"
-                                                onClick={() => null}
-                                            >
-                                                <MoreHoriz />
-                                            </IconButton>
-                                        </div>
-                                    </div>
-                                    <Typography>{board.description}</Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <div css={classes.actionButtonContainer}>
-                                        <Button
-                                            onClick={openBoard(board.id)}
-                                            color="primary"
-                                        >
-                                            Open Board
-                                        </Button>
-                                    </div>
-                                </CardActions>
-                            </Card>
+                            <BoardForCompany
+                                key={board.id}
+                                board={board}
+                                onClickDeleteBoardAction={onClickDeleteBoardAction(
+                                    board
+                                )}
+                            />
                         );
                     })}
                 </div>
             )}
+            <ConfirmDialog
+                open={!!boardToDelete}
+                isPerformingAction={isDeletingBoard}
+                onConfirm={onClickConfirmDeleteBoard}
+                onClose={onCloseConfirmDialog}
+                title="Delete Board"
+                content={`Are you sure want to delete board ${boardToDelete?.name}?`}
+                confirmButtonText="Yes"
+            />
         </BoardsContainer>
     );
 }
@@ -210,46 +144,8 @@ const createClasses = (theme: Theme) => {
         width: 100%;
     `;
 
-    const actionButtonContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    `;
-
-    const titleContainer = css`
-        flex-grow: 1;
-        margin-bottom: ${theme.spacing() * 2}px;
-    `;
-
-    const titleAndActionIconContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const actionIconContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const addBoardContainer = css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        flex-direction: column;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
-    `;
-
     return {
         loadingPageContainer,
         contentContainer,
-        actionButtonContainer,
-        titleContainer,
-        addBoardContainer,
-        columnInputContainer,
-        actionIconContainer,
-        titleAndActionIconContainer,
     };
 };
