@@ -15,12 +15,16 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { Api } from "../../../../../../../api";
 import { ControlValidator } from "../../../../../../../classes/ControlValidator";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { WrappedButton } from "../../../../../../../components/wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../../hooks/useControl";
 import { IColumn } from "../../../../../../../models/column";
 import { generateUniqueId } from "../../../../../../../utils/generateUniqueId";
 import { EditableColumnCard } from "../../../../../../../components/editableColumnCard";
+import { BottomPageToolbar } from "../../../../../../../components/bottomPageToolbar";
 
 export function Columns() {
     const classes = createClasses();
@@ -263,114 +267,124 @@ export function Columns() {
     }
 
     const hideDeleteButton = localColumns.length <= 3;
+    const wrappedButtonProps: IWrappedButtonProps[] = [
+        {
+            onClick: resetChanges,
+            disabled: !columnDataHasChanged || isSavingColumns,
+            children: "Reset Changes",
+        },
+        {
+            disabled: !columnDataHasChanged || isSavingColumns,
+            showSpinner: isSavingColumns,
+            onClick: saveColumns,
+            variant: "contained",
+            color: "primary",
+            children: "Save Changes",
+        },
+    ];
 
     return (
         <BoardContainer>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Dialog
-                    open={columnCreationDialogIsOpen}
-                    onClose={closeColumnCreationDialog}
-                >
-                    <DialogTitle>Create Column</DialogTitle>
-                    <DialogContent>
-                        <div css={classes.columnInputContainer}>
-                            <WrappedTextField
-                                value={columnNameControl.value}
-                                label="Column Name"
-                                onChange={columnNameControl.onChange}
-                                error={
-                                    showColumnNameControl
-                                        ? columnNameControl.errorMessage
-                                        : ""
-                                }
-                            />
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <WrappedButton onClick={closeColumnCreationDialog}>
-                            Close
-                        </WrappedButton>
-                        <WrappedButton
-                            variant="contained"
-                            onClick={createColumn}
-                            color="primary"
-                            disabled={!columnNameControl.isValid}
+            <div css={classes.container}>
+                <div css={classes.contentContainer}>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Dialog
+                            open={columnCreationDialogIsOpen}
+                            onClose={closeColumnCreationDialog}
                         >
-                            Create
-                        </WrappedButton>
-                    </DialogActions>
-                </Dialog>
-                <div css={classes.container}>
-                    {isLoadingColumns ? (
-                        <div css={classes.spinnerContainer}>
-                            <CircularProgress
-                                color="primary"
-                                size={24}
-                                thickness={4}
-                            />
-                        </div>
-                    ) : (
-                        <div css={classes.columnAndHeaderContainer}>
-                            <div css={classes.columnCreationHeaderContainer}>
-                                <WrappedButton
-                                    onClick={openColumnCreationDialog}
-                                    startIcon={<Add />}
-                                    color="primary"
-                                >
-                                    Add Column
-                                </WrappedButton>
-                            </div>
-                            {showComponentOne ? (
-                                <DroppableColumns
-                                    columns={localColumns}
-                                    onDeleteColumn={onDeleteColumn}
-                                    onUpdateColumn={onUpdateColumn}
-                                    isSavingColumns={isSavingColumns}
-                                    hideDeleteButton={hideDeleteButton}
-                                />
-                            ) : (
-                                <div
-                                    css={
-                                        classes.secondComponentColumnsContainer
-                                    }
-                                >
-                                    <DroppableColumns
-                                        columns={localColumns}
-                                        onDeleteColumn={onDeleteColumn}
-                                        onUpdateColumn={onUpdateColumn}
-                                        isSavingColumns={isSavingColumns}
-                                        hideDeleteButton={hideDeleteButton}
+                            <DialogTitle>Create Column</DialogTitle>
+                            <DialogContent>
+                                <div css={classes.columnInputContainer}>
+                                    <WrappedTextField
+                                        value={columnNameControl.value}
+                                        label="Column Name"
+                                        onChange={columnNameControl.onChange}
+                                        error={
+                                            showColumnNameControl
+                                                ? columnNameControl.errorMessage
+                                                : ""
+                                        }
                                     />
                                 </div>
-                            )}
-                            <div css={classes.actionButtonContainer}>
-                                <div css={classes.resetButtonContainer}>
-                                    <WrappedButton
-                                        onClick={resetChanges}
-                                        disabled={
-                                            !columnDataHasChanged ||
-                                            isSavingColumns
+                            </DialogContent>
+                            <DialogActions>
+                                <WrappedButton
+                                    onClick={closeColumnCreationDialog}
+                                >
+                                    Close
+                                </WrappedButton>
+                                <WrappedButton
+                                    variant="contained"
+                                    onClick={createColumn}
+                                    color="primary"
+                                    disabled={!columnNameControl.isValid}
+                                >
+                                    Create
+                                </WrappedButton>
+                            </DialogActions>
+                        </Dialog>
+                        <div css={classes.innerContentContainer}>
+                            {isLoadingColumns ? (
+                                <div css={classes.spinnerContainer}>
+                                    <CircularProgress
+                                        color="primary"
+                                        size={24}
+                                        thickness={4}
+                                    />
+                                </div>
+                            ) : (
+                                <div css={classes.columnAndHeaderContainer}>
+                                    <div
+                                        css={
+                                            classes.columnCreationHeaderContainer
                                         }
                                     >
-                                        Reset Changes
-                                    </WrappedButton>
+                                        <WrappedButton
+                                            onClick={openColumnCreationDialog}
+                                            startIcon={<Add />}
+                                            color="primary"
+                                        >
+                                            Add Column
+                                        </WrappedButton>
+                                    </div>
+                                    {showComponentOne ? (
+                                        <DroppableColumns
+                                            columns={localColumns}
+                                            onDeleteColumn={onDeleteColumn}
+                                            onUpdateColumn={onUpdateColumn}
+                                            isSavingColumns={isSavingColumns}
+                                            hideDeleteButton={hideDeleteButton}
+                                        />
+                                    ) : (
+                                        <div
+                                            css={
+                                                classes.secondComponentColumnsContainer
+                                            }
+                                        >
+                                            <DroppableColumns
+                                                columns={localColumns}
+                                                onDeleteColumn={onDeleteColumn}
+                                                onUpdateColumn={onUpdateColumn}
+                                                isSavingColumns={
+                                                    isSavingColumns
+                                                }
+                                                hideDeleteButton={
+                                                    hideDeleteButton
+                                                }
+                                            />
+                                        </div>
+                                    )}
                                 </div>
-                                <WrappedButton
-                                    disabled={
-                                        !columnDataHasChanged || isSavingColumns
-                                    }
-                                    showSpinner={isSavingColumns}
-                                    onClick={saveColumns}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Save Changes
-                                </WrappedButton>
-                            </div>
+                            )}
                         </div>
-                    )}
+                    </DragDropContext>
                 </div>
-            </DragDropContext>
+                <div css={classes.bottomPageToolbarContainer}>
+                    <BottomPageToolbar
+                        wrappedButtonProps={wrappedButtonProps}
+                    />
+                </div>
+            </div>
         </BoardContainer>
     );
 }
@@ -396,6 +410,8 @@ function DroppableColumns(props: IDroppableColumnsProps) {
                         ref={provided.innerRef}
                     >
                         {props.columns.map((column, index) => {
+                            const isLastColumn =
+                                props.columns.length - 1 === index;
                             return (
                                 <EditableColumnCard
                                     key={column.id}
@@ -405,6 +421,7 @@ function DroppableColumns(props: IDroppableColumnsProps) {
                                     onUpdateColumn={props.onUpdateColumn}
                                     disabled={props.isSavingColumns}
                                     hideDeleteButton={props.hideDeleteButton}
+                                    isLastColumn={isLastColumn}
                                 />
                             );
                         })}
@@ -417,7 +434,7 @@ function DroppableColumns(props: IDroppableColumnsProps) {
 }
 
 function createClasses() {
-    const container = css`
+    const innerContentContainer = css`
         height: 100%;
     `;
 
@@ -445,8 +462,7 @@ function createClasses() {
         display: flex;
         overflow: auto;
         padding: 32px;
-        padding-left: 0;
-        padding-bottom: 0;
+        padding-top: 16px;
     `;
 
     const secondComponentColumnsContainer = css`
@@ -456,32 +472,36 @@ function createClasses() {
     const columnAndHeaderContainer = css`
         width: 100%;
         display: grid;
-        grid-template-rows: auto auto;
-        padding-top: 16px;
-        padding-left: 32px;
-        padding-right: 32px;
+        grid-template-rows: auto 1fr;
+        height: 100%;
     `;
 
     const columnCreationHeaderContainer = css`
         display: flex;
         justify-content: flex-start;
+        padding: 16px 32px 0 32px;
     `;
 
     const columnInputContainer = css`
         width: 300px;
     `;
 
-    const actionButtonContainer = css`
-        display: flex;
-        padding: 32px;
+    const bottomPageToolbarContainer = css`
+        flex: 0 0 auto;
     `;
 
-    const resetButtonContainer = css`
-        padding-right: 16px;
+    const contentContainer = css`
+        flex-grow: 1;
+    `;
+
+    const container = css`
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
     `;
 
     return {
-        container,
+        innerContentContainer,
         spinnerContainer,
         columnContainer,
         columnActionContainer,
@@ -489,8 +509,9 @@ function createClasses() {
         columnAndHeaderContainer,
         columnCreationHeaderContainer,
         columnInputContainer,
-        actionButtonContainer,
-        resetButtonContainer,
         secondComponentColumnsContainer,
+        contentContainer,
+        bottomPageToolbarContainer,
+        container,
     };
 }

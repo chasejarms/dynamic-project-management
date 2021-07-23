@@ -15,18 +15,18 @@ export function BottomPageToolbar(props: IBottomPageToolbarProps) {
         <div css={classes.ticketActionBarContainer}>
             <Paper elevation={10}>
                 <div css={classes.ticketFlexContainer}>
-                    <div css={classes.ticketGridContainer}>
-                        {props.wrappedButtonProps.map(
-                            (wrappedButtonProps, index) => {
-                                return (
-                                    <WrappedButton
-                                        key={index}
-                                        {...wrappedButtonProps}
-                                    />
-                                );
-                            }
-                        )}
-                    </div>
+                    {props.wrappedButtonProps.map(
+                        (wrappedButtonProps, index) => {
+                            return (
+                                <div
+                                    key={index}
+                                    css={classes.individualButtonContainer}
+                                >
+                                    <WrappedButton {...wrappedButtonProps} />
+                                </div>
+                            );
+                        }
+                    )}
                 </div>
             </Paper>
         </div>
@@ -42,16 +42,16 @@ const createClasses = () => {
         display: flex;
         padding: 8px 16px;
         justify-content: flex-end;
+        flex-direction: row;
     `;
 
-    const ticketGridContainer = css`
-        display: grid;
-        grid-template-columns: auto;
+    const individualButtonContainer = css`
+        margin-left: 8px;
     `;
 
     return {
         ticketActionBarContainer,
         ticketFlexContainer,
-        ticketGridContainer,
+        individualButtonContainer,
     };
 };

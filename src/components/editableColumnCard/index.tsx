@@ -19,6 +19,7 @@ export interface IEditableColumnCardProps {
     onUpdateColumn: (index: number, column: IColumn) => void;
     disabled?: boolean;
     hideDeleteButton: boolean;
+    isLastColumn?: boolean;
 }
 
 export function EditableColumnCard(props: IEditableColumnCardProps) {
@@ -60,7 +61,11 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
             {(provided) => {
                 return (
                     <div
-                        css={classes.columnContainer}
+                        css={composeCSS(
+                            classes.columnContainer,
+                            !!props.isLastColumn &&
+                                classes.columnContainerNoMargin
+                        )}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                     >
@@ -124,6 +129,11 @@ export function createClasses() {
         margin-right: 16px;
         width: 300px;
         min-width: 300px;
+        padding: 2px;
+    `;
+
+    const columnContainerNoMargin = css`
+        margin-right: 0;
     `;
 
     const columnActionContainer = css`
@@ -147,6 +157,7 @@ export function createClasses() {
     `;
 
     return {
+        columnContainerNoMargin,
         columnContainer,
         columnActionContainer,
         hiddenDeleteButtonContainer,
