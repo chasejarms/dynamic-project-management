@@ -10,10 +10,6 @@ import {
     makeStyles,
     Chip,
     IconButton,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
 } from "@material-ui/core";
 import { DragIndicator, Add } from "@material-ui/icons";
 import { useState, useEffect, useMemo } from "react";
@@ -23,17 +19,13 @@ import {
     Droppable,
     Draggable,
 } from "react-beautiful-dnd";
-import { ChangeEvent } from "react";
-import { sortBy } from "lodash";
 import { Api } from "../../../../../../../api";
-import { ControlValidator } from "../../../../../../../classes/ControlValidator";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { WrappedButton } from "../../../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
-import { useControl } from "../../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../models/tag";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
+import { NewTagDialog } from "../../../../../../../components/newTagDialog";
+import { sortBy } from "lodash";
 
 const useStyles = makeStyles({
     cardRoot: {
@@ -201,23 +193,6 @@ export function Priorities() {
         }
     }
 
-    const newTagControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (newTag: string) => {
-            return ControlValidator.string()
-                .required("This field is required")
-                .validate(newTag);
-        },
-    });
-    const showNewTagError = newTagControl.isTouched && !newTagControl.isValid;
-
-    const [isCreatingTag, setIsCreatingTag] = useState(false);
-
     const [tagsCreatorIsOpen, setTagsCreatorIsOpen] = useState(false);
     function openTagsCreator() {
         setTagsCreatorIsOpen(true);
@@ -225,40 +200,16 @@ export function Priorities() {
     function closeTagsCreator() {
         setTagsCreatorIsOpen(false);
     }
-    function createTag() {
-        setIsCreatingTag(true);
+
+    function onCreateTagSuccess(createdTag: ITag) {
+        setTagsList((previousTagsList) => {
+            const orderedTagsList = sortBy(
+                [createdTag, ...previousTagsList],
+                "name"
+            );
+            return orderedTagsList;
+        });
     }
-
-    useEffect(() => {
-        if (!isCreatingTag) return;
-
-        let didCancel = false;
-
-        Api.priorities
-            .createTag(companyId, boardId, newTagControl.value, "ffffff")
-            .then((createdTag) => {
-                if (didCancel) return;
-                setTagsList((previousTagsList) => {
-                    const orderedTagsList = sortBy(
-                        [createdTag, ...previousTagsList],
-                        "name"
-                    );
-                    return orderedTagsList;
-                });
-            })
-            .catch((error) => {
-                if (didCancel) return;
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsCreatingTag(false);
-                setTagsCreatorIsOpen(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, [isCreatingTag]);
 
     return (
         <BoardContainer>
@@ -506,40 +457,11 @@ export function Priorities() {
                         </CardContent>
                     </Card>
                 </div>
-                <Dialog open={tagsCreatorIsOpen} onClose={closeTagsCreator}>
-                    <DialogTitle>Create Tag</DialogTitle>
-                    <DialogContent>
-                        <div css={classes.tagInputContainer}>
-                            <WrappedTextField
-                                value={newTagControl.value}
-                                label="Tag Name"
-                                onChange={newTagControl.onChange}
-                                error={
-                                    showNewTagError
-                                        ? newTagControl.errorMessage
-                                        : ""
-                                }
-                            />
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <WrappedButton
-                            onClick={closeTagsCreator}
-                            disabled={isCreatingTag}
-                        >
-                            Close
-                        </WrappedButton>
-                        <WrappedButton
-                            variant="contained"
-                            onClick={createTag}
-                            color="primary"
-                            disabled={isCreatingTag}
-                            showSpinner={isCreatingTag}
-                        >
-                            Create
-                        </WrappedButton>
-                    </DialogActions>
-                </Dialog>
+                <NewTagDialog
+                    open={tagsCreatorIsOpen}
+                    onClose={closeTagsCreator}
+                    onCreateTagSuccess={onCreateTagSuccess}
+                />
             </DragDropContext>
         </BoardContainer>
     );
