@@ -12,6 +12,7 @@ import {
 import { uncategorizedColumnReservedId } from "../../../../../../../constants/reservedColumnIds";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { IColumn } from "../../../../../../../models/column";
+import { ITag } from "../../../../../../../models/tag";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { prioritiesToPointValueMapping } from "../../../../../../../utils/prioritiesToPointValueMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";

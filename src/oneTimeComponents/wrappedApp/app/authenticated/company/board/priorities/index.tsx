@@ -244,17 +244,7 @@ export function Priorities() {
         });
     }
 
-    function createChipClass(tagName: string) {
-        const { color } = priorityListAndTagsMapping.tagsMapping[tagName];
-        const backgroundColor = mapColorToMaterialThemeColorLight(theme, color);
-        const className = css`
-            background-color: ${backgroundColor};
-        `;
-
-        return className;
-    }
-
-    function chipColorToChipClassname(priority: string) {
+    function tagNameToChipClassName(priority: string) {
         const { color } = priorityListAndTagsMapping.tagsMapping[priority];
 
         if (color === "red") {
@@ -355,7 +345,7 @@ export function Priorities() {
                                                                             {(
                                                                                 provided
                                                                             ) => {
-                                                                                const chipClassName = chipColorToChipClassname(
+                                                                                const chipClassName = tagNameToChipClassName(
                                                                                     priority
                                                                                 );
 
@@ -488,7 +478,7 @@ export function Priorities() {
                                                                         {(
                                                                             provided
                                                                         ) => {
-                                                                            const chipClass = chipColorToChipClassname(
+                                                                            const chipClass = tagNameToChipClassName(
                                                                                 tag
                                                                             );
 

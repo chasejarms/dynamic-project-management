@@ -8,10 +8,10 @@ import {
     IconButton,
     Chip,
     Typography,
-    Paper,
-    MenuItem,
     makeStyles,
     Popover,
+    Theme,
+    useTheme,
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import { useState, useEffect } from "react";
@@ -28,6 +28,7 @@ import {
     IIndentedAction,
     QuickActionsPopoverContent,
 } from "../quickActionsPopoverContent";
+import { ITag } from "../../models/tag";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -57,11 +58,28 @@ const useStyles = makeStyles({
         paddingLeft: 32,
         paddingRight: 32,
     },
+    chipRed: (theme: Theme) => ({
+        backgroundColor: theme.palette.error.light,
+        color: "black",
+    }),
+    chipGreen: (theme: Theme) => ({
+        backgroundColor: theme.palette.success.light,
+        color: "black",
+    }),
+    chipBlue: (theme: Theme) => ({
+        backgroundColor: theme.palette.info.light,
+        color: "black",
+    }),
+    chipYellow: (theme: Theme) => ({
+        backgroundColor: theme.palette.warning.light,
+        color: "black",
+    }),
 });
 
 export function TicketForBoard(props: ITicketForBoardProps) {
     const classes = createClasses();
-    const materialClasses = useStyles();
+    const theme = useTheme();
+    const materialClasses = useStyles(theme);
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
@@ -333,6 +351,20 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         },
     ];
 
+    function tagColorToChipTagClassName(color: string) {
+        if (color === "red") {
+            return materialClasses.chipRed;
+        } else if (color === "blue") {
+            return materialClasses.chipBlue;
+        } else if (color === "green") {
+            return materialClasses.chipGreen;
+        } else if (color === "yellow") {
+            return materialClasses.chipYellow;
+        } else {
+            return "";
+        }
+    }
+
     return (
         <div
             css={composeCSS(
@@ -390,6 +422,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                         {props.ticket.tags.length > 0 && (
                             <div css={classes.tagsContainer}>
                                 {props.ticket.tags.map((tag) => {
+                                    const chipClassName = tagColorToChipTagClassName(
+                                        tag.color
+                                    );
+
                                     return (
                                         <div
                                             css={
@@ -400,6 +436,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                             <Chip
                                                 size="small"
                                                 label={tag.name}
+                                                className={chipClassName}
                                             />
                                         </div>
                                     );
