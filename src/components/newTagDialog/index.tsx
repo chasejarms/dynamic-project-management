@@ -15,6 +15,8 @@ import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { useControl } from "../../hooks/useControl";
 import { ITag } from "../../models/tag";
 import { composeCSS } from "../../styles/composeCSS";
+import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
+import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../wrappedButton";
 import { WrappedTextField } from "../wrappedTextField";
 
@@ -90,34 +92,6 @@ export function NewTagDialog(props: INewTagDialogProps) {
         };
     }, [isCreatingTag]);
 
-    function mapColorToMaterialThemeColorLight(color: string) {
-        if (color === "red") {
-            return theme.palette.error.light;
-        } else if (color === "green") {
-            return theme.palette.success.light;
-        } else if (color === "blue") {
-            return theme.palette.info.light;
-        } else if (color === "yello") {
-            return theme.palette.warning.light;
-        } else {
-            return "#ffffff";
-        }
-    }
-
-    function mapColorToMaterialThemeColorMain(color: string) {
-        if (color === "red") {
-            return theme.palette.error.dark;
-        } else if (color === "green") {
-            return theme.palette.success.dark;
-        } else if (color === "blue") {
-            return theme.palette.info.dark;
-        } else if (color === "yello") {
-            return theme.palette.warning.dark;
-        } else {
-            return "#ffffff";
-        }
-    }
-
     const classes = createClasses();
     return (
         <Dialog
@@ -140,6 +114,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
                 <div css={classes.colorContainer}>
                     {availableColors.map((color) => {
                         const hexColor = mapColorToMaterialThemeColorLight(
+                            theme,
                             color
                         );
                         const individualColorContainer = css`
@@ -147,6 +122,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
                         `;
 
                         const hexColorMain = mapColorToMaterialThemeColorMain(
+                            theme,
                             color
                         );
                         const individualColorOuterContainer = css`

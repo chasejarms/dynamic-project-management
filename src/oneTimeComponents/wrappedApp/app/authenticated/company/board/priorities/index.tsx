@@ -25,77 +25,104 @@ import { ITag } from "../../../../../../../models/tag";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { NewTagDialog } from "../../../../../../../components/newTagDialog";
-import { sortBy } from "lodash";
+import { cloneDeep, sortBy } from "lodash";
+import { mapColorToMaterialThemeColorLight } from "../../../../../../../utils/mapColorToMaterialThemeColorLight";
 
 const useStyles = makeStyles({
     cardRoot: {
         height: "100%",
+    },
+    chipRed: (theme: Theme) => ({
+        backgroundColor: theme.palette.error.light,
+    }),
+    chipGreen: (theme: Theme) => ({
+        backgroundColor: theme.palette.success.light,
+    }),
+    chipBlue: (theme: Theme) => ({
+        backgroundColor: theme.palette.info.light,
+    }),
+    chipYellow: (theme: Theme) => ({
+        backgroundColor: theme.palette.warning.light,
+    }),
+    blackColor: {
+        color: "black",
     },
 });
 
 export function Priorities() {
     const theme = useTheme();
     const classes = createClasses(theme);
-    const materialClasses = useStyles();
+    const materialClasses = useStyles(theme);
     const { boardId, companyId } = useAppRouterParams();
 
     const [isLoadingTags, setIsLoadingTags] = useState(true);
-    const [priorityListAndTagsList, setPriorityListAndTagsList] = useState<{
+    const [
+        priorityListAndTagsMapping,
+        setPriorityListAndTagsMapping,
+    ] = useState<{
         priorityList: string[];
-        tagsList: ITag[];
+        tagsMapping: {
+            [tagName: string]: ITag;
+        };
     }>({
         priorityList: [],
-        tagsList: [],
+        tagsMapping: {},
     });
     function setPriorityList(
         createUpdatedPriorityListFunction: (
             previousPriorityList: string[]
         ) => string[]
     ) {
-        setPriorityListAndTagsList((previousPriorityListAndTagsList) => {
+        setPriorityListAndTagsMapping((previousPriorityListAndTagsMapping) => {
             return {
-                ...previousPriorityListAndTagsList,
+                ...previousPriorityListAndTagsMapping,
                 priorityList: createUpdatedPriorityListFunction(
-                    previousPriorityListAndTagsList.priorityList
+                    previousPriorityListAndTagsMapping.priorityList
                 ),
             };
         });
     }
 
-    function setTagsList(
-        updatedTagsListFunction: (previousTagsList: ITag[]) => ITag[]
+    function setTagsMapping(
+        updatedTagsListFunction: (previousTagsMapping: {
+            [tagName: string]: ITag;
+        }) => {
+            [tagName: string]: ITag;
+        }
     ) {
-        setPriorityListAndTagsList((previousPriorityListAndTagsList) => {
+        setPriorityListAndTagsMapping((previousPriorityListAndTagsMapping) => {
             return {
-                ...previousPriorityListAndTagsList,
-                tagsList: updatedTagsListFunction(
-                    previousPriorityListAndTagsList.tagsList
+                ...previousPriorityListAndTagsMapping,
+                tagsMapping: updatedTagsListFunction(
+                    previousPriorityListAndTagsMapping.tagsMapping
                 ),
             };
         });
     }
 
     const { mappedPriorityList, unprioritizedTags } = useMemo(() => {
-        const mappedPriorityList = priorityListAndTagsList.priorityList.reduce<{
+        const mappedPriorityList = priorityListAndTagsMapping.priorityList.reduce<{
             [key: string]: boolean;
         }>((priorityMapping, priority) => {
             priorityMapping[priority] = true;
             return priorityMapping;
         }, {});
 
-        const unprioritizedTags = priorityListAndTagsList.tagsList
-            .filter((tag) => {
-                return !mappedPriorityList[tag.name];
+        const unprioritizedTags = Object.keys(
+            priorityListAndTagsMapping.tagsMapping
+        )
+            .filter((tagName) => {
+                return !mappedPriorityList[tagName];
             })
-            .map((unprioritizedTag) => {
-                return unprioritizedTag.name;
+            .map((tagName) => {
+                return tagName;
             });
 
         return {
             mappedPriorityList,
             unprioritizedTags,
         };
-    }, [priorityListAndTagsList]);
+    }, [priorityListAndTagsMapping]);
 
     useEffect(() => {
         let didCancel = false;
@@ -108,8 +135,16 @@ export function Priorities() {
         ])
             .then(([tags, priorities]) => {
                 if (didCancel) return;
-                setPriorityListAndTagsList({
-                    tagsList: tags,
+
+                const tagsMapping = tags.reduce<{
+                    [tagName: string]: ITag;
+                }>((mapping, tag) => {
+                    mapping[tag.name] = tag;
+                    return mapping;
+                }, {});
+
+                setPriorityListAndTagsMapping({
+                    tagsMapping,
                     priorityList: priorities,
                 });
             })
@@ -202,13 +237,37 @@ export function Priorities() {
     }
 
     function onCreateTagSuccess(createdTag: ITag) {
-        setTagsList((previousTagsList) => {
-            const orderedTagsList = sortBy(
-                [createdTag, ...previousTagsList],
-                "name"
-            );
-            return orderedTagsList;
+        setTagsMapping((previousTagsMapping) => {
+            const clonedTagsMapping = cloneDeep(previousTagsMapping);
+            clonedTagsMapping[createdTag.name] = createdTag;
+            return clonedTagsMapping;
         });
+    }
+
+    function createChipClass(tagName: string) {
+        const { color } = priorityListAndTagsMapping.tagsMapping[tagName];
+        const backgroundColor = mapColorToMaterialThemeColorLight(theme, color);
+        const className = css`
+            background-color: ${backgroundColor};
+        `;
+
+        return className;
+    }
+
+    function chipColorToChipClassname(priority: string) {
+        const { color } = priorityListAndTagsMapping.tagsMapping[priority];
+
+        if (color === "red") {
+            return materialClasses.chipRed;
+        } else if (color === "blue") {
+            return materialClasses.chipBlue;
+        } else if (color === "green") {
+            return materialClasses.chipGreen;
+        } else if (color === "yellow") {
+            return materialClasses.chipYellow;
+        } else {
+            return "";
+        }
     }
 
     return (
@@ -246,7 +305,7 @@ export function Priorities() {
                                                         {...provided.droppableProps}
                                                         ref={provided.innerRef}
                                                     >
-                                                        {priorityListAndTagsList
+                                                        {priorityListAndTagsMapping
                                                             .priorityList
                                                             .length === 0 ? (
                                                             <div
@@ -278,7 +337,7 @@ export function Priorities() {
                                                                 </div>
                                                             </div>
                                                         ) : (
-                                                            priorityListAndTagsList.priorityList.map(
+                                                            priorityListAndTagsMapping.priorityList.map(
                                                                 (
                                                                     priority,
                                                                     index
@@ -296,6 +355,10 @@ export function Priorities() {
                                                                             {(
                                                                                 provided
                                                                             ) => {
+                                                                                const chipClassName = chipColorToChipClassname(
+                                                                                    priority
+                                                                                );
+
                                                                                 return (
                                                                                     <div
                                                                                         css={
@@ -304,7 +367,11 @@ export function Priorities() {
                                                                                     >
                                                                                         <Chip
                                                                                             icon={
-                                                                                                <DragIndicator />
+                                                                                                <DragIndicator
+                                                                                                    className={
+                                                                                                        materialClasses.blackColor
+                                                                                                    }
+                                                                                                />
                                                                                             }
                                                                                             label={
                                                                                                 priority
@@ -314,6 +381,9 @@ export function Priorities() {
                                                                                                 provided.innerRef
                                                                                             }
                                                                                             {...provided.dragHandleProps}
+                                                                                            className={
+                                                                                                chipClassName
+                                                                                            }
                                                                                             // onDelete={() => null}
                                                                                             // className={classes.chip}
                                                                                         />
@@ -367,7 +437,7 @@ export function Priorities() {
                                             />
                                         </div>
                                     ) : unprioritizedTags.length === 0 &&
-                                      priorityListAndTagsList.priorityList
+                                      priorityListAndTagsMapping.priorityList
                                           .length === 0 ? (
                                         <div css={classes.centerContent}>
                                             <div css={classes.centerText}>
@@ -418,6 +488,10 @@ export function Priorities() {
                                                                         {(
                                                                             provided
                                                                         ) => {
+                                                                            const chipClass = chipColorToChipClassname(
+                                                                                tag
+                                                                            );
+
                                                                             return (
                                                                                 <div
                                                                                     css={
@@ -436,8 +510,10 @@ export function Priorities() {
                                                                                             provided.innerRef
                                                                                         }
                                                                                         {...provided.dragHandleProps}
+                                                                                        className={
+                                                                                            chipClass
+                                                                                        }
                                                                                         // onDelete={() => null}
-                                                                                        // className={classes.chip}
                                                                                     />
                                                                                 </div>
                                                                             );
