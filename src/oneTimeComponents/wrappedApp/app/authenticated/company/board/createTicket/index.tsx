@@ -1,18 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import {
-    Paper,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
     Snackbar,
-    Typography,
     makeStyles,
-    Chip,
 } from "@material-ui/core";
-import { sortBy, cloneDeep } from "lodash";
-import { AddOutlined } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
 import { ControlValidator } from "../../../../../../../classes/ControlValidator";
@@ -32,12 +27,8 @@ import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { controlsAreValid } from "../../../../../../../utils/controlsAreValid";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
-
-const useStyles = makeStyles({
-    ticketTagsPaper: {
-        height: "100%",
-    },
-});
+import { TicketTags } from "../../../../../../../components/ticketTags";
+import { ISimplifiedTag } from "../../../../../../../models/simplifiedTag";
 
 export function CreateTicket() {
     const history = useHistory();
@@ -172,7 +163,6 @@ export function CreateTicket() {
     );
 
     const classes = createClasses();
-    const materialClasses = useStyles();
 
     const [
         ticketCreateRequest,
@@ -198,7 +188,10 @@ export function CreateTicket() {
                 titleControl.resetControlState("");
                 summaryControl.resetControlState("");
                 startingColumnControl.resetControlState("BACKLOG");
-                setAddedTagsMapping({});
+                setTagsState({
+                    simplifiedTags: [],
+                    isDirty: false,
+                });
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -217,46 +210,26 @@ export function CreateTicket() {
         history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
     }
 
-    const [addedTagsMapping, setAddedTagsMapping] = useState<{
-        [tagName: string]: ITag;
-    }>({});
-    function handleTagClick(tag: ITag) {
-        return () => {
-            setAddedTagsMapping((previousAddedTagsMapping) => {
-                const updatedTagsMapping = {
-                    ...previousAddedTagsMapping,
-                    [tag.name]: tag,
-                };
-
-                return updatedTagsMapping;
-            });
-        };
-    }
-    const addedTagsList = sortBy(Object.values(addedTagsMapping), "name");
-
-    function removeTagFromSelectedTags(tagName: string) {
-        return () => {
-            setAddedTagsMapping((previousAddedTagsMapping) => {
-                const clonedTagsMapping = cloneDeep(previousAddedTagsMapping);
-                delete clonedTagsMapping[tagName];
-                return clonedTagsMapping;
-            });
-        };
+    const [tagsState, setTagsState] = useState<{
+        simplifiedTags: ISimplifiedTag[];
+        isDirty: boolean;
+    }>({
+        simplifiedTags: [],
+        isDirty: false,
+    });
+    function onTagsChange(simplifiedTags: ISimplifiedTag[], isDirty: boolean) {
+        setTagsState({
+            simplifiedTags,
+            isDirty,
+        });
     }
 
     function onClickCreate() {
-        const simplifiedTags = addedTagsList.map((tag) => {
-            return {
-                color: tag.color,
-                name: tag.name,
-            };
-        });
-
         setTicketCreateRequest({
             title: titleControl.value,
             summary: summaryControl.value,
             sections: [],
-            tags: simplifiedTags,
+            tags: tagsState.simplifiedTags,
             simplifiedTicketTemplate: {
                 title: selectedTicketTemplate!.title,
                 summary: selectedTicketTemplate!.summary,
@@ -372,135 +345,11 @@ export function CreateTicket() {
                                 </div>
                             )}
                         </div>
-                        <div>
-                            <div css={classes.outerTicketTagsContainer}>
-                                <div>
-                                    <Paper
-                                        className={
-                                            materialClasses.ticketTagsPaper
-                                        }
-                                    >
-                                        <div
-                                            css={
-                                                classes.ticketTagsInnerContainer
-                                            }
-                                        >
-                                            <Typography variant="h6">
-                                                Tags
-                                            </Typography>
-                                            {addedTagsList.length === 0 ? (
-                                                <div
-                                                    css={
-                                                        classes.centerAllTagsMessageContainer
-                                                    }
-                                                >
-                                                    <Typography>
-                                                        No tags have been added
-                                                        yet
-                                                    </Typography>
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    css={
-                                                        classes.allChipsSpacingContainer
-                                                    }
-                                                >
-                                                    {addedTagsList.map(
-                                                        (tag) => {
-                                                            return (
-                                                                <div
-                                                                    css={
-                                                                        classes.individualChipContainer
-                                                                    }
-                                                                    key={
-                                                                        tag.name
-                                                                    }
-                                                                >
-                                                                    <Chip
-                                                                        clickable
-                                                                        onClick={removeTagFromSelectedTags(
-                                                                            tag.name
-                                                                        )}
-                                                                        label={
-                                                                            tag.name
-                                                                        }
-                                                                        onDelete={removeTagFromSelectedTags(
-                                                                            tag.name
-                                                                        )}
-                                                                    />
-                                                                </div>
-                                                            );
-                                                        }
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </Paper>
-                                </div>
-                                <div />
-                            </div>
-                        </div>
-                        <div>
-                            <div css={classes.outerTagsOptionsContainer}>
-                                <div>
-                                    <Paper
-                                        className={
-                                            materialClasses.ticketTagsPaper
-                                        }
-                                    >
-                                        <div
-                                            css={
-                                                classes.ticketTagsInnerContainer
-                                            }
-                                        >
-                                            <Typography variant="h6">
-                                                All Tags For Board
-                                            </Typography>
-                                            <div
-                                                css={
-                                                    classes.allChipsSpacingContainer
-                                                }
-                                            >
-                                                {allTagsForBoard
-                                                    .filter((tag) => {
-                                                        const tagIsNotAlreadyOnTicket = !addedTagsMapping[
-                                                            tag.name
-                                                        ];
-                                                        return tagIsNotAlreadyOnTicket;
-                                                    })
-                                                    .map((tag) => {
-                                                        return (
-                                                            <div
-                                                                css={
-                                                                    classes.individualChipContainer
-                                                                }
-                                                                key={tag.name}
-                                                            >
-                                                                <Chip
-                                                                    clickable
-                                                                    label={
-                                                                        tag.name
-                                                                    }
-                                                                    onClick={handleTagClick(
-                                                                        tag
-                                                                    )}
-                                                                    deleteIcon={
-                                                                        <AddOutlined />
-                                                                    }
-                                                                    onDelete={handleTagClick(
-                                                                        tag
-                                                                    )}
-                                                                />
-                                                            </div>
-                                                        );
-                                                    })}
-                                            </div>
-                                        </div>
-                                    </Paper>
-                                </div>
-                                <div></div>
-                            </div>
-                        </div>
+                        <TicketTags
+                            tags={tagsState.simplifiedTags}
+                            allTagsForBoard={allTagsForBoard}
+                            onTagsChange={onTagsChange}
+                        />
                     </div>
                     <BottomPageToolbar
                         wrappedButtonProps={wrappedButtonProps}
