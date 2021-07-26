@@ -2,5 +2,8 @@ import { ITicket } from "./ticket";
 
 export interface IGetDoneTicketsResponse {
     items: ITicket[];
-    lastEvaluatedKey?: string;
+    lastEvaluatedKey?: {
+        itemId: string;
+        belongsTo: string;
+    };
 }

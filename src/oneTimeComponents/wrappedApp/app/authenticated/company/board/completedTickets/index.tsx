@@ -12,22 +12,41 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 export function CompletedTickets() {
     const { boardId, companyId } = useAppRouterParams();
     const [isLoadingTickets, setIsLoadingTickets] = useState(true);
-    const [lastEvaluatedKey, setLastEvaluatedKey] = useState<
-        string | undefined
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+    const [lastEvaluatedItemId, setLastEvaluatedItemId] = useState<
+        undefined | string
     >();
+    const [lastEvaluatedBelongsTo, setLastEvaluatedBelongsTo] = useState<
+        undefined | string
+    >();
+    const [noMoreTicketsToLoad, setNoMoreTicketsToLoad] = useState(false);
+
     const [tickets, setTickets] = useState<ITicket[]>([]);
     useEffect(() => {
-        if (!isLoadingTickets || !companyId || !boardId) return;
+        if (!isLoadingTickets || !companyId || !boardId || noMoreTicketsToLoad)
+            return;
 
         let didCancel = false;
 
         Api.tickets
-            .getDoneTicketPaginated(companyId, boardId, lastEvaluatedKey)
-            .then(({ items }) => {
+            .getDoneTicketPaginated(
+                companyId,
+                boardId,
+                lastEvaluatedItemId,
+                lastEvaluatedBelongsTo
+            )
+            .then(({ items, lastEvaluatedKey }) => {
                 if (didCancel) return;
                 setTickets((previousTickets) => {
                     return [...previousTickets, ...items];
                 });
+                if (!lastEvaluatedKey?.itemId) {
+                    setNoMoreTicketsToLoad(true);
+                }
+                setLastEvaluatedItemId(lastEvaluatedKey?.itemId);
+                setLastEvaluatedBelongsTo(lastEvaluatedKey?.belongsTo);
+                setIsFirstLoad(false);
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -40,7 +59,7 @@ export function CompletedTickets() {
         return () => {
             didCancel = true;
         };
-    }, [isLoadingTickets, companyId, boardId]);
+    }, [isLoadingTickets, companyId, boardId, noMoreTicketsToLoad]);
 
     function onDeleteTicket(columnId: string, itemId: string) {
         setTickets((previousTickets) => {
@@ -50,12 +69,29 @@ export function CompletedTickets() {
         });
     }
 
+    function onReachBottomOfList() {
+        if (isLoadingTickets) return;
+
+        setIsLoadingTickets(true);
+    }
+
     const classes = createClasses();
 
     return (
         <BoardContainer>
             <div css={classes.pageContainer}>
-                <TicketContainer title="Completed Tickets">
+                <TicketContainer
+                    title="Completed Tickets"
+                    showCenterSpinner={isLoadingTickets && isFirstLoad}
+                    bottomLoadingSpinnerProps={
+                        noMoreTicketsToLoad
+                            ? undefined
+                            : {
+                                  showSpinner: isLoadingTickets && !isFirstLoad,
+                                  onReachBottomOfList,
+                              }
+                    }
+                >
                     {tickets.map((ticket, index) => {
                         const isFirstTicket = index === 0;
                         const augmentedTicket = {

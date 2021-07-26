@@ -169,7 +169,8 @@ export class TicketsApi implements ITicketsApi {
     public async getDoneTicketPaginated(
         companyId: string,
         boardId: string,
-        lastEvaluatedKey?: string
+        lastEvaluatedItemId?: string,
+        lastEvaluatedBelongsTo?: string
     ): Promise<IGetDoneTicketsResponse> {
         const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getDoneTickets`,
@@ -177,8 +178,9 @@ export class TicketsApi implements ITicketsApi {
                 params: {
                     companyId,
                     boardId,
-                    limit: 20,
-                    lastEvaluatedKey,
+                    limit: 5,
+                    lastEvaluatedItemId,
+                    lastEvaluatedBelongsTo,
                 },
             }
         );

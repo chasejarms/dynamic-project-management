@@ -7,12 +7,17 @@ import {
     makeStyles,
     Divider,
 } from "@material-ui/core";
+import ReactVisibilitySensor from "react-visibility-sensor";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 
 export interface ITicketContainerProps {
     children: React.ReactNode;
     title: string;
     showCenterSpinner?: boolean;
+    bottomLoadingSpinnerProps?: {
+        showSpinner: boolean;
+        onReachBottomOfList: () => void;
+    };
 }
 
 const useStyles = makeStyles({
@@ -32,6 +37,12 @@ export function TicketContainer(props: ITicketContainerProps) {
     const materialClasses = useStyles();
     const classes = createClasses();
 
+    function internalVisibilityOnChange(isVisible: boolean) {
+        if (isVisible && !!props.bottomLoadingSpinnerProps) {
+            props.bottomLoadingSpinnerProps.onReachBottomOfList();
+        }
+    }
+
     return (
         <div css={classes.columnContainer}>
             <Card className={materialClasses.card}>
@@ -46,6 +57,19 @@ export function TicketContainer(props: ITicketContainerProps) {
                         ) : (
                             <div css={classes.ticketsContainer}>
                                 {props.children}
+                                {!!props.bottomLoadingSpinnerProps && (
+                                    <ReactVisibilitySensor
+                                        onChange={internalVisibilityOnChange}
+                                    >
+                                        <div
+                                            css={
+                                                classes.moreTicketsLoadingSpinner
+                                            }
+                                        >
+                                            <CenterLoadingSpinner size="small" />
+                                        </div>
+                                    </ReactVisibilitySensor>
+                                )}
                             </div>
                         )}
                     </div>
@@ -81,10 +105,16 @@ const createClasses = () => {
         height: 100%;
     `;
 
+    const moreTicketsLoadingSpinner = css`
+        height: 60px;
+        display: flex;
+    `;
+
     return {
         columnContainer,
         ticketsContainer,
         columnTitleContainer,
         cardContentContainer,
+        moreTicketsLoadingSpinner,
     };
 };
