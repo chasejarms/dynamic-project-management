@@ -55,6 +55,7 @@ export function SummarySection(props: ISummarySectionProps) {
 
     return (
         <WrappedTextField
+            multiline
             value={summaryControl.value}
             label={props.label}
             onChange={summaryControl.onChange}

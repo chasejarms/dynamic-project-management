@@ -23,6 +23,7 @@ export interface IWrapperTextFieldProps {
         input?: string;
     };
     disabled?: boolean;
+    multiline?: boolean;
 }
 
 export function WrappedTextField(props: IWrapperTextFieldProps) {
@@ -33,6 +34,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
             <FormControl fullWidth error={!!props.error}>
                 <InputLabel>{props.label}</InputLabel>
                 <Input
+                    multiline={props.multiline}
                     value={props.value}
                     onChange={props.onChange}
                     type={props.type}

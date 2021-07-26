@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import { Paper, Snackbar } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { WrappedButton } from "../../../../../../../../components/wrappedButton";
 import { ITag } from "../../../../../../../../models/tag";
 import { cloneDeep } from "lodash";
@@ -19,7 +19,6 @@ import { TicketTags } from "../../../../../../../../components/ticketTags";
 
 export function TicketHome() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
-    const history = useHistory();
 
     const [
         isLoadingTicketInformation,
@@ -114,11 +113,6 @@ export function TicketHome() {
         setTicketUpdateRequest,
     ] = useState<null | ITicketUpdateRequest>(null);
 
-    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-    function onCloseSnackbar() {
-        setShowSuccessSnackbar(false);
-    }
-
     useEffect(() => {
         if (!ticketUpdateRequest) return;
 
@@ -157,10 +151,6 @@ export function TicketHome() {
             didCancel = true;
         };
     }, [ticketUpdateRequest]);
-
-    function navigateToBoard() {
-        history.push(`/app/company/${companyId}/board/${boardId}`);
-    }
 
     function onClickUpdate() {
         const title = Object.values(controlInformation).find((control) => {
@@ -232,16 +222,6 @@ export function TicketHome() {
                     </div>
                 </div>
             )}
-            <Snackbar
-                open={showSuccessSnackbar}
-                onClose={onCloseSnackbar}
-                message={"Ticket successfully created"}
-                action={
-                    <WrappedButton color="secondary" onClick={navigateToBoard}>
-                        Return To Board
-                    </WrappedButton>
-                }
-            />
         </TicketPageWrapper>
     );
 }
