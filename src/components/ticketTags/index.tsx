@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Paper, Typography, Chip, makeStyles } from "@material-ui/core";
+import { Paper, Typography, makeStyles } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { isEqual } from "lodash";
 import { ISimplifiedTag } from "../../models/simplifiedTag";
 import { ITag } from "../../models/tag";
 import { AddOutlined } from "@material-ui/icons";
+import { TagChip } from "../tagChip";
 
 export interface ITicketTagsProps {
     tags: ISimplifiedTag[];
@@ -110,15 +111,16 @@ export function TicketTags(props: ITicketTagsProps) {
                                                     }
                                                     key={tag.name}
                                                 >
-                                                    <Chip
+                                                    <TagChip
                                                         clickable
                                                         onClick={removeTagFromSelectedTags(
                                                             tag.name
                                                         )}
-                                                        label={tag.name}
                                                         onDelete={removeTagFromSelectedTags(
                                                             tag.name
                                                         )}
+                                                        tagName={tag.name}
+                                                        tagColor={tag.color}
                                                     />
                                                 </div>
                                             );
@@ -155,9 +157,8 @@ export function TicketTags(props: ITicketTagsProps) {
                                                     }
                                                     key={tag.name}
                                                 >
-                                                    <Chip
+                                                    <TagChip
                                                         clickable
-                                                        label={tag.name}
                                                         onClick={handleAddTag(
                                                             tag
                                                         )}
@@ -167,6 +168,8 @@ export function TicketTags(props: ITicketTagsProps) {
                                                         onDelete={handleAddTag(
                                                             tag
                                                         )}
+                                                        tagName={tag.name}
+                                                        tagColor={tag.color}
                                                     />
                                                 </div>
                                             );

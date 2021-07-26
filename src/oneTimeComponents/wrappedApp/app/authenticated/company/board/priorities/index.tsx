@@ -8,7 +8,6 @@ import {
     useTheme,
     CircularProgress,
     makeStyles,
-    Chip,
     IconButton,
 } from "@material-ui/core";
 import { DragIndicator, Add } from "@material-ui/icons";
@@ -25,34 +24,19 @@ import { ITag } from "../../../../../../../models/tag";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { NewTagDialog } from "../../../../../../../components/newTagDialog";
-import { cloneDeep, sortBy } from "lodash";
-import { mapColorToMaterialThemeColorLight } from "../../../../../../../utils/mapColorToMaterialThemeColorLight";
+import { cloneDeep } from "lodash";
+import { TagChip } from "../../../../../../../components/tagChip";
 
 const useStyles = makeStyles({
     cardRoot: {
         height: "100%",
-    },
-    chipRed: (theme: Theme) => ({
-        backgroundColor: theme.palette.error.light,
-    }),
-    chipGreen: (theme: Theme) => ({
-        backgroundColor: theme.palette.success.light,
-    }),
-    chipBlue: (theme: Theme) => ({
-        backgroundColor: theme.palette.info.light,
-    }),
-    chipYellow: (theme: Theme) => ({
-        backgroundColor: theme.palette.warning.light,
-    }),
-    blackColor: {
-        color: "black",
     },
 });
 
 export function Priorities() {
     const theme = useTheme();
     const classes = createClasses(theme);
-    const materialClasses = useStyles(theme);
+    const materialClasses = useStyles();
     const { boardId, companyId } = useAppRouterParams();
 
     const [isLoadingTags, setIsLoadingTags] = useState(true);
@@ -244,20 +228,9 @@ export function Priorities() {
         });
     }
 
-    function tagNameToChipClassName(priority: string) {
+    function tagNameToTagColor(priority: string) {
         const { color } = priorityListAndTagsMapping.tagsMapping[priority];
-
-        if (color === "red") {
-            return materialClasses.chipRed;
-        } else if (color === "blue") {
-            return materialClasses.chipBlue;
-        } else if (color === "green") {
-            return materialClasses.chipGreen;
-        } else if (color === "yellow") {
-            return materialClasses.chipYellow;
-        } else {
-            return "";
-        }
+        return color;
     }
 
     return (
@@ -345,7 +318,7 @@ export function Priorities() {
                                                                             {(
                                                                                 provided
                                                                             ) => {
-                                                                                const chipClassName = tagNameToChipClassName(
+                                                                                const tagColor = tagNameToTagColor(
                                                                                     priority
                                                                                 );
 
@@ -355,27 +328,22 @@ export function Priorities() {
                                                                                             classes.chipContainer
                                                                                         }
                                                                                     >
-                                                                                        <Chip
+                                                                                        <TagChip
+                                                                                            whiteBackground
                                                                                             icon={
-                                                                                                <DragIndicator
-                                                                                                    className={
-                                                                                                        materialClasses.blackColor
-                                                                                                    }
-                                                                                                />
+                                                                                                <DragIndicator />
                                                                                             }
-                                                                                            label={
+                                                                                            tagName={
                                                                                                 priority
+                                                                                            }
+                                                                                            tagColor={
+                                                                                                tagColor
                                                                                             }
                                                                                             {...provided.draggableProps}
                                                                                             ref={
                                                                                                 provided.innerRef
                                                                                             }
                                                                                             {...provided.dragHandleProps}
-                                                                                            className={
-                                                                                                chipClassName
-                                                                                            }
-                                                                                            // onDelete={() => null}
-                                                                                            // className={classes.chip}
                                                                                         />
                                                                                     </div>
                                                                                 );
@@ -478,7 +446,7 @@ export function Priorities() {
                                                                         {(
                                                                             provided
                                                                         ) => {
-                                                                            const chipClass = tagNameToChipClassName(
+                                                                            const tagColor = tagNameToTagColor(
                                                                                 tag
                                                                             );
 
@@ -488,22 +456,22 @@ export function Priorities() {
                                                                                         classes.unprioritizedTagContainer
                                                                                     }
                                                                                 >
-                                                                                    <Chip
+                                                                                    <TagChip
+                                                                                        whiteBackground
                                                                                         icon={
                                                                                             <DragIndicator />
                                                                                         }
-                                                                                        label={
+                                                                                        tagName={
                                                                                             tag
+                                                                                        }
+                                                                                        tagColor={
+                                                                                            tagColor
                                                                                         }
                                                                                         {...provided.draggableProps}
                                                                                         ref={
                                                                                             provided.innerRef
                                                                                         }
                                                                                         {...provided.dragHandleProps}
-                                                                                        className={
-                                                                                            chipClass
-                                                                                        }
-                                                                                        // onDelete={() => null}
                                                                                     />
                                                                                 </div>
                                                                             );

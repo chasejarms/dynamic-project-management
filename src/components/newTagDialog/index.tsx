@@ -6,7 +6,6 @@ import {
     DialogActions,
     Dialog,
     useTheme,
-    Typography,
 } from "@material-ui/core";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../api";
@@ -26,7 +25,7 @@ export interface INewTagDialogProps {
     onCreateTagSuccess: (tag: ITag) => void;
 }
 
-const availableColors = ["red", "blue", "green", "yello"];
+const availableColors = ["grey", "blue", "green", "red", "yellow"];
 
 export function NewTagDialog(props: INewTagDialogProps) {
     const theme = useTheme();
@@ -48,7 +47,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
     const showNewTagError = newTagControl.isTouched && !newTagControl.isValid;
 
     const colorControl = useControl({
-        value: "blue",
+        value: "grey",
         onChange: (color: string) => {
             return color;
         },

@@ -7,9 +7,9 @@ export function mapColorToMaterialThemeColorLight(theme: Theme, color: string) {
         return theme.palette.success.light;
     } else if (color === "blue") {
         return theme.palette.info.light;
-    } else if (color === "yello") {
+    } else if (color === "yellow") {
         return theme.palette.warning.light;
     } else {
-        return "#ffffff";
+        return theme.palette.grey["300"];
     }
 }
