@@ -6,7 +6,6 @@ import {
     Select,
     MenuItem,
     Snackbar,
-    makeStyles,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
@@ -18,17 +17,18 @@ import {
     IWrappedButtonProps,
     WrappedButton,
 } from "../../../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../../hooks/useControl";
 import { IColumn } from "../../../../../../../models/column";
 import { ITag } from "../../../../../../../models/tag";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
-import { controlsAreValid } from "../../../../../../../utils/controlsAreValid";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
 import { TicketTags } from "../../../../../../../components/ticketTags";
 import { ISimplifiedTag } from "../../../../../../../models/simplifiedTag";
+import { cloneDeep } from "lodash";
+import { TitleSection } from "../../../../../../../components/titleSection";
+import { SummarySection } from "../../../../../../../components/summarySection";
 
 export function CreateTicket() {
     const history = useHistory();
@@ -112,37 +112,38 @@ export function CreateTicket() {
         }
     );
 
-    const titleControl = useControl({
-        value: "",
-        onChange: (
-            event: React.ChangeEvent<{
-                name?: string | undefined;
-                value: unknown;
-            }>
-        ) => {
-            return event.target.value as string;
-        },
-        validatorError: (title: string) => {
-            return ControlValidator.string()
-                .required("A title is required")
-                .validate(title);
-        },
-    });
-    const showTitleError = !titleControl.isValid && titleControl.isTouched;
+    const [controlInformation, setControlInformation] = useState<{
+        [id: string]: {
+            value: any;
+            errorMessage: string;
+            isDirty: boolean;
+            type?: "title" | "summary";
+        };
+    }>({});
+    function onStateChange(
+        uniqueId: string,
+        value: string,
+        errorMessage: string,
+        isDirty: boolean,
+        type?: "title" | "summary"
+    ) {
+        setControlInformation((previousControlInformation) => {
+            const clonedControlInformation = cloneDeep(
+                previousControlInformation
+            );
+            clonedControlInformation[uniqueId] = {
+                value,
+                errorMessage,
+                isDirty,
+                type,
+            };
 
-    const summaryControl = useControl({
-        value: "",
-        onChange: (
-            event: React.ChangeEvent<{
-                name?: string | undefined;
-                value: unknown;
-            }>
-        ) => {
-            return event.target.value as string;
-        },
-    });
-    const showSummaryError =
-        !summaryControl.isValid && summaryControl.isTouched;
+            return clonedControlInformation;
+        });
+    }
+    const someControlsAreInvalid = Object.values(controlInformation).some(
+        ({ errorMessage }) => !!errorMessage
+    );
 
     const startingColumnControl = useControl({
         value: "BACKLOG",
@@ -155,12 +156,6 @@ export function CreateTicket() {
             return event.target.value as string;
         },
     });
-
-    const formIsValid = controlsAreValid(
-        titleControl,
-        summaryControl,
-        startingColumnControl
-    );
 
     const classes = createClasses();
 
@@ -185,8 +180,6 @@ export function CreateTicket() {
                 if (didCancel) return;
                 setShowSuccessSnackbar(true);
                 ticketTemplateControl.resetControlState("");
-                titleControl.resetControlState("");
-                summaryControl.resetControlState("");
                 startingColumnControl.resetControlState("BACKLOG");
                 setTagsState({
                     simplifiedTags: [],
@@ -225,9 +218,17 @@ export function CreateTicket() {
     }
 
     function onClickCreate() {
+        const title = Object.values(controlInformation).find((control) => {
+            return control.type === "title";
+        })!.value;
+
+        const summary = Object.values(controlInformation).find((control) => {
+            return control.type === "summary";
+        })!.value;
+
         setTicketCreateRequest({
-            title: titleControl.value,
-            summary: summaryControl.value,
+            title,
+            summary,
             sections: [],
             tags: tagsState.simplifiedTags,
             simplifiedTicketTemplate: {
@@ -246,7 +247,10 @@ export function CreateTicket() {
         {
             color: "primary",
             variant: "contained",
-            disabled: !formIsValid || !!ticketCreateRequest,
+            disabled:
+                !startingColumnControl.isValid ||
+                !!ticketCreateRequest ||
+                someControlsAreInvalid,
             showSpinner: !!ticketCreateRequest,
             onClick: onClickCreate,
             children: "Create Ticket",
@@ -285,31 +289,21 @@ export function CreateTicket() {
                             </FormControl>
                             {!!selectedTicketTemplate && (
                                 <div css={classes.ticketSectionsContainer}>
-                                    <WrappedTextField
-                                        value={titleControl.value}
+                                    <TitleSection
+                                        title={""}
                                         label={
                                             selectedTicketTemplate?.title
-                                                .label || "Title"
+                                                .label || ""
                                         }
-                                        onChange={titleControl.onChange}
-                                        error={
-                                            showTitleError
-                                                ? titleControl.errorMessage
-                                                : ""
-                                        }
+                                        onStateChange={onStateChange}
                                     />
-                                    <WrappedTextField
-                                        value={summaryControl.value}
+                                    <SummarySection
+                                        summary={""}
                                         label={
                                             selectedTicketTemplate?.summary
-                                                .label || "Summary"
+                                                .label || ""
                                         }
-                                        onChange={summaryControl.onChange}
-                                        error={
-                                            showSummaryError
-                                                ? summaryControl.errorMessage
-                                                : ""
-                                        }
+                                        onStateChange={onStateChange}
                                     />
                                     <FormControl fullWidth>
                                         <InputLabel>Send Ticket To</InputLabel>
