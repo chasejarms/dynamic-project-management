@@ -70,20 +70,20 @@ export function BoardContainer(props: IBoardContainerProps) {
         //     route: `/app/company/${companyId}/board/${boardId}/users`,
         // },
         {
-            text: "Columns",
-            route: `/app/company/${companyId}/board/${boardId}/columns`,
-        },
-        {
-            text: "Ticket Templates",
-            route: `/app/company/${companyId}/board/${boardId}/ticket-templates`,
-        },
-        {
             text: "Backlog Tickets",
             route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
         },
         {
             text: "Completed Tickets",
             route: `/app/company/${companyId}/board/${boardId}/completed-tickets`,
+        },
+        {
+            text: "Columns",
+            route: `/app/company/${companyId}/board/${boardId}/columns`,
+        },
+        {
+            text: "Ticket Templates",
+            route: `/app/company/${companyId}/board/${boardId}/ticket-templates`,
         },
     ];
 

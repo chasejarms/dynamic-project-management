@@ -27,14 +27,14 @@ export function Board() {
             <Route path={`${url}/columns`} exact>
                 <Columns />
             </Route>
-            <Route path={`${url}/ticket-templates`} exact>
-                <TicketTemplates />
-            </Route>
             <Route path={`${url}/backlog-tickets`} exact>
                 <BacklogTickets />
             </Route>
             <Route path={`${url}/completed-tickets`} exact>
                 <CompletedTickets />
+            </Route>
+            <Route path={`${url}/ticket-templates`}>
+                <TicketTemplates />
             </Route>
             <Route path={`${url}/ticket/:ticketId`}>
                 <Ticket />
