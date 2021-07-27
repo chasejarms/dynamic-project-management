@@ -157,7 +157,7 @@ export function BoardHome() {
         });
     }
 
-    function onMarkTicketAsDone(columnId: string, itemId: string) {
+    function onMoveTicketToBacklogOrDone(columnId: string, itemId: string) {
         setSortedAndMappedTickets((previousSortedAndMappedTickets) => {
             const columnIdExists = !!previousSortedAndMappedTickets[columnId];
             const trueColumnId = columnIdExists
@@ -222,11 +222,14 @@ export function BoardHome() {
                                                     onUpdateTicketColumn
                                                 }
                                                 onMarkTicketAsDone={
-                                                    onMarkTicketAsDone
+                                                    onMoveTicketToBacklogOrDone
                                                 }
                                                 onDeleteTicket={onDeleteTicket}
                                                 ticketType={
                                                     TicketType.InProgress
+                                                }
+                                                onMoveTicketToBacklog={
+                                                    onMoveTicketToBacklogOrDone
                                                 }
                                             />
                                         );

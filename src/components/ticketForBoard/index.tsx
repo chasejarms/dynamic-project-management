@@ -17,6 +17,7 @@ import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 import { ConfirmDialog } from "../confirmDialog";
 import { TicketType } from "../../models/ticket/ticketType";
 import {
+    backlogColumnReservedId,
     doneColumnReservedId,
     uncategorizedColumnReservedId,
 } from "../../constants/reservedColumnIds";
@@ -39,6 +40,7 @@ export interface ITicketForBoardProps {
     ) => void;
     onMarkTicketAsDone?: (columnId: string, itemId: string) => void;
     onDeleteTicket: (columnId: string, itemId: string) => void;
+    onMoveTicketToBacklog?: (columnId: string, itemId: string) => void;
     showCompletedDate?: boolean;
     ticketType: TicketType;
 }
@@ -240,24 +242,53 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         };
     }, [isDeletingTicket]);
 
-    const [isMarkingTicketAsComplete, setIsMarkingTicketAsComplete] = useState(
+    const [isMovingTicketToBacklog, setIsMovingTicketToBacklog] = useState(
         false
     );
     useEffect(() => {
-        if (!isMarkingTicketAsComplete) return;
+        if (!isMovingTicketToBacklog) return;
 
         let didCancel = false;
+
+        Api.tickets
+            .moveNonBacklogTicketToBacklog(
+                companyId,
+                boardId,
+                props.ticket.shortenedItemId
+            )
+            .then(() => {
+                if (didCancel) return;
+                if (props.onMoveTicketToBacklog) {
+                    props.onMoveTicketToBacklog(
+                        props.ticket.columnId || "",
+                        props.ticket.itemId
+                    );
+                }
+            })
+            .catch(() => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsMovingTicketToBacklog(false);
+            });
+        // move the ticket to the backlog then call the prop
 
         return () => {
             didCancel = true;
         };
-    }, [isMarkingTicketAsComplete]);
+    }, [isMovingTicketToBacklog]);
+
+    function moveTicketToBacklog() {
+        setIsMovingTicketToBacklog(true);
+    }
 
     const isPerformingAction =
         !!ticketToMarkAsDone ||
         !!ticketToUpdate ||
         isDeletingTicket ||
-        !!nonInProgressTicketWithUpdatedColumn;
+        !!nonInProgressTicketWithUpdatedColumn ||
+        isMovingTicketToBacklog;
 
     function formattedDate(timestamp: string) {
         return format(Number(timestamp), "MMM do uuuu");
@@ -269,6 +300,14 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         );
     }
 
+    const columnsWithBacklogColumn: IColumn[] = [
+        {
+            name: "Backlog",
+            id: backlogColumnReservedId,
+            canBeModified: false,
+        },
+        ...props.columnOptions,
+    ];
     const indentedActions: IIndentedAction[] = [
         {
             header: "Quick Actions",
@@ -286,7 +325,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         {
             header: "Move To",
             informationForMenuItems:
-                props.columnOptions
+                columnsWithBacklogColumn
                     .filter((column) => {
                         const isUncategorizedColumn =
                             column.id === uncategorizedColumnReservedId;
@@ -298,6 +337,12 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 
                         if (isDoneColumn && !canMarkTicketAsDone) return false;
 
+                        const isBacklogColumn =
+                            column.id === backlogColumnReservedId;
+                        const canMoveTicketToBacklog = !!props.onMoveTicketToBacklog;
+                        if (isBacklogColumn && !canMoveTicketToBacklog)
+                            return false;
+
                         const isInCurrentColumn =
                             props.ticketType === TicketType.InProgress &&
                             column.id === props.ticket.columnId;
@@ -307,11 +352,16 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                     .map((column) => {
                         const isDoneColumn = column.id === doneColumnReservedId;
 
+                        const isBacklogColumn =
+                            column.id === backlogColumnReservedId;
+
                         const ticketIsInDoneOrBacklogState =
                             props.ticketType !== TicketType.InProgress;
 
                         const onClick = isDoneColumn
                             ? moveTicketToDoneColumn
+                            : isBacklogColumn
+                            ? moveTicketToBacklog
                             : ticketIsInDoneOrBacklogState
                             ? moveNonInProgressTicketToInProgress(column)
                             : moveTicketToNewColumn(column);

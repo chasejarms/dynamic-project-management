@@ -65,6 +65,12 @@ export interface ITicketsApi {
         ticketId: string,
         columnId: string
     ): Promise<void>;
+
+    moveNonBacklogTicketToBacklog(
+        companyId: string,
+        boardId: string,
+        ticketId: string
+    ): Promise<void>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -260,6 +266,24 @@ export class TicketsApi implements ITicketsApi {
                     boardId,
                     ticketId,
                     columnId,
+                },
+            }
+        );
+    }
+
+    public async moveNonBacklogTicketToBacklog(
+        companyId: string,
+        boardId: string,
+        ticketId: string
+    ): Promise<void> {
+        await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/moveNonBacklogTicketToBacklog`,
+            {},
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketId,
                 },
             }
         );

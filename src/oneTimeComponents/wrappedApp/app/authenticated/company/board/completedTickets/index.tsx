@@ -134,6 +134,9 @@ export function CompletedTickets() {
                                 onUpdateTicketColumn={() => {
                                     onDeleteTicket("", ticket.itemId);
                                 }}
+                                onMoveTicketToBacklog={() => {
+                                    onDeleteTicket("", ticket.itemId);
+                                }}
                             />
                         );
                     })}
