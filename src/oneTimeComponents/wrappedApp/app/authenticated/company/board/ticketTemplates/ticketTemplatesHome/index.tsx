@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
 import { BoardContainer } from "../../../../../../../../components/boardContainer";
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export function TicketTemplatesHome() {
+    const history = useHistory();
     const classes = createClasses();
     const materialClasses = useStyles();
     const columns = ["Template Name", "Template Description", ""];
@@ -165,6 +167,12 @@ export function TicketTemplatesHome() {
         };
     }, [deletingTicketTemplateData, companyId, boardId]);
 
+    function navigateToCreateTicketTemplatePage() {
+        history.push(
+            `/app/company/${companyId}/board/${boardId}/ticket-templates/create-ticket-template`
+        );
+    }
+
     return (
         <BoardContainer>
             <div css={classes.container}>
@@ -185,7 +193,7 @@ export function TicketTemplatesHome() {
                                 </Typography>
                                 <WrappedButton
                                     color="primary"
-                                    onClick={showCreateDialog}
+                                    onClick={navigateToCreateTicketTemplatePage}
                                 >
                                     Add Ticket Template
                                 </WrappedButton>

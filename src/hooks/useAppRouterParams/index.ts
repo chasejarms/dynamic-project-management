@@ -8,6 +8,7 @@ export function useAppRouterParams() {
     let companyId = "";
     let boardId = "";
     let ticketId = "";
+    let ticketTemplateId = "";
 
     routeSplitBySlashes.forEach((routeFragment, index) => {
         const nextRouteFragment = routeSplitBySlashes[index + 1];
@@ -17,6 +18,8 @@ export function useAppRouterParams() {
             boardId = nextRouteFragment;
         } else if (routeFragment === "ticket") {
             ticketId = nextRouteFragment;
+        } else if (routeFragment === "ticket-templates") {
+            ticketTemplateId = nextRouteFragment;
         }
     });
 
@@ -24,5 +27,6 @@ export function useAppRouterParams() {
         companyId,
         boardId,
         ticketId,
+        ticketTemplateId,
     };
 }

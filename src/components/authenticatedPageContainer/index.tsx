@@ -50,7 +50,12 @@ export function AuthenticatedPageContainer(
     const history = useHistory();
     const location = useLocation();
 
-    const { companyId, boardId, ticketId } = useAppRouterParams();
+    const {
+        companyId,
+        boardId,
+        ticketId,
+        ticketTemplateId,
+    } = useAppRouterParams();
 
     function navigateToRoute(route: string) {
         return () => {
@@ -92,6 +97,13 @@ export function AuthenticatedPageContainer(
             breadcrumbs.push({
                 text: "Ticket",
                 route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
+            });
+        }
+
+        if (!!ticketTemplateId) {
+            breadcrumbs.push({
+                text: "Ticket Templates",
+                route: `/app/company/${companyId}/board/${boardId}/ticket-templates`,
             });
         }
 
