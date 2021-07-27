@@ -20,6 +20,12 @@ export interface ITicketTemplatesApi {
         boardId: string,
         ticketTemplateRequest: ITicketTemplateCreateRequest
     ): Promise<ITicketTemplate>;
+
+    getTicketTemplateForBoard(
+        companyId: string,
+        boardId: string,
+        ticketTemplateId: string
+    ): Promise<ITicketTemplate>;
 }
 
 export class TicketTemplatesApi implements ITicketTemplatesApi {
@@ -80,5 +86,24 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         return (axiosResponse.data as {
             ticketTemplate: ITicketTemplate;
         }).ticketTemplate;
+    }
+
+    public async getTicketTemplateForBoard(
+        companyId: string,
+        boardId: string,
+        ticketTemplateId: string
+    ): Promise<ITicketTemplate> {
+        const axiosResponse = await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/getTicketTemplateForBoard`,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketTemplateId,
+                },
+            }
+        );
+
+        return axiosResponse.data as ITicketTemplate;
     }
 }
