@@ -9,7 +9,10 @@ import {
     IAugmentedUITicket,
     TicketForBoard,
 } from "../../../../../../../components/ticketForBoard";
-import { uncategorizedColumnReservedId } from "../../../../../../../constants/reservedColumnIds";
+import {
+    doneColumnReservedId,
+    uncategorizedColumnReservedId,
+} from "../../../../../../../constants/reservedColumnIds";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { IColumn } from "../../../../../../../models/column";
 import { ITag } from "../../../../../../../models/tag";
@@ -186,12 +189,17 @@ export function BoardHome() {
                 <div css={classes.boardContainer}>
                     <div css={classes.columnsContainer}>
                         {columns.map((column) => {
+                            const isDoneColumn =
+                                column.id === doneColumnReservedId;
                             const isUncategorizedSection =
                                 column.id === uncategorizedColumnReservedId;
                             const hasNoTickets =
                                 sortedAndMappedTickets[column.id].tickets
                                     .length === 0;
-                            if (isUncategorizedSection && hasNoTickets) {
+                            if (
+                                isDoneColumn ||
+                                (isUncategorizedSection && hasNoTickets)
+                            ) {
                                 return null;
                             }
 
@@ -209,11 +217,13 @@ export function BoardHome() {
                                                 key={ticket.itemId}
                                                 ticket={ticket}
                                                 isFirstTicket={isFirstCard}
-                                                adjustColumnOptions={{
-                                                    columnOptions: columns,
-                                                    onUpdateTicketColumn,
-                                                    onMarkTicketAsDone,
-                                                }}
+                                                columnOptions={columns}
+                                                onUpdateTicketColumn={
+                                                    onUpdateTicketColumn
+                                                }
+                                                onMarkTicketAsDone={
+                                                    onMarkTicketAsDone
+                                                }
                                                 onDeleteTicket={onDeleteTicket}
                                                 ticketType={
                                                     TicketType.InProgress

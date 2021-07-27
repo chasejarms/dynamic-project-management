@@ -92,14 +92,12 @@ export function BacklogTickets() {
                                     ticket={augmentedTicket}
                                     onDeleteTicket={onDeleteTicket}
                                     ticketType={TicketType.Backlog}
-                                    adjustColumnOptions={{
-                                        columnOptions: columns,
-                                        onMarkTicketAsDone: () => {
-                                            onDeleteTicket("", ticket.itemId);
-                                        },
-                                        onUpdateTicketColumn: () => {
-                                            onDeleteTicket("", ticket.itemId);
-                                        },
+                                    columnOptions={columns}
+                                    onMarkTicketAsDone={() => {
+                                        onDeleteTicket("", ticket.itemId);
+                                    }}
+                                    onUpdateTicketColumn={() => {
+                                        onDeleteTicket("", ticket.itemId);
                                     }}
                                 />
                             );

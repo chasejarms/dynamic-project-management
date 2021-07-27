@@ -6,6 +6,7 @@ import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
+import { IColumn } from "../../../../../../../models/column";
 import { ITicket } from "../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 
@@ -21,6 +22,27 @@ export function CompletedTickets() {
         undefined | string
     >();
     const [noMoreTicketsToLoad, setNoMoreTicketsToLoad] = useState(false);
+
+    const [isLoadingColumns, setIsLoadingColumns] = useState(true);
+    const [columns, setColumns] = useState<IColumn[]>([]);
+    useEffect(() => {
+        let didCancel = false;
+
+        Api.columns
+            .getColumns(companyId, boardId)
+            .then((columnsFromDatabase) => {
+                if (didCancel) return;
+                setColumns(columnsFromDatabase);
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsLoadingColumns(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, []);
 
     const [tickets, setTickets] = useState<ITicket[]>([]);
     useEffect(() => {
@@ -82,7 +104,9 @@ export function CompletedTickets() {
             <div css={classes.pageContainer}>
                 <TicketContainer
                     title="Completed Tickets"
-                    showCenterSpinner={isLoadingTickets && isFirstLoad}
+                    showCenterSpinner={
+                        isLoadingColumns || (isLoadingTickets && isFirstLoad)
+                    }
                     bottomLoadingSpinnerProps={
                         noMoreTicketsToLoad
                             ? undefined
@@ -106,6 +130,10 @@ export function CompletedTickets() {
                                 onDeleteTicket={onDeleteTicket}
                                 showCompletedDate
                                 ticketType={TicketType.Done}
+                                columnOptions={columns}
+                                onUpdateTicketColumn={() => {
+                                    onDeleteTicket("", ticket.itemId);
+                                }}
                             />
                         );
                     })}

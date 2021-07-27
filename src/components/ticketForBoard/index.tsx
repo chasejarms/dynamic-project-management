@@ -16,7 +16,10 @@ import { Api } from "../../api";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 import { ConfirmDialog } from "../confirmDialog";
 import { TicketType } from "../../models/ticket/ticketType";
-import { doneColumnReservedId } from "../../constants/reservedColumnIds";
+import {
+    doneColumnReservedId,
+    uncategorizedColumnReservedId,
+} from "../../constants/reservedColumnIds";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
@@ -29,14 +32,12 @@ import { TagChip } from "../tagChip";
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
     isFirstTicket: boolean;
-    adjustColumnOptions?: {
-        columnOptions: IColumn[];
-        onMarkTicketAsDone?: (columnId: string, itemId: string) => void;
-        onUpdateTicketColumn: (
-            previousColumnId: string,
-            updatedTicket: IAugmentedUITicket
-        ) => void;
-    };
+    columnOptions: IColumn[];
+    onUpdateTicketColumn: (
+        previousColumnId: string,
+        updatedTicket: IAugmentedUITicket
+    ) => void;
+    onMarkTicketAsDone?: (columnId: string, itemId: string) => void;
     onDeleteTicket: (columnId: string, itemId: string) => void;
     showCompletedDate?: boolean;
     ticketType: TicketType;
@@ -88,7 +89,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             )
             .then(() => {
                 if (didCancel) return;
-                props.adjustColumnOptions?.onUpdateTicketColumn(
+                props.onUpdateTicketColumn(
                     "",
                     nonInProgressTicketWithUpdatedColumn
                 );
@@ -139,8 +140,8 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             )
             .then(() => {
                 if (didCancel) return;
-                if (props.adjustColumnOptions?.onMarkTicketAsDone) {
-                    props.adjustColumnOptions?.onMarkTicketAsDone(
+                if (props.onMarkTicketAsDone) {
+                    props.onMarkTicketAsDone(
                         props.ticket.columnId!,
                         props.ticket.itemId
                     );
@@ -181,7 +182,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             )
             .then(() => {
                 if (didCancel) return;
-                props.adjustColumnOptions?.onUpdateTicketColumn(
+                props.onUpdateTicketColumn(
                     props.ticket.columnId!,
                     ticketToUpdate
                 );
@@ -283,21 +284,25 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             ],
         },
         {
-            header: "Move To Column",
+            header: "Move To",
             informationForMenuItems:
-                props.adjustColumnOptions?.columnOptions
+                props.columnOptions
                     .filter((column) => {
+                        const isUncategorizedColumn =
+                            column.id === uncategorizedColumnReservedId;
+
+                        if (isUncategorizedColumn) return false;
+
                         const isDoneColumn = column.id === doneColumnReservedId;
-                        const canMarkTicketAsDone = !!props.adjustColumnOptions
-                            ?.onMarkTicketAsDone;
+                        const canMarkTicketAsDone = !!props.onMarkTicketAsDone;
+
+                        if (isDoneColumn && !canMarkTicketAsDone) return false;
 
                         const isInCurrentColumn =
+                            props.ticketType === TicketType.InProgress &&
                             column.id === props.ticket.columnId;
 
-                        return (
-                            !(isDoneColumn && !canMarkTicketAsDone) &&
-                            !isInCurrentColumn
-                        );
+                        return !isInCurrentColumn;
                     })
                     .map((column) => {
                         const isDoneColumn = column.id === doneColumnReservedId;
