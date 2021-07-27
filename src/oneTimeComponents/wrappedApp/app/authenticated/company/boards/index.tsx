@@ -40,18 +40,6 @@ export function Boards() {
         };
     }, [companyId]);
 
-    function onDeleteBoard(board: IBoard) {
-        return () => {
-            setBoards((boards) => {
-                return boards.filter((compareBoard) => {
-                    return (
-                        compareBoard.shortenedItemId !== board.shortenedItemId
-                    );
-                });
-            });
-        };
-    }
-
     const [boardToDelete, setBoardToDelete] = useState<IBoard | null>();
     function onCloseConfirmDialog() {
         setBoardToDelete(null);

@@ -1,52 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import {
-    Paper,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TableCell,
-    Toolbar,
-    makeStyles,
-    Theme,
-    Typography,
-    IconButton,
-    CircularProgress,
-} from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Theme, useTheme } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
 import { BoardContainer } from "../../../../../../../../components/boardContainer";
+import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
-import { CreateTicketTemplateDialog } from "../../../../../../../../components/createTicketTemplateDialog";
+import { TicketTemplateForBoard } from "../../../../../../../../components/ticketTemplateForBoard";
 import { WrappedButton } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
-import { composeCSS } from "../../../../../../../../styles/composeCSS";
-
-const useStyles = makeStyles((theme: Theme) => ({
-    toolbarRoot: {
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-    },
-}));
 
 export function TicketTemplatesHome() {
     const history = useHistory();
-    const classes = createClasses();
-    const materialClasses = useStyles();
-    const columns = ["Template Name", "Template Description", ""];
+    const theme = useTheme();
+    const classes = createClasses(theme);
     const [ticketTemplates, setTicketTemplates] = useState<ITicketTemplate[]>(
         []
     );
-
-    function onCreateSuccess(ticketTemplate: ITicketTemplate) {
-        setTicketTemplates((previousTicketTemplates) => {
-            return [...previousTicketTemplates, ticketTemplate];
-        });
-    }
 
     const { boardId, companyId } = useAppRouterParams();
 
@@ -76,15 +48,6 @@ export function TicketTemplatesHome() {
             didCancel = true;
         };
     }, [isLoadingTicketTemplates, companyId, boardId]);
-
-    const hideEditAndDeleteContainer = ticketTemplates.length === 1;
-    const [isShowingCreateDialog, setIsShowingCreateDialog] = useState(false);
-    function showCreateDialog() {
-        setIsShowingCreateDialog(true);
-    }
-    function closeCreateDialog() {
-        setIsShowingCreateDialog(false);
-    }
 
     const [
         deletingTicketTemplateData,
@@ -175,88 +138,38 @@ export function TicketTemplatesHome() {
 
     return (
         <BoardContainer>
-            <div css={classes.container}>
-                {isLoadingTicketTemplates ? (
-                    <div css={classes.centerLoadingSpinner}>
-                        <CircularProgress
+            {isLoadingTicketTemplates ? (
+                <div css={classes.loadingSpinnerContainer}>
+                    <CenterLoadingSpinner size="large" />
+                </div>
+            ) : (
+                <div css={classes.contentContainer}>
+                    <div css={classes.addTicketTemplateButtonContainer}>
+                        <WrappedButton
                             color="primary"
-                            size={24}
-                            thickness={4}
-                        />
+                            onClick={navigateToCreateTicketTemplatePage}
+                        >
+                            Add Ticket Template
+                        </WrappedButton>
                     </div>
-                ) : (
-                    <Paper>
-                        <Toolbar className={materialClasses.toolbarRoot}>
-                            <div css={classes.innerToolbarContainer}>
-                                <Typography variant="h6">
-                                    Ticket Templates
-                                </Typography>
-                                <WrappedButton
-                                    color="primary"
-                                    onClick={navigateToCreateTicketTemplatePage}
-                                >
-                                    Add Ticket Template
-                                </WrappedButton>
-                            </div>
-                        </Toolbar>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => {
-                                        return (
-                                            <TableCell key={column}>
-                                                {column}
-                                            </TableCell>
-                                        );
-                                    })}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {ticketTemplates.map(
-                                    ({
-                                        name,
-                                        description,
-                                        shortenedItemId,
-                                    }) => {
-                                        return (
-                                            <TableRow key={shortenedItemId}>
-                                                <TableCell>{name}</TableCell>
-                                                <TableCell>
-                                                    {description}
-                                                </TableCell>
-                                                <TableCell padding="none">
-                                                    <div
-                                                        css={composeCSS(
-                                                            classes.iconButtonsContainer,
-                                                            hideEditAndDeleteContainer &&
-                                                                classes.hiddenEditAndDeleteContainer
-                                                        )}
-                                                    >
-                                                        <div>
-                                                            <IconButton
-                                                                onClick={onClickDeleteTicketTemplateIcon(
-                                                                    shortenedItemId
-                                                                )}
-                                                            >
-                                                                <Delete />
-                                                            </IconButton>
-                                                        </div>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
+                    <div css={classes.ticketTemplatesContainer}>
+                        {ticketTemplates.map((ticketTemplate) => {
+                            return (
+                                <TicketTemplateForBoard
+                                    key={ticketTemplate.shortenedItemId}
+                                    ticketTemplate={ticketTemplate}
+                                    onClickDeleteTicketTemplate={onClickDeleteTicketTemplateIcon(
+                                        ticketTemplate.shortenedItemId
+                                    )}
+                                    canDeleteTicketTemplate={
+                                        ticketTemplates.length > 1
                                     }
-                                )}
-                            </TableBody>
-                        </Table>
-                    </Paper>
-                )}
-            </div>
-            <CreateTicketTemplateDialog
-                open={isShowingCreateDialog}
-                onClose={closeCreateDialog}
-                onCreateSuccess={onCreateSuccess}
-            />
+                                />
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
             <ConfirmDialog
                 open={confirmDialogIsOpen}
                 onClose={onCloseConfirmDialog}
@@ -272,13 +185,7 @@ export function TicketTemplatesHome() {
     );
 }
 
-const createClasses = () => {
-    const container = css`
-        height: 100%;
-        padding: 32px;
-        width: 100%;
-    `;
-
+const createClasses = (theme: Theme) => {
     const innerToolbarContainer = css`
         display: flex;
         justify-content: space-between;
@@ -290,22 +197,46 @@ const createClasses = () => {
         flex-direction: row;
     `;
 
-    const centerLoadingSpinner = css`
+    const loadingSpinnerContainer = css`
         height: 100%;
+        width: 100%;
         display: flex;
-        justify-content: center;
-        align-items: center;
     `;
 
     const hiddenEditAndDeleteContainer = css`
         visibility: hidden;
     `;
 
+    const ticketTemplatesContainer = css`
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-auto-rows: min-content;
+        grid-gap: ${theme.spacing() * 2}px;
+        padding: ${theme.spacing() * 4}px;
+        width: 100%;
+        padding-top: ${theme.spacing() * 2}px;
+    `;
+
+    const contentContainer = css`
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+    `;
+
+    const addTicketTemplateButtonContainer = css`
+        flex: 0 0 auto;
+        padding-top: 16px;
+        padding-left: 32px;
+    `;
+
     return {
-        container,
+        loadingSpinnerContainer,
         innerToolbarContainer,
         iconButtonsContainer,
-        centerLoadingSpinner,
         hiddenEditAndDeleteContainer,
+        ticketTemplatesContainer,
+        contentContainer,
+        addTicketTemplateButtonContainer,
     };
 };

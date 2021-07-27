@@ -110,6 +110,11 @@ export function AuthenticatedPageContainer(
         return breadcrumbs;
     })();
 
+    const matchingTabValue =
+        props.navItems.find((navItem) => {
+            return navItem.route === location.pathname;
+        })?.route || false;
+
     return (
         <div css={classes.container}>
             <div css={classes.topBarContainer}>
@@ -160,7 +165,7 @@ export function AuthenticatedPageContainer(
             <div>
                 <AppBar position="static">
                     <Tabs
-                        value={location.pathname}
+                        value={matchingTabValue}
                         scrollButtons="auto"
                         variant="scrollable"
                     >
