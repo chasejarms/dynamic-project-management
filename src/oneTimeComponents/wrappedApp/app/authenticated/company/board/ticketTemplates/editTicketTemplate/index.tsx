@@ -14,6 +14,10 @@ import {
     TicketTemplateNameControl,
     ticketTemplateNameUniqueId,
 } from "../../../../../../../../components/ticketTemplateNameControl";
+import {
+    TicketTemplateTitleControl,
+    ticketTemplateTitleControlId,
+} from "../../../../../../../../components/ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
@@ -100,7 +104,7 @@ export function EditTicketTemplate() {
             description:
                 controlInformation[ticketTemplateDescriptionUniqueId].value,
             title: {
-                label: "Title",
+                label: controlInformation[ticketTemplateTitleControlId].value,
             },
             summary: {
                 label: "Summary",
@@ -170,6 +174,13 @@ export function EditTicketTemplate() {
                                 templateDescription={
                                     ticketTemplate!.description
                                 }
+                                onStateChange={onStateChange}
+                                disabled={isUpdatingTicketTemplate}
+                            />
+                        </div>
+                        <div css={classes.columnInputContainer}>
+                            <TicketTemplateTitleControl
+                                title={ticketTemplate!.title.label}
                                 onStateChange={onStateChange}
                                 disabled={isUpdatingTicketTemplate}
                             />
