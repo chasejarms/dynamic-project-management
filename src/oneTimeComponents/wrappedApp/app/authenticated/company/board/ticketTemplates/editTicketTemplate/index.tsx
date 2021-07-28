@@ -3,33 +3,17 @@ import { jsx, css } from "@emotion/react";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
-import { BoardContainer } from "../../../../../../../../components/boardContainer";
-import { BottomPageToolbar } from "../../../../../../../../components/bottomPageToolbar";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import {
-    TicketTemplateDescriptionControl,
-    ticketTemplateDescriptionUniqueId,
-} from "../../../../../../../../components/ticketTemplateDescriptionControl";
-import {
-    TicketTemplateNameControl,
-    ticketTemplateNameUniqueId,
-} from "../../../../../../../../components/ticketTemplateNameControl";
-import {
-    TicketTemplateSummaryControl,
-    ticketTemplateSummaryControlId,
-} from "../../../../../../../../components/ticketTemplateSummaryControl";
-import {
-    TicketTemplateTitleControl,
-    ticketTemplateTitleControlId,
-} from "../../../../../../../../components/ticketTemplateTitleControl";
+import { CreateEditTicketTemplateWrapper } from "../../../../../../../../components/createEditTicketTemplateWrapper";
+import { ticketTemplateDescriptionUniqueId } from "../../../../../../../../components/ticketTemplateDescriptionControl";
+import { ticketTemplateNameUniqueId } from "../../../../../../../../components/ticketTemplateNameControl";
+import { ticketTemplateSummaryControlId } from "../../../../../../../../components/ticketTemplateSummaryControl";
+import { ticketTemplateTitleControlId } from "../../../../../../../../components/ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { ITicketTemplatePutRequest } from "../../../../../../../../models/ticketTemplate/ticketTemplatePutRequest";
 
 export function EditTicketTemplate() {
-    const classes = createClasses();
-
     const { boardId, companyId, ticketTemplateId } = useAppRouterParams();
     const [
         ticketTemplate,
@@ -160,81 +144,12 @@ export function EditTicketTemplate() {
     ];
 
     return (
-        <BoardContainer>
-            {isLoadingTicketTemplate ? (
-                <CenterLoadingSpinner size="large" />
-            ) : (
-                <div css={classes.container}>
-                    <div css={classes.innerContentContainer}>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateNameControl
-                                templateName={ticketTemplate!.name}
-                                onStateChange={onStateChange}
-                                disabled={isUpdatingTicketTemplate}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateDescriptionControl
-                                templateDescription={
-                                    ticketTemplate!.description
-                                }
-                                onStateChange={onStateChange}
-                                disabled={isUpdatingTicketTemplate}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateTitleControl
-                                title={ticketTemplate!.title.label}
-                                onStateChange={onStateChange}
-                                disabled={isUpdatingTicketTemplate}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateSummaryControl
-                                summary={ticketTemplate!.summary.label}
-                                onStateChange={onStateChange}
-                                disabled={isUpdatingTicketTemplate}
-                            />
-                        </div>
-                    </div>
-                    <div css={classes.bottomToolbarContainer}>
-                        <BottomPageToolbar
-                            wrappedButtonProps={wrappedButtonProps}
-                        />
-                    </div>
-                </div>
-            )}
-        </BoardContainer>
+        <CreateEditTicketTemplateWrapper
+            ticketTemplate={ticketTemplate}
+            wrappedButtonProps={wrappedButtonProps}
+            isLoading={isLoadingTicketTemplate}
+            disabled={isUpdatingTicketTemplate}
+            onStateChange={onStateChange}
+        />
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    `;
-
-    const innerContentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    `;
-
-    const bottomToolbarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
-    `;
-
-    return {
-        container,
-        bottomToolbarContainer,
-        innerContentContainer,
-        columnInputContainer,
-    };
-};

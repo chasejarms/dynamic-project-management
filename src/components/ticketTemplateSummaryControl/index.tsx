@@ -56,7 +56,7 @@ export function TicketTemplateSummaryControl(
     return (
         <WrappedTextField
             value={summaryControl.value}
-            label="Template Name"
+            label="Ticket Summary Label"
             onChange={summaryControl.onChange}
             error={showNameError ? summaryControl.errorMessage : ""}
             disabled={props.disabled}
