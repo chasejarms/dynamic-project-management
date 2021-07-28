@@ -115,12 +115,17 @@ export function EditTicketTemplate() {
             .updateTicketTemplateForBoard(
                 companyId,
                 boardId,
-                ticketTemplate!.shortenedItemId,
+                ticketTemplateId,
                 ticketTemplateRequest
             )
-            .then((updatedTicketFromDatabase) => {
+            .then(() => {
                 if (didCancel) return;
-                setTicketTemplate(updatedTicketFromDatabase);
+                setTicketTemplate((previousTicketTemplate) => {
+                    return {
+                        ...(previousTicketTemplate as ITicketTemplate),
+                        ...ticketTemplateRequest,
+                    };
+                });
             })
             .catch(() => {
                 if (didCancel) return;

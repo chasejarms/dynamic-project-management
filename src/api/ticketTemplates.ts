@@ -32,7 +32,7 @@ export interface ITicketTemplatesApi {
         boardId: string,
         ticketTemplateId: string,
         ticketTemplateRequest: ITicketTemplatePutRequest
-    ): Promise<ITicketTemplate>;
+    ): Promise<void>;
 }
 
 export class TicketTemplatesApi implements ITicketTemplatesApi {
@@ -119,8 +119,8 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
         boardId: string,
         ticketTemplateId: string,
         ticketTemplateRequest: ITicketTemplatePutRequest
-    ): Promise<ITicketTemplate> {
-        const axiosResponse = await Axios.post(
+    ): Promise<void> {
+        await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateTicketTemplateForBoard`,
             {
                 ticketTemplate: ticketTemplateRequest,
@@ -133,7 +133,5 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
                 },
             }
         );
-
-        return axiosResponse.data as ITicketTemplate;
     }
 }
