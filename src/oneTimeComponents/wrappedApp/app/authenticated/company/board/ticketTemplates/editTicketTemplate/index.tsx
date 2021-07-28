@@ -15,6 +15,10 @@ import {
     ticketTemplateNameUniqueId,
 } from "../../../../../../../../components/ticketTemplateNameControl";
 import {
+    TicketTemplateSummaryControl,
+    ticketTemplateSummaryControlId,
+} from "../../../../../../../../components/ticketTemplateSummaryControl";
+import {
     TicketTemplateTitleControl,
     ticketTemplateTitleControlId,
 } from "../../../../../../../../components/ticketTemplateTitleControl";
@@ -107,7 +111,7 @@ export function EditTicketTemplate() {
                 label: controlInformation[ticketTemplateTitleControlId].value,
             },
             summary: {
-                label: "Summary",
+                label: controlInformation[ticketTemplateSummaryControlId].value,
                 isRequired: true,
             },
             sections: [],
@@ -181,6 +185,13 @@ export function EditTicketTemplate() {
                         <div css={classes.columnInputContainer}>
                             <TicketTemplateTitleControl
                                 title={ticketTemplate!.title.label}
+                                onStateChange={onStateChange}
+                                disabled={isUpdatingTicketTemplate}
+                            />
+                        </div>
+                        <div css={classes.columnInputContainer}>
+                            <TicketTemplateSummaryControl
+                                summary={ticketTemplate!.summary.label}
                                 onStateChange={onStateChange}
                                 disabled={isUpdatingTicketTemplate}
                             />
