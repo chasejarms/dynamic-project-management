@@ -1,6 +1,6 @@
 import { ITicketTemplate } from "../models/ticketTemplate";
 import { environmentVariables } from "../environmentVariables";
-import { ITicketTemplateCreateRequest } from "../models/ticketTemplate/ticketTemplateCreateRequest";
+import { ITicketTemplatePutRequest } from "../models/ticketTemplate/ticketTemplatePutRequest";
 import Axios from "axios";
 
 export interface ITicketTemplatesApi {
@@ -18,13 +18,20 @@ export interface ITicketTemplatesApi {
     createTicketTemplateForBoard(
         companyId: string,
         boardId: string,
-        ticketTemplateRequest: ITicketTemplateCreateRequest
+        ticketTemplateRequest: ITicketTemplatePutRequest
     ): Promise<ITicketTemplate>;
 
     getTicketTemplateForBoard(
         companyId: string,
         boardId: string,
         ticketTemplateId: string
+    ): Promise<ITicketTemplate>;
+
+    updateTicketTemplateForBoard(
+        companyId: string,
+        boardId: string,
+        ticketTemplateId: string,
+        ticketTemplateRequest: ITicketTemplatePutRequest
     ): Promise<ITicketTemplate>;
 }
 
@@ -68,12 +75,12 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
     public async createTicketTemplateForBoard(
         companyId: string,
         boardId: string,
-        ticketTemplateCreateRequest: ITicketTemplateCreateRequest
+        ticketTemplateRequest: ITicketTemplatePutRequest
     ): Promise<ITicketTemplate> {
         const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createTicketTemplateForBoard`,
             {
-                ticketTemplate: ticketTemplateCreateRequest,
+                ticketTemplate: ticketTemplateRequest,
             },
             {
                 params: {
@@ -95,6 +102,29 @@ export class TicketTemplatesApi implements ITicketTemplatesApi {
     ): Promise<ITicketTemplate> {
         const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketTemplateForBoard`,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketTemplateId,
+                },
+            }
+        );
+
+        return axiosResponse.data as ITicketTemplate;
+    }
+
+    public async updateTicketTemplateForBoard(
+        companyId: string,
+        boardId: string,
+        ticketTemplateId: string,
+        ticketTemplateRequest: ITicketTemplatePutRequest
+    ): Promise<ITicketTemplate> {
+        const axiosResponse = await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/updateTicketTemplateForBoard`,
+            {
+                ticketTemplate: ticketTemplateRequest,
+            },
             {
                 params: {
                     companyId,

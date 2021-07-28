@@ -1,6 +1,6 @@
 import { Section } from "./section";
 
-export interface ITicketTemplateCreateRequest {
+export interface ITicketTemplatePutRequest {
     name: string;
     description: string;
     title: {

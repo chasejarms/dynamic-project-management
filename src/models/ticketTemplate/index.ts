@@ -1,6 +1,6 @@
-import { ITicketTemplateCreateRequest } from "./ticketTemplateCreateRequest";
+import { ITicketTemplatePutRequest } from "./ticketTemplatePutRequest";
 
-export interface ITicketTemplate extends ITicketTemplateCreateRequest {
+export interface ITicketTemplate extends ITicketTemplatePutRequest {
     itemId: string;
     belongsTo: string;
     shortenedItemId: string;
