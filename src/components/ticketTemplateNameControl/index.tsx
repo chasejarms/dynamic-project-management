@@ -14,6 +14,7 @@ export interface ITicketTemplateNameControlProps {
         error: string,
         isDirty: boolean
     ) => void;
+    refreshToken: {};
 }
 
 export const ticketTemplateNameUniqueId = "ticket-template-name";
@@ -36,7 +37,7 @@ export function TicketTemplateNameControl(
 
     useEffect(() => {
         nameControl.resetControlState(props.templateName);
-    }, [props.templateName]);
+    }, [props.refreshToken, props.templateName]);
 
     useEffect(() => {
         props.onStateChange(

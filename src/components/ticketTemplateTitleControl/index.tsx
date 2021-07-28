@@ -14,6 +14,7 @@ export interface ITicketTemplateTitleControlProps {
         error: string,
         isDirty: boolean
     ) => void;
+    refreshToken: {};
 }
 
 export const ticketTemplateTitleControlId = "ticket-template-title";
@@ -36,7 +37,7 @@ export function TicketTemplateTitleControl(
 
     useEffect(() => {
         titleControl.resetControlState(props.title);
-    }, [props.title]);
+    }, [props.title, props.refreshToken]);
 
     useEffect(() => {
         props.onStateChange(

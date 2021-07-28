@@ -1,54 +1,65 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { cloneDeep } from "lodash";
+import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
-import { ControlValidator } from "../../../../../../../../classes/ControlValidator";
-import { BoardContainer } from "../../../../../../../../components/boardContainer";
-import { BottomPageToolbar } from "../../../../../../../../components/bottomPageToolbar";
+import { CreateEditTicketTemplateWrapper } from "../../../../../../../../components/createEditTicketTemplateWrapper";
+import { ticketTemplateDescriptionUniqueId } from "../../../../../../../../components/ticketTemplateDescriptionControl";
+import { ticketTemplateNameUniqueId } from "../../../../../../../../components/ticketTemplateNameControl";
+import { ticketTemplateSummaryControlId } from "../../../../../../../../components/ticketTemplateSummaryControl";
+import { ticketTemplateTitleControlId } from "../../../../../../../../components/ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
-import { useControl } from "../../../../../../../../hooks/useControl";
-import { controlsAreValid } from "../../../../../../../../utils/controlsAreValid";
+import { ITicketTemplatePutRequest } from "../../../../../../../../models/ticketTemplate/ticketTemplatePutRequest";
+
+const defaultTicketTemplate: ITicketTemplatePutRequest = {
+    name: "",
+    description: "",
+    title: {
+        label: "Title",
+    },
+    summary: {
+        isRequired: true,
+        label: "Summary",
+    },
+    sections: [],
+};
 
 export function CreateTicketTemplate() {
-    const classes = createClasses();
-
     const { boardId, companyId } = useAppRouterParams();
 
-    const nameControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (name: string) => {
-            return ControlValidator.string()
-                .required("This field is required")
-                .validate(name);
-        },
-    });
-    const showNameError = !nameControl.isValid && nameControl.isTouched;
+    const [controlInformation, setControlInformation] = useState<{
+        [id: string]: {
+            value: any;
+            errorMessage: string;
+            isDirty: boolean;
+        };
+    }>({});
 
-    const descriptionControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (description: string) => {
-            return ControlValidator.string()
-                .required("This field is required")
-                .validate(description);
-        },
-    });
-    const showDescriptionError =
-        !descriptionControl.isValid && descriptionControl.isTouched;
+    function onStateChange(
+        uniqueId: string,
+        value: string,
+        errorMessage: string,
+        isDirty: boolean
+    ) {
+        setControlInformation((previousControlInformation) => {
+            const clonedControlInformation = cloneDeep(
+                previousControlInformation
+            );
+            clonedControlInformation[uniqueId] = {
+                value,
+                errorMessage,
+                isDirty,
+            };
 
-    const formIsValid = controlsAreValid(nameControl, descriptionControl);
+            return clonedControlInformation;
+        });
+    }
+    const someControlsAreInvalid = Object.values(controlInformation).some(
+        ({ errorMessage }) => !!errorMessage
+    );
 
+    const [refreshToken, setRefreshToken] = useState({});
     const [isCreatingTicketTemplate, setIsCreatingTicketTemplate] = useState(
         false
     );
@@ -57,22 +68,29 @@ export function CreateTicketTemplate() {
 
         let didCancel = false;
 
+        const ticketTemplateRequest: ITicketTemplatePutRequest = {
+            name: controlInformation[ticketTemplateNameUniqueId].value,
+            description:
+                controlInformation[ticketTemplateDescriptionUniqueId].value,
+            title: {
+                label: controlInformation[ticketTemplateTitleControlId].value,
+            },
+            summary: {
+                label: controlInformation[ticketTemplateSummaryControlId].value,
+                isRequired: true,
+            },
+            sections: [],
+        };
+
         Api.ticketTemplates
-            .createTicketTemplateForBoard(companyId, boardId, {
-                name: nameControl.value,
-                description: descriptionControl.value,
-                title: {
-                    label: "Title",
-                },
-                summary: {
-                    label: "Summary",
-                    isRequired: true,
-                },
-                sections: [],
-            })
+            .createTicketTemplateForBoard(
+                companyId,
+                boardId,
+                ticketTemplateRequest
+            )
             .then((ticketTemplate) => {
                 if (didCancel) return;
-                // show a snackbar and clear the template
+                setRefreshToken({});
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -94,76 +112,20 @@ export function CreateTicketTemplate() {
                 setIsCreatingTicketTemplate(true);
             },
             color: "primary",
-            disabled: isCreatingTicketTemplate || !formIsValid,
+            disabled: isCreatingTicketTemplate || someControlsAreInvalid,
             showSpinner: isCreatingTicketTemplate,
             children: "Create Ticket Template",
         },
     ];
 
     return (
-        <BoardContainer>
-            <div css={classes.container}>
-                <div css={classes.innerContentContainer}>
-                    <div css={classes.columnInputContainer}>
-                        <WrappedTextField
-                            value={nameControl.value}
-                            label="Template Name"
-                            onChange={nameControl.onChange}
-                            error={
-                                showNameError ? nameControl.errorMessage : ""
-                            }
-                        />
-                    </div>
-                    <div css={classes.columnInputContainer}>
-                        <WrappedTextField
-                            value={descriptionControl.value}
-                            label="Template Description"
-                            onChange={descriptionControl.onChange}
-                            error={
-                                showDescriptionError
-                                    ? descriptionControl.errorMessage
-                                    : ""
-                            }
-                        />
-                    </div>
-                </div>
-                <div css={classes.bottomToolbarContainer}>
-                    <BottomPageToolbar
-                        wrappedButtonProps={wrappedButtonProps}
-                    />
-                </div>
-            </div>
-        </BoardContainer>
+        <CreateEditTicketTemplateWrapper
+            ticketTemplate={defaultTicketTemplate}
+            wrappedButtonProps={wrappedButtonProps}
+            isLoading={false}
+            disabled={isCreatingTicketTemplate}
+            onStateChange={onStateChange}
+            refreshToken={refreshToken}
+        />
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    `;
-
-    const innerContentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    `;
-
-    const bottomToolbarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
-    `;
-
-    return {
-        container,
-        bottomToolbarContainer,
-        innerContentContainer,
-        columnInputContainer,
-    };
-};

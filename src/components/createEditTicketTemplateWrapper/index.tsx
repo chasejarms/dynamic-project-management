@@ -23,6 +23,7 @@ export interface ICreateEditTicketTemplateWrapperProps {
         error: string,
         isDirty: boolean
     ) => void;
+    refreshToken: {};
 }
 
 export function CreateEditTicketTemplateWrapper(
@@ -48,6 +49,7 @@ export function CreateEditTicketTemplateWrapper(
                                 templateName={ticketTemplate.name}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
+                                refreshToken={props.refreshToken}
                             />
                         </div>
                         <div css={classes.columnInputContainer}>
@@ -55,6 +57,7 @@ export function CreateEditTicketTemplateWrapper(
                                 templateDescription={ticketTemplate.description}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
+                                refreshToken={props.refreshToken}
                             />
                         </div>
                         <div css={classes.columnInputContainer}>
@@ -62,6 +65,7 @@ export function CreateEditTicketTemplateWrapper(
                                 title={ticketTemplate.title.label}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
+                                refreshToken={props.refreshToken}
                             />
                         </div>
                         <div css={classes.columnInputContainer}>
@@ -69,6 +73,7 @@ export function CreateEditTicketTemplateWrapper(
                                 summary={ticketTemplate.summary.label}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
+                                refreshToken={props.refreshToken}
                             />
                         </div>
                     </div>

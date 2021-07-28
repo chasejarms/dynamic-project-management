@@ -16,9 +16,15 @@ import { ITicketTemplatePutRequest } from "../../../../../../../../models/ticket
 export function EditTicketTemplate() {
     const { boardId, companyId, ticketTemplateId } = useAppRouterParams();
     const [
-        ticketTemplate,
-        setTicketTemplate,
-    ] = useState<ITicketTemplate | null>(null);
+        { ticketTemplate, refreshToken },
+        setTicketTemplateAndRefreshToken,
+    ] = useState<{
+        ticketTemplate: ITicketTemplate | null;
+        refreshToken: {};
+    }>({
+        ticketTemplate: null,
+        refreshToken: {},
+    });
 
     const [controlInformation, setControlInformation] = useState<{
         [id: string]: {
@@ -63,7 +69,10 @@ export function EditTicketTemplate() {
             .getTicketTemplateForBoard(companyId, boardId, ticketTemplateId)
             .then((ticketTemplateFromDatabase) => {
                 if (didCancel) return;
-                setTicketTemplate(ticketTemplateFromDatabase);
+                setTicketTemplateAndRefreshToken({
+                    ticketTemplate: ticketTemplateFromDatabase,
+                    refreshToken: {},
+                });
             })
             .catch(() => {
                 if (didCancel) return;
@@ -112,12 +121,17 @@ export function EditTicketTemplate() {
             )
             .then(() => {
                 if (didCancel) return;
-                setTicketTemplate((previousTicketTemplate) => {
-                    return {
-                        ...(previousTicketTemplate as ITicketTemplate),
-                        ...ticketTemplateRequest,
-                    };
-                });
+                setTicketTemplateAndRefreshToken(
+                    (previousTicketTemplateAndRefreshToken) => {
+                        return {
+                            ticketTemplate: {
+                                ...previousTicketTemplateAndRefreshToken.ticketTemplate!,
+                                ...ticketTemplateRequest,
+                            },
+                            refreshToken: {},
+                        };
+                    }
+                );
             })
             .catch(() => {
                 if (didCancel) return;
@@ -150,6 +164,7 @@ export function EditTicketTemplate() {
             isLoading={isLoadingTicketTemplate}
             disabled={isUpdatingTicketTemplate}
             onStateChange={onStateChange}
+            refreshToken={refreshToken}
         />
     );
 }

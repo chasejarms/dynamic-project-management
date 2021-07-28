@@ -14,6 +14,7 @@ export interface ITicketTemplateDescriptionControl {
         error: string,
         isDirty: boolean
     ) => void;
+    refreshToken: {};
 }
 
 export const ticketTemplateDescriptionUniqueId = "ticket-template-description";
@@ -36,7 +37,7 @@ export function TicketTemplateDescriptionControl(
 
     useEffect(() => {
         descriptionControl.resetControlState(props.templateDescription);
-    }, [props.templateDescription]);
+    }, [props.templateDescription, props.refreshToken]);
 
     useEffect(() => {
         props.onStateChange(

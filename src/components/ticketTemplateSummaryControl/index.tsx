@@ -14,6 +14,7 @@ export interface ITicketTemplateSummaryControl {
         error: string,
         isDirty: boolean
     ) => void;
+    refreshToken: {};
 }
 
 export const ticketTemplateSummaryControlId = "ticket-template-summary";
@@ -36,7 +37,7 @@ export function TicketTemplateSummaryControl(
 
     useEffect(() => {
         summaryControl.resetControlState(props.summary);
-    }, [props.summary]);
+    }, [props.summary, props.refreshToken]);
 
     useEffect(() => {
         props.onStateChange(
