@@ -7,6 +7,7 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
 
 export interface ITicketTemplateSummaryControl {
     summary: string;
@@ -17,7 +18,7 @@ export interface ITicketTemplateSummaryControl {
 }
 
 export const ticketTemplateSummaryControlId = "ticket-template-summary";
-export function TicketTemplateSummaryControl(
+function NonMemoizedTicketTemplateSummaryControl(
     props: ITicketTemplateSummaryControl
 ) {
     const summaryControl = useControl({
@@ -92,3 +93,7 @@ const createClasses = () => {
         actionButtonContainer,
     };
 };
+
+export const TicketTemplateSummaryControl = React.memo(
+    NonMemoizedTicketTemplateSummaryControl
+);

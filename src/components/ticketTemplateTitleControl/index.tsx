@@ -4,21 +4,18 @@ import { ChangeEvent, useEffect } from "react";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
+import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 
 export interface ITicketTemplateTitleControlProps {
     title: string;
     disabled: boolean;
-    onStateChange: (
-        uniqueId: string,
-        value: string,
-        error: string,
-        isDirty: boolean
-    ) => void;
+    onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
 }
 
 export const ticketTemplateTitleControlId = "ticket-template-title";
-export function TicketTemplateTitleControl(
+function NonMemoizedTicketTemplateTitleControl(
     props: ITicketTemplateTitleControlProps
 ) {
     const titleControl = useControl({
@@ -40,12 +37,12 @@ export function TicketTemplateTitleControl(
     }, [props.title, props.refreshToken]);
 
     useEffect(() => {
-        props.onStateChange(
-            ticketTemplateTitleControlId,
-            titleControl.value,
-            titleControl.errorMessage,
-            titleControl.isDirty
-        );
+        props.onStateChange({
+            uniqueId: ticketTemplateTitleControlId,
+            value: titleControl.value,
+            error: titleControl.errorMessage,
+            isDirty: titleControl.isDirty,
+        });
     }, [titleControl.value, titleControl.errorMessage, titleControl.isDirty]);
 
     const showNameError = !titleControl.isValid && titleControl.isTouched;
@@ -60,3 +57,7 @@ export function TicketTemplateTitleControl(
         />
     );
 }
+
+export const TicketTemplateTitleControl = React.memo(
+    NonMemoizedTicketTemplateTitleControl
+);

@@ -5,6 +5,7 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
 
 export interface ITicketTemplateTextControlProps {
     label: string;
@@ -14,7 +15,7 @@ export interface ITicketTemplateTextControlProps {
     refreshToken: {};
 }
 
-export function TicketTemplateTextControl(
+function NonMemoizedTicketTemplateTextControl(
     props: ITicketTemplateTextControlProps
 ) {
     const textLabelControl = useControl({
@@ -54,10 +55,14 @@ export function TicketTemplateTextControl(
     return (
         <WrappedTextField
             value={textLabelControl.value}
-            label="Template Name"
+            label="Text Field Label"
             onChange={textLabelControl.onChange}
             error={showNameError ? textLabelControl.errorMessage : ""}
             disabled={props.disabled}
         />
     );
 }
+
+export const TicketTemplateTextControl = React.memo(
+    NonMemoizedTicketTemplateTextControl
+);

@@ -1,6 +1,6 @@
 export interface IGhostControlParams {
     uniqueId: string;
-    value: string;
+    value: any;
     error: string;
     isDirty: boolean;
 }

@@ -4,21 +4,18 @@ import { ChangeEvent, useEffect } from "react";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
+import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 
 export interface ITicketTemplateDescriptionControl {
     templateDescription: string;
     disabled: boolean;
-    onStateChange: (
-        uniqueId: string,
-        value: string,
-        error: string,
-        isDirty: boolean
-    ) => void;
+    onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
 }
 
 export const ticketTemplateDescriptionUniqueId = "ticket-template-description";
-export function TicketTemplateDescriptionControl(
+function NonMemoizedTicketTemplateDescriptionControl(
     props: ITicketTemplateDescriptionControl
 ) {
     const descriptionControl = useControl({
@@ -40,12 +37,12 @@ export function TicketTemplateDescriptionControl(
     }, [props.templateDescription, props.refreshToken]);
 
     useEffect(() => {
-        props.onStateChange(
-            ticketTemplateDescriptionUniqueId,
-            descriptionControl.value,
-            descriptionControl.errorMessage,
-            descriptionControl.isDirty
-        );
+        props.onStateChange({
+            uniqueId: ticketTemplateDescriptionUniqueId,
+            value: descriptionControl.value,
+            error: descriptionControl.errorMessage,
+            isDirty: descriptionControl.isDirty,
+        });
     }, [
         descriptionControl.value,
         descriptionControl.errorMessage,
@@ -65,3 +62,7 @@ export function TicketTemplateDescriptionControl(
         />
     );
 }
+
+export const TicketTemplateDescriptionControl = React.memo(
+    NonMemoizedTicketTemplateDescriptionControl
+);

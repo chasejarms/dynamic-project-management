@@ -5,6 +5,7 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
 
 export interface ITicketTemplateNameControlProps {
     templateName: string;
@@ -14,7 +15,7 @@ export interface ITicketTemplateNameControlProps {
 }
 
 export const ticketTemplateNameUniqueId = "ticket-template-name";
-export function TicketTemplateNameControl(
+function NonMemoizedTicketTemplateNameControl(
     props: ITicketTemplateNameControlProps
 ) {
     const nameControl = useControl({
@@ -56,3 +57,7 @@ export function TicketTemplateNameControl(
         />
     );
 }
+
+export const TicketTemplateNameControl = React.memo(
+    NonMemoizedTicketTemplateNameControl
+);
