@@ -51,6 +51,8 @@ export function EditTicketTemplate() {
         IGhostControlParamsMapping
     >({});
 
+    console.log("ghost control mapping: ", ghostControlParamsMapping);
+
     const onStateChange = useCallback(
         (ghostControlParams: IGhostControlParams) => {
             setGhostControlParamsMapping((previousGhostControlParams) => {

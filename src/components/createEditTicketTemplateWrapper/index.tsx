@@ -66,63 +66,66 @@ export function CreateEditTicketTemplateWrapper(
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.container}>
-                    <div css={classes.innerContentContainer}>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateNameControl
-                                templateName={nameControl.value as string}
-                                onStateChange={onStateChange}
-                                disabled={disabled}
-                                refreshToken={refreshToken}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateDescriptionControl
-                                templateDescription={
-                                    descriptionControl.value as string
-                                }
-                                onStateChange={onStateChange}
-                                disabled={disabled}
-                                refreshToken={refreshToken}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateTitleControl
-                                title={titleControl.value as string}
-                                onStateChange={onStateChange}
-                                disabled={disabled}
-                                refreshToken={refreshToken}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <TicketTemplateSummaryControl
-                                summary={summaryControl.value as string}
-                                onStateChange={onStateChange}
-                                disabled={disabled}
-                                refreshToken={refreshToken}
-                                onClickAddAfter={onClickAddAfter}
-                            />
-                        </div>
-                        {sectionOrder.map((sectionId) => {
-                            const textSection = starterGhostControlParamsMapping[
-                                sectionId
-                            ].value as ITextSection;
+                    <div css={classes.contentContainer}>
+                        <div css={classes.helpCenterInnerContent} />
+                        <div css={classes.innerContentContainer}>
+                            <div css={classes.columnInputContainer}>
+                                <TicketTemplateNameControl
+                                    templateName={nameControl.value as string}
+                                    onStateChange={onStateChange}
+                                    disabled={disabled}
+                                    refreshToken={refreshToken}
+                                />
+                            </div>
+                            <div css={classes.columnInputContainer}>
+                                <TicketTemplateDescriptionControl
+                                    templateDescription={
+                                        descriptionControl.value as string
+                                    }
+                                    onStateChange={onStateChange}
+                                    disabled={disabled}
+                                    refreshToken={refreshToken}
+                                />
+                            </div>
+                            <div css={classes.columnInputContainer}>
+                                <TicketTemplateTitleControl
+                                    title={titleControl.value as string}
+                                    onStateChange={onStateChange}
+                                    disabled={disabled}
+                                    refreshToken={refreshToken}
+                                />
+                            </div>
+                            <div css={classes.columnInputContainer}>
+                                <TicketTemplateSummaryControl
+                                    summary={summaryControl.value as string}
+                                    onStateChange={onStateChange}
+                                    disabled={disabled}
+                                    refreshToken={refreshToken}
+                                    onClickAddAfter={onClickAddAfter}
+                                />
+                            </div>
+                            {sectionOrder.map((sectionId) => {
+                                const textSection = starterGhostControlParamsMapping[
+                                    sectionId
+                                ].value as ITextSection;
 
-                            return (
-                                <div
-                                    css={classes.columnInputContainer}
-                                    key={sectionId}
-                                >
-                                    <TicketTemplateTextControl
-                                        uniqueId={sectionId}
-                                        label={textSection.label}
-                                        onStateChange={onStateChange}
-                                        disabled={disabled}
-                                        refreshToken={refreshToken}
-                                    />
-                                </div>
-                            );
-                        })}
-                        ;
+                                return (
+                                    <div
+                                        css={classes.columnInputContainer}
+                                        key={sectionId}
+                                    >
+                                        <TicketTemplateTextControl
+                                            uniqueId={sectionId}
+                                            label={textSection.label}
+                                            onStateChange={onStateChange}
+                                            disabled={disabled}
+                                            refreshToken={refreshToken}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div css={classes.helpCenterInnerContent} />
                     </div>
                     <div css={classes.bottomToolbarContainer}>
                         <BottomPageToolbar
@@ -142,11 +145,9 @@ const createClasses = () => {
         flex-direction: column;
     `;
 
-    const innerContentContainer = css`
+    const contentContainer = css`
         flex-grow: 1;
         display: flex;
-        justify-content: center;
-        align-items: center;
         flex-direction: column;
     `;
 
@@ -158,10 +159,21 @@ const createClasses = () => {
         width: 300px;
     `;
 
+    const innerContentContainer = css`
+        display: flex;
+        flex-direction: row;
+    `;
+
+    const helpCenterInnerContent = css`
+        flex-grow: 1;
+    `;
+
     return {
         container,
         bottomToolbarContainer,
+        contentContainer,
         innerContentContainer,
         columnInputContainer,
+        helpCenterInnerContent,
     };
 };
