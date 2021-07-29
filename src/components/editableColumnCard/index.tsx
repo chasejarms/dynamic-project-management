@@ -124,7 +124,7 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
     );
 }
 
-export function createClasses() {
+function createClasses() {
     const columnContainer = css`
         margin-right: 16px;
         width: 300px;
