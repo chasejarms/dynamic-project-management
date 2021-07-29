@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
+import React from "react";
 import {
     FormControl,
     InputLabel,
@@ -26,7 +27,7 @@ export interface IWrapperTextFieldProps {
     multiline?: boolean;
 }
 
-export function WrappedTextField(props: IWrapperTextFieldProps) {
+function NonMemoizedWrappedTextField(props: IWrapperTextFieldProps) {
     const classes = createClasses();
 
     return (
@@ -55,6 +56,8 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
         </div>
     );
 }
+
+export const WrappedTextField = React.memo(NonMemoizedWrappedTextField);
 
 const createClasses = () => {
     const helperTextContainer = css`

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CreateEditTicketTemplateWrapper } from "../../../../../../../../components/createEditTicketTemplateWrapper";
 import { ticketTemplateDescriptionUniqueId } from "../../../../../../../../components/ticketTemplateDescriptionControl";
-import { ticketTemplateNameUniqueId } from "../../../../../../../../components/ticketTemplateNameControl";
 import { ticketTemplateSummaryControlId } from "../../../../../../../../components/ticketTemplateSummaryControl";
 import { ticketTemplateTitleControlId } from "../../../../../../../../components/ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
@@ -36,7 +35,7 @@ export function EditTicketTemplate() {
 
     function onStateChange(
         uniqueId: string,
-        value: string,
+        value: any,
         errorMessage: string,
         isDirty: boolean
     ) {
@@ -97,7 +96,7 @@ export function EditTicketTemplate() {
         if (!isUpdatingTicketTemplate) return;
 
         const ticketTemplateRequest: ITicketTemplatePutRequest = {
-            name: controlInformation[ticketTemplateNameUniqueId].value,
+            name: controlInformation["ticketTemplateNameUniqueId"].value,
             description:
                 controlInformation[ticketTemplateDescriptionUniqueId].value,
             title: {
@@ -158,13 +157,15 @@ export function EditTicketTemplate() {
     ];
 
     return (
-        <CreateEditTicketTemplateWrapper
-            ticketTemplate={ticketTemplate}
-            wrappedButtonProps={wrappedButtonProps}
-            isLoading={isLoadingTicketTemplate}
-            disabled={isUpdatingTicketTemplate}
-            onStateChange={onStateChange}
-            refreshToken={refreshToken}
-        />
+        <div />
+        // <CreateEditTicketTemplateWrapper
+        //     onClickAddAfter={() => null}
+        //     ticketTemplate={ticketTemplate}
+        //     wrappedButtonProps={wrappedButtonProps}
+        //     isLoading={isLoadingTicketTemplate}
+        //     disabled={isUpdatingTicketTemplate}
+        //     onStateChange={onStateChange}
+        //     refreshToken={refreshToken}
+        // />
     );
 }

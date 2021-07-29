@@ -2,28 +2,30 @@
 import { jsx, css } from "@emotion/react";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
+import { Section } from "../../models/ticketTemplate/section";
 import { ITicketTemplatePutRequest } from "../../models/ticketTemplate/ticketTemplatePutRequest";
 import { BoardContainer } from "../boardContainer";
 import { BottomPageToolbar } from "../bottomPageToolbar";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 import { TicketTemplateDescriptionControl } from "../ticketTemplateDescriptionControl";
-import { TicketTemplateNameControl } from "../ticketTemplateNameControl";
 import { TicketTemplateSummaryControl } from "../ticketTemplateSummaryControl";
+import { TicketTemplateTextControl } from "../ticketTemplateTextControl";
 import { TicketTemplateTitleControl } from "../ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../wrappedButton";
 
 export interface ICreateEditTicketTemplateWrapperProps {
-    ticketTemplate: ITicketTemplatePutRequest | null;
+    committedTicketTemplate: ITicketTemplatePutRequest | null;
+    stagedTicketTemplate: ITicketTemplatePutRequest | null;
     wrappedButtonProps: IWrappedButtonProps[];
     isLoading: boolean;
     disabled: boolean;
     onStateChange: (
         uniqueId: string,
         value: string,
-        error: string,
-        isDirty: boolean
+        isDirty: boolean,
+        errorMessage: string
     ) => void;
-    refreshToken: {};
+    onClickAddAfter: (index: number) => void;
 }
 
 export function CreateEditTicketTemplateWrapper(
@@ -31,7 +33,8 @@ export function CreateEditTicketTemplateWrapper(
 ) {
     const classes = createClasses();
     const {
-        ticketTemplate,
+        committedTicketTemplate,
+        stagedTicketTemplate,
         disabled,
         wrappedButtonProps,
         onStateChange,
@@ -39,20 +42,20 @@ export function CreateEditTicketTemplateWrapper(
 
     return (
         <BoardContainer>
-            {props.isLoading || !ticketTemplate ? (
+            {props.isLoading ||
+            !committedTicketTemplate ||
+            !stagedTicketTemplate ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.container}>
                     <div css={classes.innerContentContainer}>
                         <div css={classes.columnInputContainer}>
-                            <TicketTemplateNameControl
-                                templateName={ticketTemplate.name}
-                                onStateChange={onStateChange}
-                                disabled={disabled}
-                                refreshToken={props.refreshToken}
-                            />
+                            {/* <TicketTemplateNameControl
+                                committedValue={committedTicketTemplate.name}
+                                stagedValue={stagedTicketTemplate.name}
+                            /> */}
                         </div>
-                        <div css={classes.columnInputContainer}>
+                        {/* <div css={classes.columnInputContainer}>
                             <TicketTemplateDescriptionControl
                                 templateDescription={ticketTemplate.description}
                                 onStateChange={onStateChange}
@@ -74,8 +77,22 @@ export function CreateEditTicketTemplateWrapper(
                                 onStateChange={onStateChange}
                                 disabled={disabled}
                                 refreshToken={props.refreshToken}
+                                onClickAddAfter={props.onClickAddAfter}
                             />
                         </div>
+                        {ticketTemplate.sections.map((section, index) => {
+                            return (
+                                <div css={classes.columnInputContainer}>
+                                    <TicketTemplateTextControl
+                                        value={section}
+                                        disabled={disabled}
+                                        index={index}
+                                        onStateChange={onStateChange}
+                                        refreshToken={props.refreshToken}
+                                    />
+                                </div>
+                            );
+                        })} */}
                     </div>
                     <div css={classes.bottomToolbarContainer}>
                         <BottomPageToolbar

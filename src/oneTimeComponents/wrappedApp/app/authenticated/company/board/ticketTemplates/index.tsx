@@ -16,9 +16,9 @@ export function TicketTemplates() {
             <Route path={`${url}/create-ticket-template`}>
                 <CreateTicketTemplate />
             </Route>
-            <Route path={`${url}/:ticketTemplateId`}>
+            {/* <Route path={`${url}/:ticketTemplateId`}>
                 <EditTicketTemplate />
-            </Route>
+            </Route> */}
         </Switch>
     );
 }
