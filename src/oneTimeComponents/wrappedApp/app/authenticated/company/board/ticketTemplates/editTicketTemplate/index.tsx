@@ -158,13 +158,14 @@ export function EditTicketTemplate() {
     ];
 
     return (
-        <CreateEditTicketTemplateWrapper
-            ticketTemplate={ticketTemplate}
-            wrappedButtonProps={wrappedButtonProps}
-            isLoading={isLoadingTicketTemplate}
-            disabled={isUpdatingTicketTemplate}
-            onStateChange={onStateChange}
-            refreshToken={refreshToken}
-        />
+        <div />
+        // <CreateEditTicketTemplateWrapper
+        //     ticketTemplate={ticketTemplate}
+        //     wrappedButtonProps={wrappedButtonProps}
+        //     isLoading={isLoadingTicketTemplate}
+        //     disabled={isUpdatingTicketTemplate}
+        //     onStateChange={onStateChange}
+        //     refreshToken={refreshToken}
+        // />
     );
 }

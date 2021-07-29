@@ -6,52 +6,57 @@ import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
 
-export interface ITicketTemplateNameControlProps {
-    templateName: string;
+export interface ITicketTemplateTextControlProps {
+    label: string;
+    uniqueId: string;
     disabled: boolean;
     onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
 }
 
-export const ticketTemplateNameUniqueId = "ticket-template-name";
-export function TicketTemplateNameControl(
-    props: ITicketTemplateNameControlProps
+export function TicketTemplateTextControl(
+    props: ITicketTemplateTextControlProps
 ) {
-    const nameControl = useControl({
+    const textLabelControl = useControl({
         value: "",
         onChange: (
             event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => {
             return event.target.value;
         },
-        validatorError: (templateName: string) => {
+        validatorError: (textLabel: string) => {
             return ControlValidator.string()
                 .required("This field is required")
-                .validate(templateName);
+                .validate(textLabel);
         },
     });
 
     useEffect(() => {
-        nameControl.resetControlState(props.templateName);
-    }, [props.refreshToken, props.templateName]);
+        textLabelControl.resetControlState(props.label);
+    }, [props.refreshToken, props.label]);
 
     useEffect(() => {
         props.onStateChange({
-            uniqueId: ticketTemplateNameUniqueId,
-            value: nameControl.value,
-            error: nameControl.errorMessage,
-            isDirty: nameControl.isDirty,
+            uniqueId: props.uniqueId,
+            value: textLabelControl.value,
+            error: textLabelControl.errorMessage,
+            isDirty: textLabelControl.isDirty,
         });
-    }, [nameControl.value, nameControl.errorMessage, nameControl.isDirty]);
+    }, [
+        textLabelControl.value,
+        textLabelControl.errorMessage,
+        textLabelControl.isDirty,
+    ]);
 
-    const showNameError = !nameControl.isValid && nameControl.isTouched;
+    const showNameError =
+        !textLabelControl.isValid && textLabelControl.isTouched;
 
     return (
         <WrappedTextField
-            value={nameControl.value}
+            value={textLabelControl.value}
             label="Template Name"
-            onChange={nameControl.onChange}
-            error={showNameError ? nameControl.errorMessage : ""}
+            onChange={textLabelControl.onChange}
+            error={showNameError ? textLabelControl.errorMessage : ""}
             disabled={props.disabled}
         />
     );
