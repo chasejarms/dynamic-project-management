@@ -6,13 +6,17 @@ import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
 import React from "react";
+import { AddDeleteSectionWrapper } from "../AddDeleteSectionWrapper";
 
 export interface ITicketTemplateTextControlProps {
     label: string;
+    index: number;
     uniqueId: string;
     disabled: boolean;
     onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
+    onClickAddAfter: (index: number) => void;
+    onClickDelete: (index: number, uniqueId: string) => void;
 }
 
 function NonMemoizedTicketTemplateTextControl(
@@ -53,13 +57,23 @@ function NonMemoizedTicketTemplateTextControl(
         !textLabelControl.isValid && textLabelControl.isTouched;
 
     return (
-        <WrappedTextField
-            value={textLabelControl.value}
-            label="Text Field Label"
-            onChange={textLabelControl.onChange}
-            error={showNameError ? textLabelControl.errorMessage : ""}
+        <AddDeleteSectionWrapper
             disabled={props.disabled}
-        />
+            onClickAddAfter={() => {
+                props.onClickAddAfter(props.index);
+            }}
+            onClickDelete={() => {
+                props.onClickDelete(props.index, props.uniqueId);
+            }}
+        >
+            <WrappedTextField
+                value={textLabelControl.value}
+                label="Text Field Label"
+                onChange={textLabelControl.onChange}
+                error={showNameError ? textLabelControl.errorMessage : ""}
+                disabled={props.disabled}
+            />
+        </AddDeleteSectionWrapper>
     );
 }
 

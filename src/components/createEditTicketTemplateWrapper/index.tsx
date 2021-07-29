@@ -34,6 +34,7 @@ export interface ICreateEditTicketTemplateWrapperProps {
     onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
     onClickAddAfter: (index: number) => void;
+    onClickDelete: (index: number, uniqueId: string) => void;
 }
 
 export function CreateEditTicketTemplateWrapper(
@@ -104,7 +105,7 @@ export function CreateEditTicketTemplateWrapper(
                                     onClickAddAfter={onClickAddAfter}
                                 />
                             </div>
-                            {sectionOrder.map((sectionId) => {
+                            {sectionOrder.map((sectionId, index) => {
                                 const textSection = starterGhostControlParamsMapping[
                                     sectionId
                                 ].value as ITextSection;
@@ -120,6 +121,9 @@ export function CreateEditTicketTemplateWrapper(
                                             onStateChange={onStateChange}
                                             disabled={disabled}
                                             refreshToken={refreshToken}
+                                            index={index}
+                                            onClickAddAfter={onClickAddAfter}
+                                            onClickDelete={props.onClickDelete}
                                         />
                                     </div>
                                 );

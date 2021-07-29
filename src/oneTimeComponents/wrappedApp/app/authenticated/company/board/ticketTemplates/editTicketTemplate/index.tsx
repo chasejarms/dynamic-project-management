@@ -233,12 +233,32 @@ export function EditTicketTemplate() {
             });
         } else {
             setSectionOrder((previousSectionOrder) => {
-                const beforeSections = previousSectionOrder.slice(0, index);
-                const afterSections = previousSectionOrder.slice(index);
+                const beforeSections = previousSectionOrder.slice(0, index + 1);
+                const afterSections = previousSectionOrder.slice(index + 1);
 
                 return [...beforeSections, uniqueId, ...afterSections];
             });
         }
+    }
+
+    function onClickDelete(index: number, uniqueId: string) {
+        setSectionOrder((previousSectionOrder) => {
+            return previousSectionOrder.filter((unused, compareIndex) => {
+                return compareIndex !== index;
+            });
+        });
+
+        setStarterGhostControlParamsMapping(
+            (previousStarterGhostControlParamsMapping) => {
+                delete previousStarterGhostControlParamsMapping[uniqueId];
+                return previousStarterGhostControlParamsMapping;
+            }
+        );
+
+        setGhostControlParamsMapping((previousGhostControlParamsMapping) => {
+            delete previousGhostControlParamsMapping[uniqueId];
+            return previousGhostControlParamsMapping;
+        });
     }
 
     return (
@@ -251,6 +271,7 @@ export function EditTicketTemplate() {
             disabled={isUpdatingTicketTemplate}
             onStateChange={onStateChange}
             refreshToken={refreshToken}
+            onClickDelete={onClickDelete}
         />
     );
 }

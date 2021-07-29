@@ -1,13 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { IconButton } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
 import { ChangeEvent, useEffect } from "react";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
 import React from "react";
+import { AddDeleteSectionWrapper } from "../AddDeleteSectionWrapper";
 
 export interface ITicketTemplateSummaryControl {
     summary: string;
@@ -53,10 +52,11 @@ function NonMemoizedTicketTemplateSummaryControl(
     ]);
 
     const showNameError = !summaryControl.isValid && summaryControl.isTouched;
-
-    const classes = createClasses();
     return (
-        <div css={classes.container}>
+        <AddDeleteSectionWrapper
+            disabled={props.disabled}
+            onClickAddAfter={() => props.onClickAddAfter(-1)}
+        >
             <WrappedTextField
                 value={summaryControl.value}
                 label="Ticket Summary Label"
@@ -64,36 +64,9 @@ function NonMemoizedTicketTemplateSummaryControl(
                 error={showNameError ? summaryControl.errorMessage : ""}
                 disabled={props.disabled}
             />
-            <div css={classes.actionButtonContainer}>
-                <IconButton
-                    disabled={props.disabled}
-                    onClick={() => props.onClickAddAfter(-1)}
-                    color="primary"
-                >
-                    <Add />
-                </IconButton>
-            </div>
-        </div>
+        </AddDeleteSectionWrapper>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        position: relative;
-        width: 100%;
-    `;
-
-    const actionButtonContainer = css`
-        position: absolute;
-        right: -60px;
-        top: 12px;
-    `;
-
-    return {
-        container,
-        actionButtonContainer,
-    };
-};
 
 export const TicketTemplateSummaryControl = React.memo(
     NonMemoizedTicketTemplateSummaryControl
