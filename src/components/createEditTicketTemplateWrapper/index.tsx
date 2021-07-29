@@ -148,7 +148,10 @@ const createClasses = () => {
     const contentContainer = css`
         flex-grow: 1;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        overflow-y: auto;
     `;
 
     const bottomToolbarContainer = css`
@@ -161,7 +164,10 @@ const createClasses = () => {
 
     const innerContentContainer = css`
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        flex: 0 0 auto;
+        padding-left: 64px;
+        padding-right: 64px;
     `;
 
     const helpCenterInnerContent = css`
