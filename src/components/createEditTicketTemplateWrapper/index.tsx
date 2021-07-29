@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { cloneDeep } from "lodash";
-import { useState } from "react";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { IStarterGhostControlParamsMapping } from "../../models/ghostControlPattern/starterGhostControlParamsMapping";
 import { ITextSection } from "../../models/ticketTemplate/textSection";
-import { ITicketTemplatePutRequest } from "../../models/ticketTemplate/ticketTemplatePutRequest";
 import { BoardContainer } from "../boardContainer";
 import { BottomPageToolbar } from "../bottomPageToolbar";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
-import { TicketTemplateDescriptionControl } from "../ticketTemplateDescriptionControl";
+import {
+    TicketTemplateDescriptionControl,
+    ticketTemplateDescriptionUniqueId,
+} from "../ticketTemplateDescriptionControl";
 import {
     TicketTemplateNameControl,
     ticketTemplateNameUniqueId,
@@ -19,14 +19,17 @@ import {
     ticketTemplateSummaryControlId,
 } from "../ticketTemplateSummaryControl";
 import { TicketTemplateTextControl } from "../ticketTemplateTextControl";
-import { TicketTemplateTitleControl } from "../ticketTemplateTitleControl";
+import {
+    TicketTemplateTitleControl,
+    ticketTemplateTitleControlId,
+} from "../ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../wrappedButton";
 
 export interface ICreateEditTicketTemplateWrapperProps {
-    starterGhostControlParamsMapping: IStarterGhostControlParamsMapping;
-    orderedSectionIds: string[];
-    wrappedButtonProps: IWrappedButtonProps[];
     isLoading: boolean;
+    starterGhostControlParamsMapping: IStarterGhostControlParamsMapping;
+    sectionOrder: string[];
+    wrappedButtonProps: IWrappedButtonProps[];
     disabled: boolean;
     onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
@@ -36,22 +39,30 @@ export interface ICreateEditTicketTemplateWrapperProps {
 export function CreateEditTicketTemplateWrapper(
     props: ICreateEditTicketTemplateWrapperProps
 ) {
-    const classes = createClasses();
     const {
+        isLoading,
         starterGhostControlParamsMapping,
         disabled,
-        wrappedButtonProps,
         onStateChange,
+        refreshToken,
+        sectionOrder,
+        onClickAddAfter,
+        wrappedButtonProps,
     } = props;
 
     const nameControl =
         starterGhostControlParamsMapping[ticketTemplateNameUniqueId];
+    const descriptionControl =
+        starterGhostControlParamsMapping[ticketTemplateDescriptionUniqueId];
+    const titleControl =
+        starterGhostControlParamsMapping[ticketTemplateTitleControlId];
     const summaryControl =
         starterGhostControlParamsMapping[ticketTemplateSummaryControlId];
 
+    const classes = createClasses();
     return (
         <BoardContainer>
-            {props.isLoading ? (
+            {isLoading ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.container}>
@@ -61,35 +72,37 @@ export function CreateEditTicketTemplateWrapper(
                                 templateName={nameControl.value as string}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
-                                refreshToken={props.refreshToken}
+                                refreshToken={refreshToken}
                             />
                         </div>
-                        {/* <div css={classes.columnInputContainer}>
+                        <div css={classes.columnInputContainer}>
                             <TicketTemplateDescriptionControl
-                                templateDescription={ticketTemplate.description}
+                                templateDescription={
+                                    descriptionControl.value as string
+                                }
                                 onStateChange={onStateChange}
                                 disabled={disabled}
-                                refreshToken={props.refreshToken}
+                                refreshToken={refreshToken}
                             />
                         </div>
                         <div css={classes.columnInputContainer}>
                             <TicketTemplateTitleControl
-                                title={ticketTemplate.title.label}
+                                title={titleControl.value as string}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
-                                refreshToken={props.refreshToken}
+                                refreshToken={refreshToken}
                             />
-                        </div> */}
+                        </div>
                         <div css={classes.columnInputContainer}>
                             <TicketTemplateSummaryControl
                                 summary={summaryControl.value as string}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
-                                refreshToken={props.refreshToken}
-                                onClickAddAfter={props.onClickAddAfter}
+                                refreshToken={refreshToken}
+                                onClickAddAfter={onClickAddAfter}
                             />
                         </div>
-                        {props.orderedSectionIds.map((sectionId) => {
+                        {sectionOrder.map((sectionId) => {
                             const textSection = starterGhostControlParamsMapping[
                                 sectionId
                             ].value as ITextSection;
@@ -104,7 +117,7 @@ export function CreateEditTicketTemplateWrapper(
                                         label={textSection.label}
                                         onStateChange={onStateChange}
                                         disabled={disabled}
-                                        refreshToken={props.refreshToken}
+                                        refreshToken={refreshToken}
                                     />
                                 </div>
                             );

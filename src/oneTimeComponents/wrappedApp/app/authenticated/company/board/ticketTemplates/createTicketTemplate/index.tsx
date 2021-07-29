@@ -3,25 +3,11 @@ import { jsx, css } from "@emotion/react";
 import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
-import { BoardContainer } from "../../../../../../../../components/boardContainer";
-import { BottomPageToolbar } from "../../../../../../../../components/bottomPageToolbar";
-import {
-    TicketTemplateDescriptionControl,
-    ticketTemplateDescriptionUniqueId,
-} from "../../../../../../../../components/ticketTemplateDescriptionControl";
-import {
-    TicketTemplateNameControl,
-    ticketTemplateNameUniqueId,
-} from "../../../../../../../../components/ticketTemplateNameControl";
-import {
-    TicketTemplateSummaryControl,
-    ticketTemplateSummaryControlId,
-} from "../../../../../../../../components/ticketTemplateSummaryControl";
-import { TicketTemplateTextControl } from "../../../../../../../../components/ticketTemplateTextControl";
-import {
-    TicketTemplateTitleControl,
-    ticketTemplateTitleControlId,
-} from "../../../../../../../../components/ticketTemplateTitleControl";
+import { CreateEditTicketTemplateWrapper } from "../../../../../../../../components/createEditTicketTemplateWrapper";
+import { ticketTemplateDescriptionUniqueId } from "../../../../../../../../components/ticketTemplateDescriptionControl";
+import { ticketTemplateNameUniqueId } from "../../../../../../../../components/ticketTemplateNameControl";
+import { ticketTemplateSummaryControlId } from "../../../../../../../../components/ticketTemplateSummaryControl";
+import { ticketTemplateTitleControlId } from "../../../../../../../../components/ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { IGhostControlParams } from "../../../../../../../../models/ghostControlPattern/ghostControlParams";
@@ -191,115 +177,16 @@ export function CreateTicketTemplate() {
         },
     ];
 
-    const classes = createClasses();
-
-    const nameControl =
-        starterGhostControlParamsMapping[ticketTemplateNameUniqueId];
-    const descriptionControl =
-        starterGhostControlParamsMapping[ticketTemplateDescriptionUniqueId];
-    const titleControl =
-        starterGhostControlParamsMapping[ticketTemplateTitleControlId];
-    const summaryControl =
-        starterGhostControlParamsMapping[ticketTemplateSummaryControlId];
-
     return (
-        <BoardContainer>
-            <div css={classes.container}>
-                <div css={classes.innerContentContainer}>
-                    <div css={classes.columnInputContainer}>
-                        <TicketTemplateNameControl
-                            templateName={nameControl.value as string}
-                            onStateChange={onStateChange}
-                            disabled={isCreatingTicketTemplate}
-                            refreshToken={refreshToken}
-                        />
-                    </div>
-                    <div css={classes.columnInputContainer}>
-                        <TicketTemplateDescriptionControl
-                            templateDescription={
-                                descriptionControl.value as string
-                            }
-                            onStateChange={onStateChange}
-                            disabled={isCreatingTicketTemplate}
-                            refreshToken={refreshToken}
-                        />
-                    </div>
-                    <div css={classes.columnInputContainer}>
-                        <TicketTemplateTitleControl
-                            title={titleControl.value as string}
-                            onStateChange={onStateChange}
-                            disabled={isCreatingTicketTemplate}
-                            refreshToken={refreshToken}
-                        />
-                    </div>
-                    <div css={classes.columnInputContainer}>
-                        <TicketTemplateSummaryControl
-                            summary={summaryControl.value as string}
-                            onStateChange={onStateChange}
-                            disabled={isCreatingTicketTemplate}
-                            refreshToken={refreshToken}
-                            onClickAddAfter={onClickAddAfter}
-                        />
-                    </div>
-                    {sectionOrder.map((sectionId) => {
-                        const textSection = starterGhostControlParamsMapping[
-                            sectionId
-                        ].value as ITextSection;
-
-                        return (
-                            <div
-                                css={classes.columnInputContainer}
-                                key={sectionId}
-                            >
-                                <TicketTemplateTextControl
-                                    uniqueId={sectionId}
-                                    label={textSection.label}
-                                    onStateChange={onStateChange}
-                                    disabled={isCreatingTicketTemplate}
-                                    refreshToken={refreshToken}
-                                />
-                            </div>
-                        );
-                    })}
-                    ;
-                </div>
-                <div css={classes.bottomToolbarContainer}>
-                    <BottomPageToolbar
-                        wrappedButtonProps={wrappedButtonProps}
-                    />
-                </div>
-            </div>
-        </BoardContainer>
+        <CreateEditTicketTemplateWrapper
+            isLoading={false}
+            starterGhostControlParamsMapping={starterGhostControlParamsMapping}
+            sectionOrder={sectionOrder}
+            wrappedButtonProps={wrappedButtonProps}
+            disabled={isCreatingTicketTemplate}
+            onStateChange={onStateChange}
+            refreshToken={refreshToken}
+            onClickAddAfter={onClickAddAfter}
+        />
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    `;
-
-    const innerContentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    `;
-
-    const bottomToolbarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
-    `;
-
-    return {
-        container,
-        bottomToolbarContainer,
-        innerContentContainer,
-        columnInputContainer,
-    };
-};

@@ -66,6 +66,7 @@ function NonMemoizedTicketTemplateSummaryControl(
             />
             <div css={classes.actionButtonContainer}>
                 <IconButton
+                    disabled={props.disabled}
                     onClick={() => props.onClickAddAfter(-1)}
                     color="primary"
                 >
