@@ -10,99 +10,134 @@ import { ticketTemplateSummaryControlId } from "../../../../../../../../componen
 import { ticketTemplateTitleControlId } from "../../../../../../../../components/ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { IGhostControlParams } from "../../../../../../../../models/ghostControlPattern/ghostControlParams";
+import { IGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
+import { IStarterGhostControlParams } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParams";
+import { IStarterGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
+import { ITextSection } from "../../../../../../../../models/ticketTemplate/textSection";
 import { ITicketTemplatePutRequest } from "../../../../../../../../models/ticketTemplate/ticketTemplatePutRequest";
+import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
 
-const defaultTicketTemplate: ITicketTemplatePutRequest = {
-    name: "",
-    description: "",
-    title: {
-        label: "Title",
+const defaultStarterGhostControlParamsMapping: IStarterGhostControlParamsMapping = {
+    [ticketTemplateNameUniqueId]: {
+        uniqueId: ticketTemplateNameUniqueId,
+        value: "",
     },
-    summary: {
-        isRequired: true,
-        label: "Summary",
+    [ticketTemplateSummaryControlId]: {
+        uniqueId: ticketTemplateSummaryControlId,
+        value: "",
     },
-    sections: [],
 };
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
 
-    const [controlInformation, setControlInformation] = useState<{
-        [id: string]: {
-            value: any;
-            errorMessage: string;
-            isDirty: boolean;
-        };
-    }>({});
+    const [
+        starterGhostControlParamsMapping,
+        setStarterGhostControlParamsMapping,
+    ] = useState<IStarterGhostControlParamsMapping>(
+        cloneDeep(defaultStarterGhostControlParamsMapping)
+    );
 
-    function onStateChange(
-        uniqueId: string,
-        value: string,
-        errorMessage: string,
-        isDirty: boolean
-    ) {
-        setControlInformation((previousControlInformation) => {
-            const clonedControlInformation = cloneDeep(
-                previousControlInformation
-            );
-            clonedControlInformation[uniqueId] = {
-                value,
-                errorMessage,
-                isDirty,
+    const [ghostControlParamsMapping, setGhostControlParamsMapping] = useState<
+        IGhostControlParamsMapping
+    >({});
+
+    function onStateChange(ghostControlParams: IGhostControlParams) {
+        setGhostControlParamsMapping((previousGhostControlParams) => {
+            const updatedGhostControlParams = {
+                ...previousGhostControlParams,
+                [ghostControlParams.uniqueId]: ghostControlParams,
             };
 
-            return clonedControlInformation;
+            return updatedGhostControlParams;
         });
     }
-    const someControlsAreInvalid = Object.values(controlInformation).some(
-        ({ errorMessage }) => !!errorMessage
-    );
+    const someControlsAreInvalid = Object.values(
+        ghostControlParamsMapping
+    ).some(({ error }) => !!error);
 
     const [refreshToken, setRefreshToken] = useState({});
     const [isCreatingTicketTemplate, setIsCreatingTicketTemplate] = useState(
         false
     );
+
+    const [sectionOrder, setSectionOrder] = useState<string[]>([]);
+    function onClickAddAfter(index: number) {
+        const uniqueId = generateUniqueId(3);
+
+        const textSection: ITextSection = {
+            type: "text",
+            label: "",
+            multiline: true,
+        };
+
+        setStarterGhostControlParamsMapping(
+            (previousStarterGhostControlParamsMapping) => {
+                return {
+                    ...previousStarterGhostControlParamsMapping,
+                    [uniqueId]: {
+                        uniqueId,
+                        value: textSection,
+                    },
+                };
+            }
+        );
+
+        if (index === -1) {
+            setSectionOrder((previousSectionOrder) => {
+                return [uniqueId, ...previousSectionOrder];
+            });
+        } else {
+            setSectionOrder((previousSectionOrder) => {
+                const beforeSections = previousSectionOrder.slice(0, index);
+                const afterSections = previousSectionOrder.slice(index);
+
+                return [...beforeSections, uniqueId, ...afterSections];
+            });
+        }
+    }
+
     useEffect(() => {
         if (!isCreatingTicketTemplate) return;
 
         let didCancel = false;
 
-        const ticketTemplateRequest: ITicketTemplatePutRequest = {
-            name: controlInformation[ticketTemplateNameUniqueId].value,
-            description:
-                controlInformation[ticketTemplateDescriptionUniqueId].value,
-            title: {
-                label: controlInformation[ticketTemplateTitleControlId].value,
-            },
-            summary: {
-                label: controlInformation[ticketTemplateSummaryControlId].value,
-                isRequired: true,
-            },
-            sections: [],
-        };
+        // const ticketTemplateRequest: ITicketTemplatePutRequest = {
+        //     name: controlInformation[ticketTemplateNameUniqueId].value,
+        //     description:
+        //         controlInformation[ticketTemplateDescriptionUniqueId].value,
+        //     title: {
+        //         label: controlInformation[ticketTemplateTitleControlId].value,
+        //     },
+        //     summary: {
+        //         label: controlInformation[ticketTemplateSummaryControlId].value,
+        //         isRequired: true,
+        //     },
+        //     sections: [],
+        // };
 
-        Api.ticketTemplates
-            .createTicketTemplateForBoard(
-                companyId,
-                boardId,
-                ticketTemplateRequest
-            )
-            .then((ticketTemplate) => {
-                if (didCancel) return;
-                setRefreshToken({});
-            })
-            .catch((error) => {
-                if (didCancel) return;
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsCreatingTicketTemplate(false);
-            });
+        // Api.ticketTemplates
+        //     .createTicketTemplateForBoard(
+        //         companyId,
+        //         boardId,
+        //         ticketTemplateRequest
+        //     )
+        //     .then((ticketTemplate) => {
+        //         if (didCancel) return;
+        //         setRefreshToken({});
+        //     })
+        //     .catch((error) => {
+        //         if (didCancel) return;
+        //     })
+        //     .finally(() => {
+        //         if (didCancel) return;
+        //         setIsCreatingTicketTemplate(false);
+        //     });
 
-        return () => {
-            didCancel = true;
-        };
+        // return () => {
+        //     didCancel = true;
+        // };
     }, [isCreatingTicketTemplate, companyId, boardId]);
 
     const wrappedButtonProps: IWrappedButtonProps[] = [
@@ -120,12 +155,14 @@ export function CreateTicketTemplate() {
 
     return (
         <CreateEditTicketTemplateWrapper
-            ticketTemplate={defaultTicketTemplate}
+            starterGhostControlParamsMapping={starterGhostControlParamsMapping}
+            orderedSectionIds={sectionOrder}
             wrappedButtonProps={wrappedButtonProps}
             isLoading={false}
             disabled={isCreatingTicketTemplate}
             onStateChange={onStateChange}
             refreshToken={refreshToken}
+            onClickAddAfter={onClickAddAfter}
         />
     );
 }

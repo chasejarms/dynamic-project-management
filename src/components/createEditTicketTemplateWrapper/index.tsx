@@ -2,28 +2,35 @@
 import { jsx, css } from "@emotion/react";
 import { cloneDeep } from "lodash";
 import { useState } from "react";
+import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
+import { IStarterGhostControlParamsMapping } from "../../models/ghostControlPattern/starterGhostControlParamsMapping";
+import { ITextSection } from "../../models/ticketTemplate/textSection";
 import { ITicketTemplatePutRequest } from "../../models/ticketTemplate/ticketTemplatePutRequest";
 import { BoardContainer } from "../boardContainer";
 import { BottomPageToolbar } from "../bottomPageToolbar";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 import { TicketTemplateDescriptionControl } from "../ticketTemplateDescriptionControl";
-import { TicketTemplateNameControl } from "../ticketTemplateNameControl";
-import { TicketTemplateSummaryControl } from "../ticketTemplateSummaryControl";
+import {
+    TicketTemplateNameControl,
+    ticketTemplateNameUniqueId,
+} from "../ticketTemplateNameControl";
+import {
+    TicketTemplateSummaryControl,
+    ticketTemplateSummaryControlId,
+} from "../ticketTemplateSummaryControl";
+import { TicketTemplateTextControl } from "../ticketTemplateTextControl";
 import { TicketTemplateTitleControl } from "../ticketTemplateTitleControl";
 import { IWrappedButtonProps } from "../wrappedButton";
 
 export interface ICreateEditTicketTemplateWrapperProps {
-    ticketTemplate: ITicketTemplatePutRequest | null;
+    starterGhostControlParamsMapping: IStarterGhostControlParamsMapping;
+    orderedSectionIds: string[];
     wrappedButtonProps: IWrappedButtonProps[];
     isLoading: boolean;
     disabled: boolean;
-    onStateChange: (
-        uniqueId: string,
-        value: string,
-        error: string,
-        isDirty: boolean
-    ) => void;
+    onStateChange: (ghostControlParams: IGhostControlParams) => void;
     refreshToken: {};
+    onClickAddAfter: (index: number) => void;
 }
 
 export function CreateEditTicketTemplateWrapper(
@@ -31,28 +38,33 @@ export function CreateEditTicketTemplateWrapper(
 ) {
     const classes = createClasses();
     const {
-        ticketTemplate,
+        starterGhostControlParamsMapping,
         disabled,
         wrappedButtonProps,
         onStateChange,
     } = props;
 
+    const nameControl =
+        starterGhostControlParamsMapping[ticketTemplateNameUniqueId];
+    const summaryControl =
+        starterGhostControlParamsMapping[ticketTemplateSummaryControlId];
+
     return (
         <BoardContainer>
-            {props.isLoading || !ticketTemplate ? (
+            {props.isLoading ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.container}>
                     <div css={classes.innerContentContainer}>
                         <div css={classes.columnInputContainer}>
                             <TicketTemplateNameControl
-                                templateName={ticketTemplate.name}
+                                templateName={nameControl.value as string}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
                                 refreshToken={props.refreshToken}
                             />
                         </div>
-                        <div css={classes.columnInputContainer}>
+                        {/* <div css={classes.columnInputContainer}>
                             <TicketTemplateDescriptionControl
                                 templateDescription={ticketTemplate.description}
                                 onStateChange={onStateChange}
@@ -67,15 +79,37 @@ export function CreateEditTicketTemplateWrapper(
                                 disabled={disabled}
                                 refreshToken={props.refreshToken}
                             />
-                        </div>
+                        </div> */}
                         <div css={classes.columnInputContainer}>
                             <TicketTemplateSummaryControl
-                                summary={ticketTemplate.summary.label}
+                                summary={summaryControl.value as string}
                                 onStateChange={onStateChange}
                                 disabled={disabled}
                                 refreshToken={props.refreshToken}
+                                onClickAddAfter={props.onClickAddAfter}
                             />
                         </div>
+                        {props.orderedSectionIds.map((sectionId) => {
+                            const textSection = starterGhostControlParamsMapping[
+                                sectionId
+                            ].value as ITextSection;
+
+                            return (
+                                <div
+                                    css={classes.columnInputContainer}
+                                    key={sectionId}
+                                >
+                                    <TicketTemplateTextControl
+                                        uniqueId={sectionId}
+                                        label={textSection.label}
+                                        onStateChange={onStateChange}
+                                        disabled={disabled}
+                                        refreshToken={props.refreshToken}
+                                    />
+                                </div>
+                            );
+                        })}
+                        ;
                     </div>
                     <div css={classes.bottomToolbarContainer}>
                         <BottomPageToolbar
