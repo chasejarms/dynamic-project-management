@@ -3,12 +3,14 @@ import { jsx, css } from "@emotion/react";
 import { IconButton } from "@material-ui/core";
 import React from "react";
 import { Add, DeleteForever } from "@material-ui/icons";
+import { composeCSS } from "../../styles/composeCSS";
 
 export interface IAddDeleteSectionWrapperProps {
     children: React.ReactChild;
     onClickAddAfter: () => void;
     disabled: boolean;
     onClickDelete?: () => void;
+    customCalcLeftPixels?: number;
 }
 
 export function AddDeleteSectionWrapper(props: IAddDeleteSectionWrapperProps) {
@@ -17,7 +19,15 @@ export function AddDeleteSectionWrapper(props: IAddDeleteSectionWrapperProps) {
     return (
         <div css={classes.container}>
             {props.children}
-            <div css={classes.actionButtonContainer}>
+            <div
+                css={composeCSS(
+                    classes.actionButtonContainer,
+                    !!props.customCalcLeftPixels &&
+                        css`
+                            left: calc(100% + ${props.customCalcLeftPixels}px);
+                        `
+                )}
+            >
                 <IconButton
                     disabled={props.disabled}
                     onClick={props.onClickAddAfter}
@@ -47,7 +57,7 @@ const createClasses = () => {
 
     const actionButtonContainer = css`
         position: absolute;
-        left: 100%;
+        left: calc(100% + 30px);
         top: 12px;
         display: flex;
         flex-direction: row;

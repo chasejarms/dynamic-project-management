@@ -7,6 +7,7 @@ import { IGhostControlParams } from "../../models/ghostControlPattern/ghostContr
 import { WrappedTextField } from "../wrappedTextField";
 import React from "react";
 import { AddDeleteSectionWrapper } from "../AddDeleteSectionWrapper";
+import { Theme, useTheme } from "@material-ui/core";
 
 export interface ITicketTemplateTextControlProps {
     label: string;
@@ -56,26 +57,44 @@ function NonMemoizedTicketTemplateTextControl(
     const showNameError =
         !textLabelControl.isValid && textLabelControl.isTouched;
 
+    const theme = useTheme();
+    const classes = createClasses(theme);
     return (
-        <AddDeleteSectionWrapper
-            disabled={props.disabled}
-            onClickAddAfter={() => {
-                props.onClickAddAfter(props.index);
-            }}
-            onClickDelete={() => {
-                props.onClickDelete(props.index, props.uniqueId);
-            }}
-        >
-            <WrappedTextField
-                value={textLabelControl.value}
-                label="Text Field Label"
-                onChange={textLabelControl.onChange}
-                error={showNameError ? textLabelControl.errorMessage : ""}
+        <div css={classes.container}>
+            <AddDeleteSectionWrapper
                 disabled={props.disabled}
-            />
-        </AddDeleteSectionWrapper>
+                onClickAddAfter={() => {
+                    props.onClickAddAfter(props.index);
+                }}
+                onClickDelete={() => {
+                    props.onClickDelete(props.index, props.uniqueId);
+                }}
+            >
+                <WrappedTextField
+                    value={textLabelControl.value}
+                    label="Text Field Label"
+                    onChange={textLabelControl.onChange}
+                    error={showNameError ? textLabelControl.errorMessage : ""}
+                    disabled={props.disabled}
+                />
+            </AddDeleteSectionWrapper>
+        </div>
     );
 }
+
+const createClasses = (theme: Theme) => {
+    const container = css`
+        padding: 16px;
+        background-color: ${theme.palette.grey["200"]};
+        border-radius: 3px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+    `;
+
+    return {
+        container,
+    };
+};
 
 export const TicketTemplateTextControl = React.memo(
     NonMemoizedTicketTemplateTextControl

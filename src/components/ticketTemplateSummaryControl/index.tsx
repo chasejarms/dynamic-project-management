@@ -56,6 +56,7 @@ function NonMemoizedTicketTemplateSummaryControl(
         <AddDeleteSectionWrapper
             disabled={props.disabled}
             onClickAddAfter={() => props.onClickAddAfter(-1)}
+            customCalcLeftPixels={14}
         >
             <WrappedTextField
                 value={summaryControl.value}
