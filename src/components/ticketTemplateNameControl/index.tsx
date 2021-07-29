@@ -5,8 +5,8 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { WrappedTextField } from "../wrappedTextField";
 
-export interface ITicketTemplateSummaryControl {
-    summary: string;
+export interface ITicketTemplateNameControlProps {
+    templateName: string;
     disabled: boolean;
     onStateChange: (
         uniqueId: string,
@@ -17,11 +17,11 @@ export interface ITicketTemplateSummaryControl {
     refreshToken: {};
 }
 
-export const ticketTemplateSummaryControlId = "ticket-template-summary";
-export function TicketTemplateSummaryControl(
-    props: ITicketTemplateSummaryControl
+export const ticketTemplateNameUniqueId = "ticket-template-name";
+export function TicketTemplateNameControl(
+    props: ITicketTemplateNameControlProps
 ) {
-    const summaryControl = useControl({
+    const nameControl = useControl({
         value: "",
         onChange: (
             event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -36,30 +36,26 @@ export function TicketTemplateSummaryControl(
     });
 
     useEffect(() => {
-        summaryControl.resetControlState(props.summary);
-    }, [props.summary, props.refreshToken]);
+        nameControl.resetControlState(props.templateName);
+    }, [props.refreshToken, props.templateName]);
 
     useEffect(() => {
         props.onStateChange(
-            ticketTemplateSummaryControlId,
-            summaryControl.value,
-            summaryControl.errorMessage,
-            summaryControl.isDirty
+            ticketTemplateNameUniqueId,
+            nameControl.value,
+            nameControl.errorMessage,
+            nameControl.isDirty
         );
-    }, [
-        summaryControl.value,
-        summaryControl.errorMessage,
-        summaryControl.isDirty,
-    ]);
+    }, [nameControl.value, nameControl.errorMessage, nameControl.isDirty]);
 
-    const showNameError = !summaryControl.isValid && summaryControl.isTouched;
+    const showNameError = !nameControl.isValid && nameControl.isTouched;
 
     return (
         <WrappedTextField
-            value={summaryControl.value}
-            label="Ticket Summary Label"
-            onChange={summaryControl.onChange}
-            error={showNameError ? summaryControl.errorMessage : ""}
+            value={nameControl.value}
+            label="Template Name"
+            onChange={nameControl.onChange}
+            error={showNameError ? nameControl.errorMessage : ""}
             disabled={props.disabled}
         />
     );

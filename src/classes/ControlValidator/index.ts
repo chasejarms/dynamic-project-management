@@ -112,11 +112,10 @@ export class ControlValidator {
             }
 
             if (rule.type === "length") {
-                const trimmedValue = value.trim();
                 const matchesMin =
-                    rule.min === undefined || trimmedValue.length >= rule.min;
+                    rule.min === undefined || value.length >= rule.min;
                 const matchesMax =
-                    rule.max === undefined || trimmedValue.length <= rule.max;
+                    rule.max === undefined || value.length <= rule.max;
 
                 if (!matchesMin || !matchesMax) {
                     return rule.errorMessage;
