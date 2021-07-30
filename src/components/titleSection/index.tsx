@@ -3,21 +3,18 @@ import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
+import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { generateUniqueId } from "../../utils/generateUniqueId";
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITitleSectionProps {
     title: string;
     label: string;
-    onStateChange: (
-        uniqueId: string,
-        value: string,
-        error: string,
-        isDirty: boolean,
-        type?: "title" | "summary"
-    ) => void;
+    onStateChange: (ghostControlParams: IGhostControlParams) => void;
+    refreshToken: {};
 }
 
+export const titleSectionUniqueId = "title-section-unique-id";
 export function TitleSection(props: ITitleSectionProps) {
     const [uniqueId] = useState(generateUniqueId(3));
 
@@ -40,16 +37,15 @@ export function TitleSection(props: ITitleSectionProps) {
 
     useEffect(() => {
         titleControl.resetControlState(props.title);
-    }, [props.title]);
+    }, [props.title, props.refreshToken]);
 
     useEffect(() => {
-        props.onStateChange(
+        props.onStateChange({
             uniqueId,
-            titleControl.value,
-            titleControl.errorMessage,
-            titleControl.isDirty,
-            "title"
-        );
+            value: titleControl.value,
+            error: titleControl.errorMessage,
+            isDirty: titleControl.isDirty,
+        });
     }, [titleControl.value, titleControl.errorMessage, titleControl.isDirty]);
 
     const showTitleError = !titleControl.isValid && titleControl.isTouched;

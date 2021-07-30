@@ -17,6 +17,7 @@ export interface ISummarySectionProps {
     ) => void;
 }
 
+export const summarySectionUniqueId = "summary-section-unique-id";
 export function SummarySection(props: ISummarySectionProps) {
     const [uniqueId] = useState(generateUniqueId(3));
 

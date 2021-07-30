@@ -7,7 +7,7 @@ import {
     MenuItem,
     Snackbar,
 } from "@material-ui/core";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Api } from "../../../../../../../api";
 import { ControlValidator } from "../../../../../../../classes/ControlValidator";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
@@ -27,8 +27,18 @@ import { useHistory } from "react-router-dom";
 import { TicketTags } from "../../../../../../../components/ticketTags";
 import { ISimplifiedTag } from "../../../../../../../models/simplifiedTag";
 import { cloneDeep } from "lodash";
-import { TitleSection } from "../../../../../../../components/titleSection";
-import { SummarySection } from "../../../../../../../components/summarySection";
+import {
+    TitleSection,
+    titleSectionUniqueId,
+} from "../../../../../../../components/titleSection";
+import {
+    SummarySection,
+    summarySectionUniqueId,
+} from "../../../../../../../components/summarySection";
+import { IGhostControlParamsMapping } from "../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
+import { IGhostControlParams } from "../../../../../../../models/ghostControlPattern/ghostControlParams";
+import { IStarterGhostControlParamsMapping } from "../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
+import { generateUniqueId } from "../../../../../../../utils/generateUniqueId";
 
 export function CreateTicket() {
     const history = useHistory();
@@ -112,38 +122,61 @@ export function CreateTicket() {
         }
     );
 
-    const [controlInformation, setControlInformation] = useState<{
-        [id: string]: {
-            value: any;
-            errorMessage: string;
-            isDirty: boolean;
-            type?: "title" | "summary";
-        };
-    }>({});
-    function onStateChange(
-        uniqueId: string,
-        value: string,
-        errorMessage: string,
-        isDirty: boolean,
-        type?: "title" | "summary"
-    ) {
-        setControlInformation((previousControlInformation) => {
-            const clonedControlInformation = cloneDeep(
-                previousControlInformation
-            );
-            clonedControlInformation[uniqueId] = {
-                value,
-                errorMessage,
-                isDirty,
-                type,
-            };
+    const [sectionOrder, setSectionOrder] = useState<string[]>([]);
+    useEffect(() => {
+        if (!selectedTicketTemplate) return;
 
-            return clonedControlInformation;
+        const mapping: IStarterGhostControlParamsMapping = {
+            [titleSectionUniqueId]: {
+                uniqueId: titleSectionUniqueId,
+                value: "",
+            },
+            [summarySectionUniqueId]: {
+                uniqueId: summarySectionUniqueId,
+                value: "",
+            },
+        };
+
+        const sectionOrder: string[] = [];
+        selectedTicketTemplate.sections.forEach((section) => {
+            const uniqueId = generateUniqueId(3);
+            sectionOrder.push(uniqueId);
+            mapping[uniqueId] = {
+                uniqueId,
+                value: section,
+            };
         });
-    }
-    const someControlsAreInvalid = Object.values(controlInformation).some(
-        ({ errorMessage }) => !!errorMessage
+
+        setSectionOrder(sectionOrder);
+        setStarterGhostControlParamsMapping(mapping);
+        setRefreshToken({});
+    }, [selectedTicketTemplate]);
+
+    const [
+        starterGhostControlParamsMapping,
+        setStarterGhostControlParamsMapping,
+    ] = useState<IStarterGhostControlParamsMapping>({});
+
+    const [ghostControlParamsMapping, setGhostControlParamsMapping] = useState<
+        IGhostControlParamsMapping
+    >({});
+    const onStateChange = useCallback(
+        (ghostControlParams: IGhostControlParams) => {
+            setGhostControlParamsMapping((previousGhostControlParams) => {
+                const updatedGhostControlParams = {
+                    ...previousGhostControlParams,
+                    [ghostControlParams.uniqueId]: ghostControlParams,
+                };
+
+                return updatedGhostControlParams;
+            });
+        },
+        []
     );
+
+    const someControlsAreInvalid = Object.values(
+        ghostControlParamsMapping
+    ).some(({ error }) => !!error);
 
     const startingColumnControl = useControl({
         value: "BACKLOG",
@@ -169,6 +202,7 @@ export function CreateTicket() {
         setShowSuccessSnackbar(false);
     }
 
+    const [refreshToken, setRefreshToken] = useState({});
     useEffect(() => {
         if (!ticketCreateRequest) return;
 
@@ -181,6 +215,7 @@ export function CreateTicket() {
                 setShowSuccessSnackbar(true);
                 ticketTemplateControl.resetControlState("");
                 startingColumnControl.resetControlState("BACKLOG");
+                setRefreshToken({});
                 setTagsState({
                     simplifiedTags: [],
                     isDirty: false,
@@ -218,13 +253,8 @@ export function CreateTicket() {
     }
 
     function onClickCreate() {
-        const title = Object.values(controlInformation).find((control) => {
-            return control.type === "title";
-        })!.value;
-
-        const summary = Object.values(controlInformation).find((control) => {
-            return control.type === "summary";
-        })!.value;
+        const title = ghostControlParamsMapping[titleSectionUniqueId].value;
+        const summary = ghostControlParamsMapping[summarySectionUniqueId].value;
 
         setTicketCreateRequest({
             title,
@@ -257,6 +287,10 @@ export function CreateTicket() {
         },
     ];
 
+    const titleControl = starterGhostControlParamsMapping[titleSectionUniqueId];
+    const summaryControl =
+        starterGhostControlParamsMapping[summarySectionUniqueId];
+
     return (
         <BoardContainer>
             {isLoadingTicketTemplates ? (
@@ -287,57 +321,66 @@ export function CreateTicket() {
                                     })}
                                 </Select>
                             </FormControl>
-                            {!!selectedTicketTemplate && (
-                                <div css={classes.ticketSectionsContainer}>
-                                    <TitleSection
-                                        title={""}
-                                        label={
-                                            selectedTicketTemplate?.title
-                                                .label || ""
-                                        }
-                                        onStateChange={onStateChange}
-                                    />
-                                    <SummarySection
-                                        summary={""}
+                            {!!selectedTicketTemplate &&
+                                !!titleControl &&
+                                !!summaryControl && (
+                                    <div css={classes.ticketSectionsContainer}>
+                                        <TitleSection
+                                            title={titleControl.value}
+                                            label={
+                                                selectedTicketTemplate?.title
+                                                    .label || ""
+                                            }
+                                            onStateChange={onStateChange}
+                                            refreshToken={refreshToken}
+                                        />
+                                        {/* <SummarySection
+                                        summary={summaryControl.value}
                                         label={
                                             selectedTicketTemplate?.summary
                                                 .label || ""
                                         }
                                         onStateChange={onStateChange}
-                                    />
-                                    <FormControl fullWidth>
-                                        <InputLabel>Send Ticket To</InputLabel>
-                                        <Select
-                                            value={startingColumnControl.value}
-                                            onChange={
-                                                startingColumnControl.onChange
-                                            }
-                                        >
-                                            <MenuItem value={"BACKLOG"}>
-                                                Backlog
-                                            </MenuItem>
-                                            {potentialStartingColumns.map(
-                                                (potentialStartingColumn) => {
-                                                    return (
-                                                        <MenuItem
-                                                            value={
-                                                                potentialStartingColumn.id
-                                                            }
-                                                            key={
-                                                                potentialStartingColumn.id
-                                                            }
-                                                        >
-                                                            {
-                                                                potentialStartingColumn.name
-                                                            }
-                                                        </MenuItem>
-                                                    );
+                                    /> */}
+                                        <FormControl fullWidth>
+                                            <InputLabel>
+                                                Send Ticket To
+                                            </InputLabel>
+                                            <Select
+                                                value={
+                                                    startingColumnControl.value
                                                 }
-                                            )}
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            )}
+                                                onChange={
+                                                    startingColumnControl.onChange
+                                                }
+                                            >
+                                                <MenuItem value={"BACKLOG"}>
+                                                    Backlog
+                                                </MenuItem>
+                                                {potentialStartingColumns.map(
+                                                    (
+                                                        potentialStartingColumn
+                                                    ) => {
+                                                        return (
+                                                            <MenuItem
+                                                                value={
+                                                                    potentialStartingColumn.id
+                                                                }
+                                                                key={
+                                                                    potentialStartingColumn.id
+                                                                }
+                                                            >
+                                                                {
+                                                                    potentialStartingColumn.name
+                                                                }
+                                                            </MenuItem>
+                                                        );
+                                                    }
+                                                )}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                )}
                         </div>
                         <TicketTags
                             tags={tagsState.simplifiedTags}

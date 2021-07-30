@@ -177,14 +177,14 @@ export function TicketHome() {
                     <div css={classes.ticketContentContainer}>
                         <div css={classes.nonTagTicketInformationContainer}>
                             <div css={classes.ticketSectionsContainer}>
-                                <TitleSection
+                                {/* <TitleSection
                                     title={ticket?.title || ""}
                                     label={
                                         ticket?.simplifiedTicketTemplate.title
                                             .label || ""
                                     }
                                     onStateChange={onStateChange}
-                                />
+                                /> */}
                                 <SummarySection
                                     summary={ticket?.summary || ""}
                                     label={
