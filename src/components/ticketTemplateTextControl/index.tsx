@@ -11,6 +11,7 @@ import { Checkbox, FormControlLabel, Theme, useTheme } from "@material-ui/core";
 
 export interface ITicketTemplateTextControlProps {
     label: string;
+    multiline: boolean;
     index: number;
     uniqueId: string;
     disabled: boolean;
@@ -46,7 +47,8 @@ function NonMemoizedTicketTemplateTextControl(
 
     useEffect(() => {
         textLabelControl.resetControlState(props.label);
-    }, [props.refreshToken, props.label]);
+        multilineTextControl.resetControlState(props.multiline);
+    }, [props.refreshToken, props.label, props.multiline]);
 
     useEffect(() => {
         props.onStateChange({

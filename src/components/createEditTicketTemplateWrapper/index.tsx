@@ -118,6 +118,7 @@ export function CreateEditTicketTemplateWrapper(
                                         <TicketTemplateTextControl
                                             uniqueId={sectionId}
                                             label={textSection.label}
+                                            multiline={textSection.multiline}
                                             onStateChange={onStateChange}
                                             disabled={disabled}
                                             refreshToken={refreshToken}
