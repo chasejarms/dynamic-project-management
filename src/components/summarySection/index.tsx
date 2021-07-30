@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
 
 export interface ISummarySectionProps {
     summary: string;
@@ -13,7 +14,7 @@ export interface ISummarySectionProps {
 }
 
 export const summarySectionUniqueId = "summary-section-unique-id";
-export function SummarySection(props: ISummarySectionProps) {
+function NonMemoizedSummarySection(props: ISummarySectionProps) {
     const summaryControl = useControl({
         value: "",
         onChange: (
@@ -56,3 +57,5 @@ export function SummarySection(props: ISummarySectionProps) {
         />
     );
 }
+
+export const SummarySection = React.memo(NonMemoizedSummarySection);

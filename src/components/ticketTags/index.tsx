@@ -7,6 +7,7 @@ import { ISimplifiedTag } from "../../models/simplifiedTag";
 import { ITag } from "../../models/tag";
 import { AddOutlined } from "@material-ui/icons";
 import { TagChip } from "../tagChip";
+import React from "react";
 
 export interface ITicketTagsProps {
     tags: ISimplifiedTag[];
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-export function TicketTags(props: ITicketTagsProps) {
+function NonMemoizedTicketTags(props: ITicketTagsProps) {
     const classes = createClasses();
     const materialClasses = useStyles();
     const [databaseAndLocalTags, setDatabaseAndLocalTags] = useState({
@@ -235,3 +236,5 @@ const createClasses = () => {
         centerAllTagsMessageContainer,
     };
 };
+
+export const TicketTags = React.memo(NonMemoizedTicketTags);

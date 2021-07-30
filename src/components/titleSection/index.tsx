@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
-import { generateUniqueId } from "../../utils/generateUniqueId";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
 
 export interface ITitleSectionProps {
     title: string;
@@ -15,7 +15,7 @@ export interface ITitleSectionProps {
 }
 
 export const titleSectionUniqueId = "title-section-unique-id";
-export function TitleSection(props: ITitleSectionProps) {
+function NonMemoizedTitleSection(props: ITitleSectionProps) {
     const titleControl = useControl({
         value: "",
         onChange: (
@@ -57,3 +57,5 @@ export function TitleSection(props: ITitleSectionProps) {
         />
     );
 }
+
+export const TitleSection = React.memo(NonMemoizedTitleSection);

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
 
 export interface ITextSectionProps {
     uniqueId: string;
@@ -14,7 +15,7 @@ export interface ITextSectionProps {
     refreshToken: {};
 }
 
-export function TextSection(props: ITextSectionProps) {
+function NonMemoizedTextSection(props: ITextSectionProps) {
     const textControl = useControl({
         value: "",
         onChange: (
@@ -52,3 +53,5 @@ export function TextSection(props: ITextSectionProps) {
         />
     );
 }
+
+export const TextSection = React.memo(NonMemoizedTextSection);
