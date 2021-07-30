@@ -39,6 +39,8 @@ import { IGhostControlParamsMapping } from "../../../../../../../models/ghostCon
 import { IGhostControlParams } from "../../../../../../../models/ghostControlPattern/ghostControlParams";
 import { IStarterGhostControlParamsMapping } from "../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
 import { generateUniqueId } from "../../../../../../../utils/generateUniqueId";
+import { TextSection } from "../../../../../../../components/textSection";
+import { ITextSection } from "../../../../../../../models/ticketTemplate/textSection";
 
 export function CreateTicket() {
     const history = useHistory();
@@ -122,7 +124,6 @@ export function CreateTicket() {
         }
     );
 
-    const [sectionOrder, setSectionOrder] = useState<string[]>([]);
     useEffect(() => {
         if (!selectedTicketTemplate) return;
 
@@ -138,24 +139,32 @@ export function CreateTicket() {
         };
 
         const sectionOrder: string[] = [];
-        selectedTicketTemplate.sections.forEach((section) => {
+        selectedTicketTemplate.sections.forEach(() => {
             const uniqueId = generateUniqueId(3);
             sectionOrder.push(uniqueId);
             mapping[uniqueId] = {
                 uniqueId,
-                value: section,
+                value: "",
             };
         });
 
-        setSectionOrder(sectionOrder);
-        setStarterGhostControlParamsMapping(mapping);
+        setStarterGhostControlParamsMappingAndSectionOrder({
+            sectionOrder,
+            starterGhostControlParamsMapping: mapping,
+        });
         setRefreshToken({});
     }, [selectedTicketTemplate]);
 
     const [
-        starterGhostControlParamsMapping,
-        setStarterGhostControlParamsMapping,
-    ] = useState<IStarterGhostControlParamsMapping>({});
+        { starterGhostControlParamsMapping, sectionOrder },
+        setStarterGhostControlParamsMappingAndSectionOrder,
+    ] = useState<{
+        starterGhostControlParamsMapping: IStarterGhostControlParamsMapping;
+        sectionOrder: string[];
+    }>({
+        starterGhostControlParamsMapping: {},
+        sectionOrder: [],
+    });
 
     const [ghostControlParamsMapping, setGhostControlParamsMapping] = useState<
         IGhostControlParamsMapping
@@ -255,11 +264,15 @@ export function CreateTicket() {
     function onClickCreate() {
         const title = ghostControlParamsMapping[titleSectionUniqueId].value;
         const summary = ghostControlParamsMapping[summarySectionUniqueId].value;
+        const sections = sectionOrder.map((sectionId) => {
+            const sectionValue = ghostControlParamsMapping[sectionId].value;
+            return sectionValue;
+        });
 
         setTicketCreateRequest({
             title,
             summary,
-            sections: [],
+            sections,
             tags: tagsState.simplifiedTags,
             simplifiedTicketTemplate: {
                 title: selectedTicketTemplate!.title,
@@ -334,14 +347,47 @@ export function CreateTicket() {
                                             onStateChange={onStateChange}
                                             refreshToken={refreshToken}
                                         />
-                                        {/* <SummarySection
-                                        summary={summaryControl.value}
-                                        label={
-                                            selectedTicketTemplate?.summary
-                                                .label || ""
-                                        }
-                                        onStateChange={onStateChange}
-                                    /> */}
+                                        <SummarySection
+                                            summary={summaryControl.value}
+                                            label={
+                                                selectedTicketTemplate?.summary
+                                                    .label || ""
+                                            }
+                                            onStateChange={onStateChange}
+                                            refreshToken={refreshToken}
+                                        />
+                                        {sectionOrder.map(
+                                            (sectionId, index) => {
+                                                const section =
+                                                    starterGhostControlParamsMapping[
+                                                        sectionId
+                                                    ];
+                                                const ticketTemplateSection =
+                                                    selectedTicketTemplate
+                                                        .sections[index];
+
+                                                if (!ticketTemplateSection)
+                                                    return null;
+                                                return (
+                                                    <TextSection
+                                                        uniqueId={sectionId}
+                                                        label={
+                                                            ticketTemplateSection.label
+                                                        }
+                                                        multiline={
+                                                            ticketTemplateSection.multiline
+                                                        }
+                                                        onStateChange={
+                                                            onStateChange
+                                                        }
+                                                        refreshToken={
+                                                            refreshToken
+                                                        }
+                                                        value={section.value}
+                                                    />
+                                                );
+                                            }
+                                        )}
                                         <FormControl fullWidth>
                                             <InputLabel>
                                                 Send Ticket To

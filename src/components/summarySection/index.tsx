@@ -2,25 +2,18 @@
 import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useControl } from "../../hooks/useControl";
-import { generateUniqueId } from "../../utils/generateUniqueId";
+import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface ISummarySectionProps {
     summary: string;
     label: string;
-    onStateChange: (
-        uniqueId: string,
-        value: string,
-        error: string,
-        isDirty: boolean,
-        type?: "title" | "summary"
-    ) => void;
+    onStateChange: (ghostControlParams: IGhostControlParams) => void;
+    refreshToken: {};
 }
 
 export const summarySectionUniqueId = "summary-section-unique-id";
 export function SummarySection(props: ISummarySectionProps) {
-    const [uniqueId] = useState(generateUniqueId(3));
-
     const summaryControl = useControl({
         value: "",
         onChange: (
@@ -35,16 +28,15 @@ export function SummarySection(props: ISummarySectionProps) {
 
     useEffect(() => {
         summaryControl.resetControlState(props.summary);
-    }, [props.summary]);
+    }, [props.summary, props.refreshToken]);
 
     useEffect(() => {
-        props.onStateChange(
-            uniqueId,
-            summaryControl.value,
-            summaryControl.errorMessage,
-            summaryControl.isDirty,
-            "summary"
-        );
+        props.onStateChange({
+            uniqueId: summarySectionUniqueId,
+            value: summaryControl.value,
+            error: summaryControl.errorMessage,
+            isDirty: summaryControl.isDirty,
+        });
     }, [
         summaryControl.value,
         summaryControl.errorMessage,

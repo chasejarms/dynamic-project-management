@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { Paper } from "@material-ui/core";
@@ -13,9 +13,20 @@ import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdat
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
 import { TicketPageWrapper } from "../../../../../../../../components/ticketPageWrapper";
-import { TitleSection } from "../../../../../../../../components/titleSection";
-import { SummarySection } from "../../../../../../../../components/summarySection";
+import {
+    TitleSection,
+    titleSectionUniqueId,
+} from "../../../../../../../../components/titleSection";
+import {
+    SummarySection,
+    summarySectionUniqueId,
+} from "../../../../../../../../components/summarySection";
 import { TicketTags } from "../../../../../../../../components/ticketTags";
+import { IGhostControlParams } from "../../../../../../../../models/ghostControlPattern/ghostControlParams";
+import { IGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
+import { IStarterGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
+import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
+import { TextSection } from "../../../../../../../../components/textSection";
 
 export function TicketHome() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
@@ -26,38 +37,6 @@ export function TicketHome() {
     ] = useState(true);
     const [allTagsForBoard, setAllTagsForBoard] = useState<ITag[]>([]);
     const [ticket, setTicket] = useState<ITicket | null>(null);
-    const [controlInformation, setControlInformation] = useState<{
-        [id: string]: {
-            value: any;
-            errorMessage: string;
-            isDirty: boolean;
-            type?: "title" | "summary";
-        };
-    }>({});
-    function onStateChange(
-        uniqueId: string,
-        value: string,
-        errorMessage: string,
-        isDirty: boolean,
-        type?: "title" | "summary"
-    ) {
-        setControlInformation((previousControlInformation) => {
-            const clonedControlInformation = cloneDeep(
-                previousControlInformation
-            );
-            clonedControlInformation[uniqueId] = {
-                value,
-                errorMessage,
-                isDirty,
-                type,
-            };
-
-            return clonedControlInformation;
-        });
-    }
-    const someControlsAreInvalid = Object.values(controlInformation).some(
-        ({ errorMessage }) => !!errorMessage
-    );
 
     const [tagsState, setTagsState] = useState<{
         simplifiedTags: ISimplifiedTag[];
@@ -73,10 +52,37 @@ export function TicketHome() {
         });
     }
 
-    const someControlsAreDirty =
-        Object.values(controlInformation).some(({ isDirty }) => {
-            return isDirty;
-        }) || tagsState.isDirty;
+    const [
+        { starterGhostControlParamsMapping, sectionOrder },
+        setStarterGhostControlParamsMappingAndSectionOrder,
+    ] = useState<{
+        starterGhostControlParamsMapping: IStarterGhostControlParamsMapping;
+        sectionOrder: string[];
+    }>({
+        starterGhostControlParamsMapping: {},
+        sectionOrder: [],
+    });
+
+    const [ghostControlParamsMapping, setGhostControlParamsMapping] = useState<
+        IGhostControlParamsMapping
+    >({});
+    const onStateChange = useCallback(
+        (ghostControlParams: IGhostControlParams) => {
+            setGhostControlParamsMapping((previousGhostControlParams) => {
+                const updatedGhostControlParams = {
+                    ...previousGhostControlParams,
+                    [ghostControlParams.uniqueId]: ghostControlParams,
+                };
+
+                return updatedGhostControlParams;
+            });
+        },
+        []
+    );
+
+    const someControlsAreInvalid = Object.values(
+        ghostControlParamsMapping
+    ).some(({ error }) => !!error);
 
     useEffect(() => {
         if (!boardId || !companyId || !ticketId) return;
@@ -92,6 +98,31 @@ export function TicketHome() {
                 if (didCancel) return;
                 setAllTagsForBoard(tags);
                 setTicket(ticketFromDatabase);
+
+                const mapping: IStarterGhostControlParamsMapping = {
+                    [titleSectionUniqueId]: {
+                        uniqueId: titleSectionUniqueId,
+                        value: ticketFromDatabase.title,
+                    },
+                    [summarySectionUniqueId]: {
+                        uniqueId: summarySectionUniqueId,
+                        value: ticketFromDatabase.summary,
+                    },
+                };
+                const sectionOrderFromDatabase: string[] = [];
+                ticketFromDatabase.sections.forEach((sectionValue) => {
+                    const uniqueId = generateUniqueId(3);
+                    sectionOrderFromDatabase.push(uniqueId);
+
+                    mapping[uniqueId] = {
+                        uniqueId,
+                        value: sectionValue,
+                    };
+                });
+                setStarterGhostControlParamsMappingAndSectionOrder({
+                    starterGhostControlParamsMapping: mapping,
+                    sectionOrder: sectionOrderFromDatabase,
+                });
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -113,6 +144,7 @@ export function TicketHome() {
         setTicketUpdateRequest,
     ] = useState<null | ITicketUpdateRequest>(null);
 
+    const [refreshToken, setRefreshToken] = useState({});
     useEffect(() => {
         if (!ticketUpdateRequest) return;
 
@@ -127,17 +159,29 @@ export function TicketHome() {
             .then((updatedTicket) => {
                 if (didCancel) return;
                 setTicket((previousTicket) => {
-                    if (previousTicket === null) {
-                        return null;
-                    }
-
                     return {
-                        ...previousTicket,
-                        title: updatedTicket.title,
-                        summary: updatedTicket.summary,
-                        tags: updatedTicket.tags,
+                        ...(previousTicket as ITicket),
+                        ...ticketUpdateRequest,
                     };
                 });
+
+                const updatedStarterGhostControlParamsMapping: IStarterGhostControlParamsMapping = {};
+                Object.keys(ghostControlParamsMapping).forEach((key) => {
+                    const ghostControlParamsValue =
+                        ghostControlParamsMapping[key];
+                    updatedStarterGhostControlParamsMapping[key] = {
+                        uniqueId: key,
+                        value: ghostControlParamsValue.value,
+                    };
+                });
+                setStarterGhostControlParamsMappingAndSectionOrder(
+                    (previous) => {
+                        return {
+                            ...previous,
+                            starterGhostControlParamsMapping: updatedStarterGhostControlParamsMapping,
+                        };
+                    }
+                );
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -153,20 +197,24 @@ export function TicketHome() {
     }, [ticketUpdateRequest]);
 
     function onClickUpdate() {
-        const title = Object.values(controlInformation).find((control) => {
-            return control.type === "title";
-        })!.value;
-
-        const summary = Object.values(controlInformation).find((control) => {
-            return control.type === "summary";
-        })!.value;
+        const title = ghostControlParamsMapping[titleSectionUniqueId].value;
+        const summary = ghostControlParamsMapping[summarySectionUniqueId].value;
+        const sections = sectionOrder.map((sectionId) => {
+            const sectionValue = ghostControlParamsMapping[sectionId].value;
+            return sectionValue;
+        });
 
         setTicketUpdateRequest({
             title,
             summary,
             tags: tagsState.simplifiedTags,
+            sections,
         });
     }
+
+    const titleControl = starterGhostControlParamsMapping[titleSectionUniqueId];
+    const summaryControl =
+        starterGhostControlParamsMapping[summarySectionUniqueId];
 
     return (
         <TicketPageWrapper>
@@ -177,22 +225,48 @@ export function TicketHome() {
                     <div css={classes.ticketContentContainer}>
                         <div css={classes.nonTagTicketInformationContainer}>
                             <div css={classes.ticketSectionsContainer}>
-                                {/* <TitleSection
-                                    title={ticket?.title || ""}
+                                <TitleSection
+                                    title={titleControl.value}
                                     label={
                                         ticket?.simplifiedTicketTemplate.title
                                             .label || ""
                                     }
                                     onStateChange={onStateChange}
-                                /> */}
+                                    refreshToken={refreshToken}
+                                />
                                 <SummarySection
-                                    summary={ticket?.summary || ""}
+                                    summary={summaryControl.value}
                                     label={
                                         ticket?.simplifiedTicketTemplate.summary
                                             .label || ""
                                     }
                                     onStateChange={onStateChange}
+                                    refreshToken={refreshToken}
                                 />
+                                {sectionOrder.map((sectionId, index) => {
+                                    const section =
+                                        starterGhostControlParamsMapping[
+                                            sectionId
+                                        ];
+                                    const ticketTemplateSection = ticket
+                                        ?.simplifiedTicketTemplate.sections[
+                                        index
+                                    ]!;
+
+                                    if (!ticketTemplateSection) return null;
+                                    return (
+                                        <TextSection
+                                            uniqueId={sectionId}
+                                            label={ticketTemplateSection.label}
+                                            multiline={
+                                                ticketTemplateSection.multiline
+                                            }
+                                            onStateChange={onStateChange}
+                                            refreshToken={refreshToken}
+                                            value={section.value}
+                                        />
+                                    );
+                                })}
                             </div>
                         </div>
                         <TicketTags
@@ -209,7 +283,6 @@ export function TicketHome() {
                                     variant="contained"
                                     disabled={
                                         someControlsAreInvalid ||
-                                        !someControlsAreDirty ||
                                         !!ticketUpdateRequest
                                     }
                                     showSpinner={!!ticketUpdateRequest}

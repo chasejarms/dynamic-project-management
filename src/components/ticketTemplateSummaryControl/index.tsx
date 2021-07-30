@@ -6,7 +6,7 @@ import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
 import React from "react";
-import { AddDeleteSectionWrapper } from "../AddDeleteSectionWrapper";
+import { AddDeleteSectionWrapper } from "../addDeleteSectionWrapper";
 
 export interface ITicketTemplateSummaryControl {
     summary: string;

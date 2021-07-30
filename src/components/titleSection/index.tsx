@@ -16,8 +16,6 @@ export interface ITitleSectionProps {
 
 export const titleSectionUniqueId = "title-section-unique-id";
 export function TitleSection(props: ITitleSectionProps) {
-    const [uniqueId] = useState(generateUniqueId(3));
-
     const titleControl = useControl({
         value: "",
         onChange: (
@@ -41,7 +39,7 @@ export function TitleSection(props: ITitleSectionProps) {
 
     useEffect(() => {
         props.onStateChange({
-            uniqueId,
+            uniqueId: titleSectionUniqueId,
             value: titleControl.value,
             error: titleControl.errorMessage,
             isDirty: titleControl.isDirty,
