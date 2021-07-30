@@ -7,7 +7,7 @@ import { IGhostControlParams } from "../../models/ghostControlPattern/ghostContr
 import { WrappedTextField } from "../wrappedTextField";
 import React from "react";
 import { AddDeleteSectionWrapper } from "../AddDeleteSectionWrapper";
-import { Theme, useTheme } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Theme, useTheme } from "@material-ui/core";
 
 export interface ITicketTemplateTextControlProps {
     label: string;
@@ -37,6 +37,13 @@ function NonMemoizedTicketTemplateTextControl(
         },
     });
 
+    const multilineTextControl = useControl({
+        value: false,
+        onChange: (checked: boolean) => {
+            return checked;
+        },
+    });
+
     useEffect(() => {
         textLabelControl.resetControlState(props.label);
     }, [props.refreshToken, props.label]);
@@ -44,14 +51,23 @@ function NonMemoizedTicketTemplateTextControl(
     useEffect(() => {
         props.onStateChange({
             uniqueId: props.uniqueId,
-            value: textLabelControl.value,
-            error: textLabelControl.errorMessage,
-            isDirty: textLabelControl.isDirty,
+            value: {
+                label: textLabelControl.value,
+                multiline: multilineTextControl.value,
+                type: "text",
+            },
+            error:
+                textLabelControl.errorMessage ||
+                multilineTextControl.errorMessage,
+            isDirty: textLabelControl.isDirty || multilineTextControl.isDirty,
         });
     }, [
         textLabelControl.value,
         textLabelControl.errorMessage,
         textLabelControl.isDirty,
+        multilineTextControl.value,
+        multilineTextControl.errorMessage,
+        multilineTextControl.isDirty,
     ]);
 
     const showNameError =
@@ -78,6 +94,20 @@ function NonMemoizedTicketTemplateTextControl(
                     disabled={props.disabled}
                 />
             </AddDeleteSectionWrapper>
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        disabled={props.disabled}
+                        color="primary"
+                        checked={multilineTextControl.value}
+                        onChange={(unused, checked) =>
+                            multilineTextControl.onChange(checked)
+                        }
+                        name="allowMultilineText"
+                    />
+                }
+                label="Allow Multiline Text"
+            />
         </div>
     );
 }

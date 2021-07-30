@@ -51,8 +51,6 @@ export function EditTicketTemplate() {
         IGhostControlParamsMapping
     >({});
 
-    console.log("ghost control mapping: ", ghostControlParamsMapping);
-
     const onStateChange = useCallback(
         (ghostControlParams: IGhostControlParams) => {
             setGhostControlParamsMapping((previousGhostControlParams) => {
@@ -89,14 +87,17 @@ export function EditTicketTemplate() {
             },
         };
 
+        const sectionOrder: string[] = [];
         ticketTemplate.sections.forEach((section) => {
             const uniqueId = generateUniqueId(3);
+            sectionOrder.push(uniqueId);
             mapping[uniqueId] = {
                 uniqueId,
                 value: section,
             };
         });
 
+        setSectionOrder(sectionOrder);
         setStarterGhostControlParamsMapping(mapping);
     }
 
