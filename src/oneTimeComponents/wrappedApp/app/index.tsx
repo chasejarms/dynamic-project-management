@@ -9,6 +9,7 @@ import { Home } from "./home";
 import { Pricing } from "./pricing";
 import { Contact } from "./contact";
 import { SignUp } from "./signUp";
+import { ResetPassword } from "./resetPassword";
 
 export function App() {
     useAxiosInterceptor();
@@ -30,6 +31,9 @@ export function App() {
             </Route>
             <Route path="/sign-up" exact>
                 <SignUp />
+            </Route>
+            <Route path="/reset-password" exact>
+                <ResetPassword />
             </Route>
             <Route path="/app">
                 <Authenticated />

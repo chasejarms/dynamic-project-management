@@ -1,6 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar } from "@material-ui/core";
+import {
+    Typography,
+    Snackbar,
+    makeStyles,
+    Theme,
+    useTheme,
+} from "@material-ui/core";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
@@ -13,6 +19,15 @@ import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
+
+const useStyles = makeStyles({
+    resetPasswordText: (theme: Theme) => ({
+        color: theme.palette.primary.main,
+        cursor: "pointer",
+        position: "relative",
+        top: "8px",
+    }),
+});
 
 export function SignIn() {
     const history = useHistory();
@@ -50,6 +65,8 @@ export function SignIn() {
         !passwordControl.isValid && passwordControl.isTouched;
 
     const classes = createClasses();
+    const theme = useTheme();
+    const materialClasses = useStyles(theme);
 
     const [isSigningIn, setIsSigningIn] = useState(false);
     function triggerSignIn() {
@@ -134,6 +151,10 @@ export function SignIn() {
         });
     }
 
+    function navigateToResetPasswordPage() {
+        history.push("/reset-password");
+    }
+
     return (
         <NonAuthenticatedPageContainer makeFullPage>
             <div css={classes.pageContainer}>
@@ -159,6 +180,13 @@ export function SignIn() {
                         }
                     />
                     <div css={classes.signInButtonContainer}>
+                        <Typography
+                            onClick={navigateToResetPasswordPage}
+                            variant="caption"
+                            className={materialClasses.resetPasswordText}
+                        >
+                            Reset Password
+                        </Typography>
                         <WrappedButton
                             variant="contained"
                             color="primary"
@@ -196,7 +224,7 @@ const createClasses = () => {
 
     const signInButtonContainer = css`
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         margin-top: 16px;
     `;
 
