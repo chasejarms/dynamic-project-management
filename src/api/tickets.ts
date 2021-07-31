@@ -184,7 +184,7 @@ export class TicketsApi implements ITicketsApi {
                 params: {
                     companyId,
                     boardId,
-                    limit: 5,
+                    limit: 20,
                     lastEvaluatedItemId,
                     lastEvaluatedBelongsTo,
                 },
