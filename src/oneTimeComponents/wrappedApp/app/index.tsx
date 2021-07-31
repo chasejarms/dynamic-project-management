@@ -10,6 +10,7 @@ import { Pricing } from "./pricing";
 import { Contact } from "./contact";
 import { SignUp } from "./signUp";
 import { ResetPassword } from "./resetPassword";
+import { EnterNewPassword } from "./enterNewPassword";
 
 export function App() {
     useAxiosInterceptor();
@@ -34,6 +35,9 @@ export function App() {
             </Route>
             <Route path="/reset-password" exact>
                 <ResetPassword />
+            </Route>
+            <Route path="/enter-new-password" exact>
+                <EnterNewPassword />
             </Route>
             <Route path="/app">
                 <Authenticated />
