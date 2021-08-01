@@ -60,11 +60,7 @@ function NonMemoizedAuthenticatedPageTopBar(
             },
         ];
 
-        if (
-            location.pathname.includes("boards") ||
-            !!boardId ||
-            location.pathname.includes("company-users")
-        ) {
+        if (!!companyId) {
             breadcrumbs.push({
                 text: "Company",
                 route: `/app/company/${companyId}/boards`,
