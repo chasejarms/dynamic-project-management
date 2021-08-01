@@ -65,10 +65,10 @@ export function BoardContainer(props: IBoardContainerProps) {
             text: "Priorities",
             route: `/app/company/${companyId}/board/${boardId}/priorities`,
         },
-        // {
-        //     text: "Users",
-        //     route: `/app/company/${companyId}/board/${boardId}/users`,
-        // },
+        {
+            text: "Board Users",
+            route: `/app/company/${companyId}/board/${boardId}/board-users`,
+        },
         {
             text: "Backlog Tickets",
             route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
