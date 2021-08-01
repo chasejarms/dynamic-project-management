@@ -60,9 +60,13 @@ function NonMemoizedAuthenticatedPageTopBar(
             },
         ];
 
-        if (location.pathname.includes("boards") || !!boardId) {
+        if (
+            location.pathname.includes("boards") ||
+            !!boardId ||
+            location.pathname.includes("company-users")
+        ) {
             breadcrumbs.push({
-                text: "Boards",
+                text: "Company",
                 route: `/app/company/${companyId}/boards`,
             });
         }

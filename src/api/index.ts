@@ -6,6 +6,7 @@ import { ColumnsApi, IColumnsApi } from "./columns";
 import { ISignUpApi, SignUpApi } from "./sign-up";
 import { ITicketTemplatesApi, TicketTemplatesApi } from "./ticketTemplates";
 import { ITicketsApi, TicketsApi } from "./tickets";
+import { IUsersApi, UsersApi } from "./users";
 
 export interface IApi {
     discountCodes: IDiscountCodesApi;
@@ -16,6 +17,7 @@ export interface IApi {
     signUp: ISignUpApi;
     ticketTemplates: ITicketTemplatesApi;
     tickets: ITicketsApi;
+    users: IUsersApi;
 }
 
 class ApiClass implements IApi {
@@ -27,6 +29,7 @@ class ApiClass implements IApi {
     public signUp = new SignUpApi();
     public ticketTemplates = new TicketTemplatesApi();
     public tickets = new TicketsApi();
+    public users = new UsersApi();
 }
 
 export const Api = new ApiClass();

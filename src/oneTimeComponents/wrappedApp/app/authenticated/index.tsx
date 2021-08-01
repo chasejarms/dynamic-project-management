@@ -4,6 +4,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { Companies } from "./companies";
 import { Board } from "./company/board";
 import { Boards } from "./company/boards";
+import { CompanyUsers } from "./company/companyUsers";
 import { CreateBoard } from "./company/createBoard";
 
 export function Authenticated() {
@@ -19,6 +20,9 @@ export function Authenticated() {
             </Route>
             <Route path={`${url}/company/:companyId/boards/create-board`} exact>
                 <CreateBoard />
+            </Route>
+            <Route path={`${url}/company/:companyId/company-users`} exact>
+                <CompanyUsers />
             </Route>
             <Route path={`${url}/company/:companyId/board/:boardId`}>
                 <Board />

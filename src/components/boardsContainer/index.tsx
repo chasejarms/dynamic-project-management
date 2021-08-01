@@ -23,6 +23,10 @@ export function BoardsContainer(props: IBoardContainerProps) {
             text: "Create Board",
             route: `/app/company/${companyId}/boards/create-board`,
         },
+        {
+            text: "Company Users",
+            route: `/app/company/${companyId}/company-users`,
+        },
     ];
     return (
         <AuthenticatedPageContainer navItems={navItems}>
