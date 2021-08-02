@@ -9,6 +9,7 @@ import {
     Typography,
 } from "@material-ui/core";
 import { WrappedButton } from "../wrappedButton";
+import { TransitionProps } from "@material-ui/core/transitions/transition";
 
 export interface IConfirmDialogProps {
     isPerformingAction: boolean;
@@ -18,6 +19,7 @@ export interface IConfirmDialogProps {
     title: string;
     content: string;
     confirmButtonText: string;
+    TransitionProps?: TransitionProps;
 }
 
 export function ConfirmDialog(props: IConfirmDialogProps) {
@@ -26,6 +28,7 @@ export function ConfirmDialog(props: IConfirmDialogProps) {
             open={props.open}
             onClose={props.onClose}
             disableBackdropClick={props.isPerformingAction}
+            TransitionProps={props.TransitionProps}
         >
             <DialogTitle>{props.title}</DialogTitle>
             <DialogContent>

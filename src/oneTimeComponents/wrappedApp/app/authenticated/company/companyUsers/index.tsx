@@ -7,6 +7,7 @@ import {
     DialogContent,
     DialogTitle,
     FormControlLabel,
+    IconButton,
     makeStyles,
     Paper,
     Table,
@@ -29,6 +30,8 @@ import { useEmailControl } from "../../../../../../hooks/useEmailControl";
 import { useNameControl } from "../../../../../../hooks/useNameControl";
 import { IUser } from "../../../../../../models/user";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
+import { Delete } from "@material-ui/icons";
+import { ConfirmDialog } from "../../../../../../components/confirmDialog";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -167,6 +170,77 @@ export function CompanyUsers() {
         };
     });
 
+    const [
+        { userToDelete, deleteDialogIsOpen },
+        setUserDeleteMetadata,
+    ] = useState<{
+        userToDelete: null | IUser;
+        deleteDialogIsOpen: boolean;
+    }>({
+        userToDelete: null,
+        deleteDialogIsOpen: false,
+    });
+    function onClickDeleteTableIcon(user: IUser) {
+        return () => {
+            setUserDeleteMetadata({
+                userToDelete: user,
+                deleteDialogIsOpen: true,
+            });
+        };
+    }
+    function onCloseDeleteUserDialog() {
+        setUserDeleteMetadata((previous) => {
+            return {
+                ...previous,
+                deleteDialogIsOpen: false,
+            };
+        });
+    }
+
+    const [isDeletingUser, setIsDeletingUser] = useState(false);
+    function onConfirmDeleteUser() {
+        setIsDeletingUser(true);
+    }
+    useEffect(() => {
+        if (!isDeletingUser || !userToDelete) return;
+
+        let didCancel = false;
+
+        Api.users
+            .removeUserFromCompany(companyId, userToDelete.email)
+            .then(() => {
+                if (didCancel) return;
+                setUsers((users) => {
+                    return users.filter((compareUser) => {
+                        return (
+                            compareUser.shortenedItemId !==
+                            userToDelete.shortenedItemId
+                        );
+                    });
+                });
+                onCloseDeleteUserDialog();
+            })
+            .catch(() => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsDeletingUser(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isDeletingUser, userToDelete]);
+    function onExitedUserDeleteDialog() {
+        setUserDeleteMetadata((previous) => {
+            return {
+                ...previous,
+                userToDelete: null,
+            };
+        });
+    }
+
     const classes = createClasses();
     const materialClasses = useStyles();
     return (
@@ -192,6 +266,7 @@ export function CompanyUsers() {
                                 <TableRow>
                                     <TableCell>Name</TableCell>
                                     <TableCell>Can Manage Users</TableCell>
+                                    <TableCell />
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -218,6 +293,27 @@ export function CompanyUsers() {
                                                                 user
                                                             )}
                                                         />
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div
+                                                    css={
+                                                        classes.relativePositionedTableCell
+                                                    }
+                                                >
+                                                    <div
+                                                        css={
+                                                            classes.absolutePositionedTableCell
+                                                        }
+                                                    >
+                                                        <IconButton
+                                                            onClick={onClickDeleteTableIcon(
+                                                                user
+                                                            )}
+                                                        >
+                                                            <Delete />
+                                                        </IconButton>
                                                     </div>
                                                 </div>
                                             </TableCell>
@@ -296,6 +392,18 @@ export function CompanyUsers() {
                             </WrappedButton>
                         </DialogActions>
                     </Dialog>
+                    <ConfirmDialog
+                        isPerformingAction={isDeletingUser}
+                        open={deleteDialogIsOpen}
+                        onConfirm={onConfirmDeleteUser}
+                        onClose={onCloseDeleteUserDialog}
+                        title="Delete User"
+                        content="Are you sure you want to delete this user?"
+                        confirmButtonText="Delete User"
+                        TransitionProps={{
+                            onExited: onExitedUserDeleteDialog,
+                        }}
+                    />
                 </div>
             ) : (
                 <CenterLoadingSpinner size="large" />

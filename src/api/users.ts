@@ -14,6 +14,7 @@ export interface IUsersApi {
         companyId: string,
         request: IAddUserRequest
     ): Promise<IUser>;
+    removeUserFromCompany(companyId: string, email: string): Promise<void>;
 }
 
 export class UsersApi implements IUsersApi {
@@ -62,5 +63,17 @@ export class UsersApi implements IUsersApi {
             }
         );
         return axiosResponse.data as IUser;
+    }
+
+    public async removeUserFromCompany(companyId: string, email: string) {
+        await Axios.delete(
+            `${environmentVariables.baseAuthenticatedApiUrl}/removeUserFromCompany`,
+            {
+                params: {
+                    companyId,
+                    email,
+                },
+            }
+        );
     }
 }
