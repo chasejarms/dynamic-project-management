@@ -67,6 +67,18 @@ export function CompanyUsers() {
     const [userToUpdate, setUserToUpdate] = useState<null | IUser>(null);
     function onClickToggleUserRights(user: IUser) {
         return () => {
+            setUsers((users) => {
+                return users.map((compareUser) => {
+                    if (compareUser.shortenedItemId === user.shortenedItemId) {
+                        return {
+                            ...compareUser,
+                            canManageCompanyUsers: !compareUser.canManageCompanyUsers,
+                        };
+                    } else {
+                        return compareUser;
+                    }
+                });
+            });
             setUserToUpdate(user);
         };
     }
@@ -79,7 +91,8 @@ export function CompanyUsers() {
         Api.users
             .updateCanManageCompanyUsers(
                 companyId,
-                userToUpdate.shortenedItemId
+                userToUpdate.shortenedItemId,
+                !userToUpdate.canManageCompanyUsers
             )
             .then(() => {
                 if (didCancel) return;
