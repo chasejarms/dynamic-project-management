@@ -4,6 +4,10 @@ import { IUser } from "../models/user";
 
 export interface IUsersApi {
     getAllUsersForCompany(companyId: string): Promise<IUser[]>;
+    updateCanManageCompanyUsers(
+        companyId: string,
+        userToUpdateShortenedItemId: string
+    ): Promise<void>;
 }
 
 export class UsersApi implements IUsersApi {
@@ -17,5 +21,20 @@ export class UsersApi implements IUsersApi {
             }
         );
         return axiosResponse.data as IUser[];
+    }
+
+    public async updateCanManageCompanyUsers(
+        companyId: string,
+        userToUpdateShortenedItemId: string
+    ): Promise<void> {
+        await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/updateCanManageCompanyUsers`,
+            {
+                params: {
+                    companyId,
+                    userToUpdateShortenedItemId,
+                },
+            }
+        );
     }
 }
