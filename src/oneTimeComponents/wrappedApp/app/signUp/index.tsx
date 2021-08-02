@@ -10,24 +10,12 @@ import { WrappedTextField } from "../../../../components/wrappedTextField";
 import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
+import { useEmailControl } from "../../../../hooks/useEmailControl";
+import { useNameControl } from "../../../../hooks/useNameControl";
 
 export function SignUp() {
     const history = useHistory();
-    const emailControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (email: string) => {
-            return ControlValidator.string()
-                .required("This field is required")
-                .email("A valid email is required")
-                .validate(email);
-        },
-    });
-    const showEmailError = !emailControl.isValid && emailControl.isTouched;
+    const { emailControl, showEmailError } = useEmailControl();
 
     const passwordControl = useControl({
         value: "",
@@ -55,20 +43,7 @@ export function SignUp() {
     const showPasswordError =
         !passwordControl.isValid && passwordControl.isTouched;
 
-    const nameControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (name: string) => {
-            return ControlValidator.string()
-                .required("A name is required")
-                .validate(name);
-        },
-    });
-    const showNameError = !nameControl.isValid && nameControl.isTouched;
+    const { nameControl, showNameError } = useNameControl();
 
     const companyNameControl = useControl({
         value: "",

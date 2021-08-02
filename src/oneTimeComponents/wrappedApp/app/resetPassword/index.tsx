@@ -1,35 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar } from "@material-ui/core";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
-import { ControlValidator } from "../../../../classes/ControlValidator";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../components/wrappedTextField";
-import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { userPool } from "../../../../classes/UserPool";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
+import { useEmailControl } from "../../../../hooks/useEmailControl";
 
 export function ResetPassword() {
     const history = useHistory();
-    const emailControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (email: string) => {
-            return ControlValidator.string()
-                .required("This field is required")
-                .email("A valid email is required")
-                .validate(email);
-        },
-    });
-    const showEmailError = !emailControl.isValid && emailControl.isTouched;
+    const { emailControl, showEmailError } = useEmailControl();
 
     const classes = createClasses();
 

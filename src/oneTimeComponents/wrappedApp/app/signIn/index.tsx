@@ -19,6 +19,7 @@ import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
+import { useEmailControl } from "../../../../hooks/useEmailControl";
 
 const useStyles = makeStyles({
     resetPasswordText: (theme: Theme) => ({
@@ -32,21 +33,7 @@ const useStyles = makeStyles({
 export function SignIn() {
     const history = useHistory();
 
-    const emailControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (email: string) => {
-            return ControlValidator.string()
-                .required("This field is required")
-                .email("A valid email is required")
-                .validate(email);
-        },
-    });
-    const showEmailError = !emailControl.isValid && emailControl.isTouched;
+    const { emailControl, showEmailError } = useEmailControl();
 
     const passwordControl = useControl({
         value: "",
