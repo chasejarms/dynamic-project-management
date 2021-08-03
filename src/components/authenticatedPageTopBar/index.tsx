@@ -7,6 +7,10 @@ import { ArrowForwardIos } from "@material-ui/icons";
 import { composeCSS } from "../../styles/composeCSS";
 import { WrappedButton } from "../wrappedButton";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
+import { cognitoUserSingleton } from "../../classes/CognitoUserSingleton";
+import { useDispatch } from "react-redux";
+import { resetAppBootstrapInformation } from "../../redux/appBootstrapInformation";
+import { resetBoardAction } from "../../redux/boards";
 
 export interface IAuthenticatedPageTopBarProps {}
 
@@ -31,9 +35,13 @@ function NonMemoizedAuthenticatedPageTopBar(
 ) {
     const history = useHistory();
     const location = useLocation();
+    const dispatch = useDispatch();
     function signOut() {
-        // TODO: sign the user out
+        cognitoUserSingleton.cognitoUser.signOut();
+        const resetAppBootstrapInformationAction = resetAppBootstrapInformation();
         history.push("/sign-in");
+        dispatch(resetAppBootstrapInformationAction);
+        dispatch(resetBoardAction());
     }
 
     function navigateToRoute(route: string) {

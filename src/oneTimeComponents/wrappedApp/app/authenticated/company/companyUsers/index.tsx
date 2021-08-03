@@ -33,6 +33,7 @@ import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { Delete } from "@material-ui/icons";
 import { ConfirmDialog } from "../../../../../../components/confirmDialog";
 import { sortBy } from "lodash";
+import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -45,6 +46,8 @@ export function CompanyUsers() {
     const { companyId } = useAppRouterParams();
     const [users, setUsers] = useState<IUser[]>([]);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+    const user = useCompanyUser();
+    const canManageCompanyUsers = !!user?.canManageCompanyUsers;
 
     useEffect(() => {
         let didCancel = false;
@@ -259,12 +262,16 @@ export function CompanyUsers() {
                                 <Typography variant="h6">
                                     Company Users
                                 </Typography>
-                                <WrappedButton
-                                    onClick={onClickAddUser}
-                                    color="primary"
-                                >
-                                    Add User
-                                </WrappedButton>
+                                <div>
+                                    {canManageCompanyUsers && (
+                                        <WrappedButton
+                                            onClick={onClickAddUser}
+                                            color="primary"
+                                        >
+                                            Add User
+                                        </WrappedButton>
+                                    )}
+                                </div>
                             </div>
                         </Toolbar>
                         <Table>
@@ -273,7 +280,7 @@ export function CompanyUsers() {
                                     <TableCell>Name</TableCell>
                                     <TableCell>Email</TableCell>
                                     <TableCell>Can Manage Users</TableCell>
-                                    <TableCell />
+                                    {canManageCompanyUsers && <TableCell />}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -294,6 +301,9 @@ export function CompanyUsers() {
                                                         }
                                                     >
                                                         <Checkbox
+                                                            disabled={
+                                                                !canManageCompanyUsers
+                                                            }
                                                             checked={
                                                                 user.canManageCompanyUsers
                                                             }
@@ -304,27 +314,29 @@ export function CompanyUsers() {
                                                     </div>
                                                 </div>
                                             </TableCell>
-                                            <TableCell>
-                                                <div
-                                                    css={
-                                                        classes.relativePositionedTableCell
-                                                    }
-                                                >
+                                            {canManageCompanyUsers && (
+                                                <TableCell>
                                                     <div
                                                         css={
-                                                            classes.absolutePositionedTableCell
+                                                            classes.relativePositionedTableCell
                                                         }
                                                     >
-                                                        <IconButton
-                                                            onClick={onClickDeleteTableIcon(
-                                                                user
-                                                            )}
+                                                        <div
+                                                            css={
+                                                                classes.absolutePositionedTableCell
+                                                            }
                                                         >
-                                                            <Delete />
-                                                        </IconButton>
+                                                            <IconButton
+                                                                onClick={onClickDeleteTableIcon(
+                                                                    user
+                                                                )}
+                                                            >
+                                                                <Delete />
+                                                            </IconButton>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
+                                                </TableCell>
+                                            )}
                                         </TableRow>
                                     );
                                 })}

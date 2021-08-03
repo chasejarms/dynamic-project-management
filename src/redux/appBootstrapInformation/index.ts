@@ -8,13 +8,15 @@ export interface IAppBootstrapInformationState {
     isLoading: boolean;
 }
 
+const initialState: IAppBootstrapInformationState = {
+    companies: [],
+    users: [],
+    isLoading: true,
+};
+
 export const appBootstrapInformationSlice = createSlice({
     name: "appBootstrapInformation",
-    initialState: {
-        companies: [],
-        users: [],
-        isLoading: true,
-    } as IAppBootstrapInformationState,
+    initialState,
     reducers: {
         setAppBootstrapInformation: (
             state: IAppBootstrapInformationState,
@@ -22,11 +24,17 @@ export const appBootstrapInformationSlice = createSlice({
         ) => {
             return action.payload;
         },
+        resetAppBootstrapInformation: (
+            state: IAppBootstrapInformationState
+        ) => {
+            return initialState;
+        },
     },
 });
 
 export const {
     setAppBootstrapInformation,
+    resetAppBootstrapInformation,
 } = appBootstrapInformationSlice.actions;
 
 export default appBootstrapInformationSlice.reducer;

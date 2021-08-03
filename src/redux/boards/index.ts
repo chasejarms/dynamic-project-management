@@ -5,9 +5,13 @@ export interface IBoardsState {
     [boardId: string]: IBoard;
 }
 
+const initialState: {
+    [boardId: string]: IBoard;
+} = {};
+
 export const boardsSlice = createSlice({
     name: "boards",
-    initialState: {},
+    initialState,
     reducers: {
         addBoardAction: (
             state: IBoardsState,
@@ -16,9 +20,12 @@ export const boardsSlice = createSlice({
             state[action.payload.itemId] = action.payload;
             return state;
         },
+        resetBoardAction: () => {
+            return initialState;
+        },
     },
 });
 
-export const { addBoardAction } = boardsSlice.actions;
+export const { addBoardAction, resetBoardAction } = boardsSlice.actions;
 
 export default boardsSlice.reducer;
