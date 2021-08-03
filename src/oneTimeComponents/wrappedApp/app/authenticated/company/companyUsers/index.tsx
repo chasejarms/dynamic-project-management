@@ -32,6 +32,7 @@ import { IUser } from "../../../../../../models/user";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { Delete } from "@material-ui/icons";
 import { ConfirmDialog } from "../../../../../../components/confirmDialog";
+import { sortBy } from "lodash";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -52,7 +53,8 @@ export function CompanyUsers() {
             .getAllUsersForCompany(companyId)
             .then((usersFromDatabase) => {
                 if (didCancel) return;
-                setUsers(usersFromDatabase);
+                const sortedDatabaseUsers = sortBy(usersFromDatabase, "name");
+                setUsers(sortedDatabaseUsers);
             })
             .catch(() => {
                 if (didCancel) return;
@@ -133,7 +135,7 @@ export function CompanyUsers() {
     function onCloseAddUserDialog() {
         setAddUserDialogIsOpen(false);
     }
-    function onExited() {
+    function onExitedAddUserDialog() {
         emailControl.resetControlState("");
         nameControl.resetControlState("");
     }
@@ -154,8 +156,12 @@ export function CompanyUsers() {
                 name: nameControl.value,
                 canManageCompanyUsers: canManageCompanyUsersControl.value,
             })
-            .then(() => {
+            .then((user) => {
                 if (didCancel) return;
+                setUsers((users) => {
+                    return sortBy([...users, user], "name");
+                });
+                onCloseAddUserDialog();
             })
             .catch(() => {
                 if (didCancel) return;
@@ -168,7 +174,7 @@ export function CompanyUsers() {
         return () => {
             didCancel = true;
         };
-    });
+    }, [isAddingUser]);
 
     const [
         { userToDelete, deleteDialogIsOpen },
@@ -265,6 +271,7 @@ export function CompanyUsers() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Name</TableCell>
+                                    <TableCell>Email</TableCell>
                                     <TableCell>Can Manage Users</TableCell>
                                     <TableCell />
                                 </TableRow>
@@ -274,6 +281,7 @@ export function CompanyUsers() {
                                     return (
                                         <TableRow key={user.itemId}>
                                             <TableCell>{user.name}</TableCell>
+                                            <TableCell>{user.email}</TableCell>
                                             <TableCell>
                                                 <div
                                                     css={
@@ -328,7 +336,7 @@ export function CompanyUsers() {
                         onClose={onCloseAddUserDialog}
                         disableBackdropClick={isAddingUser}
                         TransitionProps={{
-                            onExited,
+                            onExited: onExitedAddUserDialog,
                         }}
                     >
                         <DialogTitle>Add User</DialogTitle>
