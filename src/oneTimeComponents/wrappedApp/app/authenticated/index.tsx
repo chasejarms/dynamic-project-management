@@ -9,10 +9,7 @@ import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinne
 import { setAppBootstrapInformation } from "../../../../redux/appBootstrapInformation";
 import { IStoreState } from "../../../../redux/storeState";
 import { Companies } from "./companies";
-import { Board } from "./company/board";
-import { Boards } from "./company/boards";
-import { CompanyUsers } from "./company/companyUsers";
-import { CreateBoard } from "./company/createBoard";
+import { Company } from "./company";
 
 export function Authenticated() {
     const { url } = useRouteMatch();
@@ -60,17 +57,8 @@ export function Authenticated() {
             <Route path={`${url}/companies`} exact>
                 <Companies />
             </Route>
-            <Route path={`${url}/company/:companyId/boards`} exact>
-                <Boards />
-            </Route>
-            <Route path={`${url}/company/:companyId/boards/create-board`} exact>
-                <CreateBoard />
-            </Route>
-            <Route path={`${url}/company/:companyId/company-users`} exact>
-                <CompanyUsers />
-            </Route>
-            <Route path={`${url}/company/:companyId/board/:boardId`}>
-                <Board />
+            <Route path={`${url}/company/:companyId`}>
+                <Company />
             </Route>
         </Switch>
     );

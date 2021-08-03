@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
+import { useIsCheckingForBoardAccess } from "../../../../../../hooks/useIsCheckingForBoardAccess";
 import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
 import { BoardUsers } from "./boardUsers";
@@ -13,8 +14,9 @@ import { TicketTemplates } from "./ticketTemplates";
 
 export function Board() {
     const { url } = useRouteMatch();
+    const isCheckingForBoardAccess = useIsCheckingForBoardAccess();
 
-    return (
+    return isCheckingForBoardAccess ? null : (
         <Switch>
             <Route path={`${url}/tickets`} exact>
                 <BoardHome />

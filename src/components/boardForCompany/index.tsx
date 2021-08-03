@@ -23,6 +23,7 @@ import {
 
 export interface IBoardForCompanyProps {
     board: IBoard;
+    isBoardAdmin: boolean;
     onClickDeleteBoardAction: () => void;
 }
 
@@ -67,9 +68,14 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
                         <Typography variant="h5">{board.name}</Typography>
                     </div>
                     <div>
-                        <IconButton size="small" onClick={toggleMoreOptions}>
-                            <MoreHoriz />
-                        </IconButton>
+                        {props.isBoardAdmin && (
+                            <IconButton
+                                size="small"
+                                onClick={toggleMoreOptions}
+                            >
+                                <MoreHoriz />
+                            </IconButton>
+                        )}
                     </div>
                 </div>
                 <Typography>{board.description}</Typography>

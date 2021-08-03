@@ -14,6 +14,7 @@ import { BoardsContainer } from "../../../../../../components/boardsContainer";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { BoardForCompany } from "../../../../../../components/boardForCompany";
 import { ConfirmDialog } from "../../../../../../components/confirmDialog";
+import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
 
 export function Boards() {
     const theme = useTheme();
@@ -22,6 +23,8 @@ export function Boards() {
 
     const [isLoadingBoards, setIsLoadingBoards] = useState(true);
     const [boards, setBoards] = useState<IBoard[]>([]);
+    const user = useCompanyUser();
+
     useEffect(() => {
         if (!companyId) return;
         let didCancel = false;
@@ -111,8 +114,12 @@ export function Boards() {
             ) : (
                 <div css={classes.contentContainer}>
                     {boards!.map((board) => {
+                        const isBoardAdmin = !!user?.boardRights[
+                            board.shortenedItemId
+                        ]?.isAdmin;
                         return (
                             <BoardForCompany
+                                isBoardAdmin={isBoardAdmin}
                                 key={board.shortenedItemId}
                                 board={board}
                                 onClickDeleteBoardAction={onClickDeleteBoardAction(
