@@ -12,36 +12,15 @@ import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { useEmailControl } from "../../../../hooks/useEmailControl";
 import { useNameControl } from "../../../../hooks/useNameControl";
+import { usePasswordCreationControl } from "../../../../hooks/usePasswordCreationControl";
 
 export function SignUp() {
     const history = useHistory();
     const { emailControl, showEmailError } = useEmailControl();
-
-    const passwordControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            return event.target.value;
-        },
-        validatorError: (password: string) => {
-            return ControlValidator.string()
-                .required("A password is required")
-                .min(8, "Password length must be at least 8 characters")
-                .customValidator((value: string) => {
-                    return value.toUpperCase() !== value;
-                }, "Password must have one lowercase character")
-                .customValidator((value: string) => {
-                    return value.toLowerCase() !== value;
-                }, "Password must have one uppercase character")
-                .customValidator((value: string) => {
-                    return !!value.match(/\d/);
-                }, "Password must have at least one number")
-                .validate(password);
-        },
-    });
-    const showPasswordError =
-        !passwordControl.isValid && passwordControl.isTouched;
+    const {
+        passwordCreationControl,
+        showPasswordCreationError,
+    } = usePasswordCreationControl();
 
     const { nameControl, showNameError } = useNameControl();
 
@@ -84,7 +63,7 @@ export function SignUp() {
         Api.signUp
             .signUp({
                 email: emailControl.value,
-                password: passwordControl.value,
+                password: passwordCreationControl.value,
                 name: nameControl.value,
                 companyName: "My Amazing Company",
             })
@@ -111,7 +90,7 @@ export function SignUp() {
     const controlsAreInvalid = !controlsAreValid(
         nameControl,
         emailControl,
-        passwordControl,
+        passwordCreationControl,
         companyNameControl
     );
 
@@ -146,14 +125,14 @@ export function SignUp() {
                         error={showEmailError ? emailControl.errorMessage : ""}
                     />
                     <WrappedTextField
-                        value={passwordControl.value}
+                        value={passwordCreationControl.value}
                         label="Password"
-                        onChange={passwordControl.onChange}
+                        onChange={passwordCreationControl.onChange}
                         type="password"
                         error={
-                            showPasswordError &&
-                            passwordControl.value.length > 0
-                                ? passwordControl.errorMessage
+                            showPasswordCreationError &&
+                            passwordCreationControl.value.length > 0
+                                ? passwordCreationControl.errorMessage
                                 : ""
                         }
                     />
