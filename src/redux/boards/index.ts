@@ -5,7 +5,7 @@ export interface IBoardsState {
     [boardId: string]: IBoard;
 }
 
-export const counterSlice = createSlice({
+export const boardsSlice = createSlice({
     name: "boards",
     initialState: {},
     reducers: {
@@ -19,6 +19,6 @@ export const counterSlice = createSlice({
     },
 });
 
-export const { addBoardAction } = counterSlice.actions;
+export const { addBoardAction } = boardsSlice.actions;
 
-export default counterSlice.reducer;
+export default boardsSlice.reducer;

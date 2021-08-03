@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
     useTheme,
-    CircularProgress,
     Card,
     CardContent,
     Typography,
@@ -11,47 +10,23 @@ import {
     Button,
     Theme,
 } from "@material-ui/core";
-import { AxiosError } from "axios";
-import { ICompany } from "../../../../../models/company";
-import { Api } from "../../../../../api";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { IStoreState } from "../../../../../redux/storeState";
 
 export function Companies() {
     const theme = useTheme();
     const classes = createClasses(theme);
     const history = useHistory();
-
-    const [isLoadingCompanies, setIsLoadingCompanies] = useState(true);
-    const [companies, setCompanies] = useState<null | ICompany[]>(null);
+    const companies = useSelector((state: IStoreState) => {
+        return state.appBootstrapInformation.companies;
+    });
 
     useEffect(() => {
-        let didCancel = false;
-
-        Api.company
-            .getAppBootstrapInformation()
-            .then((appBootstrapInformation) => {
-                if (didCancel) return;
-                const companies =
-                    appBootstrapInformation.companyInformationItems;
-                if (companies.length === 1) {
-                    openBoards(companies[0].shortenedItemId)();
-                } else {
-                    setCompanies(companies);
-                }
-            })
-            .catch((error: Error | AxiosError) => {
-                if (didCancel) return;
-                // show an unexpected error
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsLoadingCompanies(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, []);
+        if (companies.length === 1) {
+            openBoards(companies[0].shortenedItemId)();
+        }
+    }, [companies]);
 
     function openBoards(companyId: string) {
         return () => {
@@ -59,11 +34,7 @@ export function Companies() {
         };
     }
 
-    return isLoadingCompanies ? (
-        <div css={classes.loadingPageContainer}>
-            <CircularProgress color="primary" size={48} thickness={4} />
-        </div>
-    ) : (
+    return (
         <div css={classes.cardsContainer}>
             {companies?.map((company) => {
                 return (
@@ -95,14 +66,6 @@ export function Companies() {
 }
 
 const createClasses = (theme: Theme) => {
-    const loadingPageContainer = css`
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
     const cardsContainer = css`
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -121,7 +84,6 @@ const createClasses = (theme: Theme) => {
     `;
 
     return {
-        loadingPageContainer,
         cardsContainer,
         actionButtonContainer,
         titleContainer,
