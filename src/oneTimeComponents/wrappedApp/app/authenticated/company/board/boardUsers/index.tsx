@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import {
+    Checkbox,
     Paper,
     Table,
     TableBody,
@@ -9,12 +10,13 @@ import {
     TableRow,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { Check } from "@material-ui/icons";
 import { Api } from "../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { IUser } from "../../../../../../../models/user";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
+import { cloneDeep } from "lodash";
+import { BoardRightsAction } from "../../../../../../../models/boardRightsAction";
 
 export function BoardUsers() {
     const { companyId, boardId } = useAppRouterParams();
@@ -43,6 +45,81 @@ export function BoardUsers() {
         };
     }, []);
 
+    function onChangeIsBoardUser(user: IUser) {
+        return () => {
+            const updatedBoardRights = cloneDeep(user.boardRights);
+            const userHasBoardRights = updatedBoardRights[boardId];
+            if (userHasBoardRights) {
+                delete updatedBoardRights[boardId];
+            } else {
+                updatedBoardRights[boardId] = {
+                    isAdmin: false,
+                };
+            }
+            setUsers((previousUsers) => {
+                return previousUsers.map((compareUser) => {
+                    if (compareUser.shortenedItemId === user.shortenedItemId) {
+                        return {
+                            ...compareUser,
+                            boardRights: updatedBoardRights,
+                        };
+                    } else {
+                        return compareUser;
+                    }
+                });
+            });
+
+            Api.users
+                .updateUserBoardRights(
+                    companyId,
+                    boardId,
+                    user.shortenedItemId,
+                    userHasBoardRights
+                        ? BoardRightsAction.None
+                        : BoardRightsAction.User
+                )
+                .then(() => null);
+        };
+    }
+
+    function onChangeIsBoardAdmin(user: IUser) {
+        return () => {
+            const updatedBoardRights = cloneDeep(user.boardRights);
+            const wasAdmin = updatedBoardRights[boardId].isAdmin;
+            if (wasAdmin) {
+                updatedBoardRights[boardId] = {
+                    isAdmin: false,
+                };
+            } else {
+                updatedBoardRights[boardId] = {
+                    isAdmin: true,
+                };
+            }
+
+            setUsers((previousUsers) => {
+                return previousUsers.map((compareUser) => {
+                    if (compareUser.shortenedItemId === user.shortenedItemId) {
+                        return {
+                            ...compareUser,
+                            boardRights: updatedBoardRights,
+                        };
+                    } else {
+                        return compareUser;
+                    }
+                });
+            });
+
+            Api.users
+                .updateUserBoardRights(
+                    companyId,
+                    boardId,
+                    user.shortenedItemId,
+                    wasAdmin ? BoardRightsAction.User : BoardRightsAction.Admin
+                )
+                .then(() => null);
+        };
+    }
+
     const classes = createClasses();
     return (
         <BoardContainer>
@@ -69,12 +146,54 @@ export function BoardUsers() {
                                         <TableRow key={user.itemId}>
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>
-                                                {isBoardUser ? <Check /> : null}
+                                                <div
+                                                    css={
+                                                        classes.relativePositionedTableCell
+                                                    }
+                                                >
+                                                    <div
+                                                        css={
+                                                            classes.absolutePositionedTableCell
+                                                        }
+                                                    >
+                                                        <Checkbox
+                                                            checked={
+                                                                isBoardUser
+                                                            }
+                                                            disabled={
+                                                                isBoardAdmin
+                                                            }
+                                                            onChange={onChangeIsBoardUser(
+                                                                user
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </TableCell>
                                             <TableCell>
-                                                {isBoardAdmin ? (
-                                                    <Check />
-                                                ) : null}
+                                                <div
+                                                    css={
+                                                        classes.relativePositionedTableCell
+                                                    }
+                                                >
+                                                    <div
+                                                        css={
+                                                            classes.absolutePositionedTableCell
+                                                        }
+                                                    >
+                                                        <Checkbox
+                                                            checked={
+                                                                isBoardAdmin
+                                                            }
+                                                            disabled={
+                                                                !isBoardUser
+                                                            }
+                                                            onChange={onChangeIsBoardAdmin(
+                                                                user
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -97,7 +216,22 @@ const createClasses = () => {
         height: 100%;
     `;
 
+    const relativePositionedTableCell = css`
+        position: relative;
+        height: 100%;
+    `;
+
+    const absolutePositionedTableCell = css`
+        position: absolute;
+        left: -11px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    `;
+
     return {
         tablePaperContainer,
+        relativePositionedTableCell,
+        absolutePositionedTableCell,
     };
 };

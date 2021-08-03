@@ -2,6 +2,7 @@ import { environmentVariables } from "../environmentVariables";
 import Axios from "axios";
 import { IUser } from "../models/user";
 import { IAddUserRequest } from "../models/addUserRequest";
+import { BoardRightsAction } from "../models/boardRightsAction";
 
 export interface IUsersApi {
     getAllUsersForCompany(companyId: string): Promise<IUser[]>;
@@ -15,6 +16,12 @@ export interface IUsersApi {
         request: IAddUserRequest
     ): Promise<IUser>;
     removeUserFromCompany(companyId: string, email: string): Promise<void>;
+    updateUserBoardRights(
+        companyId: string,
+        boardId: string,
+        userToUpdateShortenedItemId: string,
+        boardRightsAction: BoardRightsAction
+    ): Promise<void>;
 }
 
 export class UsersApi implements IUsersApi {
@@ -72,6 +79,26 @@ export class UsersApi implements IUsersApi {
                 params: {
                     companyId,
                     email,
+                },
+            }
+        );
+    }
+
+    public async updateUserBoardRights(
+        companyId: string,
+        boardId: string,
+        userToUpdateShortenedItemId: string,
+        boardRightsAction: BoardRightsAction
+    ): Promise<void> {
+        await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/updateUserBoardRights`,
+            undefined,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    userToUpdateShortenedItemId,
+                    boardRightsAction,
                 },
             }
         );
