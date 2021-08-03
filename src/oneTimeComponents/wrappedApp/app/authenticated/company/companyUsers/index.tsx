@@ -430,6 +430,7 @@ const createClasses = () => {
     const relativePositionedTableCell = css`
         position: relative;
         height: 100%;
+        width: 48px;
     `;
 
     const absolutePositionedTableCell = css`

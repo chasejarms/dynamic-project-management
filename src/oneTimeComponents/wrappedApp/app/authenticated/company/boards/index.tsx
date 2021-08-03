@@ -1,7 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { CircularProgress, useTheme, Theme } from "@material-ui/core";
+import {
+    CircularProgress,
+    useTheme,
+    Theme,
+    Typography,
+} from "@material-ui/core";
 import { AxiosError } from "axios";
 import { Api } from "../../../../../../api";
 import { IBoard } from "../../../../../../models/board";
@@ -92,6 +97,17 @@ export function Boards() {
                 <div css={classes.loadingPageContainer}>
                     <CircularProgress color="primary" size={48} thickness={4} />
                 </div>
+            ) : boards.length === 0 ? (
+                <div css={classes.centerContainer}>
+                    <div css={classes.noBoardsTextContainer}>
+                        <Typography>
+                            It looks like you don't have access to any boards
+                            yet. Go ahead and create a board to get started or
+                            talk with your company account administrator to get
+                            added to an existing company board.
+                        </Typography>
+                    </div>
+                </div>
             ) : (
                 <div css={classes.contentContainer}>
                     {boards!.map((board) => {
@@ -137,8 +153,21 @@ const createClasses = (theme: Theme) => {
         width: 100%;
     `;
 
+    const noBoardsTextContainer = css`
+        width: 400px;
+    `;
+
+    const centerContainer = css`
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `;
+
     return {
         loadingPageContainer,
         contentContainer,
+        noBoardsTextContainer,
+        centerContainer,
     };
 };
