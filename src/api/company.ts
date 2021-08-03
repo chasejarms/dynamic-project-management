@@ -1,17 +1,18 @@
-import { ICompany } from "../models/company";
 import { environmentVariables } from "../environmentVariables";
 import Axios from "axios";
+import { IAppBootStrapInformation } from "../models/appBootstrapInformation";
 
 export interface ICompanyApi {
-    getCompanies(): Promise<ICompany[]>;
+    getAppBootstrapInformation(): Promise<IAppBootStrapInformation>;
 }
 
 export class CompanyApi implements ICompanyApi {
-    public async getCompanies(): Promise<ICompany[]> {
+    public async getAppBootstrapInformation(): Promise<
+        IAppBootStrapInformation
+    > {
         const axiosResponse = await Axios.get(
-            `${environmentVariables.baseAuthenticatedApiUrl}/companies`
+            `${environmentVariables.baseAuthenticatedApiUrl}/getAppBootstrapInformation`
         );
-        const data = axiosResponse.data as { items: ICompany[] };
-        return data.items;
+        return axiosResponse.data as IAppBootStrapInformation;
     }
 }

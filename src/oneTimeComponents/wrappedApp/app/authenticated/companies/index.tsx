@@ -28,11 +28,13 @@ export function Companies() {
         let didCancel = false;
 
         Api.company
-            .getCompanies()
-            .then((companies) => {
+            .getAppBootstrapInformation()
+            .then((appBootstrapInformation) => {
                 if (didCancel) return;
+                const companies =
+                    appBootstrapInformation.companyInformationItems;
                 if (companies.length === 1) {
-                    openBoards(companies[0].companyId)();
+                    openBoards(companies[0].shortenedItemId)();
                 } else {
                     setCompanies(companies);
                 }
@@ -65,7 +67,7 @@ export function Companies() {
         <div css={classes.cardsContainer}>
             {companies?.map((company) => {
                 return (
-                    <Card key={company.companyId}>
+                    <Card key={company.shortenedItemId}>
                         <CardContent>
                             <div css={classes.titleContainer}>
                                 <Typography variant="h5">
@@ -76,7 +78,9 @@ export function Companies() {
                         <CardActions>
                             <div css={classes.actionButtonContainer}>
                                 <Button
-                                    onClick={openBoards(company.companyId)}
+                                    onClick={openBoards(
+                                        company.shortenedItemId
+                                    )}
                                     color="primary"
                                 >
                                     Go To Boards

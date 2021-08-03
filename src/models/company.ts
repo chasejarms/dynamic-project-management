@@ -1,4 +1,6 @@
-export interface ICompany {
+import { IDefaultPrimaryTableModel } from "./sharedModels/defaultPrimaryTableModel";
+
+export interface ICompany extends IDefaultPrimaryTableModel {
     name: string;
-    companyId: string;
+    shortenedItemId: string;
 }
