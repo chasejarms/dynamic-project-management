@@ -74,7 +74,7 @@ export function CompanyUsers() {
     }, [isCheckingForManageCompanyUserAccess]);
 
     const [userToUpdate, setUserToUpdate] = useState<null | IUser>(null);
-    function onClickToggleUserRights(user: IUser) {
+    function onClickToggleManageCompanyUserRights(user: IUser) {
         return () => {
             setUsers((users) => {
                 return users.map((compareUser) => {
@@ -88,7 +88,31 @@ export function CompanyUsers() {
                     }
                 });
             });
-            setUserToUpdate(user);
+            setUserToUpdate({
+                ...user,
+                canManageCompanyUsers: !user.canManageCompanyUsers,
+            });
+        };
+    }
+
+    function onClickToggleCreateBoardRights(user: IUser) {
+        return () => {
+            setUsers((users) => {
+                return users.map((compareUser) => {
+                    if (compareUser.shortenedItemId === user.shortenedItemId) {
+                        return {
+                            ...compareUser,
+                            canCreateBoards: !compareUser.canCreateBoards,
+                        };
+                    } else {
+                        return compareUser;
+                    }
+                });
+            });
+            setUserToUpdate({
+                ...user,
+                canCreateBoards: !user.canCreateBoards,
+            });
         };
     }
 
@@ -98,10 +122,11 @@ export function CompanyUsers() {
         let didCancel = false;
 
         Api.users
-            .updateCanManageCompanyUsers(
+            .updateCompanyUserRights(
                 companyId,
                 userToUpdate.shortenedItemId,
-                !userToUpdate.canManageCompanyUsers
+                userToUpdate.canManageCompanyUsers,
+                userToUpdate.canCreateBoards
             )
             .then(() => {
                 if (didCancel) return;
@@ -128,6 +153,19 @@ export function CompanyUsers() {
         checked: boolean
     ) {
         canManageCompanyUsersControl.onChange(checked);
+    }
+
+    const canCreateBoardsControl = useControl({
+        value: false,
+        onChange: (checked: boolean) => {
+            return checked;
+        },
+    });
+    function onCanCreateBoardsControlChange(
+        event: ChangeEvent<HTMLInputElement>,
+        checked: boolean
+    ) {
+        canCreateBoardsControl.onChange(checked);
     }
 
     const controlsAreInvalid = !controlsAreValid(nameControl, emailControl);
@@ -278,7 +316,8 @@ export function CompanyUsers() {
                                 <TableRow>
                                     <TableCell>Name</TableCell>
                                     <TableCell>Email</TableCell>
-                                    <TableCell>Can Manage Users</TableCell>
+                                    <TableCell>Manage Users</TableCell>
+                                    <TableCell>Create Boards</TableCell>
                                     <TableCell />
                                 </TableRow>
                             </TableHead>
@@ -303,14 +342,35 @@ export function CompanyUsers() {
                                                             checked={
                                                                 user.canManageCompanyUsers
                                                             }
-                                                            onChange={onClickToggleUserRights(
+                                                            onChange={onClickToggleManageCompanyUserRights(
                                                                 user
                                                             )}
                                                         />
                                                     </div>
                                                 </div>
                                             </TableCell>
-
+                                            <TableCell>
+                                                <div
+                                                    css={
+                                                        classes.relativePositionedTableCell
+                                                    }
+                                                >
+                                                    <div
+                                                        css={
+                                                            classes.absolutePositionedTableCell
+                                                        }
+                                                    >
+                                                        <Checkbox
+                                                            checked={
+                                                                user.canCreateBoards
+                                                            }
+                                                            onChange={onClickToggleCreateBoardRights(
+                                                                user
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </TableCell>
                                             <TableCell>
                                                 <div
                                                     css={
@@ -386,6 +446,21 @@ export function CompanyUsers() {
                                         />
                                     }
                                     label="Can Modify Company Users"
+                                />
+                            </div>
+                            <div css={classes.textFieldContainer}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                canCreateBoardsControl.value
+                                            }
+                                            onChange={
+                                                onCanCreateBoardsControlChange
+                                            }
+                                        />
+                                    }
+                                    label="Can Create Boards"
                                 />
                             </div>
                         </DialogContent>

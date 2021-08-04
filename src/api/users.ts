@@ -6,10 +6,11 @@ import { BoardRightsAction } from "../models/boardRightsAction";
 
 export interface IUsersApi {
     getAllUsersForCompany(companyId: string): Promise<IUser[]>;
-    updateCanManageCompanyUsers(
+    updateCompanyUserRights(
         companyId: string,
         userToUpdateShortenedItemId: string,
-        canManageCompanyUsers: boolean
+        canManageCompanyUsers: boolean,
+        canCreateBoards: boolean
     ): Promise<void>;
     addUserToCompany(
         companyId: string,
@@ -37,15 +38,17 @@ export class UsersApi implements IUsersApi {
         return axiosResponse.data as IUser[];
     }
 
-    public async updateCanManageCompanyUsers(
+    public async updateCompanyUserRights(
         companyId: string,
         userToUpdateShortenedItemId: string,
-        canManageCompanyUsers: boolean
+        canManageCompanyUsers: boolean,
+        canCreateBoards: boolean
     ): Promise<void> {
         await Axios.post(
-            `${environmentVariables.baseAuthenticatedApiUrl}/updateCanManageCompanyUsers`,
+            `${environmentVariables.baseAuthenticatedApiUrl}/updateCompanyUserRights`,
             {
                 canManageCompanyUsers,
+                canCreateBoards,
             },
             {
                 params: {
