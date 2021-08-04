@@ -99,7 +99,7 @@ function NonMemoizedAuthenticatedPageTopBar(
         if (!!ticketTemplateId) {
             breadcrumbs.push({
                 text: "Ticket Templates",
-                route: `/app/company/${companyId}/board/${boardId}/ticket-templates`,
+                route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
             });
         }
 
