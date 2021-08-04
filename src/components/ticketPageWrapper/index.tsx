@@ -16,8 +16,12 @@ export function TicketPageWrapper(props: ITicketPageWrapperProps) {
 
     const navItems: IAuthenticatedNavItem[] = [
         {
-            text: "Ticket Information",
+            text: "Data",
             route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
+        },
+        {
+            text: "Images",
+            route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/images`,
         },
     ];
     return (

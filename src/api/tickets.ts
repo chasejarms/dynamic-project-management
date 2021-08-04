@@ -71,6 +71,8 @@ export interface ITicketsApi {
         boardId: string,
         ticketId: string
     ): Promise<void>;
+
+    createUploadTicketImageSignedUrl(): Promise<string>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -287,5 +289,13 @@ export class TicketsApi implements ITicketsApi {
                 },
             }
         );
+    }
+
+    public async createUploadTicketImageSignedUrl(): Promise<string> {
+        const axiosResponse = await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/createUploadTicketImageSignedUrl`,
+            {}
+        );
+        return axiosResponse.data as string;
     }
 }
