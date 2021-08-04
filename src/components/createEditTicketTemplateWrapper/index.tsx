@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { IStarterGhostControlParamsMapping } from "../../models/ghostControlPattern/starterGhostControlParamsMapping";
 import { ITextSection } from "../../models/ticketTemplate/textSection";
-import { BoardContainer } from "../boardContainer";
+import { BoardAdminContainer } from "../boardAdminContainer";
 import { BottomPageToolbar } from "../bottomPageToolbar";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 import {
@@ -62,7 +62,7 @@ export function CreateEditTicketTemplateWrapper(
 
     const classes = createClasses();
     return (
-        <BoardContainer>
+        <BoardAdminContainer>
             {isLoading ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
@@ -139,7 +139,7 @@ export function CreateEditTicketTemplateWrapper(
                     </div>
                 </div>
             )}
-        </BoardContainer>
+        </BoardAdminContainer>
     );
 }
 

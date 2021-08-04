@@ -4,7 +4,7 @@ import { Theme, useTheme } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
-import { BoardContainer } from "../../../../../../../../components/boardContainer";
+import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
 import { TicketTemplateForBoard } from "../../../../../../../../components/ticketTemplateForBoard";
@@ -132,12 +132,12 @@ export function TicketTemplatesHome() {
 
     function navigateToCreateTicketTemplatePage() {
         history.push(
-            `/app/company/${companyId}/board/${boardId}/ticket-templates/create-ticket-template`
+            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/create-ticket-template`
         );
     }
 
     return (
-        <BoardContainer>
+        <BoardAdminContainer>
             {isLoadingTicketTemplates ? (
                 <div css={classes.loadingSpinnerContainer}>
                     <CenterLoadingSpinner size="large" />
@@ -181,7 +181,7 @@ export function TicketTemplatesHome() {
                     deletingTicketTemplateData.isDeletingTicketTemplate
                 }
             />
-        </BoardContainer>
+        </BoardAdminContainer>
     );
 }
 

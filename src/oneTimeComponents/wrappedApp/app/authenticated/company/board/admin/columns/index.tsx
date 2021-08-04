@@ -11,20 +11,20 @@ import {
 import { Add } from "@material-ui/icons";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { isEqual, cloneDeep } from "lodash";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
-import { Api } from "../../../../../../../api";
-import { ControlValidator } from "../../../../../../../classes/ControlValidator";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { Api } from "../../../../../../../../api";
+import { ControlValidator } from "../../../../../../../../classes/ControlValidator";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
-import { useControl } from "../../../../../../../hooks/useControl";
-import { IColumn } from "../../../../../../../models/column";
-import { generateUniqueId } from "../../../../../../../utils/generateUniqueId";
-import { EditableColumnCard } from "../../../../../../../components/editableColumnCard";
-import { BottomPageToolbar } from "../../../../../../../components/bottomPageToolbar";
+} from "../../../../../../../../components/wrappedButton";
+import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
+import { useControl } from "../../../../../../../../hooks/useControl";
+import { IColumn } from "../../../../../../../../models/column";
+import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
+import { EditableColumnCard } from "../../../../../../../../components/editableColumnCard";
+import { BottomPageToolbar } from "../../../../../../../../components/bottomPageToolbar";
+import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
 
 export function Columns() {
     const classes = createClasses();
@@ -284,7 +284,7 @@ export function Columns() {
     ];
 
     return (
-        <BoardContainer>
+        <BoardAdminContainer>
             <div css={classes.container}>
                 <div css={classes.contentContainer}>
                     <DragDropContext onDragEnd={onDragEnd}>
@@ -385,7 +385,7 @@ export function Columns() {
                     />
                 </div>
             </div>
-        </BoardContainer>
+        </BoardAdminContainer>
     );
 }
 

@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { cloneDeep } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CreateEditTicketTemplateWrapper } from "../../../../../../../../components/createEditTicketTemplateWrapper";

@@ -82,6 +82,13 @@ function NonMemoizedAuthenticatedPageTopBar(
             });
         }
 
+        if (!!boardId && location.pathname.includes("/admin/")) {
+            breadcrumbs.push({
+                text: "Admin",
+                route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
+            });
+        }
+
         if (!!ticketId) {
             breadcrumbs.push({
                 text: "Ticket",

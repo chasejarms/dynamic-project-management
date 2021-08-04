@@ -66,10 +66,6 @@ export function BoardContainer(props: IBoardContainerProps) {
             route: `/app/company/${companyId}/board/${boardId}/priorities`,
         },
         {
-            text: "Board Users",
-            route: `/app/company/${companyId}/board/${boardId}/board-users`,
-        },
-        {
             text: "Backlog Tickets",
             route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
         },
@@ -78,12 +74,8 @@ export function BoardContainer(props: IBoardContainerProps) {
             route: `/app/company/${companyId}/board/${boardId}/completed-tickets`,
         },
         {
-            text: "Columns",
-            route: `/app/company/${companyId}/board/${boardId}/columns`,
-        },
-        {
-            text: "Ticket Templates",
-            route: `/app/company/${companyId}/board/${boardId}/ticket-templates`,
+            text: "Admin",
+            route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
         },
     ];
 

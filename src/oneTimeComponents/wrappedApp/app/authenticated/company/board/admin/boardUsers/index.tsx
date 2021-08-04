@@ -10,13 +10,13 @@ import {
     TableRow,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { Api } from "../../../../../../../api";
-import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
-import { IUser } from "../../../../../../../models/user";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
+import { Api } from "../../../../../../../../api";
+import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { IUser } from "../../../../../../../../models/user";
 import { cloneDeep } from "lodash";
-import { BoardRightsAction } from "../../../../../../../models/boardRightsAction";
+import { BoardRightsAction } from "../../../../../../../../models/boardRightsAction";
+import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
 
 export function BoardUsers() {
     const { companyId, boardId } = useAppRouterParams();
@@ -122,7 +122,7 @@ export function BoardUsers() {
 
     const classes = createClasses();
     return (
-        <BoardContainer>
+        <BoardAdminContainer>
             {!isLoadingUsers ? (
                 <div css={classes.tablePaperContainer}>
                     <Paper>
@@ -205,7 +205,7 @@ export function BoardUsers() {
             ) : (
                 <CenterLoadingSpinner size="large" />
             )}
-        </BoardContainer>
+        </BoardAdminContainer>
     );
 }
 
