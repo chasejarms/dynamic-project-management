@@ -33,7 +33,7 @@ import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { Delete } from "@material-ui/icons";
 import { ConfirmDialog } from "../../../../../../components/confirmDialog";
 import { sortBy } from "lodash";
-import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
+import { useIsCheckingForManageCompanyUserAccess } from "../../../../../../hooks/useIsCheckingForManageCompanyUserAccess";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -46,11 +46,12 @@ export function CompanyUsers() {
     const { companyId } = useAppRouterParams();
     const [users, setUsers] = useState<IUser[]>([]);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
-    const user = useCompanyUser();
-    const canManageCompanyUsers = !!user?.canManageCompanyUsers;
+    const isCheckingForManageCompanyUserAccess = useIsCheckingForManageCompanyUserAccess();
 
     useEffect(() => {
         let didCancel = false;
+
+        if (isCheckingForManageCompanyUserAccess) return;
 
         Api.users
             .getAllUsersForCompany(companyId)
@@ -70,7 +71,7 @@ export function CompanyUsers() {
         return () => {
             didCancel = true;
         };
-    }, []);
+    }, [isCheckingForManageCompanyUserAccess]);
 
     const [userToUpdate, setUserToUpdate] = useState<null | IUser>(null);
     function onClickToggleUserRights(user: IUser) {
@@ -263,14 +264,12 @@ export function CompanyUsers() {
                                     Company Users
                                 </Typography>
                                 <div>
-                                    {canManageCompanyUsers && (
-                                        <WrappedButton
-                                            onClick={onClickAddUser}
-                                            color="primary"
-                                        >
-                                            Add User
-                                        </WrappedButton>
-                                    )}
+                                    <WrappedButton
+                                        onClick={onClickAddUser}
+                                        color="primary"
+                                    >
+                                        Add User
+                                    </WrappedButton>
                                 </div>
                             </div>
                         </Toolbar>
@@ -280,7 +279,7 @@ export function CompanyUsers() {
                                     <TableCell>Name</TableCell>
                                     <TableCell>Email</TableCell>
                                     <TableCell>Can Manage Users</TableCell>
-                                    {canManageCompanyUsers && <TableCell />}
+                                    <TableCell />
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -301,9 +300,6 @@ export function CompanyUsers() {
                                                         }
                                                     >
                                                         <Checkbox
-                                                            disabled={
-                                                                !canManageCompanyUsers
-                                                            }
                                                             checked={
                                                                 user.canManageCompanyUsers
                                                             }
@@ -314,29 +310,28 @@ export function CompanyUsers() {
                                                     </div>
                                                 </div>
                                             </TableCell>
-                                            {canManageCompanyUsers && (
-                                                <TableCell>
+
+                                            <TableCell>
+                                                <div
+                                                    css={
+                                                        classes.relativePositionedTableCell
+                                                    }
+                                                >
                                                     <div
                                                         css={
-                                                            classes.relativePositionedTableCell
+                                                            classes.absolutePositionedTableCell
                                                         }
                                                     >
-                                                        <div
-                                                            css={
-                                                                classes.absolutePositionedTableCell
-                                                            }
+                                                        <IconButton
+                                                            onClick={onClickDeleteTableIcon(
+                                                                user
+                                                            )}
                                                         >
-                                                            <IconButton
-                                                                onClick={onClickDeleteTableIcon(
-                                                                    user
-                                                                )}
-                                                            >
-                                                                <Delete />
-                                                            </IconButton>
-                                                        </div>
+                                                            <Delete />
+                                                        </IconButton>
                                                     </div>
-                                                </TableCell>
-                                            )}
+                                                </div>
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
