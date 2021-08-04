@@ -138,6 +138,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
                                     !isSelected &&
                                         classes.unselectedInvidualColorOuterContainer
                                 )}
+                                key={color}
                             >
                                 <div
                                     css={composeCSS(

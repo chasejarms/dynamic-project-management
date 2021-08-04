@@ -13,6 +13,7 @@ import {
 import { Add, DragIndicator } from "@material-ui/icons";
 import { useMemo } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { ITag } from "../../models/tag";
 import { composeCSS } from "../../styles/composeCSS";
 import { TagChip } from "../tagChip";
 
@@ -26,19 +27,16 @@ export interface ITagsPriorityListMapping {
     [tagName: string]: ITag;
 }
 
-export interface IUnprioritizedTagsContainerProps {
+export interface IUnprioritizedTagsCard {
     canDragTags: boolean;
     canAddTags: boolean;
     isLoading: boolean;
     allTags: ITag[];
     prioritizedTags: string[];
-    tagsPriorityListMapping: ITagsPriorityListMapping;
     onClickAddTags?: () => void;
 }
 
-export function UnprioritizedTagsContainer(
-    props: IUnprioritizedTagsContainerProps
-) {
+export function UnprioritizedTagsCard(props: IUnprioritizedTagsCard) {
     const materialClasses = useStyles();
     const theme = useTheme();
     const classes = createClasses(theme);
@@ -47,17 +45,24 @@ export function UnprioritizedTagsContainer(
         canAddTags,
         isLoading,
         allTags,
-        tagsPriorityListMapping,
         prioritizedTags,
         onClickAddTags,
     } = props;
 
-    const unprioritizedTags = useMemo<string[]>(() => {
-        const filteredTags: string[] = allTags.filter((tag) => {
-            const tagName;
+    const unprioritizedTags = useMemo(() => {
+        const mappedPriorityList = prioritizedTags.reduce<{
+            [key: string]: boolean;
+        }>((priorityMapping, tagName) => {
+            priorityMapping[tagName] = true;
+            return priorityMapping;
+        }, {});
+
+        const unprioritizedTags = allTags.filter((tag) => {
+            const tagName = tag.name;
+            return !mappedPriorityList[tagName];
         });
 
-        return filteredTags;
+        return unprioritizedTags;
     }, [prioritizedTags]);
 
     return (
@@ -92,24 +97,11 @@ export function UnprioritizedTagsContainer(
                                     thickness={4}
                                 />
                             </div>
-                        ) : unprioritizedTags.length === 0 &&
-                          priorityListAndTagsMapping.priorityList.length ===
-                              0 ? (
-                            <div css={classes.centerContent}>
-                                <div css={classes.centerText}>
-                                    <Typography>
-                                        There are currently no tags for this
-                                        board. Click the add button above to add
-                                        some tags.
-                                    </Typography>
-                                </div>
-                            </div>
                         ) : unprioritizedTags.length === 0 ? (
                             <div css={classes.centerContent}>
                                 <div css={classes.centerText}>
                                     <Typography>
-                                        Nice work! All active tags have been
-                                        prioritized.
+                                        All available tags have been prioritized
                                     </Typography>
                                 </div>
                             </div>
@@ -124,47 +116,63 @@ export function UnprioritizedTagsContainer(
                                         >
                                             {unprioritizedTags.map(
                                                 (tag, index) => {
-                                                    return (
-                                                        <Draggable
-                                                            draggableId={tag}
-                                                            index={index}
-                                                            key={tag}
-                                                        >
-                                                            {(provided) => {
-                                                                const tagColor = tagNameToTagColor(
-                                                                    tag
-                                                                );
-
-                                                                return (
-                                                                    <div
-                                                                        css={
-                                                                            classes.unprioritizedTagContainer
-                                                                        }
-                                                                    >
-                                                                        <TagChip
-                                                                            whiteBackground
-                                                                            icon={
-                                                                                isBoardAdmin ? (
+                                                    if (canDragTags) {
+                                                        return (
+                                                            <Draggable
+                                                                draggableId={
+                                                                    tag.name
+                                                                }
+                                                                index={index}
+                                                                key={tag.name}
+                                                            >
+                                                                {(provided) => {
+                                                                    return (
+                                                                        <div
+                                                                            css={
+                                                                                classes.unprioritizedTagContainer
+                                                                            }
+                                                                        >
+                                                                            <TagChip
+                                                                                whiteBackground
+                                                                                icon={
                                                                                     <DragIndicator />
-                                                                                ) : undefined
-                                                                            }
-                                                                            tagName={
-                                                                                tag
-                                                                            }
-                                                                            tagColor={
-                                                                                tagColor
-                                                                            }
-                                                                            {...provided.draggableProps}
-                                                                            ref={
-                                                                                provided.innerRef
-                                                                            }
-                                                                            {...provided.dragHandleProps}
-                                                                        />
-                                                                    </div>
-                                                                );
-                                                            }}
-                                                        </Draggable>
-                                                    );
+                                                                                }
+                                                                                tagName={
+                                                                                    tag.name
+                                                                                }
+                                                                                tagColor={
+                                                                                    tag.color
+                                                                                }
+                                                                                {...provided.draggableProps}
+                                                                                ref={
+                                                                                    provided.innerRef
+                                                                                }
+                                                                                {...provided.dragHandleProps}
+                                                                            />
+                                                                        </div>
+                                                                    );
+                                                                }}
+                                                            </Draggable>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <div
+                                                                css={
+                                                                    classes.unprioritizedTagContainer
+                                                                }
+                                                            >
+                                                                <TagChip
+                                                                    whiteBackground
+                                                                    tagName={
+                                                                        tag.name
+                                                                    }
+                                                                    tagColor={
+                                                                        tag.color
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        );
+                                                    }
                                                 }
                                             )}
                                             {provided.placeholder}

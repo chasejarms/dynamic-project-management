@@ -24,10 +24,11 @@ import { ITag } from "../../../../../../../models/tag";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { NewTagDialog } from "../../../../../../../components/newTagDialog";
-import { cloneDeep } from "lodash";
+import { cloneDeep, sortBy } from "lodash";
 import { TagChip } from "../../../../../../../components/tagChip";
 import { useIsBoardAdmin } from "../../../../../../../hooks/useIsBoardAdmin";
 import { PrioritizedTagsCard } from "../../../../../../../components/prioritizedTagsCard";
+import { UnprioritizedTagsCard } from "../../../../../../../components/unprioritizedTagsCard";
 
 const useStyles = makeStyles({
     cardRoot: {
@@ -43,6 +44,7 @@ export function Priorities() {
     const isBoardAdmin = useIsBoardAdmin();
 
     const [isLoadingTags, setIsLoadingTags] = useState(true);
+    const [allTagsForBoard, setAllTagsForBoard] = useState<ITag[]>([]);
     const [
         priorityListAndTagsMapping,
         setPriorityListAndTagsMapping,
@@ -134,6 +136,7 @@ export function Priorities() {
                     tagsMapping,
                     priorityList: priorities,
                 });
+                setAllTagsForBoard(tags);
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -224,6 +227,9 @@ export function Priorities() {
     }
 
     function onCreateTagSuccess(createdTag: ITag) {
+        setAllTagsForBoard((previousAllTagsForBoard) => {
+            return sortBy([...previousAllTagsForBoard, createdTag], "itemId");
+        });
         setTagsMapping((previousTagsMapping) => {
             const clonedTagsMapping = cloneDeep(previousTagsMapping);
             clonedTagsMapping[createdTag.name] = createdTag;
@@ -249,6 +255,16 @@ export function Priorities() {
                         tagsPriorityListMapping={
                             priorityListAndTagsMapping.tagsMapping
                         }
+                    />
+                    <UnprioritizedTagsCard
+                        isLoading={isLoadingTags}
+                        canDragTags={isBoardAdmin}
+                        canAddTags={isBoardAdmin}
+                        allTags={allTagsForBoard}
+                        prioritizedTags={
+                            priorityListAndTagsMapping.priorityList
+                        }
+                        onClickAddTags={openTagsCreator}
                     />
                 </div>
                 <NewTagDialog
