@@ -11,9 +11,11 @@ import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../../../../../../components/bottomPageToolbar";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { useIsCheckingForCreateBoardsAccess } from "../../../../../../hooks/useIsCheckingForCreateBoardsAccess";
 
 export function CreateBoard() {
     const classes = createClasses();
+    const isCheckingForCreateBoardsAccess = useIsCheckingForCreateBoardsAccess();
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
@@ -106,7 +108,7 @@ export function CreateBoard() {
         },
     ];
 
-    return (
+    return isCheckingForCreateBoardsAccess ? null : (
         <BoardsContainer>
             <div css={classes.container}>
                 <div css={classes.controlsContainer}>

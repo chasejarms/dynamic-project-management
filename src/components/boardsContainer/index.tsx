@@ -16,13 +16,14 @@ export function BoardsContainer(props: IBoardContainerProps) {
     const { companyId } = useAppRouterParams();
     const user = useCompanyUser();
     const canManageCompanyUsers = !!user?.canManageCompanyUsers;
+    const canCreateBoards = !!user?.canCreateBoards;
 
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Boards",
             route: `/app/company/${companyId}/boards`,
         },
-        {
+        canCreateBoards && {
             text: "Create Board",
             route: `/app/company/${companyId}/boards/create-board`,
         },
