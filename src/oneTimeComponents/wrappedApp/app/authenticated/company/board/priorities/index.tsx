@@ -26,6 +26,8 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { NewTagDialog } from "../../../../../../../components/newTagDialog";
 import { cloneDeep } from "lodash";
 import { TagChip } from "../../../../../../../components/tagChip";
+import { useIsBoardAdmin } from "../../../../../../../hooks/useIsBoardAdmin";
+import { PrioritizedTagsCard } from "../../../../../../../components/prioritizedTagsCard";
 
 const useStyles = makeStyles({
     cardRoot: {
@@ -38,6 +40,7 @@ export function Priorities() {
     const classes = createClasses(theme);
     const materialClasses = useStyles();
     const { boardId, companyId } = useAppRouterParams();
+    const isBoardAdmin = useIsBoardAdmin();
 
     const [isLoadingTags, setIsLoadingTags] = useState(true);
     const [
@@ -237,132 +240,16 @@ export function Priorities() {
         <BoardContainer>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div css={classes.container}>
-                    <Card css={classes.card}>
-                        <CardContent
-                            classes={{
-                                root: materialClasses.cardRoot,
-                            }}
-                        >
-                            <div css={classes.cardContent}>
-                                <div css={classes.titleContainer}>
-                                    <Typography variant="h5">
-                                        Prioritized Tags (High to Low)
-                                    </Typography>
-                                </div>
-                                <div css={classes.innerCardContent}>
-                                    {isLoadingTags ? (
-                                        <div css={classes.centerContent}>
-                                            <CircularProgress
-                                                color="primary"
-                                                size={24}
-                                                thickness={4}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <Droppable
-                                            droppableId={"priority-list"}
-                                        >
-                                            {(provided) => {
-                                                return (
-                                                    <div
-                                                        {...provided.droppableProps}
-                                                        ref={provided.innerRef}
-                                                    >
-                                                        {priorityListAndTagsMapping
-                                                            .priorityList
-                                                            .length === 0 ? (
-                                                            <div
-                                                                css={
-                                                                    classes.centerContent
-                                                                }
-                                                            >
-                                                                <div
-                                                                    css={
-                                                                        classes.centerText
-                                                                    }
-                                                                >
-                                                                    <Typography>
-                                                                        There
-                                                                        are
-                                                                        currently
-                                                                        no
-                                                                        prioritized
-                                                                        tags.
-                                                                        Drag
-                                                                        tags
-                                                                        from the
-                                                                        Unprioritized
-                                                                        Tags
-                                                                        section
-                                                                        to begin
-                                                                        prioritizing.
-                                                                    </Typography>
-                                                                </div>
-                                                            </div>
-                                                        ) : (
-                                                            priorityListAndTagsMapping.priorityList.map(
-                                                                (
-                                                                    priority,
-                                                                    index
-                                                                ) => {
-                                                                    return (
-                                                                        <Draggable
-                                                                            draggableId={`PRIORITIZEDCOLUMN-${priority}`}
-                                                                            index={
-                                                                                index
-                                                                            }
-                                                                            key={
-                                                                                priority
-                                                                            }
-                                                                        >
-                                                                            {(
-                                                                                provided
-                                                                            ) => {
-                                                                                const tagColor = tagNameToTagColor(
-                                                                                    priority
-                                                                                );
-
-                                                                                return (
-                                                                                    <div
-                                                                                        css={
-                                                                                            classes.chipContainer
-                                                                                        }
-                                                                                    >
-                                                                                        <TagChip
-                                                                                            whiteBackground
-                                                                                            icon={
-                                                                                                <DragIndicator />
-                                                                                            }
-                                                                                            tagName={
-                                                                                                priority
-                                                                                            }
-                                                                                            tagColor={
-                                                                                                tagColor
-                                                                                            }
-                                                                                            {...provided.draggableProps}
-                                                                                            ref={
-                                                                                                provided.innerRef
-                                                                                            }
-                                                                                            {...provided.dragHandleProps}
-                                                                                        />
-                                                                                    </div>
-                                                                                );
-                                                                            }}
-                                                                        </Draggable>
-                                                                    );
-                                                                }
-                                                            )
-                                                        )}
-                                                        {provided.placeholder}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Droppable>
-                                    )}
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <PrioritizedTagsCard
+                        isLoading={isLoadingTags}
+                        canDragTags={isBoardAdmin}
+                        tagsPriorityList={
+                            priorityListAndTagsMapping.priorityList
+                        }
+                        tagsPriorityListMapping={
+                            priorityListAndTagsMapping.tagsMapping
+                        }
+                    />
                     <Card>
                         <CardContent
                             classes={{
@@ -380,9 +267,13 @@ export function Priorities() {
                                         Unprioritized Tags
                                     </Typography>
                                     <div>
-                                        <IconButton onClick={openTagsCreator}>
-                                            <Add />
-                                        </IconButton>
+                                        {isBoardAdmin && (
+                                            <IconButton
+                                                onClick={openTagsCreator}
+                                            >
+                                                <Add />
+                                            </IconButton>
+                                        )}
                                     </div>
                                 </div>
                                 <div css={classes.innerCardContent}>
@@ -459,7 +350,9 @@ export function Priorities() {
                                                                                     <TagChip
                                                                                         whiteBackground
                                                                                         icon={
-                                                                                            <DragIndicator />
+                                                                                            isBoardAdmin ? (
+                                                                                                <DragIndicator />
+                                                                                            ) : undefined
                                                                                         }
                                                                                         tagName={
                                                                                             tag

@@ -13,6 +13,7 @@ import { Api } from "../../api";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
 import { Typography } from "@material-ui/core";
+import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;
@@ -52,6 +53,8 @@ export function BoardContainer(props: IBoardContainerProps) {
 
     const hasBeenDeleted = !!board?.hasBeenDeleted;
 
+    const isBoardAdmin = useIsBoardAdmin();
+
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Board",
@@ -73,11 +76,11 @@ export function BoardContainer(props: IBoardContainerProps) {
             text: "Completed Tickets",
             route: `/app/company/${companyId}/board/${boardId}/completed-tickets`,
         },
-        {
+        isBoardAdmin && {
             text: "Admin",
             route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
         },
-    ];
+    ].filter((tabValue) => !!tabValue) as IAuthenticatedNavItem[];
 
     const classes = createClasses();
 
