@@ -19,4 +19,13 @@ module.exports = function (app) {
             pathRewrite: { "^/api/authenticated": "" },
         })
     );
+    app.use(
+        "/api/s3Presigned",
+        createProxyMiddleware({
+            target:
+                "https://ticket-files-elastic-project-management-s3-bucket.s3.us-east-1.amazonaws.com",
+            changeOrigin: true,
+            pathRewrite: { "^/api/s3Presigned": "" },
+        })
+    );
 };
