@@ -17,11 +17,13 @@ import { IUser } from "../../../../../../../../models/user";
 import { cloneDeep } from "lodash";
 import { BoardRightsAction } from "../../../../../../../../models/boardRightsAction";
 import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
+import { useCompanyUser } from "../../../../../../../../hooks/useCompanyUser";
 
 export function BoardUsers() {
     const { companyId, boardId } = useAppRouterParams();
     const [users, setUsers] = useState<IUser[]>([]);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+    const currentSignedInUser = useCompanyUser();
 
     useEffect(() => {
         let didCancel = false;
@@ -142,6 +144,9 @@ export function BoardUsers() {
                                     const isBoardAdmin =
                                         isBoardUser &&
                                         user.boardRights[boardId].isAdmin;
+                                    const isCurrentSignedInUser =
+                                        currentSignedInUser?.shortenedItemId ===
+                                        user.shortenedItemId;
                                     return (
                                         <TableRow key={user.itemId}>
                                             <TableCell>{user.name}</TableCell>
@@ -161,7 +166,8 @@ export function BoardUsers() {
                                                                 isBoardUser
                                                             }
                                                             disabled={
-                                                                isBoardAdmin
+                                                                isBoardAdmin ||
+                                                                isCurrentSignedInUser
                                                             }
                                                             onChange={onChangeIsBoardUser(
                                                                 user
@@ -186,7 +192,8 @@ export function BoardUsers() {
                                                                 isBoardAdmin
                                                             }
                                                             disabled={
-                                                                !isBoardUser
+                                                                !isBoardUser ||
+                                                                isCurrentSignedInUser
                                                             }
                                                             onChange={onChangeIsBoardAdmin(
                                                                 user

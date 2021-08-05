@@ -34,6 +34,7 @@ import { Delete } from "@material-ui/icons";
 import { ConfirmDialog } from "../../../../../../components/confirmDialog";
 import { sortBy } from "lodash";
 import { useIsCheckingForManageCompanyUserAccess } from "../../../../../../hooks/useIsCheckingForManageCompanyUserAccess";
+import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -115,6 +116,7 @@ export function CompanyUsers() {
             });
         };
     }
+    const currentSignedInUser = useCompanyUser();
 
     useEffect(() => {
         if (!userToUpdate) return;
@@ -323,6 +325,9 @@ export function CompanyUsers() {
                             </TableHead>
                             <TableBody>
                                 {users.map((user) => {
+                                    const isCurrentSignedInUser =
+                                        user.shortenedItemId ===
+                                        currentSignedInUser?.shortenedItemId;
                                     return (
                                         <TableRow key={user.itemId}>
                                             <TableCell>{user.name}</TableCell>
@@ -345,6 +350,9 @@ export function CompanyUsers() {
                                                             onChange={onClickToggleManageCompanyUserRights(
                                                                 user
                                                             )}
+                                                            disabled={
+                                                                isCurrentSignedInUser
+                                                            }
                                                         />
                                                     </div>
                                                 </div>
@@ -367,6 +375,9 @@ export function CompanyUsers() {
                                                             onChange={onClickToggleCreateBoardRights(
                                                                 user
                                                             )}
+                                                            disabled={
+                                                                isCurrentSignedInUser
+                                                            }
                                                         />
                                                     </div>
                                                 </div>
@@ -382,13 +393,15 @@ export function CompanyUsers() {
                                                             classes.absolutePositionedTableCell
                                                         }
                                                     >
-                                                        <IconButton
-                                                            onClick={onClickDeleteTableIcon(
-                                                                user
-                                                            )}
-                                                        >
-                                                            <Delete />
-                                                        </IconButton>
+                                                        {!isCurrentSignedInUser && (
+                                                            <IconButton
+                                                                onClick={onClickDeleteTableIcon(
+                                                                    user
+                                                                )}
+                                                            >
+                                                                <Delete />
+                                                            </IconButton>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </TableCell>

@@ -22,9 +22,5 @@ export function TicketImages() {
         };
     }, []);
 
-    return (
-        <TicketPageWrapper>
-            <p>{url}</p>
-        </TicketPageWrapper>
-    );
+    return <TicketPageWrapper>{!!url && <img src={url} />}</TicketPageWrapper>;
 }
