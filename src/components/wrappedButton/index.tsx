@@ -2,12 +2,9 @@
 import { jsx, css } from "@emotion/react";
 import { ButtonProps, Button, CircularProgress } from "@material-ui/core";
 
-export interface IWrappedButtonProps
-    extends Pick<
-        ButtonProps,
-        "onClick" | "color" | "variant" | "disabled" | "children" | "startIcon"
-    > {
+export interface IWrappedButtonProps extends ButtonProps {
     showSpinner?: boolean;
+    component?: string;
 }
 
 export function WrappedButton(props: IWrappedButtonProps) {

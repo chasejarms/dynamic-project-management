@@ -72,7 +72,14 @@ export interface ITicketsApi {
         ticketId: string
     ): Promise<void>;
 
-    createUploadTicketImageSignedUrl(): Promise<string>;
+    createUploadTicketImageSignedUrls(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        files: {
+            name: string;
+        }[]
+    ): Promise<string[]>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -291,11 +298,28 @@ export class TicketsApi implements ITicketsApi {
         );
     }
 
-    public async createUploadTicketImageSignedUrl(): Promise<string> {
+    public async createUploadTicketImageSignedUrls(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        files: {
+            name: string;
+        }[]
+    ): Promise<string[]> {
         const axiosResponse = await Axios.post(
-            `${environmentVariables.baseAuthenticatedApiUrl}/createUploadTicketImageSignedUrl`,
-            {}
+            `${environmentVariables.baseAuthenticatedApiUrl}/createUploadTicketImageSignedUrls`,
+            {
+                files,
+            },
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketId,
+                },
+            }
         );
-        return axiosResponse.data as string;
+
+        return axiosResponse.data as string[];
     }
 }
