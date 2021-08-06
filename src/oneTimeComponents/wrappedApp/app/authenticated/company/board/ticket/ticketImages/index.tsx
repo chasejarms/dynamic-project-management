@@ -37,8 +37,6 @@ export function TicketImages() {
             .then((signedUploadUrls) => {
                 if (didCancel) return;
 
-                console.log("environment variables: ", environmentVariables);
-
                 const mappedSignedUploadUrls = !environmentVariables.isLocalDevelopment
                     ? signedUploadUrls
                     : signedUploadUrls.map((url) => {
