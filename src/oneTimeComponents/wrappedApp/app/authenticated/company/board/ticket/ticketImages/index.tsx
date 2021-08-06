@@ -43,7 +43,7 @@ export function TicketImages() {
                     ? signedUploadUrls
                     : signedUploadUrls.map((url) => {
                           const updatedUrl = url.replace(
-                              "https://ticket-files-elastic-project-management-s3-bucket.s3.us-east-1.amazonaws.com",
+                              "https://elastic-project-management-company-source-files.s3.us-east-1.amazonaws.com",
                               "/api/s3Presigned"
                           );
                           return updatedUrl;
@@ -73,7 +73,6 @@ export function TicketImages() {
                         Promise.all(uploadToS3Promises)
                             .then(() => {
                                 if (didCancel) return;
-                                console.log("it is finished");
                             })
                             .catch(() => {
                                 if (didCancel) return;

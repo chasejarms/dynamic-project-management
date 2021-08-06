@@ -23,7 +23,7 @@ module.exports = function (app) {
         "/api/s3Presigned",
         createProxyMiddleware({
             target:
-                "https://ticket-files-elastic-project-management-s3-bucket.s3.us-east-1.amazonaws.com",
+                "https://elastic-project-management-company-source-files.s3.us-east-1.amazonaws.com",
             changeOrigin: true,
             pathRewrite: { "^/api/s3Presigned": "" },
         })
