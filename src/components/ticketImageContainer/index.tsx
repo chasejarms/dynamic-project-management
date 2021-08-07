@@ -9,9 +9,15 @@ import {
     Theme,
     useTheme,
     Typography,
+    Popover,
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
+import { useState } from "react";
 import { IFileForTicket } from "../../models/fileForTicket";
+import {
+    IIndentedAction,
+    QuickActionsPopoverContent,
+} from "../quickActionsPopoverContent";
 
 export interface ITicketImageContainerProps {
     file: IFileForTicket;
@@ -38,6 +44,32 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
     const materialClasses = useStyles(theme);
     const classes = createClasses();
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [actionsPopoverIsOpen, setActionsPopoverIsOpen] = useState(false);
+    function toggleMoreOptions(event: any) {
+        setAnchorEl(event.currentTarget);
+        setActionsPopoverIsOpen((previous) => !previous);
+    }
+
+    function onClickDeleteImage() {}
+    function onClickDownloadImage() {}
+
+    const indentedActions: IIndentedAction[] = [
+        {
+            header: "Quick Actions",
+            informationForMenuItems: [
+                {
+                    text: "Delete Image",
+                    onClick: onClickDeleteImage,
+                },
+                {
+                    text: "Download Image",
+                    onClick: onClickDownloadImage,
+                },
+            ],
+        },
+    ];
+
     return (
         <div>
             <Card elevation={3}>
@@ -54,11 +86,22 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
                         </div>
                         <div css={classes.iconButtonContainer}>
                             <IconButton>
-                                <MoreHoriz />
+                                <MoreHoriz onClick={toggleMoreOptions} />
                             </IconButton>
                         </div>
                     </div>
                 </CardContent>
+                <Popover
+                    open={actionsPopoverIsOpen}
+                    anchorEl={anchorEl}
+                    onClose={() => {
+                        setActionsPopoverIsOpen(false);
+                    }}
+                >
+                    <QuickActionsPopoverContent
+                        indentedActions={indentedActions}
+                    />
+                </Popover>
             </Card>
         </div>
     );
