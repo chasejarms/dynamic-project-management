@@ -7,6 +7,10 @@ import { WrappedButton } from "../../../../../../../../components/wrappedButton"
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import Axios, { AxiosResponse } from "axios";
 import { environmentVariables } from "../../../../../../../../environmentVariables";
+import { IFileForTicket } from "../../../../../../../../models/fileForTicket";
+import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
+import { TicketImageContainer } from "../../../../../../../../components/ticketImageContainer";
 
 export function TicketImages() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -37,30 +41,26 @@ export function TicketImages() {
             .then((signedUploadUrls) => {
                 if (didCancel) return;
 
-                const mappedSignedUploadUrls = !environmentVariables.isLocalDevelopment
-                    ? signedUploadUrls
-                    : signedUploadUrls.map((url) => {
-                          const updatedUrl = url.replace(
-                              "https://elastic-project-management-company-source-files.s3.us-east-1.amazonaws.com",
-                              "/api/s3Presigned"
-                          );
-                          return updatedUrl;
-                      });
+                const mappedSignedUploadUrls = signedUploadUrls.map((url) => {
+                    return signedUrlReplace(url);
+                });
 
                 const uploadToS3Promises: Promise<AxiosResponse<any>>[] = [];
                 mappedSignedUploadUrls.forEach((url, index) => {
                     const compareFile = files[index];
-                    var body = new FormData();
                     const fileReader = new FileReader();
-                    fileReader.onload = (fileReaderProgressEvent) => {
-                        const fileToUploadResult =
-                            fileReaderProgressEvent.target?.result;
+                    fileReader.onloadend = (fileReaderProgressEvent) => {
+                        const fileToUploadResult = fileReaderProgressEvent
+                            .target?.result as ArrayBuffer;
                         if (!fileToUploadResult) return;
-                        body.set("file", fileToUploadResult as any);
-                        const uploadImageRequest = Axios.put(url, body);
+                        let blobData = new Blob(
+                            [new Uint8Array(fileToUploadResult)],
+                            { type: "image/png" }
+                        );
+                        const uploadImageRequest = Axios.put(url, blobData);
                         uploadToS3Promises[index] = uploadImageRequest;
                     };
-                    fileReader.readAsBinaryString(compareFile);
+                    fileReader.readAsArrayBuffer(compareFile);
                 });
 
                 const interval = setInterval(() => {
@@ -117,19 +117,98 @@ export function TicketImages() {
         });
     }
 
+    const [filesForTicket, setFilesForTicket] = useState<IFileForTicket[]>([]);
+    const [isLoadingFiles, setIsLoadingFiles] = useState(true);
+    useEffect(() => {
+        if (!isLoadingFiles) return;
+        let didCancel = false;
+
+        Api.tickets
+            .getTicketFilesWithSignedUrls(companyId, boardId, ticketId)
+            .then((filesForTicketFromDatabase) => {
+                if (didCancel) return;
+                setFilesForTicket(filesForTicketFromDatabase);
+            })
+            .catch(() => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsLoadingFiles(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isLoadingFiles]);
+
+    const classes = createClasses();
+
     return (
         <TicketPageWrapper>
-            <WrappedButton variant="contained" component="label">
-                Upload Image(s)
-                <input
-                    value=""
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={onChange}
-                    multiple
-                />
-            </WrappedButton>
+            {isLoadingFiles ? (
+                <CenterLoadingSpinner size="large" />
+            ) : (
+                <div css={classes.container}>
+                    <div css={classes.actionButtonHeaderContainer}>
+                        <WrappedButton color="primary" component="label">
+                            Upload Image(s)
+                            <input
+                                value=""
+                                type="file"
+                                hidden
+                                accept="image/*"
+                                onChange={onChange}
+                                multiple
+                            />
+                        </WrappedButton>
+                    </div>
+                    <div css={classes.imagesContainer}>
+                        {filesForTicket.map((file, index) => {
+                            const updatedFile = {
+                                ...file,
+                                signedGetUrl: signedUrlReplace(
+                                    file.signedGetUrl!
+                                ),
+                            };
+                            return (
+                                <TicketImageContainer
+                                    file={updatedFile}
+                                    key={index}
+                                />
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </TicketPageWrapper>
     );
 }
+
+const createClasses = () => {
+    const container = css`
+        width: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        height: 100%;
+    `;
+
+    const actionButtonHeaderContainer = css`
+        display: flex;
+        justify-content: flex-start;
+        padding: 16px 32px 16px 32px;
+    `;
+
+    const imagesContainer = css`
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 16px;
+        padding: 0px 32px 32px 32px;
+    `;
+
+    return {
+        container,
+        actionButtonHeaderContainer,
+        imagesContainer,
+    };
+};

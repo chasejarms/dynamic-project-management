@@ -5,6 +5,7 @@ import { TicketType } from "../models/ticket/ticketType";
 import { IGetDoneTicketsResponse } from "../models/getDoneTicketsResponse";
 import { ITicketUpdateRequest } from "../models/ticketUpdateRequest";
 import Axios from "axios";
+import { IFileForTicket } from "../models/fileForTicket";
 
 export interface ITicketsApi {
     createTicket(
@@ -80,6 +81,12 @@ export interface ITicketsApi {
             name: string;
         }[]
     ): Promise<string[]>;
+
+    getTicketFilesWithSignedUrls(
+        companyId: string,
+        boardId: string,
+        ticketId: string
+    ): Promise<IFileForTicket[]>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -321,5 +328,24 @@ export class TicketsApi implements ITicketsApi {
         );
 
         return axiosResponse.data as string[];
+    }
+
+    public async getTicketFilesWithSignedUrls(
+        companyId: string,
+        boardId: string,
+        ticketId: string
+    ): Promise<IFileForTicket[]> {
+        const axiosResponse = await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/getTicketFilesWithSignedUrls`,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketId,
+                },
+            }
+        );
+
+        return axiosResponse.data as IFileForTicket[];
     }
 }
