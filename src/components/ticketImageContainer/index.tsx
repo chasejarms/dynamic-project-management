@@ -12,8 +12,11 @@ import {
     Popover,
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Api } from "../../api";
+import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { IFileForTicket } from "../../models/fileForTicket";
+import { ConfirmDialog } from "../confirmDialog";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
@@ -21,6 +24,7 @@ import {
 
 export interface ITicketImageContainerProps {
     file: IFileForTicket;
+    onDeleteFile: () => void;
 }
 
 const useStyles = makeStyles({
@@ -39,6 +43,8 @@ const useStyles = makeStyles({
 });
 
 export function TicketImageContainer(props: ITicketImageContainerProps) {
+    const { companyId, boardId, ticketId } = useAppRouterParams();
+
     const { file } = props;
     const theme = useTheme();
     const materialClasses = useStyles(theme);
@@ -51,7 +57,41 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
         setActionsPopoverIsOpen((previous) => !previous);
     }
 
-    function onClickDeleteImage() {}
+    const [
+        showConfirmDeleteImageDialog,
+        setShowConfirmDeleteImageDialog,
+    ] = useState(false);
+
+    function onClickDeleteImage() {
+        setActionsPopoverIsOpen(false);
+        setShowConfirmDeleteImageDialog(true);
+    }
+
+    const [isDeletingImage, setIsDeletingImage] = useState(false);
+    useEffect(() => {
+        if (!isDeletingImage) return;
+
+        let didCancel = false;
+
+        Api.tickets
+            .deleteTicketFile(companyId, boardId, ticketId, file.fileName)
+            .then((url) => {
+                if (didCancel) return;
+                props.onDeleteFile();
+            })
+            .catch(() => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsDeletingImage(false);
+                setShowConfirmDeleteImageDialog(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isDeletingImage]);
     function onClickDownloadImage() {}
 
     const indentedActions: IIndentedAction[] = [
@@ -85,9 +125,11 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
                             <Typography>{file.fileName}</Typography>
                         </div>
                         <div css={classes.iconButtonContainer}>
-                            <IconButton>
-                                <MoreHoriz onClick={toggleMoreOptions} />
-                            </IconButton>
+                            {!isDeletingImage && (
+                                <IconButton>
+                                    <MoreHoriz onClick={toggleMoreOptions} />
+                                </IconButton>
+                            )}
                         </div>
                     </div>
                 </CardContent>
@@ -103,6 +145,17 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
                     />
                 </Popover>
             </Card>
+            {showConfirmDeleteImageDialog && (
+                <ConfirmDialog
+                    open={showConfirmDeleteImageDialog}
+                    isPerformingAction={isDeletingImage}
+                    onConfirm={() => setIsDeletingImage(true)}
+                    onClose={() => setShowConfirmDeleteImageDialog(false)}
+                    title="Delete Image"
+                    content={`Are you sure want to delete this image? This action cannot be undone.`}
+                    confirmButtonText="Yes"
+                />
+            )}
         </div>
     );
 }

@@ -87,6 +87,13 @@ export interface ITicketsApi {
         boardId: string,
         ticketId: string
     ): Promise<IFileForTicket[]>;
+
+    deleteTicketFile(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        fileName: string
+    ): Promise<void>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -305,6 +312,25 @@ export class TicketsApi implements ITicketsApi {
         );
     }
 
+    public async getTicketFilesWithSignedUrls(
+        companyId: string,
+        boardId: string,
+        ticketId: string
+    ): Promise<IFileForTicket[]> {
+        const axiosResponse = await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/getTicketFilesWithSignedUrls`,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketId,
+                },
+            }
+        );
+
+        return axiosResponse.data as IFileForTicket[];
+    }
+
     public async createUploadTicketImageSignedUrls(
         companyId: string,
         boardId: string,
@@ -330,13 +356,17 @@ export class TicketsApi implements ITicketsApi {
         return axiosResponse.data as string[];
     }
 
-    public async getTicketFilesWithSignedUrls(
+    public async deleteTicketFile(
         companyId: string,
         boardId: string,
-        ticketId: string
-    ): Promise<IFileForTicket[]> {
-        const axiosResponse = await Axios.get(
-            `${environmentVariables.baseAuthenticatedApiUrl}/getTicketFilesWithSignedUrls`,
+        ticketId: string,
+        fileName: string
+    ): Promise<void> {
+        await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/deleteTicketFile`,
+            {
+                fileName,
+            },
             {
                 params: {
                     companyId,
@@ -345,7 +375,5 @@ export class TicketsApi implements ITicketsApi {
                 },
             }
         );
-
-        return axiosResponse.data as IFileForTicket[];
     }
 }

@@ -144,6 +144,16 @@ export function TicketImages() {
 
     const classes = createClasses();
 
+    function onDeleteFile(file: IFileForTicket) {
+        return () => {
+            setFilesForTicket((previousFilesForTicket) => {
+                return previousFilesForTicket.filter((previousFile) => {
+                    return previousFile.fileName !== file.fileName;
+                });
+            });
+        };
+    }
+
     return (
         <TicketPageWrapper>
             {isLoadingFiles ? (
@@ -175,6 +185,7 @@ export function TicketImages() {
                                 <TicketImageContainer
                                     file={updatedFile}
                                     key={index}
+                                    onDeleteFile={onDeleteFile(file)}
                                 />
                             );
                         })}
