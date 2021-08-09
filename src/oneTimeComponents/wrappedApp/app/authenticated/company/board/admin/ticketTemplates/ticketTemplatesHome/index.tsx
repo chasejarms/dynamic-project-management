@@ -3,14 +3,14 @@ import { jsx, css } from "@emotion/react";
 import { Theme, useTheme } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Api } from "../../../../../../../../api";
-import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
-import { TicketTemplateForBoard } from "../../../../../../../../components/ticketTemplateForBoard";
-import { WrappedButton } from "../../../../../../../../components/wrappedButton";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
-import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
+import { Api } from "../../../../../../../../../api";
+import { BoardAdminContainer } from "../../../../../../../../../components/boardAdminContainer";
+import { CenterLoadingSpinner } from "../../../../../../../../../components/centerLoadingSpinner";
+import { ConfirmDialog } from "../../../../../../../../../components/confirmDialog";
+import { TicketTemplateForBoard } from "../../../../../../../../../components/ticketTemplateForBoard";
+import { WrappedButton } from "../../../../../../../../../components/wrappedButton";
+import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 
 export function TicketTemplatesHome() {
     const history = useHistory();

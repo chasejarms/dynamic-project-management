@@ -1,21 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useCallback, useEffect, useState } from "react";
-import { Api } from "../../../../../../../../api";
-import { CreateEditTicketTemplateWrapper } from "../../../../../../../../components/createEditTicketTemplateWrapper";
-import { ticketTemplateDescriptionUniqueId } from "../../../../../../../../components/ticketTemplateDescriptionControl";
-import { ticketTemplateNameUniqueId } from "../../../../../../../../components/ticketTemplateNameControl";
-import { ticketTemplateSummaryControlId } from "../../../../../../../../components/ticketTemplateSummaryControl";
-import { ticketTemplateTitleControlId } from "../../../../../../../../components/ticketTemplateTitleControl";
-import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
-import { IGhostControlParams } from "../../../../../../../../models/ghostControlPattern/ghostControlParams";
-import { IGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
-import { IStarterGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
-import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
-import { ITextSection } from "../../../../../../../../models/ticketTemplate/textSection";
-import { ITicketTemplatePutRequest } from "../../../../../../../../models/ticketTemplate/ticketTemplatePutRequest";
-import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
+import { Api } from "../../../../../../../../../api";
+import { CreateEditTicketTemplateWrapper } from "../../../../../../../../../components/createEditTicketTemplateWrapper";
+import { ticketTemplateDescriptionUniqueId } from "../../../../../../../../../components/ticketTemplateDescriptionControl";
+import { ticketTemplateNameUniqueId } from "../../../../../../../../../components/ticketTemplateNameControl";
+import { ticketTemplateSummaryControlId } from "../../../../../../../../../components/ticketTemplateSummaryControl";
+import { ticketTemplateTitleControlId } from "../../../../../../../../../components/ticketTemplateTitleControl";
+import { IWrappedButtonProps } from "../../../../../../../../../components/wrappedButton";
+import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { IGhostControlParams } from "../../../../../../../../../models/ghostControlPattern/ghostControlParams";
+import { IGhostControlParamsMapping } from "../../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
+import { IStarterGhostControlParamsMapping } from "../../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
+import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
+import { ITextSection } from "../../../../../../../../../models/ticketTemplate/textSection";
+import { ITicketTemplatePutRequest } from "../../../../../../../../../models/ticketTemplate/ticketTemplatePutRequest";
+import { generateUniqueId } from "../../../../../../../../../utils/generateUniqueId";
 
 const defaultStarterGhostControlParamsMapping: IStarterGhostControlParamsMapping = {
     [ticketTemplateNameUniqueId]: {
