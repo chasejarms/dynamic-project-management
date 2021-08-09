@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import {
+    IconButton,
     makeStyles,
     Paper,
     Table,
@@ -13,6 +14,7 @@ import {
     Typography,
     useTheme,
 } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
@@ -24,6 +26,7 @@ import { NewTagDialog } from "../../../../../../../../components/newTagDialog";
 import { sortBy } from "lodash";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../../../../../../../utils/mapColorToMaterialThemeColorLight";
+import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -80,6 +83,49 @@ export function TagsManager() {
         });
     }
 
+    const [
+        { tagToDelete, confirmDeleteTagDialogIsOpen },
+        setTagDeleteInformation,
+    ] = useState<{
+        tagToDelete: null | ITag;
+        confirmDeleteTagDialogIsOpen: boolean;
+    }>({
+        tagToDelete: null,
+        confirmDeleteTagDialogIsOpen: false,
+    });
+    function onClickDeleteTag(tag: ITag) {
+        return () => {
+            setTagDeleteInformation({
+                tagToDelete: tag,
+                confirmDeleteTagDialogIsOpen: true,
+            });
+        };
+    }
+    function onCloseConfirmDialog() {
+        setTagDeleteInformation((previous) => {
+            return {
+                ...previous,
+                confirmDeleteTagDialogIsOpen: false,
+            };
+        });
+    }
+
+    const [isDeletingTag, setIsDeletingTag] = useState(false);
+    function onClickConfirmDelete() {
+        setIsDeletingTag(true);
+    }
+    useEffect(() => {
+        if (!isDeletingTag) return;
+
+        let didCancel = false;
+
+        // delete the tag here
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isDeletingTag]);
+
     const classes = createClasses();
     const materialClasses = useStyles();
     const theme = useTheme();
@@ -122,6 +168,11 @@ export function TagsManager() {
                                         >
                                             Tag Color
                                         </TableCell>
+                                        <TableCell
+                                            className={
+                                                materialClasses.tableHeadCell
+                                            }
+                                        />
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -147,6 +198,27 @@ export function TagsManager() {
                                                         )}
                                                     />
                                                 </TableCell>
+                                                <TableCell>
+                                                    <div
+                                                        css={
+                                                            classes.relativePositionedTableCell
+                                                        }
+                                                    >
+                                                        <div
+                                                            css={
+                                                                classes.absolutePositionedTableCell
+                                                            }
+                                                        >
+                                                            <IconButton
+                                                                onClick={onClickDeleteTag(
+                                                                    tag
+                                                                )}
+                                                            >
+                                                                <Delete />
+                                                            </IconButton>
+                                                        </div>
+                                                    </div>
+                                                </TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -158,6 +230,15 @@ export function TagsManager() {
                         open={tagsCreatorIsOpen}
                         onClose={closeTagsCreator}
                         onCreateTagSuccess={onCreateTagSuccess}
+                    />
+                    <ConfirmDialog
+                        open={confirmDeleteTagDialogIsOpen}
+                        isPerformingAction={isDeletingTag}
+                        onConfirm={onClickConfirmDelete}
+                        onClose={onCloseConfirmDialog}
+                        title="Delete Tag"
+                        content={`Are you sure want to delete tag ${tagToDelete?.name}? Deleting the tag will remove it from the priorities and from ticket creation. However, it will continue to exist on previously created tickets.`}
+                        confirmButtonText="Yes"
                     />
                 </div>
             ) : (
