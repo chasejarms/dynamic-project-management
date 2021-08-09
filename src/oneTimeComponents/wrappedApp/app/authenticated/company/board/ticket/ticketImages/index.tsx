@@ -33,12 +33,15 @@ export function TicketImages() {
         if (!isUploadingFiles) return;
         let didCancel = false;
 
-        const filesForPresignedUrlRequest = files.map(({ name, size }) => {
-            return {
-                name,
-                size,
-            };
-        });
+        const filesForPresignedUrlRequest = files.map(
+            ({ name, size, type }) => {
+                return {
+                    name,
+                    size,
+                    contentType: type,
+                };
+            }
+        );
         Api.tickets
             .createUploadTicketImageSignedUrls(
                 companyId,
