@@ -44,7 +44,6 @@ const useStyles = makeStyles({
 });
 
 function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
-    console.log("rerendering this component: ", props.file.fileName);
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
     const { file } = props;

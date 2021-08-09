@@ -11,6 +11,13 @@ import { CenterLoadingSpinner } from "../../../../../../../../components/centerL
 import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
 import { TicketImageContainer } from "../../../../../../../../components/ticketImageContainer";
 import { sortBy } from "lodash";
+import { makeStyles, Typography } from "@material-ui/core";
+
+const useStyles = makeStyles({
+    noImagesText: {
+        textAlign: "center",
+    },
+});
 
 export function TicketImages() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -164,6 +171,7 @@ export function TicketImages() {
     }, [isLoadingFiles]);
 
     const classes = createClasses();
+    const materialClasses = useStyles();
 
     function onDeleteFile(file: IFileForTicket) {
         return () => {
@@ -179,6 +187,35 @@ export function TicketImages() {
         <TicketPageWrapper>
             {isLoadingFiles ? (
                 <CenterLoadingSpinner size="large" />
+            ) : filesForTicket.length === 0 ? (
+                <div css={classes.centerContainer}>
+                    <div css={classes.noTicketsContainer}>
+                        <Typography
+                            variant="h6"
+                            className={materialClasses.noImagesText}
+                        >
+                            No images have been added to this tickets
+                        </Typography>
+                        <div css={classes.wrappedButtonContainer}>
+                            <WrappedButton
+                                color="primary"
+                                component="label"
+                                disabled={isUploadingFiles}
+                                showSpinner={isUploadingFiles}
+                            >
+                                Upload Image(s)
+                                <input
+                                    value=""
+                                    type="file"
+                                    hidden
+                                    accept="image/*"
+                                    onChange={onChange}
+                                    multiple
+                                />
+                            </WrappedButton>
+                        </div>
+                    </div>
+                </div>
             ) : (
                 <div css={classes.container}>
                     <div css={classes.actionButtonHeaderContainer}>
@@ -223,6 +260,14 @@ export function TicketImages() {
 }
 
 const createClasses = () => {
+    const centerContainer = css`
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `;
+
     const container = css`
         width: 100%;
         display: grid;
@@ -243,9 +288,25 @@ const createClasses = () => {
         padding: 0px 32px 32px 32px;
     `;
 
+    const noTicketsContainer = css`
+        display: flex;
+        width: 200px;
+        flex-direction: column;
+    `;
+
+    const wrappedButtonContainer = css`
+        margin-top: 16px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    `;
+
     return {
         container,
         actionButtonHeaderContainer,
         imagesContainer,
+        centerContainer,
+        noTicketsContainer,
+        wrappedButtonContainer,
     };
 };
