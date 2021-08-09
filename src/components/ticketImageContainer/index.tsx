@@ -92,7 +92,20 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
             didCancel = true;
         };
     }, [isDeletingImage]);
-    function onClickDownloadImage() {}
+    function onClickDownloadImage() {
+        Api.tickets
+            .getDownloadFileSignedUrl(
+                companyId,
+                boardId,
+                ticketId,
+                file.fileName
+            )
+            .then((signedUrl) => {
+                window.open(signedUrl, "_blank");
+            })
+            .catch(() => {})
+            .finally(() => {});
+    }
 
     const indentedActions: IIndentedAction[] = [
         {
@@ -125,11 +138,9 @@ export function TicketImageContainer(props: ITicketImageContainerProps) {
                             <Typography>{file.fileName}</Typography>
                         </div>
                         <div css={classes.iconButtonContainer}>
-                            {!isDeletingImage && (
-                                <IconButton>
-                                    <MoreHoriz onClick={toggleMoreOptions} />
-                                </IconButton>
-                            )}
+                            <IconButton disabled={isDeletingImage}>
+                                <MoreHoriz onClick={toggleMoreOptions} />
+                            </IconButton>
                         </div>
                     </div>
                 </CardContent>

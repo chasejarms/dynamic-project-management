@@ -94,6 +94,13 @@ export interface ITicketsApi {
         ticketId: string,
         fileName: string
     ): Promise<void>;
+
+    getDownloadFileSignedUrl(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        fileName: string
+    ): Promise<string>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -375,5 +382,26 @@ export class TicketsApi implements ITicketsApi {
                 },
             }
         );
+    }
+
+    public async getDownloadFileSignedUrl(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        fileName: string
+    ): Promise<string> {
+        const axiosResponse = await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/getDownloadFileSignedUrl`,
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketId,
+                    fileName,
+                },
+            }
+        );
+
+        return axiosResponse.data as string;
     }
 }
