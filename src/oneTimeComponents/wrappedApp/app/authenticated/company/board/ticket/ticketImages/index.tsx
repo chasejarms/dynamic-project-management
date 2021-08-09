@@ -6,24 +6,24 @@ import { TicketPageWrapper } from "../../../../../../../../components/ticketPage
 import { WrappedButton } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import Axios, { AxiosResponse } from "axios";
-import { environmentVariables } from "../../../../../../../../environmentVariables";
 import { IFileForTicket } from "../../../../../../../../models/fileForTicket";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
 import { TicketImageContainer } from "../../../../../../../../components/ticketImageContainer";
+import { sortBy } from "lodash";
 
 export function TicketImages() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
-    const [{ files, isLoadingSignedUrls }, setSignedUrlData] = useState<{
+    const [{ files, isUploadingFiles }, setSignedUrlData] = useState<{
         files: File[];
-        isLoadingSignedUrls: boolean;
+        isUploadingFiles: boolean;
     }>({
         files: [],
-        isLoadingSignedUrls: false,
+        isUploadingFiles: false,
     });
     useEffect(() => {
-        if (!isLoadingSignedUrls) return;
+        if (!isUploadingFiles) return;
         let didCancel = false;
 
         const filesForPresignedUrlRequest = files.map(({ name }) => {
@@ -38,15 +38,16 @@ export function TicketImages() {
                 ticketId,
                 filesForPresignedUrlRequest
             )
-            .then((signedUploadUrls) => {
+            .then((response) => {
                 if (didCancel) return;
 
-                const mappedSignedUploadUrls = signedUploadUrls.map((url) => {
-                    return signedUrlReplace(url);
-                });
-
                 const uploadToS3Promises: Promise<AxiosResponse<any>>[] = [];
-                mappedSignedUploadUrls.forEach((url, index) => {
+                const signedUploadUrls = Object.keys(response).map(
+                    (fileName) => {
+                        return response[fileName].putSignedUrl;
+                    }
+                );
+                signedUploadUrls.forEach((url, index) => {
                     const compareFile = files[index];
                     const fileReader = new FileReader();
                     fileReader.onloadend = (fileReaderProgressEvent) => {
@@ -71,6 +72,26 @@ export function TicketImages() {
                         Promise.all(uploadToS3Promises)
                             .then(() => {
                                 if (didCancel) return;
+                                setFilesForTicket((previousFilesForTicket) => {
+                                    const filesToAdd: IFileForTicket[] = Object.keys(
+                                        response
+                                    ).map((fileName) => {
+                                        return {
+                                            size: 0,
+                                            fileName,
+                                            signedGetUrl:
+                                                response[fileName].getSignedUrl,
+                                        };
+                                    });
+                                    const updatedFilesForTicket = previousFilesForTicket.concat(
+                                        filesToAdd
+                                    );
+                                    const sortedFiles = sortBy(
+                                        updatedFilesForTicket,
+                                        "fileName"
+                                    );
+                                    return sortedFiles;
+                                });
                             })
                             .catch(() => {
                                 if (didCancel) return;
@@ -79,7 +100,7 @@ export function TicketImages() {
                                 if (didCancel) return;
                                 setSignedUrlData({
                                     files: [],
-                                    isLoadingSignedUrls: false,
+                                    isUploadingFiles: false,
                                 });
                             });
                         clearInterval(interval);
@@ -90,7 +111,7 @@ export function TicketImages() {
                 if (didCancel) return;
                 setSignedUrlData({
                     files: [],
-                    isLoadingSignedUrls: false,
+                    isUploadingFiles: false,
                 });
             })
             .finally(() => {
@@ -100,7 +121,7 @@ export function TicketImages() {
         return () => {
             didCancel = true;
         };
-    }, [isLoadingSignedUrls]);
+    }, [isUploadingFiles]);
 
     function onChange(event: React.ChangeEvent<HTMLInputElement>) {
         const eventFiles = event.target.files;
@@ -113,7 +134,7 @@ export function TicketImages() {
         }
         setSignedUrlData({
             files,
-            isLoadingSignedUrls: true,
+            isUploadingFiles: true,
         });
     }
 
@@ -161,7 +182,12 @@ export function TicketImages() {
             ) : (
                 <div css={classes.container}>
                     <div css={classes.actionButtonHeaderContainer}>
-                        <WrappedButton color="primary" component="label">
+                        <WrappedButton
+                            color="primary"
+                            component="label"
+                            disabled={isUploadingFiles}
+                            showSpinner={isUploadingFiles}
+                        >
                             Upload Image(s)
                             <input
                                 value=""
@@ -184,7 +210,7 @@ export function TicketImages() {
                             return (
                                 <TicketImageContainer
                                     file={updatedFile}
-                                    key={index}
+                                    key={file.fileName}
                                     onDeleteFile={onDeleteFile(file)}
                                 />
                             );

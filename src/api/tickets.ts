@@ -6,6 +6,8 @@ import { IGetDoneTicketsResponse } from "../models/getDoneTicketsResponse";
 import { ITicketUpdateRequest } from "../models/ticketUpdateRequest";
 import Axios from "axios";
 import { IFileForTicket } from "../models/fileForTicket";
+import { ICreateUploadTicketResponse } from "../models/createUploadTicketResponse";
+import { signedUrlReplace } from "../utils/signedUrlReplace";
 
 export interface ITicketsApi {
     createTicket(
@@ -80,7 +82,7 @@ export interface ITicketsApi {
         files: {
             name: string;
         }[]
-    ): Promise<string[]>;
+    ): Promise<ICreateUploadTicketResponse>;
 
     getTicketFilesWithSignedUrls(
         companyId: string,
@@ -345,7 +347,7 @@ export class TicketsApi implements ITicketsApi {
         files: {
             name: string;
         }[]
-    ): Promise<string[]> {
+    ): Promise<ICreateUploadTicketResponse> {
         const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/createUploadTicketImageSignedUrls`,
             {
@@ -360,7 +362,22 @@ export class TicketsApi implements ITicketsApi {
             }
         );
 
-        return axiosResponse.data as string[];
+        const mappedResponseForEnvironment: ICreateUploadTicketResponse = {};
+        const databaseResponse = axiosResponse.data as ICreateUploadTicketResponse;
+        Object.keys(databaseResponse).forEach((fileName) => {
+            const mappingFromDatabase = databaseResponse[fileName];
+            mappedResponseForEnvironment[fileName] = {
+                fileName,
+                getSignedUrl: signedUrlReplace(
+                    mappingFromDatabase.getSignedUrl
+                ),
+                putSignedUrl: signedUrlReplace(
+                    mappingFromDatabase.putSignedUrl
+                ),
+            };
+        });
+
+        return mappedResponseForEnvironment;
     }
 
     public async deleteTicketFile(

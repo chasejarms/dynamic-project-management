@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
+import React from "react";
 import {
     Card,
     CardContent,
@@ -42,7 +43,8 @@ const useStyles = makeStyles({
     }),
 });
 
-export function TicketImageContainer(props: ITicketImageContainerProps) {
+function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
+    console.log("rerendering this component: ", props.file.fileName);
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
     const { file } = props;
@@ -192,3 +194,5 @@ const createClasses = () => {
         imageTextContainer,
     };
 };
+
+export const TicketImageContainer = React.memo(TicketImageContainerNotMemoized);
