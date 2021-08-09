@@ -60,6 +60,10 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
         },
     ];
 
+    function onClose() {
+        setOptionsIsOpen(false);
+    }
+
     return (
         <Card>
             <CardContent>
@@ -90,14 +94,11 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
                     </Button>
                 </div>
             </CardActions>
-            <Popover
-                open={optionsIsOpen}
-                anchorEl={anchorEl}
-                onClose={() => {
-                    setOptionsIsOpen(false);
-                }}
-            >
-                <QuickActionsPopoverContent indentedActions={indentedActions} />
+            <Popover open={optionsIsOpen} anchorEl={anchorEl} onClose={onClose}>
+                <QuickActionsPopoverContent
+                    indentedActions={indentedActions}
+                    onClose={onClose}
+                />
             </Popover>
         </Card>
     );

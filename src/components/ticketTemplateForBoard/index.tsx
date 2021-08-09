@@ -65,6 +65,10 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
         });
     }
 
+    function onClose() {
+        setOptionsIsOpen(false);
+    }
+
     return (
         <Card>
             <CardContent>
@@ -82,14 +86,11 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
                 </div>
                 <Typography>{ticketTemplate.description}</Typography>
             </CardContent>
-            <Popover
-                open={optionsIsOpen}
-                anchorEl={anchorEl}
-                onClose={() => {
-                    setOptionsIsOpen(false);
-                }}
-            >
-                <QuickActionsPopoverContent indentedActions={indentedActions} />
+            <Popover open={optionsIsOpen} anchorEl={anchorEl} onClose={onClose}>
+                <QuickActionsPopoverContent
+                    indentedActions={indentedActions}
+                    onClose={onClose}
+                />
             </Popover>
         </Card>
     );

@@ -374,6 +374,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         },
     ];
 
+    function onClose() {
+        setMoreOptionsIsOpen(false);
+    }
+
     return (
         <div
             css={composeCSS(
@@ -408,12 +412,11 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                             <Popover
                                 open={moreOptionsIsOpen}
                                 anchorEl={anchorEl}
-                                onClose={() => {
-                                    setMoreOptionsIsOpen(false);
-                                }}
+                                onClose={onClose}
                             >
                                 <QuickActionsPopoverContent
                                     indentedActions={indentedActions}
+                                    onClose={onClose}
                                 />
                             </Popover>
                         </div>

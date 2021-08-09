@@ -124,6 +124,10 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
         },
     ];
 
+    function onClose() {
+        setActionsPopoverIsOpen(false);
+    }
+
     return (
         <div>
             <Card elevation={3}>
@@ -148,12 +152,11 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
                 <Popover
                     open={actionsPopoverIsOpen}
                     anchorEl={anchorEl}
-                    onClose={() => {
-                        setActionsPopoverIsOpen(false);
-                    }}
+                    onClose={onClose}
                 >
                     <QuickActionsPopoverContent
                         indentedActions={indentedActions}
+                        onClose={onClose}
                     />
                 </Popover>
             </Card>

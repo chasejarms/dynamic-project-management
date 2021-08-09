@@ -13,6 +13,7 @@ export interface IIndentedAction {
 
 export interface IQuickActionsPopoverContentProps {
     indentedActions: IIndentedAction[];
+    onClose: () => void;
 }
 
 const useStyles = makeStyles({
@@ -30,6 +31,13 @@ export function QuickActionsPopoverContent(
 ) {
     const classes = createClasses();
     const materialClasses = useStyles();
+
+    function onClickInternal(menuItemInformationOnClick: () => void) {
+        return () => {
+            menuItemInformationOnClick();
+            props.onClose();
+        };
+    }
 
     return (
         <Paper elevation={4}>
@@ -50,9 +58,9 @@ export function QuickActionsPopoverContent(
                                 (menuItemInformation, innerIndex) => {
                                     return (
                                         <MenuItem
-                                            onClick={
+                                            onClick={onClickInternal(
                                                 menuItemInformation.onClick
-                                            }
+                                            )}
                                             className={
                                                 materialClasses.menuItemRoot
                                             }
