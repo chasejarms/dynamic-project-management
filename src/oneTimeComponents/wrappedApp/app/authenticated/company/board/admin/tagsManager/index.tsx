@@ -11,6 +11,7 @@ import {
     TableRow,
     Toolbar,
     Typography,
+    useTheme,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
@@ -21,6 +22,8 @@ import { ITag } from "../../../../../../../../models/tag";
 import { WrappedButton } from "../../../../../../../../components/wrappedButton";
 import { NewTagDialog } from "../../../../../../../../components/newTagDialog";
 import { sortBy } from "lodash";
+import { composeCSS } from "../../../../../../../../styles/composeCSS";
+import { mapColorToMaterialThemeColorLight } from "../../../../../../../../utils/mapColorToMaterialThemeColorLight";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -79,6 +82,7 @@ export function TagsManager() {
 
     const classes = createClasses();
     const materialClasses = useStyles();
+    const theme = useTheme();
 
     return (
         <BoardAdminContainer>
@@ -87,9 +91,7 @@ export function TagsManager() {
                     <Paper>
                         <Toolbar className={materialClasses.toolbar}>
                             <div css={classes.toolbarContainer}>
-                                <Typography variant="h6">
-                                    Company Users
-                                </Typography>
+                                <Typography variant="h6">Tags</Typography>
                                 <div>
                                     <WrappedButton
                                         onClick={onClickAddTag}
@@ -113,14 +115,37 @@ export function TagsManager() {
                                         >
                                             Tag Name
                                         </TableCell>
+                                        <TableCell
+                                            className={
+                                                materialClasses.tableHeadCell
+                                            }
+                                        >
+                                            Tag Color
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {allTagsForBoard.map((tag) => {
+                                        const hexColorMain = mapColorToMaterialThemeColorLight(
+                                            theme,
+                                            tag.color
+                                        );
+                                        const individualColorOuterContainer = css`
+                                            background-color: ${hexColorMain};
+                                        `;
+
                                         return (
                                             <TableRow key={tag.name}>
                                                 <TableCell>
                                                     {tag.name}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div
+                                                        css={composeCSS(
+                                                            classes.colorContainer,
+                                                            individualColorOuterContainer
+                                                        )}
+                                                    />
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -168,10 +193,17 @@ const createClasses = () => {
         justify-content: space-between;
     `;
 
+    const colorContainer = css`
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+    `;
+
     return {
         tablePaperContainer,
         relativePositionedTableCell,
         absolutePositionedTableCell,
         toolbarContainer,
+        colorContainer,
     };
 };
