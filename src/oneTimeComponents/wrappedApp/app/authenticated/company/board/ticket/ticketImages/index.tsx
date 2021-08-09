@@ -33,9 +33,10 @@ export function TicketImages() {
         if (!isUploadingFiles) return;
         let didCancel = false;
 
-        const filesForPresignedUrlRequest = files.map(({ name }) => {
+        const filesForPresignedUrlRequest = files.map(({ name, size }) => {
             return {
                 name,
+                size,
             };
         });
         Api.tickets
@@ -63,7 +64,7 @@ export function TicketImages() {
                         if (!fileToUploadResult) return;
                         let blobData = new Blob(
                             [new Uint8Array(fileToUploadResult)],
-                            { type: "image/png" }
+                            { type: compareFile.type }
                         );
                         const uploadImageRequest = Axios.put(url, blobData);
                         uploadToS3Promises[index] = uploadImageRequest;
@@ -80,19 +81,31 @@ export function TicketImages() {
                             .then(() => {
                                 if (didCancel) return;
                                 setFilesForTicket((previousFilesForTicket) => {
-                                    const filesToAdd: IFileForTicket[] = Object.keys(
-                                        response
-                                    ).map((fileName) => {
-                                        return {
-                                            size: 0,
-                                            fileName,
-                                            signedGetUrl:
-                                                response[fileName].getSignedUrl,
-                                        };
-                                    });
-                                    const updatedFilesForTicket = previousFilesForTicket.concat(
-                                        filesToAdd
+                                    const existingFilesMapping = previousFilesForTicket.reduce<{
+                                        [fileName: string]: IFileForTicket;
+                                    }>((mapping, previousFileForTicket) => {
+                                        mapping[
+                                            previousFileForTicket.fileName
+                                        ] = previousFileForTicket;
+                                        return mapping;
+                                    }, {});
+                                    Object.keys(response).forEach(
+                                        (fileName) => {
+                                            existingFilesMapping[fileName] = {
+                                                size: 0,
+                                                fileName,
+                                                signedGetUrl:
+                                                    response[fileName]
+                                                        .getSignedUrl,
+                                            };
+                                        }
                                     );
+
+                                    const updatedFilesForTicket = Object.keys(
+                                        existingFilesMapping
+                                    ).map((fileName) => {
+                                        return existingFilesMapping[fileName];
+                                    });
                                     const sortedFiles = sortBy(
                                         updatedFilesForTicket,
                                         "fileName"
