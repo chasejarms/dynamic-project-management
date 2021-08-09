@@ -1,10 +1,5 @@
-import { IDefaultPrimaryTableModel } from "./sharedModels/defaultPrimaryTableModel";
-
-export interface IFileForTicket extends IDefaultPrimaryTableModel {
-    srcUrl: string;
-    thumbnailUrl: string;
+export interface IFileForTicket {
     size: number;
     fileName: string;
-    isPngOrJpg: boolean;
     signedGetUrl?: string;
 }
