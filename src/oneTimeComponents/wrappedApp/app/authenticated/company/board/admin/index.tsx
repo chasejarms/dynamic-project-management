@@ -19,7 +19,7 @@ export function Admin() {
             <Route path={`${url}/columns`} exact>
                 <Columns />
             </Route>
-            <Route path={`${url}/manage-tags`} exact>
+            <Route path={`${url}/tags-manager`} exact>
                 <TagsManager />
             </Route>
             <Route path={`${url}/ticket-templates`}>

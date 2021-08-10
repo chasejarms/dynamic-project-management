@@ -14,7 +14,7 @@ import {
     Typography,
     useTheme,
 } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Delete, Edit } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
@@ -27,6 +27,7 @@ import { sortBy } from "lodash";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../../../../../../../utils/mapColorToMaterialThemeColorLight";
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
+import { EditTagDialog } from "../../../../../../../../components/editTagDialog";
 
 const useStyles = makeStyles({
     toolbar: {
@@ -84,6 +85,48 @@ export function TagsManager() {
     }
 
     const [
+        { tagToEdit, editTagDialogIsOpen },
+        setTagEditInformation,
+    ] = useState<{
+        tagToEdit: null | ITag;
+        editTagDialogIsOpen: boolean;
+    }>({
+        tagToEdit: null,
+        editTagDialogIsOpen: false,
+    });
+    function onClickEditTag(tag: ITag) {
+        return () => {
+            setTagEditInformation(() => {
+                return {
+                    tagToEdit: tag,
+                    editTagDialogIsOpen: true,
+                };
+            });
+        };
+    }
+    function closeEditTagDialog() {
+        setTagEditInformation((previousTagEditInformation) => {
+            return {
+                ...previousTagEditInformation,
+                editTagDialogIsOpen: false,
+            };
+        });
+    }
+    function onEditTagSuccess() {
+        setAllTagsForBoard((previousTags) => {
+            return previousTags.filter((compareTag) => {
+                return compareTag.name !== tagToEdit?.name;
+            });
+        });
+        setTagEditInformation(() => {
+            return {
+                tagToEdit: null,
+                editTagDialogIsOpen: false,
+            };
+        });
+    }
+
+    const [
         { tagToDelete, confirmDeleteTagDialogIsOpen },
         setTagDeleteInformation,
     ] = useState<{
@@ -101,6 +144,7 @@ export function TagsManager() {
             });
         };
     }
+
     function onCloseConfirmDialog() {
         setTagDeleteInformation((previous) => {
             return {
@@ -233,6 +277,13 @@ export function TagsManager() {
                                                             >
                                                                 <Delete />
                                                             </IconButton>
+                                                            <IconButton
+                                                                onClick={onClickEditTag(
+                                                                    tag
+                                                                )}
+                                                            >
+                                                                <Edit />
+                                                            </IconButton>
                                                         </div>
                                                     </div>
                                                 </TableCell>
@@ -247,6 +298,13 @@ export function TagsManager() {
                         open={tagsCreatorIsOpen}
                         onClose={closeTagsCreator}
                         onCreateTagSuccess={onCreateTagSuccess}
+                    />
+                    <EditTagDialog
+                        open={editTagDialogIsOpen}
+                        onClose={closeEditTagDialog}
+                        tagName={tagToEdit?.name || ""}
+                        tagColor={tagToEdit?.color || ""}
+                        onEditTagSuccess={onEditTagSuccess}
                     />
                     <ConfirmDialog
                         open={confirmDeleteTagDialogIsOpen}
@@ -274,6 +332,7 @@ const createClasses = () => {
 
     const relativePositionedTableCell = css`
         position: relative;
+        width: 100px;
         height: 100%;
     `;
 

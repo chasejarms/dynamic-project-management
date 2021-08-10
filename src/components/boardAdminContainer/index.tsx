@@ -29,7 +29,7 @@ export function BoardAdminContainer(props: IBoardContainerProps) {
         },
         {
             text: "Tags Manager",
-            route: `/app/company/${companyId}/board/${boardId}/admin/manage-tags`,
+            route: `/app/company/${companyId}/board/${boardId}/admin/tags-manager`,
         },
     ];
 
