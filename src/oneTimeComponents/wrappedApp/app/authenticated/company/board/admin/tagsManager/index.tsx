@@ -119,7 +119,24 @@ export function TagsManager() {
 
         let didCancel = false;
 
-        // delete the tag here
+        Api.priorities
+            .deleteTagForBoard(companyId, boardId, tagToDelete?.name || "")
+            .then(() => {
+                if (didCancel) return;
+                setAllTagsForBoard((previousTags) => {
+                    return previousTags.filter((compareTag) => {
+                        return compareTag.name !== tagToDelete?.name;
+                    });
+                });
+            })
+            .catch(() => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsDeletingTag(false);
+                onCloseConfirmDialog();
+            });
 
         return () => {
             didCancel = true;

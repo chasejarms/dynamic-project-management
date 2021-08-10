@@ -132,9 +132,13 @@ export function Priorities() {
                     return mapping;
                 }, {});
 
+                const onlyExistingPriorities = priorities.filter((priority) => {
+                    return !!tagsMapping[priority];
+                });
+
                 setPriorityListAndTagsMapping({
                     tagsMapping,
-                    priorityList: priorities,
+                    priorityList: onlyExistingPriorities,
                 });
                 setAllTagsForBoard(tags);
             })
