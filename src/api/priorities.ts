@@ -25,6 +25,12 @@ export interface IPriorityApi {
         boardId: string,
         tagName: string
     ): Promise<void>;
+    updateTagColor(
+        companyId: string,
+        boardId: string,
+        tagName: string,
+        tagColor: string
+    ): Promise<void>;
 }
 
 export class PriorityApi implements IPriorityApi {
@@ -117,6 +123,27 @@ export class PriorityApi implements IPriorityApi {
             `${environmentVariables.baseAuthenticatedApiUrl}/deleteTagForBoard`,
             {
                 tagName,
+            },
+            {
+                params: {
+                    companyId,
+                    boardId,
+                },
+            }
+        );
+    }
+
+    public async updateTagColor(
+        companyId: string,
+        boardId: string,
+        name: string,
+        color: string
+    ): Promise<void> {
+        await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/updateTagColor`,
+            {
+                name,
+                color,
             },
             {
                 params: {

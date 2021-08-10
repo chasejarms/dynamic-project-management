@@ -112,10 +112,15 @@ export function TagsManager() {
             };
         });
     }
-    function onEditTagSuccess() {
+    function onEditTagSuccess(tag: ITag) {
         setAllTagsForBoard((previousTags) => {
-            return previousTags.filter((compareTag) => {
-                return compareTag.name !== tagToEdit?.name;
+            return previousTags.map((compareTag) => {
+                const isSameTag = compareTag.name === tagToEdit?.name;
+                if (isSameTag) {
+                    return tag;
+                } else {
+                    return compareTag;
+                }
             });
         });
         setTagEditInformation(() => {
@@ -302,8 +307,7 @@ export function TagsManager() {
                     <EditTagDialog
                         open={editTagDialogIsOpen}
                         onClose={closeEditTagDialog}
-                        tagName={tagToEdit?.name || ""}
-                        tagColor={tagToEdit?.color || ""}
+                        tag={tagToEdit}
                         onEditTagSuccess={onEditTagSuccess}
                     />
                     <ConfirmDialog

@@ -13,6 +13,7 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { useControl } from "../../hooks/useControl";
 import { ITag } from "../../models/tag";
+import { TagColor, tagColors } from "../../models/tagColor";
 import { composeCSS } from "../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
@@ -23,11 +24,8 @@ export interface IEditTagDialogProps {
     open: boolean;
     onClose: () => void;
     onEditTagSuccess: (tag: ITag) => void;
-    tagName: string;
-    tagColor: string;
+    tag: ITag | null;
 }
-
-const availableColors = ["grey", "blue", "green", "red", "yellow"];
 
 export function EditTagDialog(props: IEditTagDialogProps) {
     const theme = useTheme();
@@ -50,7 +48,7 @@ export function EditTagDialog(props: IEditTagDialogProps) {
         tagNameControl.isTouched && !tagNameControl.isValid;
 
     const colorControl = useControl({
-        value: "grey",
+        value: TagColor.Grey,
         onChange: (color: string) => {
             return color;
         },
@@ -61,51 +59,52 @@ export function EditTagDialog(props: IEditTagDialogProps) {
     }
 
     useEffect(() => {
-        tagNameControl.resetControlState(props.tagName);
-        colorControl.resetControlState(props.tagColor);
-    }, [props.tagName, props.tagColor]);
+        tagNameControl.resetControlState(props.tag?.name || "");
+        colorControl.resetControlState(props.tag?.color || TagColor.Grey);
+    }, [props.tag]);
 
-    const [isCreatingTag, setIsCreatingTag] = useState(false);
-    function createTag() {
-        setIsCreatingTag(true);
+    const [isEditingTag, setIsEditingTag] = useState(false);
+    function editTag() {
+        setIsEditingTag(true);
     }
     useEffect(() => {
-        if (!isCreatingTag) return;
+        if (!isEditingTag) return;
 
         let didCancel = false;
 
-        // TODO: the tag edit here
-        // Api.priorities
-        //     .createTag(
-        //         companyId,
-        //         boardId,
-        //         tagNameControl.value,
-        //         colorControl.value
-        //     )
-        //     .then((createdTag) => {
-        //         if (didCancel) return;
-        //         props.onCreateTagSuccess(createdTag);
-        //     })
-        //     .catch((error) => {
-        //         if (didCancel) return;
-        //     })
-        //     .finally(() => {
-        //         if (didCancel) return;
-        //         setIsCreatingTag(false);
-        //         props.onClose();
-        //     });
+        Api.priorities
+            .updateTagColor(
+                companyId,
+                boardId,
+                props.tag!.name,
+                colorControl.value
+            )
+            .then(() => {
+                if (didCancel) return;
+                props.onEditTagSuccess({
+                    ...props.tag!,
+                    color: colorControl.value,
+                });
+            })
+            .catch((error) => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsEditingTag(false);
+            });
 
         return () => {
             didCancel = true;
         };
-    }, [isCreatingTag]);
+    }, [isEditingTag]);
 
     const classes = createClasses();
     return (
         <Dialog
             open={props.open}
             onClose={props.onClose}
-            disableBackdropClick={isCreatingTag}
+            disableBackdropClick={isEditingTag}
         >
             <DialogTitle>Create Tag</DialogTitle>
             <DialogContent>
@@ -117,10 +116,11 @@ export function EditTagDialog(props: IEditTagDialogProps) {
                         error={
                             showTagNameError ? tagNameControl.errorMessage : ""
                         }
+                        disabled
                     />
                 </div>
                 <div css={classes.colorContainer}>
-                    {availableColors.map((color) => {
+                    {tagColors.map((color) => {
                         const hexColor = mapColorToMaterialThemeColorLight(
                             theme,
                             color
@@ -162,15 +162,15 @@ export function EditTagDialog(props: IEditTagDialogProps) {
                 </div>
             </DialogContent>
             <DialogActions>
-                <WrappedButton onClick={props.onClose} disabled={isCreatingTag}>
+                <WrappedButton onClick={props.onClose} disabled={isEditingTag}>
                     Close
                 </WrappedButton>
                 <WrappedButton
                     variant="contained"
-                    onClick={createTag}
+                    onClick={editTag}
                     color="primary"
-                    disabled={isCreatingTag}
-                    showSpinner={isCreatingTag}
+                    disabled={isEditingTag}
+                    showSpinner={isEditingTag}
                 >
                     Create
                 </WrappedButton>

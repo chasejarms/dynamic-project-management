@@ -13,6 +13,7 @@ import { ControlValidator } from "../../classes/ControlValidator";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { useControl } from "../../hooks/useControl";
 import { ITag } from "../../models/tag";
+import { tagColors } from "../../models/tagColor";
 import { composeCSS } from "../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
@@ -24,8 +25,6 @@ export interface INewTagDialogProps {
     onClose: () => void;
     onCreateTagSuccess: (tag: ITag) => void;
 }
-
-const availableColors = ["grey", "blue", "green", "red", "yellow"];
 
 export function NewTagDialog(props: INewTagDialogProps) {
     const theme = useTheme();
@@ -111,7 +110,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
                     />
                 </div>
                 <div css={classes.colorContainer}>
-                    {availableColors.map((color) => {
+                    {tagColors.map((color) => {
                         const hexColor = mapColorToMaterialThemeColorLight(
                             theme,
                             color
