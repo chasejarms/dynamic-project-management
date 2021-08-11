@@ -205,7 +205,7 @@ export function BoardHome() {
 
             const updatedTickets = columnOfTicket.tickets.map(
                 (compareTicket) => {
-                    const isSameTicket = compareTicket.itemId !== ticket.itemId;
+                    const isSameTicket = compareTicket.itemId === ticket.itemId;
                     if (isSameTicket) {
                         return ticket;
                     } else {

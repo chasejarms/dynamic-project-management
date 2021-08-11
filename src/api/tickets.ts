@@ -448,7 +448,7 @@ export class TicketsApi implements ITicketsApi {
         await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/setAssignedToTicketField`,
             {
-                ...assignedTo,
+                assignedTo,
             },
             {
                 params: {
