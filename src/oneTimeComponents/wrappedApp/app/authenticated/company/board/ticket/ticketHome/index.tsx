@@ -4,7 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { Paper } from "@material-ui/core";
-import { WrappedButton } from "../../../../../../../../components/wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../../../../../../../components/wrappedButton";
 import { ITag } from "../../../../../../../../models/tag";
 import { cloneDeep } from "lodash";
 import { ITicket } from "../../../../../../../../models/ticket";
@@ -27,6 +30,7 @@ import { IGhostControlParamsMapping } from "../../../../../../../../models/ghost
 import { IStarterGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
 import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
 import { TextSection } from "../../../../../../../../components/textSection";
+import { OverflowContentAndActionBar } from "../../../../../../../../components/overflowContentAndActionBar";
 
 export function TicketHome() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
@@ -216,84 +220,81 @@ export function TicketHome() {
     const summaryControl =
         starterGhostControlParamsMapping[summarySectionUniqueId];
 
+    const wrappedButtonProps: IWrappedButtonProps = {
+        color: "primary",
+        variant: "contained",
+        disabled: someControlsAreInvalid || !!ticketUpdateRequest,
+        showSpinner: !!ticketUpdateRequest,
+        onClick: onClickUpdate,
+        children: "Update Ticket",
+    };
+
     return (
         <TicketPageWrapper>
             {isLoadingTicketInformation ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
-                <div css={classes.container}>
-                    <div css={classes.ticketContentContainer}>
-                        <div css={classes.nonTagTicketInformationContainer}>
-                            <div css={classes.ticketSectionsContainer}>
-                                <TitleSection
-                                    title={titleControl.value}
-                                    label={
-                                        ticket?.simplifiedTicketTemplate.title
-                                            .label || ""
-                                    }
-                                    onStateChange={onStateChange}
-                                    refreshToken={refreshToken}
-                                />
-                                <SummarySection
-                                    summary={summaryControl.value}
-                                    label={
-                                        ticket?.simplifiedTicketTemplate.summary
-                                            .label || ""
-                                    }
-                                    onStateChange={onStateChange}
-                                    refreshToken={refreshToken}
-                                />
-                                {sectionOrder.map((sectionId, index) => {
-                                    const section =
-                                        starterGhostControlParamsMapping[
-                                            sectionId
-                                        ];
-                                    const ticketTemplateSection = ticket
-                                        ?.simplifiedTicketTemplate.sections[
-                                        index
-                                    ]!;
+                <OverflowContentAndActionBar
+                    wrappedButtonProps={wrappedButtonProps}
+                >
+                    <div css={classes.container}>
+                        <div css={classes.ticketContentContainer}>
+                            <div css={classes.nonTagTicketInformationContainer}>
+                                <div css={classes.ticketSectionsContainer}>
+                                    <TitleSection
+                                        title={titleControl.value}
+                                        label={
+                                            ticket?.simplifiedTicketTemplate
+                                                .title.label || ""
+                                        }
+                                        onStateChange={onStateChange}
+                                        refreshToken={refreshToken}
+                                    />
+                                    <SummarySection
+                                        summary={summaryControl.value}
+                                        label={
+                                            ticket?.simplifiedTicketTemplate
+                                                .summary.label || ""
+                                        }
+                                        onStateChange={onStateChange}
+                                        refreshToken={refreshToken}
+                                    />
+                                    {sectionOrder.map((sectionId, index) => {
+                                        const section =
+                                            starterGhostControlParamsMapping[
+                                                sectionId
+                                            ];
+                                        const ticketTemplateSection = ticket
+                                            ?.simplifiedTicketTemplate.sections[
+                                            index
+                                        ]!;
 
-                                    if (!ticketTemplateSection) return null;
-                                    return (
-                                        <TextSection
-                                            uniqueId={sectionId}
-                                            label={ticketTemplateSection.label}
-                                            multiline={
-                                                ticketTemplateSection.multiline
-                                            }
-                                            onStateChange={onStateChange}
-                                            refreshToken={refreshToken}
-                                            value={section.value}
-                                        />
-                                    );
-                                })}
+                                        if (!ticketTemplateSection) return null;
+                                        return (
+                                            <TextSection
+                                                uniqueId={sectionId}
+                                                label={
+                                                    ticketTemplateSection.label
+                                                }
+                                                multiline={
+                                                    ticketTemplateSection.multiline
+                                                }
+                                                onStateChange={onStateChange}
+                                                refreshToken={refreshToken}
+                                                value={section.value}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </div>
+                            <TicketTags
+                                tags={ticket?.tags || []}
+                                allTagsForBoard={allTagsForBoard}
+                                onTagsChange={onTagsChange}
+                            />
                         </div>
-                        <TicketTags
-                            tags={ticket?.tags || []}
-                            allTagsForBoard={allTagsForBoard}
-                            onTagsChange={onTagsChange}
-                        />
                     </div>
-                    <div css={classes.ticketActionBarContainer}>
-                        <Paper elevation={10}>
-                            <div css={classes.ticketActionBarInnerContainer}>
-                                <WrappedButton
-                                    color="primary"
-                                    variant="contained"
-                                    disabled={
-                                        someControlsAreInvalid ||
-                                        !!ticketUpdateRequest
-                                    }
-                                    showSpinner={!!ticketUpdateRequest}
-                                    onClick={onClickUpdate}
-                                >
-                                    Update Ticket
-                                </WrappedButton>
-                            </div>
-                        </Paper>
-                    </div>
-                </div>
+                </OverflowContentAndActionBar>
             )}
         </TicketPageWrapper>
     );
@@ -307,7 +308,6 @@ const createClasses = () => {
     `;
 
     const ticketContentContainer = css`
-        flex-grow: 1;
         display: grid;
         padding: 32px;
         grid-gap: 32px;
