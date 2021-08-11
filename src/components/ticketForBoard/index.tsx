@@ -351,7 +351,8 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         !!ticketToUpdate ||
         isDeletingTicket ||
         !!nonInProgressTicketWithUpdatedColumn ||
-        isMovingTicketToBacklog;
+        isMovingTicketToBacklog ||
+        isAssigningTicket;
 
     function formattedDate(timestamp: string) {
         return format(Number(timestamp), "MMM do uuuu");
@@ -440,12 +441,15 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             informationForMenuItems: [
                 {
                     text: "Unassigned",
-                    onClick: () => null,
+                    onClick: onClickAssignTicket(""),
                 },
                 ...props.usersForBoard.map((user) => {
                     return {
                         text: user.name,
-                        onClick: () => null,
+                        onClick: onClickAssignTicket({
+                            userId: user.shortenedItemId,
+                            name: user.name,
+                        }),
                     };
                 }),
             ],
