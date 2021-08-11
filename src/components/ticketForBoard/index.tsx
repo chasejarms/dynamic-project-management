@@ -64,6 +64,67 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         setMoreOptionsIsOpen((previous) => !previous);
     }
 
+    const [{ assignTo, isAssigningTicket }, setAssignToInformation] = useState<{
+        assignTo:
+            | ""
+            | {
+                  userId: string;
+                  name: string;
+              };
+        isAssigningTicket: boolean;
+    }>({
+        assignTo: "",
+        isAssigningTicket: false,
+    });
+    function onClickAssignTicket(
+        assignTo:
+            | ""
+            | {
+                  userId: string;
+                  name: string;
+              }
+    ) {
+        return () => {
+            setAssignToInformation({
+                assignTo,
+                isAssigningTicket: true,
+            });
+        };
+    }
+
+    useEffect(() => {
+        if (!isAssigningTicket) return;
+
+        let didCancel = false;
+
+        Api.tickets
+            .setAssignedToTicketField(
+                companyId,
+                boardId,
+                props.ticket.shortenedItemId,
+                assignTo
+            )
+            .then(() => {
+                if (didCancel) return;
+            })
+            .catch(() => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setAssignToInformation((previous) => {
+                    return {
+                        assignTo: "",
+                        isAssigningTicket: false,
+                    };
+                });
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isAssigningTicket]);
+
     function moveTicketToNewColumn(column: IColumn) {
         return () => {
             const ticketWithUpdatedColumn = {

@@ -103,6 +103,18 @@ export interface ITicketsApi {
         ticketId: string,
         fileName: string
     ): Promise<string>;
+
+    setAssignedToTicketField(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        assignedTo:
+            | ""
+            | {
+                  userId: string;
+                  name: string;
+              }
+    ): Promise<void>;
 }
 
 export class TicketsApi implements ITicketsApi {
@@ -420,5 +432,31 @@ export class TicketsApi implements ITicketsApi {
         );
 
         return axiosResponse.data as string;
+    }
+
+    public async setAssignedToTicketField(
+        companyId: string,
+        boardId: string,
+        ticketId: string,
+        assignedTo:
+            | ""
+            | {
+                  userId: string;
+                  name: string;
+              }
+    ): Promise<void> {
+        await Axios.post(
+            `${environmentVariables.baseAuthenticatedApiUrl}/setAssignedToTicketField`,
+            {
+                assignedTo,
+            },
+            {
+                params: {
+                    companyId,
+                    boardId,
+                    ticketId,
+                },
+            }
+        );
     }
 }
