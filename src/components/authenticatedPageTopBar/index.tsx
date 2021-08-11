@@ -39,6 +39,7 @@ function NonMemoizedAuthenticatedPageTopBar(
     function signOut() {
         cognitoUserSingleton.cognitoUser.signOut();
         const resetAppBootstrapInformationAction = resetAppBootstrapInformation();
+        localStorage.clear();
         history.push("/sign-in");
         dispatch(resetAppBootstrapInformationAction);
         dispatch(resetBoardAction());
