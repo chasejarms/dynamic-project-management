@@ -24,6 +24,12 @@ export interface ITicket {
         };
         sections: Section[];
     };
-    columnId?: string;
+    columnId: string;
     ticketIdForTicketInformation: string;
+    assignedTo?:
+        | ""
+        | {
+              userId: string;
+              name: string;
+          };
 }

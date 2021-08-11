@@ -194,6 +194,36 @@ export function BoardHome() {
         });
     }
 
+    function onChangeAssignTo(ticket: IAugmentedUITicket) {
+        setSortedAndMappedTickets((previousSortedAndMappedTickets) => {
+            const { columnId } = ticket;
+            const columnIdExists = !!previousSortedAndMappedTickets[columnId];
+            const trueColumnId = columnIdExists
+                ? columnId
+                : uncategorizedColumnReservedId;
+            const columnOfTicket = previousSortedAndMappedTickets[trueColumnId];
+
+            const updatedTickets = columnOfTicket.tickets.map(
+                (compareTicket) => {
+                    const isSameTicket = compareTicket.itemId !== ticket.itemId;
+                    if (isSameTicket) {
+                        return ticket;
+                    } else {
+                        return compareTicket;
+                    }
+                }
+            );
+
+            return {
+                ...previousSortedAndMappedTickets,
+                [trueColumnId]: {
+                    ...columnOfTicket,
+                    tickets: updatedTickets,
+                },
+            };
+        });
+    }
+
     const classes = createClasses();
 
     return (
@@ -245,6 +275,9 @@ export function BoardHome() {
                                                 }
                                                 onMoveTicketToBacklog={
                                                     onMoveTicketToBacklogOrDone
+                                                }
+                                                onChangeAssignTo={
+                                                    onChangeAssignTo
                                                 }
                                                 usersForBoard={users}
                                             />

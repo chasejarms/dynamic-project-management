@@ -8,6 +8,7 @@ import {
     IconButton,
     Typography,
     Popover,
+    makeStyles,
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import { useState, useEffect } from "react";
@@ -42,6 +43,7 @@ export interface ITicketForBoardProps {
     onMarkTicketAsDone?: (columnId: string, itemId: string) => void;
     onDeleteTicket: (columnId: string, itemId: string) => void;
     onMoveTicketToBacklog?: (columnId: string, itemId: string) => void;
+    onChangeAssignTo?: (updatedTicket: IAugmentedUITicket) => void;
     showCompletedDate?: boolean;
     ticketType: TicketType;
     usersForBoard?: IUser[];
@@ -51,8 +53,17 @@ export interface IAugmentedUITicket extends ITicket {
     pointValueFromTags: number;
 }
 
+const useStyles = makeStyles({
+    cardContentRoot: {
+        "&:last-child": {
+            paddingBottom: 16,
+        },
+    },
+});
+
 export function TicketForBoard(props: ITicketForBoardProps) {
     const classes = createClasses();
+    const materialClasses = useStyles();
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
@@ -106,6 +117,12 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             )
             .then(() => {
                 if (didCancel) return;
+                if (props.onChangeAssignTo) {
+                    props.onChangeAssignTo({
+                        ...props.ticket,
+                        assignedTo: assignTo,
+                    });
+                }
             })
             .catch(() => {
                 if (didCancel) return;
@@ -468,7 +485,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             )}
         >
             <Card elevation={3}>
-                <CardContent>
+                <CardContent className={materialClasses.cardContentRoot}>
                     <div css={classes.spinnerOverlayContainer}>
                         {isPerformingAction && (
                             <div css={classes.spinnerOverlay}>
@@ -502,6 +519,13 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 />
                             </Popover>
                         </div>
+                        {!!props.ticket.assignedTo && (
+                            <div css={classes.assignedToContainer}>
+                                <Typography variant="caption">
+                                    Assigned To: {props.ticket.assignedTo.name}
+                                </Typography>
+                            </div>
+                        )}
                         {!!props.showCompletedDate && (
                             <div css={classes.completedDateContainer}>
                                 <Typography variant="body2">
@@ -608,6 +632,10 @@ const createClasses = () => {
         padding-top: 16px;
     `;
 
+    const assignedToContainer = css`
+        padding-top: 0px;
+    `;
+
     return {
         firstCard,
         bottomCardPadding,
@@ -621,5 +649,6 @@ const createClasses = () => {
         spinnerOverlayContainer,
         spinnerOverlay,
         completedDateContainer,
+        assignedToContainer,
     };
 };
