@@ -20,42 +20,12 @@ export const useAxiosInterceptor = () => {
         });
 
         Axios.interceptors.request.use(async (config) => {
-            config.headers["AuthHeader"] = localStorage.getItem("token") || "";
-
             const isAuthenticatedApi = config?.url?.startsWith(
                 environmentVariables.baseAuthenticatedApiUrl || "unused"
             );
             if (isAuthenticatedApi) {
-                const session = await new Promise<CognitoUserSession | null>(
-                    (resolve, reject) => {
-                        cognitoUserSingleton.cognitoUser.getSession(
-                            (
-                                error: Error | null,
-                                session: CognitoUserSession | null
-                            ) => {
-                                resolve(session);
-                            }
-                        );
-                    }
-                );
-
-                if (session === null) {
-                    return config;
-                }
-
-                const refreshToken = session.getRefreshToken();
-                await new Promise<void>((resolve, reject) => {
-                    cognitoUserSingleton.cognitoUser.refreshSession(
-                        refreshToken,
-                        (error, session) => {
-                            localStorage.setItem(
-                                "token",
-                                session.getIdToken().getJwtToken()
-                            );
-                            resolve();
-                        }
-                    );
-                });
+                config.headers["AuthHeader"] =
+                    localStorage.getItem("token") || "";
             }
 
             return Promise.resolve(config);
