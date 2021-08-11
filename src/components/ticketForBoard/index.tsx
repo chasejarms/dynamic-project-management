@@ -118,7 +118,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             .then(() => {
                 if (didCancel) return;
                 if (props.onChangeAssignTo) {
-                    console.log("calling this function");
                     props.onChangeAssignTo({
                         ...props.ticket,
                         assignedTo: assignTo,
