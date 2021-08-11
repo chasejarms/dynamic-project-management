@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
+import { sortBy } from "lodash";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
@@ -17,6 +18,7 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { IColumn } from "../../../../../../../models/column";
 import { ITag } from "../../../../../../../models/tag";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
+import { IUser } from "../../../../../../../models/user";
 import { prioritiesToPointValueMapping } from "../../../../../../../utils/prioritiesToPointValueMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
@@ -37,6 +39,8 @@ export function BoardHome() {
         setIsLoadingRequiredInformation,
     ] = useState(true);
 
+    const [users, setUsers] = useState<IUser[]>([]);
+
     useEffect(() => {
         if (!companyId || !boardId) return;
 
@@ -46,51 +50,62 @@ export function BoardHome() {
             Api.columns.getColumns(companyId, boardId),
             Api.tickets.getInProgressTickets(companyId, boardId),
             Api.priorities.getPrioritiesForBoard(companyId, boardId),
+            Api.users.getAllUsersForBoard(companyId, boardId),
         ])
-            .then(([columnsFromDatabase, inProgressTickets, priorities]) => {
-                if (didCancel) return;
-
-                const prioritiesToPointValueMappingLocal = prioritiesToPointValueMapping(
-                    priorities
-                );
-
-                const columnsMapping = columnsFromDatabase.reduce<{
-                    [columnId: string]: {
-                        columnInformation: IColumn;
-                        tickets: IAugmentedUITicket[];
-                    };
-                }>((mapping, columnFromDatabase) => {
-                    mapping[columnFromDatabase.id] = {
-                        columnInformation: columnFromDatabase,
-                        tickets: [],
-                    };
-                    return mapping;
-                }, {});
-
-                const augmentedUITickets = ticketsToAugmentedUITickets(
+            .then(
+                ([
+                    columnsFromDatabase,
                     inProgressTickets,
-                    prioritiesToPointValueMappingLocal
-                );
-                augmentedUITickets.forEach((ticketForUI) => {
-                    const columnId = ticketForUI.columnId;
-                    if (columnId && !!columnsMapping[columnId]) {
-                        columnsMapping[columnId].tickets.push(ticketForUI);
-                    } else {
-                        columnsMapping[
-                            uncategorizedColumnReservedId
-                        ].tickets.push(ticketForUI);
-                    }
-                });
+                    priorities,
+                    usersFromDatabase,
+                ]) => {
+                    if (didCancel) return;
 
-                Object.keys(columnsMapping).forEach((columnId) => {
-                    columnsMapping[columnId].tickets = sortTickets(
-                        columnsMapping[columnId].tickets
+                    const sortedUsers = sortBy(usersFromDatabase, "name");
+                    setUsers(sortedUsers);
+
+                    const prioritiesToPointValueMappingLocal = prioritiesToPointValueMapping(
+                        priorities
                     );
-                });
 
-                setSortedAndMappedTickets(columnsMapping);
-                setColumns(columnsFromDatabase);
-            })
+                    const columnsMapping = columnsFromDatabase.reduce<{
+                        [columnId: string]: {
+                            columnInformation: IColumn;
+                            tickets: IAugmentedUITicket[];
+                        };
+                    }>((mapping, columnFromDatabase) => {
+                        mapping[columnFromDatabase.id] = {
+                            columnInformation: columnFromDatabase,
+                            tickets: [],
+                        };
+                        return mapping;
+                    }, {});
+
+                    const augmentedUITickets = ticketsToAugmentedUITickets(
+                        inProgressTickets,
+                        prioritiesToPointValueMappingLocal
+                    );
+                    augmentedUITickets.forEach((ticketForUI) => {
+                        const columnId = ticketForUI.columnId;
+                        if (columnId && !!columnsMapping[columnId]) {
+                            columnsMapping[columnId].tickets.push(ticketForUI);
+                        } else {
+                            columnsMapping[
+                                uncategorizedColumnReservedId
+                            ].tickets.push(ticketForUI);
+                        }
+                    });
+
+                    Object.keys(columnsMapping).forEach((columnId) => {
+                        columnsMapping[columnId].tickets = sortTickets(
+                            columnsMapping[columnId].tickets
+                        );
+                    });
+
+                    setSortedAndMappedTickets(columnsMapping);
+                    setColumns(columnsFromDatabase);
+                }
+            )
             .catch((error) => {
                 if (didCancel) return;
             })
@@ -231,6 +246,7 @@ export function BoardHome() {
                                                 onMoveTicketToBacklog={
                                                     onMoveTicketToBacklogOrDone
                                                 }
+                                                usersForBoard={users}
                                             />
                                         );
                                     })}

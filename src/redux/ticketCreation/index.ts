@@ -18,6 +18,7 @@ export interface ITicketCreationState {
     sections: {
         value: string;
     }[];
+    startingColumn: string;
 }
 
 const defaultRequiredError = "This field is required";
@@ -34,6 +35,7 @@ const initialState: ITicketCreationState = {
         error: defaultRequiredError,
     },
     sections: [],
+    startingColumn: "BACKLOG",
 };
 
 export const ticketCreationSlice = createSlice({
@@ -110,6 +112,15 @@ export const ticketCreationSlice = createSlice({
                 sections: clonedSections,
             };
         },
+        updateStartingColumn: (
+            state: ITicketCreationState,
+            action: PayloadAction<string>
+        ) => {
+            return {
+                ...state,
+                startingColumn: action.payload,
+            };
+        },
     },
 });
 
@@ -119,6 +130,7 @@ export const {
     updateTicketSummary,
     updateTicketTemplate,
     updateSection,
+    updateStartingColumn,
 } = ticketCreationSlice.actions;
 
 export default ticketCreationSlice.reducer;

@@ -29,6 +29,7 @@ import {
     QuickActionsPopoverContent,
 } from "../quickActionsPopoverContent";
 import { TagChip } from "../tagChip";
+import { IUser } from "../../models/user";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -43,6 +44,7 @@ export interface ITicketForBoardProps {
     onMoveTicketToBacklog?: (columnId: string, itemId: string) => void;
     showCompletedDate?: boolean;
     ticketType: TicketType;
+    usersForBoard?: IUser[];
 }
 
 export interface IAugmentedUITicket extends ITicket {
@@ -372,7 +374,22 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                         };
                     }) || [],
         },
-    ];
+        !!props.usersForBoard && {
+            header: "Assign To",
+            informationForMenuItems: [
+                {
+                    text: "Unassigned",
+                    onClick: () => null,
+                },
+                ...props.usersForBoard.map((user) => {
+                    return {
+                        text: user.name,
+                        onClick: () => null,
+                    };
+                }),
+            ],
+        },
+    ].filter((action) => !!action) as IIndentedAction[];
 
     function onClose() {
         setMoreOptionsIsOpen(false);

@@ -16,7 +16,6 @@ import {
     IWrappedButtonProps,
     WrappedButton,
 } from "../../../../../../../components/wrappedButton";
-import { useControl } from "../../../../../../../hooks/useControl";
 import { IColumn } from "../../../../../../../models/column";
 import { ITag } from "../../../../../../../models/tag";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
@@ -34,17 +33,22 @@ import {
     updateTicketTemplate,
     resetTicketCreation,
     updateSection,
+    updateStartingColumn,
 } from "../../../../../../../redux/ticketCreation";
 
 export function CreateTicket() {
     const history = useHistory();
     const { boardId, companyId } = useAppRouterParams();
 
-    const { title, summary, ticketTemplate, sections } = useSelector(
-        (store: IStoreState) => {
-            return store.ticketCreation;
-        }
-    );
+    const {
+        title,
+        summary,
+        ticketTemplate,
+        sections,
+        startingColumn,
+    } = useSelector((store: IStoreState) => {
+        return store.ticketCreation;
+    });
     const dispatch = useDispatch();
     useEffect(() => {
         // clear the form state when this component is first loaded
@@ -100,6 +104,19 @@ export function CreateTicket() {
         };
     }
 
+    function onChangeStartingColumn(
+        event: ChangeEvent<{
+            name?: string | undefined;
+            value: unknown;
+        }>
+    ) {
+        const updatedStartingColumn = event.target.value as string;
+        const action = updateStartingColumn(updatedStartingColumn);
+        dispatch(action);
+    }
+
+    const controlsAreInvalid = !!title.error || !!summary.error;
+
     const [isLoadingTicketTemplates, setIsLoadingTicketTemplates] = useState(
         true
     );
@@ -151,18 +168,6 @@ export function CreateTicket() {
             didCancel = true;
         };
     }, [boardId, companyId]);
-
-    const startingColumnControl = useControl({
-        value: "BACKLOG",
-        onChange: (
-            event: React.ChangeEvent<{
-                name?: string;
-                value: unknown;
-            }>
-        ) => {
-            return event.target.value as string;
-        },
-    });
 
     const classes = createClasses();
 
@@ -239,9 +244,7 @@ export function CreateTicket() {
                 sections: ticketTemplate!.sections,
             },
             startingColumnId:
-                startingColumnControl.value === "BACKLOG"
-                    ? ""
-                    : startingColumnControl.value,
+                startingColumn === "BACKLOG" ? "" : startingColumn,
         });
     }
 
@@ -249,7 +252,7 @@ export function CreateTicket() {
         {
             color: "primary",
             variant: "contained",
-            disabled: !startingColumnControl.isValid || !!ticketCreateRequest,
+            disabled: controlsAreInvalid || !!ticketCreateRequest,
             showSpinner: !!ticketCreateRequest,
             onClick: onClickCreate,
             children: "Create Ticket",
@@ -339,10 +342,8 @@ export function CreateTicket() {
                                     <FormControl fullWidth>
                                         <InputLabel>Send Ticket To</InputLabel>
                                         <Select
-                                            value={startingColumnControl.value}
-                                            onChange={
-                                                startingColumnControl.onChange
-                                            }
+                                            value={startingColumn}
+                                            onChange={onChangeStartingColumn}
                                         >
                                             <MenuItem value={"BACKLOG"}>
                                                 Backlog

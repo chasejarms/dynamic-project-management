@@ -6,6 +6,7 @@ import { BoardRightsAction } from "../models/boardRightsAction";
 
 export interface IUsersApi {
     getAllUsersForCompany(companyId: string): Promise<IUser[]>;
+    getAllUsersForBoard(companyId: string, boardId: string): Promise<IUser[]>;
     updateCompanyUserRights(
         companyId: string,
         userToUpdateShortenedItemId: string,
@@ -32,6 +33,22 @@ export class UsersApi implements IUsersApi {
             {
                 params: {
                     companyId,
+                },
+            }
+        );
+        return axiosResponse.data as IUser[];
+    }
+
+    public async getAllUsersForBoard(
+        companyId: string,
+        boardId: string
+    ): Promise<IUser[]> {
+        const axiosResponse = await Axios.get(
+            `${environmentVariables.baseAuthenticatedApiUrl}/getAllUsersForBoard`,
+            {
+                params: {
+                    companyId,
+                    boardId,
                 },
             }
         );
