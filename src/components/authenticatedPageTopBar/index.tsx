@@ -8,9 +8,11 @@ import { composeCSS } from "../../styles/composeCSS";
 import { WrappedButton } from "../wrappedButton";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { cognitoUserSingleton } from "../../classes/CognitoUserSingleton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetAppBootstrapInformation } from "../../redux/appBootstrapInformation";
 import { resetBoardAction } from "../../redux/boards";
+import { IStoreState } from "../../redux/storeState";
+import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
 
 export interface IAuthenticatedPageTopBarProps {}
 
@@ -58,27 +60,52 @@ function NonMemoizedAuthenticatedPageTopBar(
         ticketTemplateId,
     } = useAppRouterParams();
 
+    const companies = useSelector((state: IStoreState) => {
+        return state.appBootstrapInformation.companies;
+    });
+    const selectedCompany =
+        companies.find((company) => {
+            return company.shortenedItemId === companyId;
+        }) || "";
+    const userIsOnMultipleCompanies = companies.length > 1;
+
+    const boards = useSelector((state: IStoreState) => {
+        return state.boards;
+    });
+    const boardItemId = createCompanyBoardKey(companyId, boardId);
+    const selectedBoard = boards[boardItemId];
+
     const breadcrumbTrail = (() => {
         const breadcrumbs: {
             text: string;
             route: string;
-        }[] = [
-            {
+        }[] = [];
+
+        if (userIsOnMultipleCompanies) {
+            breadcrumbs.push({
                 text: "Companies",
                 route: `/app/companies`,
-            },
-        ];
+            });
+        }
 
         if (!!companyId) {
+            const companyText =
+                selectedCompany && userIsOnMultipleCompanies
+                    ? `Company (${selectedCompany.name})`
+                    : "Company";
             breadcrumbs.push({
-                text: "Company",
+                text: companyText,
                 route: `/app/company/${companyId}/boards`,
             });
         }
 
         if (!!boardId) {
+            console.log("selectedBoard: ", selectedBoard);
+            const boardText = selectedBoard
+                ? `Board (${selectedBoard.name})`
+                : "Board";
             breadcrumbs.push({
-                text: "Board",
+                text: boardText,
                 route: `/app/company/${companyId}/board/${boardId}/tickets`,
             });
         }
