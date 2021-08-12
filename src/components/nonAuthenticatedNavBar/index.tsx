@@ -17,10 +17,6 @@ export default function NonAuthenticatedNavBar() {
             route: "/",
         },
         {
-            label: "Pricing",
-            route: "/pricing",
-        },
-        {
             label: "Contact",
             route: "/contact",
         },
