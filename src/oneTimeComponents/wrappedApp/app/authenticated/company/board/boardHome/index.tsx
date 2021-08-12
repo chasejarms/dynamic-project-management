@@ -3,6 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { sortBy } from "lodash";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
+import { BoardColumnsContainer } from "../../../../../../../components/boardColumnsContainer";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
@@ -16,7 +17,6 @@ import {
 } from "../../../../../../../constants/reservedColumnIds";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { IColumn } from "../../../../../../../models/column";
-import { ITag } from "../../../../../../../models/tag";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { IUser } from "../../../../../../../models/user";
 import { prioritiesToPointValueMapping } from "../../../../../../../utils/prioritiesToPointValueMapping";
@@ -231,31 +231,28 @@ export function BoardHome() {
             {isLoadingRequiredInformation ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
-                <div css={classes.boardContainer}>
-                    <div css={classes.columnsContainer}>
-                        {columns.map((column) => {
-                            const isDoneColumn =
-                                column.id === doneColumnReservedId;
-                            const isUncategorizedSection =
-                                column.id === uncategorizedColumnReservedId;
-                            const hasNoTickets =
-                                sortedAndMappedTickets[column.id].tickets
-                                    .length === 0;
-                            if (
-                                isDoneColumn ||
-                                (isUncategorizedSection && hasNoTickets)
-                            ) {
-                                return null;
-                            }
+                <BoardColumnsContainer>
+                    {columns.map((column) => {
+                        const isDoneColumn = column.id === doneColumnReservedId;
+                        const isUncategorizedSection =
+                            column.id === uncategorizedColumnReservedId;
+                        const hasNoTickets =
+                            sortedAndMappedTickets[column.id].tickets.length ===
+                            0;
+                        if (
+                            isDoneColumn ||
+                            (isUncategorizedSection && hasNoTickets)
+                        ) {
+                            return null;
+                        }
 
-                            return (
-                                <TicketContainer
-                                    key={column.id}
-                                    title={column.name}
-                                >
-                                    {sortedAndMappedTickets[
-                                        column.id
-                                    ].tickets.map((ticket, index) => {
+                        return (
+                            <TicketContainer
+                                key={column.id}
+                                title={column.name}
+                            >
+                                {sortedAndMappedTickets[column.id].tickets.map(
+                                    (ticket, index) => {
                                         const isFirstCard = index === 0;
                                         return (
                                             <TicketForBoard
@@ -282,12 +279,12 @@ export function BoardHome() {
                                                 usersForBoard={users}
                                             />
                                         );
-                                    })}
-                                </TicketContainer>
-                            );
-                        })}
-                    </div>
-                </div>
+                                    }
+                                )}
+                            </TicketContainer>
+                        );
+                    })}
+                </BoardColumnsContainer>
             )}
         </BoardContainer>
     );
@@ -302,13 +299,6 @@ const createClasses = () => {
         padding: 16px;
     `;
 
-    const boardContainer = css`
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    `;
-
     const toolbarContainer = css`
         width: 100%;
         display: flex;
@@ -318,23 +308,13 @@ const createClasses = () => {
         flex: 0 0 auto;
     `;
 
-    const columnsContainer = css`
-        width: 100%;
-        overflow-x: auto;
-        display: flex;
-        flex-grow: 1;
-        padding: 24px;
-    `;
-
     const chipsContainer = css`
         display: inline;
     `;
 
     return {
         centerContent,
-        boardContainer,
         toolbarContainer,
-        columnsContainer,
         chipsContainer,
     };
 };
