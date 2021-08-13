@@ -12,7 +12,40 @@ const columnIdsMapping = {
     deployedToProduction: "6",
 };
 
-const simplifiedTagsMapping: { [name: string]: ISimplifiedTag } = {};
+const simplifiedTagsMapping = {
+    Defect: {
+        name: "Defect",
+        color: TagColor.Red,
+    },
+    Feature: {
+        name: "Feature",
+        color: TagColor.Blue,
+    },
+    AWSMigration: {
+        name: "AWS Migration",
+        color: TagColor.Grey,
+    },
+    ChatFunctionality: {
+        name: "Chat Functionality",
+        color: TagColor.Grey,
+    },
+    Reporting: {
+        name: "Reporting",
+        color: TagColor.Grey,
+    },
+    Administrative: {
+        name: "Adminstrative Controls",
+        color: TagColor.Grey,
+    },
+    CI: {
+        name: "Continous Integration",
+        color: TagColor.Grey,
+    },
+    ImageUpload: {
+        name: "Image Upload",
+        color: TagColor.Grey,
+    },
+};
 
 export const mockColumnData: IColumn[] = [
     {
@@ -75,4 +108,13 @@ export const mockTickets: ITicket[] = [
     },
 ];
 
-export const mockPriorities: string[] = [];
+export const mockPriorities: string[] = [
+    simplifiedTagsMapping.AWSMigration.name,
+    simplifiedTagsMapping.ChatFunctionality.name,
+    simplifiedTagsMapping.Reporting.name,
+    simplifiedTagsMapping.Administrative.name,
+    simplifiedTagsMapping.CI.name,
+    simplifiedTagsMapping.ImageUpload.name,
+    simplifiedTagsMapping.Defect.name,
+    simplifiedTagsMapping.Feature.name,
+];

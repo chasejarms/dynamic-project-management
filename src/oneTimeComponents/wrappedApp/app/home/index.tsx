@@ -4,12 +4,19 @@ import { useTheme, Theme } from "@material-ui/core";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { LandingPageCommonSection } from "../../../../components/landingPageCommonSection";
 import { BoardColumnsContainer } from "../../../../components/boardColumnsContainer";
-import { mockColumnData } from "./mockData";
+import { mockColumnData, mockPriorities, mockTickets } from "./mockData";
 import { TicketContainer } from "../../../../components/ticketContainer";
+import { useState } from "react";
+import { createColumnsMapping } from "../../../../utils/createColumnsMapping";
+import { TicketForBoard } from "../../../../components/ticketForBoard";
+import { TicketType } from "../../../../models/ticket/ticketType";
 
 export function Home() {
     const theme = useTheme();
     const classes = createClasses(theme);
+    const [columnsMapping, setColumnsMapping] = useState(
+        createColumnsMapping(mockPriorities, mockColumnData, mockTickets)
+    );
 
     return (
         <NonAuthenticatedPageContainer>
@@ -50,12 +57,26 @@ export function Home() {
             <div css={classes.exampleOverflow}>
                 <BoardColumnsContainer>
                     {mockColumnData.map((column) => {
+                        const tickets = columnsMapping[column.id].tickets;
+
                         return (
                             <TicketContainer
                                 key={column.id}
                                 title={column.name}
                             >
-                                <p>hello</p>
+                                {tickets.map((ticket, index) => {
+                                    const isFirstTicket = index === 0;
+                                    return (
+                                        <TicketForBoard
+                                            ticket={ticket}
+                                            isFirstTicket={isFirstTicket}
+                                            ticketType={TicketType.InProgress}
+                                            onUpdateTicketColumn={() => null}
+                                            onDeleteTicket={() => null}
+                                            columnOptions={[]}
+                                        />
+                                    );
+                                })}
                             </TicketContainer>
                         );
                     })}
@@ -71,6 +92,8 @@ const createClasses = (theme: Theme) => {
     const exampleOverflow = css`
         overflow-x: auto;
         width: 100%;
+        height: 600px;
+        display: flex;
     `;
 
     return {
