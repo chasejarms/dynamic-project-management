@@ -19,9 +19,8 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { IColumn } from "../../../../../../../models/column";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { IUser } from "../../../../../../../models/user";
-import { prioritiesToPointValueMapping } from "../../../../../../../utils/prioritiesToPointValueMapping";
+import { createColumnsMapping } from "../../../../../../../utils/createColumnsMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
-import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
 
 export function BoardHome() {
     const { companyId, boardId } = useAppRouterParams();
@@ -64,43 +63,11 @@ export function BoardHome() {
                     const sortedUsers = sortBy(usersFromDatabase, "name");
                     setUsers(sortedUsers);
 
-                    const prioritiesToPointValueMappingLocal = prioritiesToPointValueMapping(
-                        priorities
+                    const columnsMapping = createColumnsMapping(
+                        priorities,
+                        columnsFromDatabase,
+                        inProgressTickets
                     );
-
-                    const columnsMapping = columnsFromDatabase.reduce<{
-                        [columnId: string]: {
-                            columnInformation: IColumn;
-                            tickets: IAugmentedUITicket[];
-                        };
-                    }>((mapping, columnFromDatabase) => {
-                        mapping[columnFromDatabase.id] = {
-                            columnInformation: columnFromDatabase,
-                            tickets: [],
-                        };
-                        return mapping;
-                    }, {});
-
-                    const augmentedUITickets = ticketsToAugmentedUITickets(
-                        inProgressTickets,
-                        prioritiesToPointValueMappingLocal
-                    );
-                    augmentedUITickets.forEach((ticketForUI) => {
-                        const columnId = ticketForUI.columnId;
-                        if (columnId && !!columnsMapping[columnId]) {
-                            columnsMapping[columnId].tickets.push(ticketForUI);
-                        } else {
-                            columnsMapping[
-                                uncategorizedColumnReservedId
-                            ].tickets.push(ticketForUI);
-                        }
-                    });
-
-                    Object.keys(columnsMapping).forEach((columnId) => {
-                        columnsMapping[columnId].tickets = sortTickets(
-                            columnsMapping[columnId].tickets
-                        );
-                    });
 
                     setSortedAndMappedTickets(columnsMapping);
                     setColumns(columnsFromDatabase);

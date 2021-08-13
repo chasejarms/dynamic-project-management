@@ -1,18 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Typography, Button, useTheme, Theme } from "@material-ui/core";
+import { useTheme, Theme } from "@material-ui/core";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
-import { useHistory } from "react-router-dom";
 import { LandingPageCommonSection } from "../../../../components/landingPageCommonSection";
+import { BoardColumnsContainer } from "../../../../components/boardColumnsContainer";
+import { mockColumnData } from "./mockData";
+import { TicketContainer } from "../../../../components/ticketContainer";
 
 export function Home() {
     const theme = useTheme();
     const classes = createClasses(theme);
-    const history = useHistory();
-
-    function navigateToSignUpPage() {
-        history.push("/sign-up");
-    }
 
     return (
         <NonAuthenticatedPageContainer>
@@ -50,6 +47,20 @@ export function Home() {
                 ]}
                 placeContent="right"
             />
+            <div css={classes.exampleOverflow}>
+                <BoardColumnsContainer>
+                    {mockColumnData.map((column) => {
+                        return (
+                            <TicketContainer
+                                key={column.id}
+                                title={column.name}
+                            >
+                                <p>hello</p>
+                            </TicketContainer>
+                        );
+                    })}
+                </BoardColumnsContainer>
+            </div>
             {/* show an example board with priorities right next to it here */}
             {/* invite them to schedule a demo and send them to the contact page */}
         </NonAuthenticatedPageContainer>
@@ -57,30 +68,12 @@ export function Home() {
 }
 
 const createClasses = (theme: Theme) => {
-    const signUpContainer = css`
-        margin-right: ${theme.spacing() * 2}px;
-    `;
-
-    const buttonContainer = css`
-        display: flex;
-    `;
-
-    const bottomMargin24 = css`
-        margin-bottom: ${theme.spacing() * 3}px;
-    `;
-
-    const pageContent = css`
-        padding-top: ${theme.spacing() * 10}px;
-        padding-bottom: ${theme.spacing() * 6}px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: ${theme.spacing() * 3}px;
+    const exampleOverflow = css`
+        overflow-x: auto;
+        width: 100%;
     `;
 
     return {
-        signUpContainer,
-        buttonContainer,
-        bottomMargin24,
-        pageContent,
+        exampleOverflow,
     };
 };

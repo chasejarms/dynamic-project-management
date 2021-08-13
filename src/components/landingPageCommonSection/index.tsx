@@ -48,9 +48,13 @@ export function LandingPageCommonSection(
 }
 
 const createClasses = (theme: Theme) => {
+    const tenTimes = theme.spacing() * 10;
+    const sixTimes = theme.spacing() * 6;
     const container = css`
-        padding-top: ${theme.spacing() * 10}px;
-        padding-bottom: ${theme.spacing() * 6}px;
+        padding-top: ${tenTimes}px;
+        padding-right: ${tenTimes}px;
+        padding-bottom: ${sixTimes}px;
+        padding-left: ${tenTimes}px;
         display: grid;
         grid-gap: ${theme.spacing() * 3}px;
     `;

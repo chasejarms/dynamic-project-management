@@ -2,6 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import NavBar, { NavBarActionButtonType, INavBarItem } from "../navBar";
 import { useLocation } from "react-router-dom";
+import { Theme, useTheme } from "@material-ui/core";
 
 export default function NonAuthenticatedNavBar() {
     const location = useLocation();
@@ -22,5 +23,21 @@ export default function NonAuthenticatedNavBar() {
         },
     ];
 
-    return <NavBar navItems={navItems} actionButtonType={actionButtonType} />;
+    const theme = useTheme();
+    const classes = createClasses(theme);
+    return (
+        <div css={classes.container}>
+            <NavBar navItems={navItems} actionButtonType={actionButtonType} />;
+        </div>
+    );
 }
+
+const createClasses = (theme: Theme) => {
+    const container = css`
+        padding: 0px ${theme.spacing() * 10}px;
+    `;
+
+    return {
+        container,
+    };
+};

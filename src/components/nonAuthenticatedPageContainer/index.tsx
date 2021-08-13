@@ -34,7 +34,6 @@ const createClasses = (theme: Theme) => {
     const container = css`
         display: grid;
         grid-template-rows: auto 1fr;
-        padding: 0px ${theme.spacing() * 10}px;
     `;
 
     const makeFullPage = css`
