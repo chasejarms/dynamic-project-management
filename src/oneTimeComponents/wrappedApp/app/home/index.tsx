@@ -73,7 +73,8 @@ export function Home() {
                                             ticketType={TicketType.InProgress}
                                             onUpdateTicketColumn={() => null}
                                             onDeleteTicket={() => null}
-                                            columnOptions={[]}
+                                            columnOptions={mockColumnData}
+                                            onClickDemoTicket={() => null}
                                         />
                                     );
                                 })}

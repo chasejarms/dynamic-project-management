@@ -47,6 +47,7 @@ export interface ITicketForBoardProps {
     showCompletedDate?: boolean;
     ticketType: TicketType;
     usersForBoard?: IUser[];
+    onClickDemoTicket?: () => void;
 }
 
 export interface IAugmentedUITicket extends ITicket {
@@ -389,17 +390,22 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         },
         ...props.columnOptions,
     ];
+    const isDemoMode = !!props.onClickDemoTicket;
     const indentedActions: IIndentedAction[] = [
         {
             header: "Quick Actions",
             informationForMenuItems: [
                 {
                     text: "View Ticket",
-                    onClick: navigateToTicketPage,
+                    onClick: isDemoMode
+                        ? props.onClickDemoTicket
+                        : navigateToTicketPage,
                 },
                 {
                     text: "Delete Ticket",
-                    onClick: onClickDeleteTicketMenuItem,
+                    onClick: isDemoMode
+                        ? props.onClickDemoTicket
+                        : onClickDeleteTicketMenuItem,
                 },
             ],
         },
@@ -449,7 +455,9 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 
                         return {
                             text: column.name,
-                            onClick,
+                            onClick: isDemoMode
+                                ? props.onClickDemoTicket
+                                : onClick,
                         };
                     }) || [],
         },
