@@ -20,9 +20,9 @@ export function LandingPageCommonSection(
             <div css={classes.bottomMargin32}>
                 <Typography variant="h4">{props.title}</Typography>
             </div>
-            {props.textSections.map((text) => {
+            {props.textSections.map((text, index) => {
                 return (
-                    <div css={classes.bottomMargin24}>
+                    <div css={classes.bottomMargin24} key={index}>
                         <Typography>{text}</Typography>
                     </div>
                 );

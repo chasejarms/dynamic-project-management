@@ -11,22 +11,59 @@ import {
     mockTickets,
 } from "./mockData";
 import { TicketContainer } from "../../../../components/ticketContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createColumnsMapping } from "../../../../utils/createColumnsMapping";
-import { TicketForBoard } from "../../../../components/ticketForBoard";
+import {
+    IAugmentedUITicket,
+    TicketForBoard,
+} from "../../../../components/ticketForBoard";
 import { TicketType } from "../../../../models/ticket/ticketType";
 import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { IColumn } from "../../../../models/column";
 
 export function Home() {
     const theme = useTheme();
     const classes = createClasses(theme);
-    const [columnsMapping, setColumnsMapping] = useState(
-        createColumnsMapping(mockPriorities, mockColumnData, mockTickets)
-    );
+    const [columnsMapping, setColumnsMapping] = useState<{
+        [columnId: string]: {
+            columnInformation: IColumn;
+            tickets: IAugmentedUITicket[];
+        };
+    }>({});
     const [priorityList, setPriorityList] = useState(mockPriorities);
+
+    useEffect(() => {
+        const updatedColumnsMapping = createColumnsMapping(
+            mockPriorities,
+            mockColumnData,
+            mockTickets
+        );
+        setColumnsMapping(updatedColumnsMapping);
+    }, [priorityList]);
+
     function onDragEnd(result: DropResult) {
         const { destination, source, draggableId } = result;
+
+        setPriorityList((existingPriorityList) => {
+            const arrayBeforeItem = existingPriorityList.slice(0, source.index);
+            const arrayAfterItem = existingPriorityList.slice(source.index + 1);
+            const arrayWithItemRemoved = arrayBeforeItem.concat(arrayAfterItem);
+
+            const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
+                0,
+                destination!.index
+            );
+            const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
+                destination!.index
+            );
+            const actualTag = draggableId.replace("PRIORITIZEDCOLUMN-", "");
+            const updatedPriorities = arrayBeforeInsertedIndex
+                .concat([actualTag])
+                .concat(arrayAfterInsertedIndex);
+
+            return updatedPriorities;
+        });
     }
 
     return (
@@ -79,6 +116,8 @@ export function Home() {
                 <div css={classes.boardTicketsContainer}>
                     <BoardColumnsContainer>
                         {mockColumnData.map((column) => {
+                            const dataIsReady = !!columnsMapping[column.id];
+                            if (!dataIsReady) return null;
                             const tickets = columnsMapping[column.id].tickets;
 
                             return (
@@ -90,6 +129,7 @@ export function Home() {
                                         const isFirstTicket = index === 0;
                                         return (
                                             <TicketForBoard
+                                                key={ticket.title}
                                                 ticket={ticket}
                                                 isFirstTicket={isFirstTicket}
                                                 ticketType={
