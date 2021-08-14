@@ -8,13 +8,14 @@ export interface ILandingPageCommonSectionProps {
     title: string;
     textSections: string[];
     placeContent: "left" | "right";
+    hideTopAndBottomPadding?: boolean;
 }
 
 export function LandingPageCommonSection(
     props: ILandingPageCommonSectionProps
 ) {
     const theme = useTheme();
-    const classes = createClasses(theme);
+    const classes = createClasses(theme, !!props.hideTopAndBottomPadding);
     const content = (
         <div>
             <div css={classes.bottomMargin32}>
@@ -40,20 +41,23 @@ export function LandingPageCommonSection(
         >
             {props.placeContent === "left" && content}
             <div>
-                <Typography>Screenshot of course here</Typography>
+                <Typography></Typography>
             </div>
             {props.placeContent === "right" && content}
         </div>
     );
 }
 
-const createClasses = (theme: Theme) => {
+const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
     const tenTimes = theme.spacing() * 10;
     const sixTimes = theme.spacing() * 6;
+
+    const paddingTop = hideTopAndBottomPadding ? 0 : tenTimes;
+    const paddingBottom = hideTopAndBottomPadding ? 0 : tenTimes;
     const container = css`
-        padding-top: ${tenTimes}px;
+        padding-top: ${paddingTop}px;
         padding-right: ${tenTimes}px;
-        padding-bottom: ${sixTimes}px;
+        padding-bottom: ${paddingBottom}px;
         padding-left: ${tenTimes}px;
         display: grid;
         grid-gap: ${theme.spacing() * 3}px;

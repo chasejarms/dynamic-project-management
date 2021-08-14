@@ -104,16 +104,14 @@ export function Home() {
                 placeContent="right"
             />
             <div css={classes.exampleTextContainer}>
-                <div css={classes.headerTextContainer}>
-                    <Typography variant="h4">Example Board</Typography>
-                </div>
-                <div css={classes.exampleDescriptionTextContainer}>
-                    <Typography>
-                        Reorder any of the priorities below to see the board
-                        adjust in real time. In a live project, adjusting the
-                        priorities will also reorganize the board backlog.
-                    </Typography>
-                </div>
+                <LandingPageCommonSection
+                    title={"Example Board"}
+                    textSections={[
+                        "Reorder any of the priorities below to see the board adjust in real time. In a live project, adjusting the priorities will also reorganize the board backlog.",
+                    ]}
+                    placeContent="left"
+                    hideTopAndBottomPadding
+                />
             </div>
             <div css={classes.exampleOverflow}>
                 <div css={classes.prioritiesContainer}>
@@ -181,7 +179,7 @@ const createClasses = (theme: Theme) => {
 
     const exampleTextContainer = css`
         background-color: ${theme.palette.grey["200"]};
-        padding: 24px;
+        padding-top: 40px;
     `;
 
     const prioritiesContainer = css`
