@@ -100,7 +100,6 @@ function NonMemoizedAuthenticatedPageTopBar(
         }
 
         if (!!boardId) {
-            console.log("selectedBoard: ", selectedBoard);
             const boardText = selectedBoard
                 ? `Board (${selectedBoard.name})`
                 : "Board";

@@ -21,6 +21,7 @@ import { TicketType } from "../../../../models/ticket/ticketType";
 import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { IColumn } from "../../../../models/column";
+import { cloneDeep } from "lodash";
 
 export function Home() {
     const theme = useTheme();
@@ -31,11 +32,11 @@ export function Home() {
             tickets: IAugmentedUITicket[];
         };
     }>({});
-    const [priorityList, setPriorityList] = useState(mockPriorities);
+    const [priorityList, setPriorityList] = useState(cloneDeep(mockPriorities));
 
     useEffect(() => {
         const updatedColumnsMapping = createColumnsMapping(
-            mockPriorities,
+            priorityList,
             mockColumnData,
             mockTickets
         );

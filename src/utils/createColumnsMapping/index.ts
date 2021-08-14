@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
 import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
@@ -12,7 +13,7 @@ export function createColumnsMapping(
     tickets: ITicket[]
 ) {
     const prioritiesToPointValueMappingLocal = prioritiesToPointValueMapping(
-        priorities
+        cloneDeep(priorities)
     );
 
     const columnsMapping = columns.reduce<{
