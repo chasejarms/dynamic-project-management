@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useTheme, Theme } from "@material-ui/core";
+import { useTheme, Theme, Typography } from "@material-ui/core";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { LandingPageCommonSection } from "../../../../components/landingPageCommonSection";
 import { BoardColumnsContainer } from "../../../../components/boardColumnsContainer";
@@ -103,6 +103,18 @@ export function Home() {
                 ]}
                 placeContent="right"
             />
+            <div css={classes.exampleTextContainer}>
+                <div css={classes.headerTextContainer}>
+                    <Typography variant="h4">Example Board</Typography>
+                </div>
+                <div css={classes.exampleDescriptionTextContainer}>
+                    <Typography>
+                        Reorder any of the priorities below to see the board
+                        adjust in real time. In a live project, adjusting the
+                        priorities will also reorganize the board backlog.
+                    </Typography>
+                </div>
+            </div>
             <div css={classes.exampleOverflow}>
                 <div css={classes.prioritiesContainer}>
                     <DragDropContext onDragEnd={onDragEnd}>
@@ -164,6 +176,12 @@ const createClasses = (theme: Theme) => {
         height: 600px;
         display: flex;
         flex-direction: row;
+        background-color: ${theme.palette.grey["200"]};
+    `;
+
+    const exampleTextContainer = css`
+        background-color: ${theme.palette.grey["200"]};
+        padding: 24px;
     `;
 
     const prioritiesContainer = css`
@@ -180,9 +198,20 @@ const createClasses = (theme: Theme) => {
         display: flex;
     `;
 
+    const headerTextContainer = css`
+        padding-bottom: 16px;
+    `;
+
+    const exampleDescriptionTextContainer = css`
+        width: 700px;
+    `;
+
     return {
         exampleOverflow,
         prioritiesContainer,
         boardTicketsContainer,
+        exampleTextContainer,
+        headerTextContainer,
+        exampleDescriptionTextContainer,
     };
 };
