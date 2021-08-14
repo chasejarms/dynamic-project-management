@@ -4,12 +4,19 @@ import { useTheme, Theme } from "@material-ui/core";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { LandingPageCommonSection } from "../../../../components/landingPageCommonSection";
 import { BoardColumnsContainer } from "../../../../components/boardColumnsContainer";
-import { mockColumnData, mockPriorities, mockTickets } from "./mockData";
+import {
+    mockColumnData,
+    mockPriorities,
+    mockTagsMapping,
+    mockTickets,
+} from "./mockData";
 import { TicketContainer } from "../../../../components/ticketContainer";
 import { useState } from "react";
 import { createColumnsMapping } from "../../../../utils/createColumnsMapping";
 import { TicketForBoard } from "../../../../components/ticketForBoard";
 import { TicketType } from "../../../../models/ticket/ticketType";
+import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 export function Home() {
     const theme = useTheme();
@@ -17,6 +24,10 @@ export function Home() {
     const [columnsMapping, setColumnsMapping] = useState(
         createColumnsMapping(mockPriorities, mockColumnData, mockTickets)
     );
+    const [priorityList, setPriorityList] = useState(mockPriorities);
+    function onDragEnd(result: DropResult) {
+        const { destination, source, draggableId } = result;
+    }
 
     return (
         <NonAuthenticatedPageContainer>
@@ -55,33 +66,49 @@ export function Home() {
                 placeContent="right"
             />
             <div css={classes.exampleOverflow}>
-                <BoardColumnsContainer>
-                    {mockColumnData.map((column) => {
-                        const tickets = columnsMapping[column.id].tickets;
+                <div css={classes.prioritiesContainer}>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <PrioritizedTagsCard
+                            isLoading={false}
+                            canDragTags={true}
+                            tagsPriorityList={priorityList}
+                            tagsPriorityListMapping={mockTagsMapping}
+                        />
+                    </DragDropContext>
+                </div>
+                <div css={classes.boardTicketsContainer}>
+                    <BoardColumnsContainer>
+                        {mockColumnData.map((column) => {
+                            const tickets = columnsMapping[column.id].tickets;
 
-                        return (
-                            <TicketContainer
-                                key={column.id}
-                                title={column.name}
-                            >
-                                {tickets.map((ticket, index) => {
-                                    const isFirstTicket = index === 0;
-                                    return (
-                                        <TicketForBoard
-                                            ticket={ticket}
-                                            isFirstTicket={isFirstTicket}
-                                            ticketType={TicketType.InProgress}
-                                            onUpdateTicketColumn={() => null}
-                                            onDeleteTicket={() => null}
-                                            columnOptions={mockColumnData}
-                                            onClickDemoTicket={() => null}
-                                        />
-                                    );
-                                })}
-                            </TicketContainer>
-                        );
-                    })}
-                </BoardColumnsContainer>
+                            return (
+                                <TicketContainer
+                                    key={column.id}
+                                    title={column.name}
+                                >
+                                    {tickets.map((ticket, index) => {
+                                        const isFirstTicket = index === 0;
+                                        return (
+                                            <TicketForBoard
+                                                ticket={ticket}
+                                                isFirstTicket={isFirstTicket}
+                                                ticketType={
+                                                    TicketType.InProgress
+                                                }
+                                                onUpdateTicketColumn={() =>
+                                                    null
+                                                }
+                                                onDeleteTicket={() => null}
+                                                columnOptions={mockColumnData}
+                                                onClickDemoTicket={() => null}
+                                            />
+                                        );
+                                    })}
+                                </TicketContainer>
+                            );
+                        })}
+                    </BoardColumnsContainer>
+                </div>
             </div>
             {/* show an example board with priorities right next to it here */}
             {/* invite them to schedule a demo and send them to the contact page */}
@@ -95,9 +122,26 @@ const createClasses = (theme: Theme) => {
         width: 100%;
         height: 600px;
         display: flex;
+        flex-direction: row;
+    `;
+
+    const prioritiesContainer = css`
+        flex: 0 0 auto;
+        height: 100%;
+        padding-top: 24px;
+        padding-left: 24px;
+        padding-bottom: 24px;
+    `;
+
+    const boardTicketsContainer = css`
+        flex-grow: 1;
+        height: 100%;
+        display: flex;
     `;
 
     return {
         exampleOverflow,
+        prioritiesContainer,
+        boardTicketsContainer,
     };
 };

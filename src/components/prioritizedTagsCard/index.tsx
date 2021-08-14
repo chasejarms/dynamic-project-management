@@ -56,9 +56,7 @@ export function PrioritizedTagsCard(props: IPrioritizedTagsCardProps) {
             >
                 <div css={classes.cardContent}>
                     <div css={classes.titleContainer}>
-                        <Typography variant="h5">
-                            Prioritized Tags (High to Low)
-                        </Typography>
+                        <Typography variant="h5">Priorities</Typography>
                     </div>
                     <div css={classes.innerCardContent}>
                         {isLoading ? (

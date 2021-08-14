@@ -1,5 +1,5 @@
+import { ITagsPriorityListMapping } from "../../../../components/prioritizedTagsCard";
 import { IColumn } from "../../../../models/column";
-import { ISimplifiedTag } from "../../../../models/simplifiedTag";
 import { TagColor } from "../../../../models/tagColor";
 import { ITicket } from "../../../../models/ticket";
 
@@ -12,38 +12,54 @@ const columnIdsMapping = {
     deployedToProduction: "6",
 };
 
-const simplifiedTagsMapping = {
+export const mockTagsMapping: ITagsPriorityListMapping = {
     Defect: {
         name: "Defect",
         color: TagColor.Red,
+        itemId: "1",
+        belongsTo: "",
     },
     Feature: {
         name: "Feature",
         color: TagColor.Blue,
+        itemId: "2",
+        belongsTo: "",
     },
-    AWSMigration: {
+    "AWS Migration": {
         name: "AWS Migration",
         color: TagColor.Grey,
+        itemId: "3",
+        belongsTo: "",
     },
-    ChatFunctionality: {
+    "Chat Functionality": {
         name: "Chat Functionality",
         color: TagColor.Grey,
+        itemId: "4",
+        belongsTo: "",
     },
     Reporting: {
         name: "Reporting",
         color: TagColor.Grey,
+        itemId: "5",
+        belongsTo: "",
     },
-    Administrative: {
-        name: "Adminstrative Controls",
+    "Administrative Controls": {
+        name: "Administrative Controls",
         color: TagColor.Grey,
+        itemId: "6",
+        belongsTo: "",
     },
-    CI: {
-        name: "Continous Integration",
+    "Continuous Integration": {
+        name: "Continuous Integration",
         color: TagColor.Grey,
+        itemId: "7",
+        belongsTo: "",
     },
-    ImageUpload: {
+    "Image Upload": {
         name: "Image Upload",
         color: TagColor.Grey,
+        itemId: "8",
+        belongsTo: "",
     },
 };
 
@@ -91,10 +107,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.AWSMigration,
-            simplifiedTagsMapping.Defect,
-        ],
+        tags: [mockTagsMapping["AWS Migration"], mockTagsMapping.Defect],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -119,10 +132,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.AWSMigration,
-            simplifiedTagsMapping.Defect,
-        ],
+        tags: [mockTagsMapping["AWS Migration"], mockTagsMapping.Defect],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -147,10 +157,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.AWSMigration,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["AWS Migration"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -175,10 +182,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.AWSMigration,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["AWS Migration"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -203,10 +207,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.AWSMigration,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["AWS Migration"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -231,10 +232,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.AWSMigration,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["AWS Migration"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -259,10 +257,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Defect,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Defect],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -287,10 +282,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Defect,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Defect],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -315,10 +307,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Defect,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Defect],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -343,10 +332,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -371,10 +357,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -399,10 +382,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -427,10 +407,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.ChatFunctionality,
-            simplifiedTagsMapping.Feature,
-        ],
+        tags: [mockTagsMapping["Chat Functionality"], mockTagsMapping.Feature],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -455,7 +432,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Feature, simplifiedTagsMapping.Reporting],
+        tags: [mockTagsMapping.Feature, mockTagsMapping.Reporting],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -480,7 +457,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Feature, simplifiedTagsMapping.Reporting],
+        tags: [mockTagsMapping.Feature, mockTagsMapping.Reporting],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -505,7 +482,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Reporting, simplifiedTagsMapping.Defect],
+        tags: [mockTagsMapping.Reporting, mockTagsMapping.Defect],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -530,7 +507,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Feature, simplifiedTagsMapping.Reporting],
+        tags: [mockTagsMapping.Feature, mockTagsMapping.Reporting],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -555,7 +532,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Feature, simplifiedTagsMapping.Reporting],
+        tags: [mockTagsMapping.Feature, mockTagsMapping.Reporting],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -581,8 +558,8 @@ export const mockTickets: ITicket[] = [
         lastModifiedTimestamp: "",
         completedTimestamp: "",
         tags: [
-            simplifiedTagsMapping.Administrative,
-            simplifiedTagsMapping.Feature,
+            mockTagsMapping["Administrative Controls"],
+            mockTagsMapping.Feature,
         ],
         simplifiedTicketTemplate: {
             title: {
@@ -609,8 +586,8 @@ export const mockTickets: ITicket[] = [
         lastModifiedTimestamp: "",
         completedTimestamp: "",
         tags: [
-            simplifiedTagsMapping.Administrative,
-            simplifiedTagsMapping.Feature,
+            mockTagsMapping["Administrative Controls"],
+            mockTagsMapping.Feature,
         ],
         simplifiedTicketTemplate: {
             title: {
@@ -637,8 +614,8 @@ export const mockTickets: ITicket[] = [
         lastModifiedTimestamp: "",
         completedTimestamp: "",
         tags: [
-            simplifiedTagsMapping.Administrative,
-            simplifiedTagsMapping.Feature,
+            mockTagsMapping["Administrative Controls"],
+            mockTagsMapping.Feature,
         ],
         simplifiedTicketTemplate: {
             title: {
@@ -665,8 +642,8 @@ export const mockTickets: ITicket[] = [
         lastModifiedTimestamp: "",
         completedTimestamp: "",
         tags: [
-            simplifiedTagsMapping.Administrative,
-            simplifiedTagsMapping.Defect,
+            mockTagsMapping["Administrative Controls"],
+            mockTagsMapping.Defect,
         ],
         simplifiedTicketTemplate: {
             title: {
@@ -693,8 +670,8 @@ export const mockTickets: ITicket[] = [
         lastModifiedTimestamp: "",
         completedTimestamp: "",
         tags: [
-            simplifiedTagsMapping.Administrative,
-            simplifiedTagsMapping.Defect,
+            mockTagsMapping["Administrative Controls"],
+            mockTagsMapping.Defect,
         ],
         simplifiedTicketTemplate: {
             title: {
@@ -720,10 +697,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.Feature,
-            simplifiedTagsMapping.ImageUpload,
-        ],
+        tags: [mockTagsMapping.Feature, mockTagsMapping["Image Upload"]],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -748,10 +722,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [
-            simplifiedTagsMapping.Feature,
-            simplifiedTagsMapping.ImageUpload,
-        ],
+        tags: [mockTagsMapping.Feature, mockTagsMapping["Image Upload"]],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -776,7 +747,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Defect, simplifiedTagsMapping.ImageUpload],
+        tags: [mockTagsMapping.Defect, mockTagsMapping["Image Upload"]],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -801,7 +772,7 @@ export const mockTickets: ITicket[] = [
         createdTimestamp: "",
         lastModifiedTimestamp: "",
         completedTimestamp: "",
-        tags: [simplifiedTagsMapping.Defect, simplifiedTagsMapping.ImageUpload],
+        tags: [mockTagsMapping.Defect, mockTagsMapping["Image Upload"]],
         simplifiedTicketTemplate: {
             title: {
                 label: "",
@@ -819,12 +790,12 @@ export const mockTickets: ITicket[] = [
 ];
 
 export const mockPriorities: string[] = [
-    simplifiedTagsMapping.AWSMigration.name,
-    simplifiedTagsMapping.ChatFunctionality.name,
-    simplifiedTagsMapping.Reporting.name,
-    simplifiedTagsMapping.Administrative.name,
-    simplifiedTagsMapping.CI.name,
-    simplifiedTagsMapping.ImageUpload.name,
-    simplifiedTagsMapping.Defect.name,
-    simplifiedTagsMapping.Feature.name,
+    mockTagsMapping["AWS Migration"].name,
+    mockTagsMapping["Chat Functionality"].name,
+    mockTagsMapping.Reporting.name,
+    mockTagsMapping["Administrative Controls"].name,
+    // mockTagsMapping["Continuous Integration"].name,
+    mockTagsMapping["Image Upload"].name,
+    mockTagsMapping.Defect.name,
+    mockTagsMapping.Feature.name,
 ];
