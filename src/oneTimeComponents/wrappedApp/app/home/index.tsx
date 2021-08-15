@@ -70,11 +70,17 @@ export function Home() {
     }
 
     const history = useHistory();
+    function scrollToExample() {
+        const element = document.getElementById("example-section");
+        if (!element) return;
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    }
     const wrappedButtonProps: IWrappedButtonProps[] = [
         {
-            onClick: () => {
-                history.push("/request-demo");
-            },
+            onClick: scrollToExample,
             children: "See An Example Project",
             color: "primary",
         },
@@ -128,7 +134,7 @@ export function Home() {
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
             />
-            <div css={classes.exampleSection}>
+            <div css={classes.exampleSection} id="example-section">
                 <div css={classes.exampleTextContainer}>
                     <LandingPageCommonSection
                         title={"Example Board"}
