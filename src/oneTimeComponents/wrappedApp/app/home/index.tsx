@@ -22,7 +22,10 @@ import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard"
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { IColumn } from "../../../../models/column";
 import { cloneDeep } from "lodash";
-import { IWrappedButtonProps } from "../../../../components/wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../../../components/wrappedButton";
 import { useHistory } from "react-router-dom";
 
 export function Home() {
@@ -88,7 +91,7 @@ export function Home() {
             onClick: () => {
                 history.push("/contact");
             },
-            children: "Request Demo",
+            children: "Request A Demo",
             color: "primary",
             variant: "outlined",
         },
@@ -143,6 +146,7 @@ export function Home() {
                         ]}
                         placeContent="left"
                         hideTopAndBottomPadding
+                        wrappedButtonProps={[wrappedButtonProps[1]]}
                     />
                 </div>
                 <div css={classes.exampleOverflow}>
@@ -201,8 +205,6 @@ export function Home() {
                     </div>
                 </div>
             </div>
-            {/* show an example board with priorities right next to it here */}
-            {/* invite them to schedule a demo and send them to the contact page */}
         </NonAuthenticatedPageContainer>
     );
 }
@@ -249,6 +251,22 @@ const createClasses = (theme: Theme) => {
         background-color: ${theme.palette.grey["200"]};
     `;
 
+    const finalCTAContainer = css`
+        padding: 24px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+    `;
+
+    const innerCTAContainer = css`
+        display: flex;
+        flex-direction: row;
+    `;
+
+    const ctaTextContainer = css`
+        margin-right: 24px;
+    `;
+
     return {
         exampleOverflow,
         prioritiesContainer,
@@ -257,5 +275,8 @@ const createClasses = (theme: Theme) => {
         headerTextContainer,
         exampleDescriptionTextContainer,
         exampleSection,
+        finalCTAContainer,
+        innerCTAContainer,
+        ctaTextContainer,
     };
 };
