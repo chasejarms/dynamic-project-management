@@ -86,7 +86,7 @@ export function Home() {
         },
         {
             onClick: () => {
-                history.push("/request-demo");
+                history.push("/contact");
             },
             children: "Request Demo",
             color: "primary",

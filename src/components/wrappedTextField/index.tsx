@@ -24,6 +24,7 @@ export interface IWrapperTextFieldProps {
     };
     disabled?: boolean;
     multiline?: boolean;
+    placeholder?: string;
 }
 
 export function WrappedTextField(props: IWrapperTextFieldProps) {
@@ -42,6 +43,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
                         "data-testid": props.testIds?.input,
                     }}
                     disabled={props.disabled}
+                    placeholder={props.placeholder}
                 />
             </FormControl>
             <div

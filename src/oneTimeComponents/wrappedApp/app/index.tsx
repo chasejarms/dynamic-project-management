@@ -21,11 +21,8 @@ export function App() {
             <Route path="/" exact>
                 <Home />
             </Route>
-            <Route path="/request-demo" exact>
-                <RequestDemo />
-            </Route>
             <Route path="/contact" exact>
-                <Contact />
+                <RequestDemo />
             </Route>
             <Route path="/sign-in" exact>
                 <SignIn />

@@ -7,6 +7,7 @@ import { ISignUpApi, SignUpApi } from "./sign-up";
 import { ITicketTemplatesApi, TicketTemplatesApi } from "./ticketTemplates";
 import { ITicketsApi, TicketsApi } from "./tickets";
 import { IUsersApi, UsersApi } from "./users";
+import { ContactApi, IContactApi } from "./contact";
 
 export interface IApi {
     discountCodes: IDiscountCodesApi;
@@ -18,6 +19,7 @@ export interface IApi {
     ticketTemplates: ITicketTemplatesApi;
     tickets: ITicketsApi;
     users: IUsersApi;
+    contact: IContactApi;
 }
 
 class ApiClass implements IApi {
@@ -30,6 +32,7 @@ class ApiClass implements IApi {
     public ticketTemplates = new TicketTemplatesApi();
     public tickets = new TicketsApi();
     public users = new UsersApi();
+    public contact = new ContactApi();
 }
 
 export const Api = new ApiClass();
