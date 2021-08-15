@@ -3,12 +3,14 @@ import { jsx, css } from "@emotion/react";
 import { Theme, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { composeCSS } from "../../styles/composeCSS";
+import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
 
 export interface ILandingPageCommonSectionProps {
     title: string;
     textSections: string[];
     placeContent: "left" | "right";
     hideTopAndBottomPadding?: boolean;
+    wrappedButtonProps?: IWrappedButtonProps[];
 }
 
 export function LandingPageCommonSection(
@@ -28,6 +30,23 @@ export function LandingPageCommonSection(
                     </div>
                 );
             })}
+            {!!props.wrappedButtonProps?.length && (
+                <div css={classes.wrappedButtonContainer}>
+                    {props.wrappedButtonProps.map((buttonProps, index) => {
+                        const isNotLastButton =
+                            index !== props.wrappedButtonProps!.length - 1;
+                        return (
+                            <div
+                                css={composeCSS(
+                                    isNotLastButton && classes.buttonMarginRight
+                                )}
+                            >
+                                <WrappedButton {...buttonProps} />
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 
@@ -53,7 +72,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
     const sixTimes = theme.spacing() * 6;
 
     const paddingTop = hideTopAndBottomPadding ? 0 : tenTimes;
-    const paddingBottom = hideTopAndBottomPadding ? 0 : tenTimes;
+    const paddingBottom = hideTopAndBottomPadding ? 0 : sixTimes;
     const container = css`
         padding-top: ${paddingTop}px;
         padding-right: ${tenTimes}px;
@@ -79,11 +98,22 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         margin-bottom: ${theme.spacing() * 4}px;
     `;
 
+    const wrappedButtonContainer = css`
+        display: flex;
+        justify-content: flex-start;
+    `;
+
+    const buttonMarginRight = css`
+        margin-right: 8px;
+    `;
+
     return {
         container,
         bottomMargin24,
         containerLeftContent,
         containerRightContent,
         bottomMargin32,
+        wrappedButtonContainer,
+        buttonMarginRight,
     };
 };

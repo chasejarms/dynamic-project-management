@@ -6,7 +6,7 @@ import { useAxiosInterceptor } from "../../../hooks/useAxiosInterceptor";
 import { Authenticated } from "./authenticated";
 import { useRouterDebug } from "../../../hooks/useRouterDebug";
 import { Home } from "./home";
-import { Pricing } from "./pricing";
+import { RequestDemo } from "./requestDemo";
 import { Contact } from "./contact";
 import { SignUp } from "./signUp";
 import { ResetPassword } from "./resetPassword";
@@ -21,8 +21,8 @@ export function App() {
             <Route path="/" exact>
                 <Home />
             </Route>
-            <Route path="/pricing" exact>
-                <Pricing />
+            <Route path="/request-demo" exact>
+                <RequestDemo />
             </Route>
             <Route path="/contact" exact>
                 <Contact />

@@ -22,6 +22,8 @@ import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard"
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { IColumn } from "../../../../models/column";
 import { cloneDeep } from "lodash";
+import { IWrappedButtonProps } from "../../../../components/wrappedButton";
+import { useHistory } from "react-router-dom";
 
 export function Home() {
     const theme = useTheme();
@@ -67,6 +69,25 @@ export function Home() {
         });
     }
 
+    const history = useHistory();
+    const wrappedButtonProps: IWrappedButtonProps[] = [
+        {
+            onClick: () => {
+                history.push("/request-demo");
+            },
+            children: "See An Example Project",
+            color: "primary",
+        },
+        {
+            onClick: () => {
+                history.push("/request-demo");
+            },
+            children: "Request Demo",
+            color: "primary",
+            variant: "outlined",
+        },
+    ];
+
     return (
         <NonAuthenticatedPageContainer>
             <LandingPageCommonSection
@@ -76,6 +97,7 @@ export function Home() {
                     "And if that weren’t enough, stakeholders are often tweaking the direction of the project forcing them team to reorganize the board again and again. The more stakeholders that are involved, the more cumbersome this process becomes.",
                 ]}
                 placeContent="left"
+                wrappedButtonProps={wrappedButtonProps}
             />
             <LandingPageCommonSection
                 title={"Team Velocity Suffers"}
@@ -84,6 +106,7 @@ export function Home() {
                     "Even with all this effort, the complexity of taking in stakeholder input and applying it across hundreds of tasks leads to an imperfect board and team members unknowingly work on low priority tasks.",
                 ]}
                 placeContent="right"
+                wrappedButtonProps={wrappedButtonProps}
             />
             <LandingPageCommonSection
                 title={"Existing Solutions Are Limiting"}
@@ -94,6 +117,7 @@ export function Home() {
                     "And when everything is everything is high priority, nothing is.",
                 ]}
                 placeContent="left"
+                wrappedButtonProps={wrappedButtonProps}
             />
             <LandingPageCommonSection
                 title={"Introducing Relative Prioritization"}
@@ -102,6 +126,7 @@ export function Home() {
                     "Custom tags are applied to each task and when the tags are prioritized, the backlog and all in progress tickets are adjusted to reflect the new priorities.",
                 ]}
                 placeContent="right"
+                wrappedButtonProps={wrappedButtonProps}
             />
             <div css={classes.exampleSection}>
                 <div css={classes.exampleTextContainer}>
