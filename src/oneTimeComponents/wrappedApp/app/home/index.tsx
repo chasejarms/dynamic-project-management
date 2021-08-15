@@ -103,62 +103,71 @@ export function Home() {
                 ]}
                 placeContent="right"
             />
-            <div css={classes.exampleTextContainer}>
-                <LandingPageCommonSection
-                    title={"Example Board"}
-                    textSections={[
-                        "Reorder any of the priorities below to see the board adjust in real time. In a live project, adjusting the priorities will also reorganize the board backlog.",
-                    ]}
-                    placeContent="left"
-                    hideTopAndBottomPadding
-                />
-            </div>
-            <div css={classes.exampleOverflow}>
-                <div css={classes.prioritiesContainer}>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <PrioritizedTagsCard
-                            isLoading={false}
-                            canDragTags={true}
-                            tagsPriorityList={priorityList}
-                            tagsPriorityListMapping={mockTagsMapping}
-                        />
-                    </DragDropContext>
+            <div css={classes.exampleSection}>
+                <div css={classes.exampleTextContainer}>
+                    <LandingPageCommonSection
+                        title={"Example Board"}
+                        textSections={[
+                            "Reorder any of the priorities below to see the board adjust in real time. In a live project, adjusting the priorities will also reorganize the board backlog.",
+                        ]}
+                        placeContent="left"
+                        hideTopAndBottomPadding
+                    />
                 </div>
-                <div css={classes.boardTicketsContainer}>
-                    <BoardColumnsContainer>
-                        {mockColumnData.map((column) => {
-                            const dataIsReady = !!columnsMapping[column.id];
-                            if (!dataIsReady) return null;
-                            const tickets = columnsMapping[column.id].tickets;
+                <div css={classes.exampleOverflow}>
+                    <div css={classes.prioritiesContainer}>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <PrioritizedTagsCard
+                                isLoading={false}
+                                canDragTags={true}
+                                tagsPriorityList={priorityList}
+                                tagsPriorityListMapping={mockTagsMapping}
+                            />
+                        </DragDropContext>
+                    </div>
+                    <div css={classes.boardTicketsContainer}>
+                        <BoardColumnsContainer>
+                            {mockColumnData.map((column) => {
+                                const dataIsReady = !!columnsMapping[column.id];
+                                if (!dataIsReady) return null;
+                                const tickets =
+                                    columnsMapping[column.id].tickets;
 
-                            return (
-                                <TicketContainer
-                                    key={column.id}
-                                    title={column.name}
-                                >
-                                    {tickets.map((ticket, index) => {
-                                        const isFirstTicket = index === 0;
-                                        return (
-                                            <TicketForBoard
-                                                key={ticket.title}
-                                                ticket={ticket}
-                                                isFirstTicket={isFirstTicket}
-                                                ticketType={
-                                                    TicketType.InProgress
-                                                }
-                                                onUpdateTicketColumn={() =>
-                                                    null
-                                                }
-                                                onDeleteTicket={() => null}
-                                                columnOptions={mockColumnData}
-                                                onClickDemoTicket={() => null}
-                                            />
-                                        );
-                                    })}
-                                </TicketContainer>
-                            );
-                        })}
-                    </BoardColumnsContainer>
+                                return (
+                                    <TicketContainer
+                                        key={column.id}
+                                        title={column.name}
+                                    >
+                                        {tickets.map((ticket, index) => {
+                                            const isFirstTicket = index === 0;
+                                            return (
+                                                <TicketForBoard
+                                                    key={ticket.title}
+                                                    ticket={ticket}
+                                                    isFirstTicket={
+                                                        isFirstTicket
+                                                    }
+                                                    ticketType={
+                                                        TicketType.InProgress
+                                                    }
+                                                    onUpdateTicketColumn={() =>
+                                                        null
+                                                    }
+                                                    onDeleteTicket={() => null}
+                                                    columnOptions={
+                                                        mockColumnData
+                                                    }
+                                                    onClickDemoTicket={() =>
+                                                        null
+                                                    }
+                                                />
+                                            );
+                                        })}
+                                    </TicketContainer>
+                                );
+                            })}
+                        </BoardColumnsContainer>
+                    </div>
                 </div>
             </div>
             {/* show an example board with priorities right next to it here */}
@@ -169,7 +178,6 @@ export function Home() {
 
 const createClasses = (theme: Theme) => {
     const exampleOverflow = css`
-        overflow-x: auto;
         width: 100%;
         height: 600px;
         display: flex;
@@ -204,6 +212,12 @@ const createClasses = (theme: Theme) => {
         width: 700px;
     `;
 
+    const exampleSection = css`
+        width: 100%;
+        overflow-x: auto;
+        background-color: ${theme.palette.grey["200"]};
+    `;
+
     return {
         exampleOverflow,
         prioritiesContainer,
@@ -211,5 +225,6 @@ const createClasses = (theme: Theme) => {
         exampleTextContainer,
         headerTextContainer,
         exampleDescriptionTextContainer,
+        exampleSection,
     };
 };
