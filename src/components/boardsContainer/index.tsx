@@ -15,6 +15,7 @@ export interface IBoardContainerProps {
 export function BoardsContainer(props: IBoardContainerProps) {
     const { companyId } = useAppRouterParams();
     const user = useCompanyUser();
+    const isChase = user?.email === "chasejarms@gmail.com";
     const canManageCompanyUsers = !!user?.canManageCompanyUsers;
     const canCreateBoards = !!user?.canCreateBoards;
 
@@ -30,6 +31,10 @@ export function BoardsContainer(props: IBoardContainerProps) {
         canManageCompanyUsers && {
             text: "Company Users",
             route: `/app/company/${companyId}/company-users`,
+        },
+        isChase && {
+            text: "Add Company",
+            route: `/app/company/${companyId}/add-company`,
         },
     ].filter((value) => !!value) as IAuthenticatedNavItem[];
     return (

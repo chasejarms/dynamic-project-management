@@ -101,6 +101,9 @@ export function SignUp() {
                     <div css={classes.signUpContainer}>
                         <Typography variant="h5">Sign Up</Typography>
                     </div>
+                    <Typography>
+                        External sign up has been disabled for now.
+                    </Typography>
                     <WrappedTextField
                         value={nameControl.value}
                         autoFocus
