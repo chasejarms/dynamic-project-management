@@ -25,6 +25,12 @@ export function SmallNavBar(props: ISmallNavBarProps) {
     const materialClasses = useStyles();
     const [open, setOpen] = useState(false);
     const location = useLocation();
+    const internalNavItems = [...props.navItems].concat([
+        {
+            label: "Sign In",
+            route: "/sign-in",
+        },
+    ]);
 
     return (
         <div css={classes.persistentNavBar}>
@@ -68,7 +74,7 @@ export function SmallNavBar(props: ISmallNavBarProps) {
                         <div />
                         <div css={classes.gridCenterContent}>
                             <div css={classes.linkGrid}>
-                                {props.navItems.map(({ label, route }) => {
+                                {internalNavItems.map(({ label, route }) => {
                                     const onClick = () => {
                                         setOpen(false);
                                         history.push(route);
