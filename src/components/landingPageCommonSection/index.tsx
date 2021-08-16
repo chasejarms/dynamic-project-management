@@ -2,6 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { Theme, Typography, useTheme } from "@material-ui/core";
 import React from "react";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { composeCSS } from "../../styles/composeCSS";
 import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
 
@@ -17,6 +18,7 @@ export interface ILandingPageCommonSectionProps {
 export function LandingPageCommonSection(
     props: ILandingPageCommonSectionProps
 ) {
+    const breakpoints = useBreakpoint();
     const theme = useTheme();
     const classes = createClasses(theme, !!props.hideTopAndBottomPadding);
     const content = (
@@ -56,14 +58,20 @@ export function LandingPageCommonSection(
             css={composeCSS(
                 classes.container,
                 props.placeContent === "left" && classes.containerLeftContent,
-                props.placeContent === "right" && classes.containerRightContent
+                props.placeContent === "right" && classes.containerRightContent,
+                breakpoints.max768 && classes.smallGridTemplateColumns
             )}
         >
-            {props.placeContent === "left" && content}
-            <div css={classes.svgContentContainer}>
-                <div css={classes.svgInnerContainer}>{props.svgContent}</div>
+            {(breakpoints.max768 || props.placeContent === "left") && content}
+            <div
+                css={composeCSS(
+                    classes.svgContentContainer,
+                    breakpoints.max768 && classes.svgContainerSmallPadding
+                )}
+            >
+                {props.svgContent}
             </div>
-            {props.placeContent === "right" && content}
+            {props.placeContent === "right" && !breakpoints.max768 && content}
         </div>
     );
 }
@@ -91,6 +99,13 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         grid-template-columns: 2fr 3fr;
     `;
 
+    const smallGridTemplateColumns = css`
+        grid-template-columns: 1fr;
+        padding-left: ${theme.spacing() * 3}px;
+        padding-right: ${theme.spacing() * 3}px;
+        padding-bottom: 0px;
+    `;
+
     const bottomMargin24 = css`
         margin-bottom: ${theme.spacing() * 3}px;
     `;
@@ -109,7 +124,9 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
     `;
 
     const svgContentContainer = css`
-        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     `;
 
     const svgInnerContainer = css`
@@ -119,6 +136,10 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         display: flex;
         justify-content: center;
         align-items: center;
+    `;
+
+    const svgContainerSmallPadding = css`
+        padding-top: ${theme.spacing() * 3}px;
     `;
 
     return {
@@ -131,5 +152,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         buttonMarginRight,
         svgContentContainer,
         svgInnerContainer,
+        smallGridTemplateColumns,
+        svgContainerSmallPadding,
     };
 };

@@ -6,19 +6,29 @@ import { createTheme } from "@material-ui/core/styles";
 import { App } from "./app";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "../../redux/store";
+import { BreakpointProvider } from "../../hooks/useBreakpoint";
 
 const theme = createTheme({});
 
 export function WrappedApp() {
+    const queries = {
+        max768: "(max-width: 768px)",
+        between768And993: "(min-width: 769px) and (max-width: 992px)",
+        min993: "(min-width: 993px)",
+        min1200: "(min-width: 1200px)",
+    };
+
     return (
-        <ReduxProvider store={store}>
-            <ThemeProvider theme={theme}>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <Router>
-                    <App />
-                </Router>
-            </ThemeProvider>
-        </ReduxProvider>
+        <BreakpointProvider queries={queries}>
+            <ReduxProvider store={store}>
+                <ThemeProvider theme={theme}>
+                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                    <CssBaseline />
+                    <Router>
+                        <App />
+                    </Router>
+                </ThemeProvider>
+            </ReduxProvider>
+        </BreakpointProvider>
     );
 }
