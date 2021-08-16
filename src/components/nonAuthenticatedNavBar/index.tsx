@@ -1,6 +1,7 @@
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { INavBarItem } from "../navBar";
 import { LargeNavBar } from "./largeNavBar";
+import { SmallNavBar } from "./smallNavBar";
 
 export default function NonAuthenticatedNavBar() {
     const breakpoints = useBreakpoint();
@@ -16,5 +17,9 @@ export default function NonAuthenticatedNavBar() {
         },
     ];
 
-    return breakpoints.max768 ? <LargeNavBar navItems={navItems} /> : <div />;
+    return breakpoints.max768 ? (
+        <SmallNavBar navItems={navItems} />
+    ) : (
+        <LargeNavBar navItems={navItems} />
+    );
 }
