@@ -22,11 +22,12 @@ import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard"
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { IColumn } from "../../../../models/column";
 import { cloneDeep } from "lodash";
-import {
-    IWrappedButtonProps,
-    WrappedButton,
-} from "../../../../components/wrappedButton";
+import { IWrappedButtonProps } from "../../../../components/wrappedButton";
 import { useHistory } from "react-router-dom";
+import { PrioritizationIsToughSvg } from "../../../../components/landingPageSvgs/prioritizationIsTough";
+import { TeamVelocitySuffers } from "../../../../components/landingPageSvgs/teamVelocitySuffers";
+import { ExistingSolutionsAreLimiting } from "../../../../components/landingPageSvgs/existingSolutionsAreLimiting";
+import { RelativePrioritization } from "../../../../components/landingPageSvgs/relativePrioritization";
 
 export function Home() {
     const theme = useTheme();
@@ -107,6 +108,7 @@ export function Home() {
                 ]}
                 placeContent="left"
                 wrappedButtonProps={wrappedButtonProps}
+                svgContent={<PrioritizationIsToughSvg />}
             />
             <LandingPageCommonSection
                 title={"Team Velocity Suffers"}
@@ -116,6 +118,7 @@ export function Home() {
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
+                svgContent={<TeamVelocitySuffers />}
             />
             <LandingPageCommonSection
                 title={"Existing Solutions Are Limiting"}
@@ -127,6 +130,7 @@ export function Home() {
                 ]}
                 placeContent="left"
                 wrappedButtonProps={wrappedButtonProps}
+                svgContent={<ExistingSolutionsAreLimiting />}
             />
             <LandingPageCommonSection
                 title={"Introducing Relative Prioritization"}
@@ -136,6 +140,7 @@ export function Home() {
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
+                svgContent={<RelativePrioritization />}
             />
             <div css={classes.exampleSection} id="example-section">
                 <div css={classes.exampleTextContainer}>

@@ -11,6 +11,7 @@ export interface ILandingPageCommonSectionProps {
     placeContent: "left" | "right";
     hideTopAndBottomPadding?: boolean;
     wrappedButtonProps?: IWrappedButtonProps[];
+    svgContent?: React.ReactChild;
 }
 
 export function LandingPageCommonSection(
@@ -59,8 +60,8 @@ export function LandingPageCommonSection(
             )}
         >
             {props.placeContent === "left" && content}
-            <div>
-                <Typography></Typography>
+            <div css={classes.svgContentContainer}>
+                <div css={classes.svgInnerContainer}>{props.svgContent}</div>
             </div>
             {props.placeContent === "right" && content}
         </div>
@@ -71,7 +72,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
     const tenTimes = theme.spacing() * 10;
     const sixTimes = theme.spacing() * 6;
 
-    const paddingTop = hideTopAndBottomPadding ? 0 : tenTimes;
+    const paddingTop = hideTopAndBottomPadding ? 0 : sixTimes;
     const paddingBottom = hideTopAndBottomPadding ? 0 : sixTimes;
     const container = css`
         padding-top: ${paddingTop}px;
@@ -107,6 +108,19 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         margin-right: 8px;
     `;
 
+    const svgContentContainer = css`
+        position: relative;
+    `;
+
+    const svgInnerContainer = css`
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `;
+
     return {
         container,
         bottomMargin24,
@@ -115,5 +129,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         bottomMargin32,
         wrappedButtonContainer,
         buttonMarginRight,
+        svgContentContainer,
+        svgInnerContainer,
     };
 };
