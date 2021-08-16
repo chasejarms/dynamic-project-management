@@ -1,16 +1,9 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import NavBar, { NavBarActionButtonType, INavBarItem } from "../navBar";
-import { useLocation } from "react-router-dom";
-import { Theme, useTheme } from "@material-ui/core";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { INavBarItem } from "../navBar";
+import { LargeNavBar } from "./largeNavBar";
 
 export default function NonAuthenticatedNavBar() {
-    const location = useLocation();
-    const actionButtonType: NavBarActionButtonType = location.pathname.includes(
-        "sign-in"
-    )
-        ? "sign-up"
-        : "sign-in";
+    const breakpoints = useBreakpoint();
 
     const navItems: INavBarItem[] = [
         {
@@ -23,21 +16,5 @@ export default function NonAuthenticatedNavBar() {
         },
     ];
 
-    const theme = useTheme();
-    const classes = createClasses(theme);
-    return (
-        <div css={classes.container}>
-            <NavBar navItems={navItems} actionButtonType={actionButtonType} />;
-        </div>
-    );
+    return breakpoints.max768 ? <LargeNavBar navItems={navItems} /> : <div />;
 }
-
-const createClasses = (theme: Theme) => {
-    const container = css`
-        padding: 0px ${theme.spacing() * 10}px;
-    `;
-
-    return {
-        container,
-    };
-};
