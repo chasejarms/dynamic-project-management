@@ -80,11 +80,16 @@ export function UnprioritizedTagsCard(props: IUnprioritizedTagsCard) {
                         )}
                     >
                         <Typography variant="h5">Unprioritized Tags</Typography>
-                        <div>
+                        <div css={classes.addContainer}>
                             {canAddTags && (
-                                <IconButton onClick={onClickAddTags}>
-                                    <Add />
-                                </IconButton>
+                                <div css={classes.addInnerContainer}>
+                                    <IconButton
+                                        onClick={onClickAddTags}
+                                        color="primary"
+                                    >
+                                        <Add />
+                                    </IconButton>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -251,6 +256,17 @@ function createClasses(theme: Theme) {
         width: 300px;
     `;
 
+    const addContainer = css`
+        width: 60px;
+        position: relative;
+    `;
+
+    const addInnerContainer = css`
+        position: absolute;
+        left: 20px;
+        bottom: -9px;
+    `;
+
     return {
         container,
         titleContainer,
@@ -264,5 +280,7 @@ function createClasses(theme: Theme) {
         unprioritizedTagContainer,
         unprioritizedTitleContainer,
         tagInputContainer,
+        addContainer,
+        addInnerContainer,
     };
 }

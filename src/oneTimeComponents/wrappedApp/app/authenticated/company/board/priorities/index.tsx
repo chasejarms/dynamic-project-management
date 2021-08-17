@@ -157,69 +157,99 @@ export function Priorities() {
     }, [companyId, boardId]);
 
     function onDragEnd(result: DropResult) {
-        const { destination, source, draggableId } = result;
+        const { destination, draggableId } = result;
         const destinationIsPriorityList =
             destination?.droppableId === "priority-list";
-        if (!destinationIsPriorityList) return;
 
-        const isReorderOfPriorityList = draggableId.startsWith(
+        const itemComesFromPriorityList = draggableId.startsWith(
             "PRIORITIZEDCOLUMN-"
         );
-        if (isReorderOfPriorityList) {
-            const actualTag = draggableId.replace("PRIORITIZEDCOLUMN-", "");
-            setPriorityList((existingPriorityList) => {
-                const arrayBeforeItem = existingPriorityList.slice(
-                    0,
-                    source.index
-                );
-                const arrayAfterItem = existingPriorityList.slice(
-                    source.index + 1
-                );
-                const arrayWithItemRemoved = arrayBeforeItem.concat(
-                    arrayAfterItem
-                );
 
-                const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
-                    0,
-                    destination!.index
-                );
-                const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
-                    destination!.index
-                );
-                const updatedPriorities = arrayBeforeInsertedIndex
-                    .concat([actualTag])
-                    .concat(arrayAfterInsertedIndex);
-
-                Api.priorities.updatePrioritiesForBoard(
-                    companyId,
-                    boardId,
-                    updatedPriorities
-                );
-
-                return updatedPriorities;
-            });
+        if (destinationIsPriorityList) {
+            if (itemComesFromPriorityList) {
+                reorderPriorityList(result);
+            } else {
+                addToPriorityListFromUnprioritizedTags(result);
+            }
         } else {
-            setPriorityList((existingPriorityList) => {
-                const arrayBeforeInsertedIndex = existingPriorityList.slice(
-                    0,
-                    destination!.index
-                );
-                const arrayAfterInsertedIndex = existingPriorityList.slice(
-                    destination!.index
-                );
-                const updatedPriorities = arrayBeforeInsertedIndex
-                    .concat([draggableId])
-                    .concat(arrayAfterInsertedIndex);
-
-                Api.priorities.updatePrioritiesForBoard(
-                    companyId,
-                    boardId,
-                    updatedPriorities
-                );
-
-                return updatedPriorities;
-            });
+            if (itemComesFromPriorityList) {
+                removeItemFromPriorityList(result);
+            } else {
+                // do nothing, we don't have to reorganize these ones
+            }
         }
+    }
+
+    function reorderPriorityList(result: DropResult) {
+        const { destination, source, draggableId } = result;
+        const actualTag = draggableId.replace("PRIORITIZEDCOLUMN-", "");
+        setPriorityList((existingPriorityList) => {
+            const arrayBeforeItem = existingPriorityList.slice(0, source.index);
+            const arrayAfterItem = existingPriorityList.slice(source.index + 1);
+            const arrayWithItemRemoved = arrayBeforeItem.concat(arrayAfterItem);
+
+            const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
+                0,
+                destination!.index
+            );
+            const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
+                destination!.index
+            );
+            const updatedPriorities = arrayBeforeInsertedIndex
+                .concat([actualTag])
+                .concat(arrayAfterInsertedIndex);
+
+            Api.priorities.updatePrioritiesForBoard(
+                companyId,
+                boardId,
+                updatedPriorities
+            );
+
+            return updatedPriorities;
+        });
+    }
+
+    function addToPriorityListFromUnprioritizedTags(result: DropResult) {
+        const { destination, source, draggableId } = result;
+        setPriorityList((existingPriorityList) => {
+            const arrayBeforeInsertedIndex = existingPriorityList.slice(
+                0,
+                destination!.index
+            );
+            const arrayAfterInsertedIndex = existingPriorityList.slice(
+                destination!.index
+            );
+            const updatedPriorities = arrayBeforeInsertedIndex
+                .concat([draggableId])
+                .concat(arrayAfterInsertedIndex);
+
+            Api.priorities.updatePrioritiesForBoard(
+                companyId,
+                boardId,
+                updatedPriorities
+            );
+
+            return updatedPriorities;
+        });
+    }
+
+    function removeItemFromPriorityList(result: DropResult) {
+        const { destination, source, draggableId } = result;
+        const actualTag = draggableId.replace("PRIORITIZEDCOLUMN-", "");
+        setPriorityList((existingPriorityList) => {
+            const arrayBeforeItem = existingPriorityList.slice(0, source.index);
+            const arrayAfterItem = existingPriorityList.slice(source.index + 1);
+
+            const updatedPriorities = arrayBeforeItem.concat(arrayAfterItem);
+
+            Api.priorities.updatePrioritiesForBoard(
+                companyId,
+                boardId,
+                updatedPriorities
+            );
+
+            return updatedPriorities;
+        });
     }
 
     const [tagsCreatorIsOpen, setTagsCreatorIsOpen] = useState(false);
