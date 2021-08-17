@@ -13,6 +13,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../redux/storeState";
+import { CompaniesContainer } from "../../../../../components/companiesContainer";
 
 export function Companies() {
     const theme = useTheme();
@@ -35,33 +36,35 @@ export function Companies() {
     }
 
     return (
-        <div css={classes.cardsContainer}>
-            {companies?.map((company) => {
-                return (
-                    <Card key={company.shortenedItemId}>
-                        <CardContent>
-                            <div css={classes.titleContainer}>
-                                <Typography variant="h5">
-                                    {company.name}
-                                </Typography>
-                            </div>
-                        </CardContent>
-                        <CardActions>
-                            <div css={classes.actionButtonContainer}>
-                                <Button
-                                    onClick={openBoards(
-                                        company.shortenedItemId
-                                    )}
-                                    color="primary"
-                                >
-                                    Go To Boards
-                                </Button>
-                            </div>
-                        </CardActions>
-                    </Card>
-                );
-            })}
-        </div>
+        <CompaniesContainer>
+            <div css={classes.cardsContainer}>
+                {companies?.map((company) => {
+                    return (
+                        <Card key={company.shortenedItemId}>
+                            <CardContent>
+                                <div css={classes.titleContainer}>
+                                    <Typography variant="h5">
+                                        {company.name}
+                                    </Typography>
+                                </div>
+                            </CardContent>
+                            <CardActions>
+                                <div css={classes.actionButtonContainer}>
+                                    <Button
+                                        onClick={openBoards(
+                                            company.shortenedItemId
+                                        )}
+                                        color="primary"
+                                    >
+                                        Go To Boards
+                                    </Button>
+                                </div>
+                            </CardActions>
+                        </Card>
+                    );
+                })}
+            </div>
+        </CompaniesContainer>
     );
 }
 
@@ -69,8 +72,9 @@ const createClasses = (theme: Theme) => {
     const cardsContainer = css`
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
+        grid-auto-rows: min-content;
         grid-gap: ${theme.spacing() * 2}px;
-        margin-top: ${theme.spacing() * 4}px;
+        padding: ${theme.spacing() * 4}px;
     `;
 
     const actionButtonContainer = css`
