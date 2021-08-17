@@ -271,11 +271,6 @@ export function Priorities() {
         });
     }
 
-    function tagNameToTagColor(priority: string) {
-        const { color } = priorityListAndTagsMapping.tagsMapping[priority];
-        return color;
-    }
-
     return (
         <BoardContainer>
             <DragDropContext onDragEnd={onDragEnd}>
