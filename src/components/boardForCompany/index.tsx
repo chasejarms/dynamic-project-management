@@ -10,6 +10,7 @@ import {
     Theme,
     useTheme,
     Popover,
+    makeStyles,
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import React, { useState } from "react";
@@ -27,6 +28,14 @@ export interface IBoardForCompanyProps {
     onClickDeleteBoardAction: () => void;
 }
 
+const useStyles = makeStyles({
+    cardRoot: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+    },
+});
+
 export function BoardForCompany(props: IBoardForCompanyProps) {
     const history = useHistory();
     const { board } = props;
@@ -41,6 +50,7 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
 
     const theme = useTheme();
     const classes = createClasses(theme);
+    const materialClasses = useStyles();
     const [optionsIsOpen, setOptionsIsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     function toggleMoreOptions(event: any) {
@@ -65,7 +75,7 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
     }
 
     return (
-        <Card>
+        <Card className={materialClasses.cardRoot}>
             <CardContent>
                 <div css={classes.titleAndActionIconContainer}>
                     <div css={classes.titleContainer}>
