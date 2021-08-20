@@ -8,7 +8,11 @@ export interface IBoardApi {
         companyId: string,
         boardName: string,
         boardDescription: string
-    ): Promise<IBoard>;
+    ): Promise<{
+        id: string;
+        name: string;
+        description: string;
+    }>;
     deleteBoardForCompany(companyId: string, boardId: string): Promise<void>;
     getBoardForCompany(companyId: string, boardId: string): Promise<IBoard>;
 }
@@ -42,7 +46,11 @@ export class BoardApi implements IBoardApi {
                 boardDescription,
             }
         );
-        return axiosResponse.data as IBoard;
+        return axiosResponse.data as {
+            id: string;
+            name: string;
+            description: string;
+        };
     }
 
     public async deleteBoardForCompany(

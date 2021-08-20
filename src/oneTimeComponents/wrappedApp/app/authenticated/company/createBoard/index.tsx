@@ -12,6 +12,8 @@ import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../../../../../../components/bottomPageToolbar";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useIsCheckingForCreateBoardsAccess } from "../../../../../../hooks/useIsCheckingForCreateBoardsAccess";
+import { setUserAsBoardAdmin } from "../../../../../../redux/appBootstrapInformation";
+import { useDispatch } from "react-redux";
 
 export function CreateBoard() {
     const classes = createClasses();
@@ -64,9 +66,10 @@ export function CreateBoard() {
     }
 
     function openBoard(boardId: string) {
-        history.push(`/app/company/${companyId}/board/${boardId}`);
+        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
     }
 
+    const dispatch = useDispatch();
     useEffect(() => {
         if (!isCreatingBoard) return;
 
@@ -80,7 +83,12 @@ export function CreateBoard() {
             )
             .then((board) => {
                 if (didCancel) return;
-                openBoard(board.shortenedItemId);
+                const setUserAsBoardAdminAction = setUserAsBoardAdmin({
+                    companyId,
+                    boardId: board.id,
+                });
+                dispatch(setUserAsBoardAdminAction);
+                openBoard(board.id);
             })
             .catch(() => {
                 if (didCancel) return;
