@@ -115,9 +115,11 @@ export function UnprioritizedTagsCard(props: IUnprioritizedTagsCard) {
                                 {(provided) => {
                                     return (
                                         <div
-                                            css={classes.chipContainer}
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
+                                            css={
+                                                classes.unprioritizedTagsContainer
+                                            }
                                         >
                                             {unprioritizedTags.map(
                                                 (tag, index) => {
@@ -132,50 +134,40 @@ export function UnprioritizedTagsCard(props: IUnprioritizedTagsCard) {
                                                             >
                                                                 {(provided) => {
                                                                     return (
-                                                                        <div
-                                                                            css={
-                                                                                classes.unprioritizedTagContainer
+                                                                        <TagChip
+                                                                            isUsedInVerticalList
+                                                                            whiteBackground
+                                                                            icon={
+                                                                                <DragIndicator />
                                                                             }
-                                                                        >
-                                                                            <TagChip
-                                                                                whiteBackground
-                                                                                icon={
-                                                                                    <DragIndicator />
-                                                                                }
-                                                                                tagName={
-                                                                                    tag.name
-                                                                                }
-                                                                                tagColor={
-                                                                                    tag.color
-                                                                                }
-                                                                                {...provided.draggableProps}
-                                                                                ref={
-                                                                                    provided.innerRef
-                                                                                }
-                                                                                {...provided.dragHandleProps}
-                                                                            />
-                                                                        </div>
+                                                                            tagName={
+                                                                                tag.name
+                                                                            }
+                                                                            tagColor={
+                                                                                tag.color
+                                                                            }
+                                                                            {...provided.draggableProps}
+                                                                            ref={
+                                                                                provided.innerRef
+                                                                            }
+                                                                            {...provided.dragHandleProps}
+                                                                        />
                                                                     );
                                                                 }}
                                                             </Draggable>
                                                         );
                                                     } else {
                                                         return (
-                                                            <div
-                                                                css={
-                                                                    classes.unprioritizedTagContainer
+                                                            <TagChip
+                                                                isUsedInVerticalList
+                                                                whiteBackground
+                                                                tagName={
+                                                                    tag.name
                                                                 }
-                                                            >
-                                                                <TagChip
-                                                                    whiteBackground
-                                                                    tagName={
-                                                                        tag.name
-                                                                    }
-                                                                    tagColor={
-                                                                        tag.color
-                                                                    }
-                                                                />
-                                                            </div>
+                                                                tagColor={
+                                                                    tag.color
+                                                                }
+                                                            />
                                                         );
                                                     }
                                                 }
@@ -238,20 +230,6 @@ function createClasses(theme: Theme) {
         text-align: center;
     `;
 
-    const chipContainer = css`
-        margin: 8px 0px;
-    `;
-
-    const unprioritizedTagsContainer = css`
-        display: flex;
-        flex-wrap: wrap;
-    `;
-
-    const unprioritizedTagContainer = css`
-        margin-right: 8px;
-        margin-bottom: 8px;
-    `;
-
     const tagInputContainer = css`
         width: 300px;
     `;
@@ -267,6 +245,10 @@ function createClasses(theme: Theme) {
         bottom: -9px;
     `;
 
+    const unprioritizedTagsContainer = css`
+        display: grid;
+    `;
+
     return {
         container,
         titleContainer,
@@ -275,12 +257,10 @@ function createClasses(theme: Theme) {
         innerCardContent,
         centerContent,
         centerText,
-        chipContainer,
-        unprioritizedTagsContainer,
-        unprioritizedTagContainer,
         unprioritizedTitleContainer,
         tagInputContainer,
         addContainer,
         addInnerContainer,
+        unprioritizedTagsContainer,
     };
 }
