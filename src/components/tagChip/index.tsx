@@ -13,11 +13,13 @@ export interface ITagChipProps extends Omit<ChipProps, "label"> {
     tagName: string;
     tagColor: string;
     whiteBackground?: boolean;
+    isUsedInVerticalList?: boolean;
 }
 
 interface IUseStylesProps {
     theme: Theme;
     whiteBackground: boolean;
+    isUsedInVerticalList: boolean;
 }
 
 const useStyles = makeStyles({
@@ -25,25 +27,35 @@ const useStyles = makeStyles({
         borderColor: props.theme.palette.error.light,
         backgroundColor: props.whiteBackground ? "white" : undefined,
         borderWidth: "2px",
+        marginRight: props.isUsedInVerticalList ? "auto" : "0px",
+        marginBottom: props.isUsedInVerticalList ? "8px" : "0px",
     }),
     chipGreen: (props: IUseStylesProps) => ({
         borderColor: props.theme.palette.success.light,
         backgroundColor: props.whiteBackground ? "white" : undefined,
         borderWidth: "2px",
+        marginRight: props.isUsedInVerticalList ? "auto" : "0px",
+        marginBottom: props.isUsedInVerticalList ? "8px" : "0px",
     }),
     chipBlue: (props: IUseStylesProps) => ({
         borderColor: props.theme.palette.info.light,
         backgroundColor: props.whiteBackground ? "white" : undefined,
         borderWidth: "2px",
+        marginRight: props.isUsedInVerticalList ? "auto" : "0px",
+        marginBottom: props.isUsedInVerticalList ? "8px" : "0px",
     }),
     chipYellow: (props: IUseStylesProps) => ({
         borderColor: props.theme.palette.warning.light,
         backgroundColor: props.whiteBackground ? "white" : undefined,
         borderWidth: "2px",
+        marginRight: props.isUsedInVerticalList ? "auto" : "0px",
+        marginBottom: props.isUsedInVerticalList ? "8px" : "0px",
     }),
     chipGray: (props: IUseStylesProps) => ({
         borderWidth: "2px",
         backgroundColor: props.whiteBackground ? "white" : undefined,
+        marginRight: props.isUsedInVerticalList ? "auto" : "0px",
+        marginBottom: props.isUsedInVerticalList ? "8px" : "0px",
     }),
     whiteBackground: {
         backgroundColor: "white",
@@ -56,6 +68,7 @@ export const TagChip = React.forwardRef<any, ITagChipProps>(
         const materialClasses = useStyles({
             theme,
             whiteBackground: !!props.whiteBackground,
+            isUsedInVerticalList: !!props.isUsedInVerticalList,
         });
         const { tagColor, tagName, ...chipProps } = props;
 

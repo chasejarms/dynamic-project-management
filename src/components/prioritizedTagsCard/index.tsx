@@ -74,6 +74,7 @@ export function PrioritizedTagsCard(props: IPrioritizedTagsCardProps) {
                                         <div
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
+                                            css={classes.priorityTagsContainer}
                                         >
                                             {tagsPriorityList.length === 0 ? (
                                                 <div
@@ -106,49 +107,39 @@ export function PrioritizedTagsCard(props: IPrioritizedTagsCardProps) {
                                                             >
                                                                 {(provided) => {
                                                                     return (
-                                                                        <div
-                                                                            css={
-                                                                                classes.chipContainer
+                                                                        <TagChip
+                                                                            isUsedInVerticalList
+                                                                            whiteBackground
+                                                                            icon={
+                                                                                <DragIndicator />
                                                                             }
-                                                                        >
-                                                                            <TagChip
-                                                                                whiteBackground
-                                                                                icon={
-                                                                                    <DragIndicator />
-                                                                                }
-                                                                                tagName={
-                                                                                    priority
-                                                                                }
-                                                                                tagColor={
-                                                                                    tagColor
-                                                                                }
-                                                                                {...provided.draggableProps}
-                                                                                ref={
-                                                                                    provided.innerRef
-                                                                                }
-                                                                                {...provided.dragHandleProps}
-                                                                            />
-                                                                        </div>
+                                                                            tagName={
+                                                                                priority
+                                                                            }
+                                                                            tagColor={
+                                                                                tagColor
+                                                                            }
+                                                                            {...provided.draggableProps}
+                                                                            ref={
+                                                                                provided.innerRef
+                                                                            }
+                                                                            {...provided.dragHandleProps}
+                                                                        />
                                                                     );
                                                                 }}
                                                             </Draggable>
                                                         ) : (
-                                                            <div
-                                                                css={
-                                                                    classes.chipContainer
+                                                            <TagChip
+                                                                isUsedInVerticalList
+                                                                whiteBackground
+                                                                tagName={
+                                                                    priority
+                                                                }
+                                                                tagColor={
+                                                                    tagColor
                                                                 }
                                                                 key={priority}
-                                                            >
-                                                                <TagChip
-                                                                    whiteBackground
-                                                                    tagName={
-                                                                        priority
-                                                                    }
-                                                                    tagColor={
-                                                                        tagColor
-                                                                    }
-                                                                />
-                                                            </div>
+                                                            />
                                                         );
                                                     }
                                                 )
@@ -211,10 +202,6 @@ function createClasses(theme: Theme) {
         text-align: center;
     `;
 
-    const chipContainer = css`
-        margin: 8px 0px;
-    `;
-
     const unprioritizedTagsContainer = css`
         display: flex;
         flex-wrap: wrap;
@@ -229,6 +216,10 @@ function createClasses(theme: Theme) {
         width: 300px;
     `;
 
+    const priorityTagsContainer = css`
+        display: grid;
+    `;
+
     return {
         container,
         titleContainer,
@@ -237,10 +228,10 @@ function createClasses(theme: Theme) {
         innerCardContent,
         centerContent,
         centerText,
-        chipContainer,
         unprioritizedTagsContainer,
         unprioritizedTagContainer,
         unprioritizedTitleContainer,
         tagInputContainer,
+        priorityTagsContainer,
     };
 }
