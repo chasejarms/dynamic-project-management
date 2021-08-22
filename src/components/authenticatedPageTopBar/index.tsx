@@ -91,8 +91,8 @@ function NonMemoizedAuthenticatedPageTopBar(
         if (!!companyId) {
             const companyText =
                 selectedCompany && userIsOnMultipleCompanies
-                    ? `Company (${selectedCompany.name})`
-                    : "Company";
+                    ? `Boards (${selectedCompany.name})`
+                    : "Boards";
             breadcrumbs.push({
                 text: companyText,
                 route: `/app/company/${companyId}/boards`,

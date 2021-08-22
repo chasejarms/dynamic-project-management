@@ -1,45 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import {
-    Card,
-    CardContent,
-    Typography,
-    Theme,
-    useTheme,
-    CircularProgress,
-    makeStyles,
-    IconButton,
-} from "@material-ui/core";
-import { DragIndicator, Add } from "@material-ui/icons";
+import { Theme, useTheme } from "@material-ui/core";
 import { useState, useEffect, useMemo } from "react";
-import {
-    DragDropContext,
-    DropResult,
-    Droppable,
-    Draggable,
-} from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Api } from "../../../../../../../api";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { ITag } from "../../../../../../../models/tag";
-import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { NewTagDialog } from "../../../../../../../components/newTagDialog";
 import { cloneDeep, sortBy } from "lodash";
-import { TagChip } from "../../../../../../../components/tagChip";
 import { useIsBoardAdmin } from "../../../../../../../hooks/useIsBoardAdmin";
 import { PrioritizedTagsCard } from "../../../../../../../components/prioritizedTagsCard";
 import { UnprioritizedTagsCard } from "../../../../../../../components/unprioritizedTagsCard";
 
-const useStyles = makeStyles({
-    cardRoot: {
-        height: "100%",
-    },
-});
-
 export function Priorities() {
     const theme = useTheme();
     const classes = createClasses(theme);
-    const materialClasses = useStyles();
     const { boardId, companyId } = useAppRouterParams();
     const isBoardAdmin = useIsBoardAdmin();
 
@@ -262,12 +238,27 @@ export function Priorities() {
 
     function onCreateTagSuccess(createdTag: ITag) {
         setAllTagsForBoard((previousAllTagsForBoard) => {
-            return sortBy([...previousAllTagsForBoard, createdTag], "itemId");
+            const sortedTags = sortBy(
+                [...previousAllTagsForBoard, createdTag],
+                "itemId"
+            );
+            return sortedTags;
         });
         setTagsMapping((previousTagsMapping) => {
             const clonedTagsMapping = cloneDeep(previousTagsMapping);
             clonedTagsMapping[createdTag.name] = createdTag;
             return clonedTagsMapping;
+        });
+        setPriorityListAndTagsMapping((previousPriorityListAndTagsMapping) => {
+            const clonedTagsMapping = cloneDeep(
+                previousPriorityListAndTagsMapping.tagsMapping
+            );
+            clonedTagsMapping[createdTag.name] = createdTag;
+
+            return {
+                ...previousPriorityListAndTagsMapping,
+                tagsMapping: clonedTagsMapping,
+            };
         });
     }
 

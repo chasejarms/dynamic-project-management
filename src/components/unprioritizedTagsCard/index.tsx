@@ -63,7 +63,7 @@ export function UnprioritizedTagsCard(props: IUnprioritizedTagsCard) {
         });
 
         return unprioritizedTags;
-    }, [prioritizedTags, isLoading]);
+    }, [prioritizedTags, allTags, isLoading]);
 
     return (
         <Card>
