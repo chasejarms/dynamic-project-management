@@ -10,8 +10,7 @@ export interface IUsersApi {
     updateCompanyUserRights(
         companyId: string,
         userToUpdateShortenedItemId: string,
-        canManageCompanyUsers: boolean,
-        canCreateBoards: boolean
+        canManageCompanyUsers: boolean
     ): Promise<void>;
     addUserToCompany(
         companyId: string,
@@ -58,14 +57,12 @@ export class UsersApi implements IUsersApi {
     public async updateCompanyUserRights(
         companyId: string,
         userToUpdateShortenedItemId: string,
-        canManageCompanyUsers: boolean,
-        canCreateBoards: boolean
+        canManageCompanyUsers: boolean
     ): Promise<void> {
         await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/updateCompanyUserRights`,
             {
                 canManageCompanyUsers,
-                canCreateBoards,
             },
             {
                 params: {

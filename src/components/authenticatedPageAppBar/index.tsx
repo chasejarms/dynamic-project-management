@@ -3,6 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { makeStyles, Tab, Tabs, AppBar } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
 import React from "react";
+import { AuthenticatedPageTopBar } from "../authenticatedPageTopBar";
 
 export interface IAuthenticatedNavItem {
     text: string;

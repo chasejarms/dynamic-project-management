@@ -17,14 +17,13 @@ export function BoardsContainer(props: IBoardContainerProps) {
     const user = useCompanyUser();
     const isChase = user?.email === "chasejarms@gmail.com";
     const canManageCompanyUsers = !!user?.canManageCompanyUsers;
-    const canCreateBoards = !!user?.canCreateBoards;
 
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Boards",
             route: `/app/company/${companyId}/boards`,
         },
-        canCreateBoards && {
+        {
             text: "Create Board",
             route: `/app/company/${companyId}/boards/create-board`,
         },

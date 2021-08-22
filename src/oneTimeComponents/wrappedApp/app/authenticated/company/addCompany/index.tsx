@@ -11,13 +11,11 @@ import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../../../../../../components/bottomPageToolbar";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
-import { useIsCheckingForCreateBoardsAccess } from "../../../../../../hooks/useIsCheckingForCreateBoardsAccess";
 import { useEmailControl } from "../../../../../../hooks/useEmailControl";
 import { useNameControl } from "../../../../../../hooks/useNameControl";
 
 export function AddCompany() {
     const classes = createClasses();
-    const isCheckingForCreateBoardsAccess = useIsCheckingForCreateBoardsAccess();
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
@@ -112,7 +110,7 @@ export function AddCompany() {
         },
     ];
 
-    return isCheckingForCreateBoardsAccess ? null : (
+    return (
         <BoardsContainer>
             <div css={classes.container}>
                 <div css={classes.controlsContainer}>

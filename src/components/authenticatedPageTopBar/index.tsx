@@ -173,7 +173,7 @@ function NonMemoizedAuthenticatedPageTopBar(
                     );
                 })}
             </div>
-            <div>
+            <div css={classes.buttonContainer}>
                 <WrappedButton onClick={signOut} color="primary">
                     Sign Out
                 </WrappedButton>
@@ -189,7 +189,6 @@ const createClasses = (theme: Theme) => {
     `;
 
     const topBarContainer = css`
-        height: 60px;
         flex: 0 0 auto;
         display: flex;
         justify-content: space-between;
@@ -251,6 +250,11 @@ const createClasses = (theme: Theme) => {
         font-size: 12px;
     `;
 
+    const buttonContainer = css`
+        margin-top: 8px;
+        margin-bottom: 8px;
+    `;
+
     return {
         navContainer,
         innerContentContainer,
@@ -264,6 +268,7 @@ const createClasses = (theme: Theme) => {
         arrowInnerContainer,
         leftPadding,
         topBarContainer,
+        buttonContainer,
     };
 };
 
