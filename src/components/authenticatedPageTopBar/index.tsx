@@ -158,7 +158,7 @@ function NonMemoizedAuthenticatedPageTopBar(
     }
 
     function navigateToLearningCenterEditor() {
-        history.push("/admin/learning-center-editor");
+        history.push("/app/internal/learning-center-editor");
     }
 
     const indentedActions: IIndentedAction[] = [

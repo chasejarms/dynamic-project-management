@@ -11,6 +11,7 @@ export interface IAuthenticatedNavItem {
 export interface IAuthenticatedPageContainerProps {
     children: React.ReactNode;
     navItems: IAuthenticatedNavItem[];
+    topBar?: React.ReactNode;
 }
 
 export function AuthenticatedPageContainer(
@@ -20,7 +21,7 @@ export function AuthenticatedPageContainer(
 
     return (
         <div css={classes.container}>
-            <AuthenticatedPageTopBar />
+            {props.topBar || <AuthenticatedPageTopBar />}
             <div>
                 <AuthenticatedPageAppBar navItems={props.navItems} />
             </div>

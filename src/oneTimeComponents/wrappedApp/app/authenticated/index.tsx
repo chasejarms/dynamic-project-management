@@ -8,6 +8,7 @@ import { Api } from "../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { setAppBootstrapInformation } from "../../../../redux/appBootstrapInformation";
 import { IStoreState } from "../../../../redux/storeState";
+import { Internal } from "./internal";
 import { Companies } from "./companies";
 import { Company } from "./company";
 
@@ -61,6 +62,9 @@ export function Authenticated() {
             </Route>
             <Route path={`${url}/company/:companyId`}>
                 <Company />
+            </Route>
+            <Route path={`${url}/internal`}>
+                <Internal />
             </Route>
         </Switch>
     );

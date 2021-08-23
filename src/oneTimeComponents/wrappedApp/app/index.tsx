@@ -14,7 +14,7 @@ import { EnterNewPassword } from "./enterNewPassword";
 
 export function App() {
     useAxiosInterceptor();
-    useRouterDebug(false);
+    useRouterDebug(true);
 
     return (
         <Switch>
