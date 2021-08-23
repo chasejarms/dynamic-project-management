@@ -28,7 +28,7 @@ export function BoardsContainer(props: IBoardContainerProps) {
             route: `/app/company/${companyId}/boards/create-board`,
         },
         canManageCompanyUsers && {
-            text: "Company User Rights",
+            text: "Users",
             route: `/app/company/${companyId}/company-users`,
         },
         isChase && {

@@ -16,7 +16,7 @@ export function BoardAdminContainer(props: IBoardContainerProps) {
 
     const navItems: IAuthenticatedNavItem[] = [
         {
-            text: "Board Users",
+            text: "Board Rights",
             route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
         },
         {
