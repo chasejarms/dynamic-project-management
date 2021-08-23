@@ -95,53 +95,59 @@ function NonMemoizedAuthenticatedPageTopBar(
             route: string;
         }[] = [];
 
-        if (userIsOnMultipleCompanies) {
-            breadcrumbs.push({
-                text: "Companies",
-                route: `/app/companies`,
-            });
-        }
+        const isOnInternalRoute = location.pathname.includes("/internal/");
 
-        if (!!companyId) {
-            const companyText =
-                selectedCompany && userIsOnMultipleCompanies
-                    ? `Boards (${selectedCompany.name})`
-                    : "Boards";
-            breadcrumbs.push({
-                text: companyText,
-                route: `/app/company/${companyId}/boards`,
-            });
-        }
+        if (isOnInternalRoute) {
+            // no breadcrumbs
+        } else {
+            if (userIsOnMultipleCompanies) {
+                breadcrumbs.push({
+                    text: "Companies",
+                    route: `/app/companies`,
+                });
+            }
 
-        if (!!boardId) {
-            const boardText = selectedBoard
-                ? `Board (${selectedBoard.name})`
-                : "Board";
-            breadcrumbs.push({
-                text: boardText,
-                route: `/app/company/${companyId}/board/${boardId}/tickets`,
-            });
-        }
+            if (!!companyId) {
+                const companyText =
+                    selectedCompany && userIsOnMultipleCompanies
+                        ? `Boards (${selectedCompany.name})`
+                        : "Boards";
+                breadcrumbs.push({
+                    text: companyText,
+                    route: `/app/company/${companyId}/boards`,
+                });
+            }
 
-        if (!!boardId && location.pathname.includes("/admin/")) {
-            breadcrumbs.push({
-                text: "Admin",
-                route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
-            });
-        }
+            if (!!boardId) {
+                const boardText = selectedBoard
+                    ? `Board (${selectedBoard.name})`
+                    : "Board";
+                breadcrumbs.push({
+                    text: boardText,
+                    route: `/app/company/${companyId}/board/${boardId}/tickets`,
+                });
+            }
 
-        if (!!ticketId) {
-            breadcrumbs.push({
-                text: "Ticket",
-                route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
-            });
-        }
+            if (!!boardId && location.pathname.includes("/admin/")) {
+                breadcrumbs.push({
+                    text: "Admin",
+                    route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
+                });
+            }
 
-        if (!!ticketTemplateId) {
-            breadcrumbs.push({
-                text: "Ticket Templates",
-                route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
-            });
+            if (!!ticketId) {
+                breadcrumbs.push({
+                    text: "Ticket",
+                    route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
+                });
+            }
+
+            if (!!ticketTemplateId) {
+                breadcrumbs.push({
+                    text: "Ticket Templates",
+                    route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
+                });
+            }
         }
 
         return breadcrumbs;
@@ -161,6 +167,10 @@ function NonMemoizedAuthenticatedPageTopBar(
         history.push("/app/internal/learning-center-editor");
     }
 
+    function navigateBackToApp() {
+        history.push("/app/companies");
+    }
+
     const indentedActions: IIndentedAction[] = [
         {
             header: "User Actions",
@@ -177,6 +187,10 @@ function NonMemoizedAuthenticatedPageTopBar(
                 {
                     text: "Learning Center Editor",
                     onClick: navigateToLearningCenterEditor,
+                },
+                {
+                    text: "Back To App",
+                    onClick: navigateBackToApp,
                 },
             ],
         },

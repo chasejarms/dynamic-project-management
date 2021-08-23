@@ -7,14 +7,13 @@ import { Authenticated } from "./authenticated";
 import { useRouterDebug } from "../../../hooks/useRouterDebug";
 import { Home } from "./home";
 import { RequestDemo } from "./requestDemo";
-import { Contact } from "./contact";
 import { SignUp } from "./signUp";
 import { ResetPassword } from "./resetPassword";
 import { EnterNewPassword } from "./enterNewPassword";
 
 export function App() {
     useAxiosInterceptor();
-    useRouterDebug(true);
+    useRouterDebug(false);
 
     return (
         <Switch>
