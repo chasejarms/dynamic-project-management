@@ -1,9 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { makeStyles, Typography, useTheme, Theme } from "@material-ui/core";
+import {
+    makeStyles,
+    Typography,
+    useTheme,
+    Theme,
+    IconButton,
+    Popover,
+} from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
-import React from "react";
-import { ArrowForwardIos } from "@material-ui/icons";
+import React, { useState } from "react";
+import { ArrowForwardIos, AccountCircle } from "@material-ui/icons";
 import { composeCSS } from "../../styles/composeCSS";
 import { WrappedButton } from "../wrappedButton";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
@@ -13,6 +20,10 @@ import { resetAppBootstrapInformation } from "../../redux/appBootstrapInformatio
 import { resetBoardAction } from "../../redux/boards";
 import { IStoreState } from "../../redux/storeState";
 import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
+import {
+    IIndentedAction,
+    QuickActionsPopoverContent,
+} from "../quickActionsPopoverContent";
 
 export interface IAuthenticatedPageTopBarProps {}
 
@@ -62,6 +73,9 @@ function NonMemoizedAuthenticatedPageTopBar(
 
     const companies = useSelector((state: IStoreState) => {
         return state.appBootstrapInformation.companies;
+    });
+    const isInternalUser = useSelector((state: IStoreState) => {
+        return !!state.appBootstrapInformation.internalUser;
     });
     const selectedCompany =
         companies.find((company) => {
@@ -133,6 +147,41 @@ function NonMemoizedAuthenticatedPageTopBar(
         return breadcrumbs;
     })();
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [accountSettingsIsOpen, setAccountSettingsIsOpen] = useState(false);
+    function openAccountSettings(event: any) {
+        setAnchorEl(event.currentTarget);
+        setAccountSettingsIsOpen(true);
+    }
+    function onCloseAccountSettings() {
+        setAccountSettingsIsOpen(false);
+    }
+
+    function navigateToLearningCenterEditor() {
+        history.push("/admin/learning-center-editor");
+    }
+
+    const indentedActions: IIndentedAction[] = [
+        {
+            header: "User Actions",
+            informationForMenuItems: [
+                {
+                    text: "Sign Out",
+                    onClick: signOut,
+                },
+            ],
+        },
+        isInternalUser && {
+            header: "Internal User",
+            informationForMenuItems: [
+                {
+                    text: "Learning Center Editor",
+                    onClick: navigateToLearningCenterEditor,
+                },
+            ],
+        },
+    ].filter((action) => !!action) as IIndentedAction[];
+
     const theme = useTheme();
     const materialStyles = useStyles();
     const classes = createClasses(theme);
@@ -174,9 +223,19 @@ function NonMemoizedAuthenticatedPageTopBar(
                 })}
             </div>
             <div css={classes.buttonContainer}>
-                <WrappedButton onClick={signOut} color="primary">
-                    Sign Out
-                </WrappedButton>
+                <IconButton onClick={openAccountSettings}>
+                    <AccountCircle />
+                </IconButton>
+                <Popover
+                    open={accountSettingsIsOpen}
+                    anchorEl={anchorEl}
+                    onClose={onCloseAccountSettings}
+                >
+                    <QuickActionsPopoverContent
+                        indentedActions={indentedActions}
+                        onClose={onCloseAccountSettings}
+                    />
+                </Popover>
             </div>
         </div>
     );
@@ -251,8 +310,8 @@ const createClasses = (theme: Theme) => {
     `;
 
     const buttonContainer = css`
-        margin-top: 8px;
-        margin-bottom: 8px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     `;
 
     return {

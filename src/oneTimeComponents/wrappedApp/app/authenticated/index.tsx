@@ -31,6 +31,8 @@ export function Authenticated() {
                     companies:
                         appBootstrapInformationFromRequest.companyInformationItems,
                     users: appBootstrapInformationFromRequest.companyUserItems,
+                    internalUser:
+                        appBootstrapInformationFromRequest.internalUser,
                     isLoading: false,
                 });
                 dispatch(action);

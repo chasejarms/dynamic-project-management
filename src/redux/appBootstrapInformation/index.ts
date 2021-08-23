@@ -1,17 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cloneDeep } from "lodash";
 import { ICompany } from "../../models/company";
+import { IInternalUser } from "../../models/internalUser";
 import { IUser } from "../../models/user";
 
 export interface IAppBootstrapInformationState {
     companies: ICompany[];
     users: IUser[];
+    internalUser: null | IInternalUser;
     isLoading: boolean;
 }
 
 const initialState: IAppBootstrapInformationState = {
     companies: [],
     users: [],
+    internalUser: null,
     isLoading: true,
 };
 
