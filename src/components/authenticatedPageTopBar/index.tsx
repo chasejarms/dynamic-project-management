@@ -189,7 +189,7 @@ function NonMemoizedAuthenticatedPageTopBar(
                     onClick: navigateToLearningCenterEditor,
                 },
                 {
-                    text: "Back To App",
+                    text: "App Home",
                     onClick: navigateBackToApp,
                 },
             ],
