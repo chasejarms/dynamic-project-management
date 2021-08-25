@@ -89,6 +89,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         padding-left: ${tenTimes}px;
         display: grid;
         grid-gap: ${theme.spacing() * 3}px;
+        width: 100vw;
     `;
 
     const containerLeftContent = css`

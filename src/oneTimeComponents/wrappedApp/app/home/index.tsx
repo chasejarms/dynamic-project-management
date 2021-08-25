@@ -28,6 +28,7 @@ import { PrioritizationIsToughSvg } from "../../../../components/landingPageSvgs
 import { TeamVelocitySuffers } from "../../../../components/landingPageSvgs/teamVelocitySuffers";
 import { ExistingSolutionsAreLimiting } from "../../../../components/landingPageSvgs/existingSolutionsAreLimiting";
 import { RelativePrioritization } from "../../../../components/landingPageSvgs/relativePrioritization";
+import { useBreakpoint } from "../../../../hooks/useBreakpoint";
 
 export function Home() {
     const theme = useTheme();
@@ -98,6 +99,9 @@ export function Home() {
         },
     ];
 
+    const breakpoints = useBreakpoint();
+    const size = breakpoints.max768 ? 200 : 300;
+
     return (
         <NonAuthenticatedPageContainer>
             <LandingPageCommonSection
@@ -108,7 +112,7 @@ export function Home() {
                 ]}
                 placeContent="left"
                 wrappedButtonProps={wrappedButtonProps}
-                svgContent={<PrioritizationIsToughSvg />}
+                svgContent={<PrioritizationIsToughSvg size={size} />}
             />
             <LandingPageCommonSection
                 title={"Team Velocity Suffers"}
@@ -118,7 +122,7 @@ export function Home() {
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
-                svgContent={<TeamVelocitySuffers />}
+                svgContent={<TeamVelocitySuffers size={size} />}
             />
             <LandingPageCommonSection
                 title={"Existing Solutions Are Limiting"}
@@ -130,7 +134,7 @@ export function Home() {
                 ]}
                 placeContent="left"
                 wrappedButtonProps={wrappedButtonProps}
-                svgContent={<ExistingSolutionsAreLimiting />}
+                svgContent={<ExistingSolutionsAreLimiting size={size} />}
             />
             <LandingPageCommonSection
                 title={"Introducing Relative Prioritization"}
@@ -140,7 +144,7 @@ export function Home() {
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
-                svgContent={<RelativePrioritization />}
+                svgContent={<RelativePrioritization size={size} />}
             />
             <div css={classes.exampleSection} id="example-section">
                 <div css={classes.exampleTextContainer}>

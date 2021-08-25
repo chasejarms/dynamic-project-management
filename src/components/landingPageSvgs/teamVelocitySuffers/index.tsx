@@ -2,10 +2,14 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 
-export function TeamVelocitySuffers() {
+export interface ITeamVelocitySuffersProps {
+    size: number;
+}
+
+export function TeamVelocitySuffers(props: ITeamVelocitySuffersProps) {
     return (
         <svg
-            height="300px"
+            height={`${props.size}px`}
             viewBox="0 0 690 540"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

@@ -21,6 +21,7 @@ export function LargeNavBar(props: ILargeNavBarProps) {
 const createClasses = (theme: Theme) => {
     const container = css`
         padding: 0px ${theme.spacing() * 10}px;
+        width: 100vw;
     `;
 
     return {

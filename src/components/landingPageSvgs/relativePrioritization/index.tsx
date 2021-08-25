@@ -2,10 +2,14 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 
-export function RelativePrioritization() {
+export interface IRelativePrioritizationProps {
+    size: number;
+}
+
+export function RelativePrioritization(props: IRelativePrioritizationProps) {
     return (
         <svg
-            width="300px"
+            width={`${props.size}px`}
             viewBox="0 0 614 474"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

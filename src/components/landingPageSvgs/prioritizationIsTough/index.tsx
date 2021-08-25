@@ -2,10 +2,16 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 
-export function PrioritizationIsToughSvg() {
+export interface IPrioritizationIsToughSvgProps {
+    size: number;
+}
+
+export function PrioritizationIsToughSvg(
+    props: IPrioritizationIsToughSvgProps
+) {
     return (
         <svg
-            width="300px"
+            width={`${props.size}px`}
             viewBox="0 0 690 540"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

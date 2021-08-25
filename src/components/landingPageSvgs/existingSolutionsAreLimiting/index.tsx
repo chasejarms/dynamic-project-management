@@ -2,10 +2,16 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 
-export function ExistingSolutionsAreLimiting() {
+export interface IExistingSolutionsAreLimitingProps {
+    size: number;
+}
+
+export function ExistingSolutionsAreLimiting(
+    props: IExistingSolutionsAreLimitingProps
+) {
     return (
         <svg
-            width="300px"
+            width={`${props.size}px`}
             viewBox="0 0 588 459"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

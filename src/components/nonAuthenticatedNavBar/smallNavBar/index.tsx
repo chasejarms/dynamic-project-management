@@ -113,9 +113,9 @@ function createClasses(theme: Theme) {
 
     const persistentNavBar = css`
         height: 60px;
-        width: 100%;
         display: flex;
         justify-content: flex-end;
+        width: 100vw;
     `;
 
     const fullPageNavContainer = css`
