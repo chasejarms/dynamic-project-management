@@ -25,6 +25,7 @@ export interface IWrapperTextFieldProps {
     disabled?: boolean;
     multiline?: boolean;
     placeholder?: string;
+    required?: boolean;
 }
 
 export function WrappedTextField(props: IWrapperTextFieldProps) {
@@ -33,7 +34,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
     return (
         <div>
             <FormControl fullWidth error={!!props.error}>
-                <InputLabel>{props.label}</InputLabel>
+                <InputLabel required={props.required}>{props.label}</InputLabel>
                 <Input
                     multiline={props.multiline}
                     value={props.value}
@@ -44,6 +45,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
                     }}
                     disabled={props.disabled}
                     placeholder={props.placeholder}
+                    required={props.required}
                 />
             </FormControl>
             <div

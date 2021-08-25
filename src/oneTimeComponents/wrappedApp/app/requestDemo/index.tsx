@@ -43,7 +43,7 @@ export function RequestDemo() {
     });
     const showCompanyError =
         !companyControl.isValid && companyControl.isTouched;
-    const additionalInformationField = useControl({
+    const phoneControl = useControl({
         value: "",
         onChange: (
             event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -56,10 +56,15 @@ export function RequestDemo() {
                 .validate(company);
         },
     });
-    const showAdditionalInformationError =
-        additionalInformationField.isTouched &&
-        !additionalInformationField.isValid;
-
+    const showPhoneError = !phoneControl.isValid && phoneControl.isTouched;
+    const additionalInformationControl = useControl({
+        value: "",
+        onChange: (
+            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            return event.target.value;
+        },
+    });
     const classes = createClasses();
 
     const [isSendingEmail, setIsSendingEmail] = useState(false);
@@ -76,11 +81,20 @@ export function RequestDemo() {
                 name: nameControl.value,
                 email: emailControl.value,
                 company: companyControl.value,
-                additionalInformation: additionalInformationField.value,
+                additionalInformation: additionalInformationControl.value,
             })
             .then(() => {
                 if (didCancel) return;
-                // show success message
+                setSnackbarMetadata({
+                    open: true,
+                    message:
+                        "Success! We've received your message and will get back to you shortly.",
+                });
+                nameControl.resetControlState("");
+                emailControl.resetControlState("");
+                phoneControl.resetControlState("");
+                companyControl.resetControlState("");
+                additionalInformationControl.resetControlState("");
             })
             .catch(() => {
                 if (didCancel) return;
@@ -99,7 +113,8 @@ export function RequestDemo() {
     const controlsAreInvalid = !controlsAreValid(
         nameControl,
         emailControl,
-        companyControl
+        companyControl,
+        phoneControl
     );
 
     const [snackbarMetadata, setSnackbarMetadata] = useState({
@@ -127,12 +142,24 @@ export function RequestDemo() {
                         label="Name"
                         onChange={nameControl.onChange}
                         error={showNameError ? nameControl.errorMessage : ""}
+                        required
+                        disabled={isSendingEmail}
                     />
                     <WrappedTextField
                         value={emailControl.value}
                         label="Email"
                         onChange={emailControl.onChange}
                         error={showEmailError ? emailControl.errorMessage : ""}
+                        required
+                        disabled={isSendingEmail}
+                    />
+                    <WrappedTextField
+                        value={phoneControl.value}
+                        label="Phone Number"
+                        onChange={phoneControl.onChange}
+                        error={showPhoneError ? phoneControl.errorMessage : ""}
+                        required
+                        disabled={isSendingEmail}
                     />
                     <WrappedTextField
                         value={companyControl.value}
@@ -141,18 +168,15 @@ export function RequestDemo() {
                         error={
                             showCompanyError ? companyControl.errorMessage : ""
                         }
+                        required
+                        disabled={isSendingEmail}
                     />
                     <WrappedTextField
-                        error={
-                            showAdditionalInformationError
-                                ? additionalInformationField.value
-                                : ""
-                        }
-                        value={additionalInformationField.value}
+                        value={additionalInformationControl.value}
                         label="Additional Information"
-                        onChange={additionalInformationField.onChange}
-                        placeholder="Tell us a little about your company and what project management problems you're trying to solve."
+                        onChange={additionalInformationControl.onChange}
                         multiline
+                        disabled={isSendingEmail}
                     />
                     <div css={classes.signInButtonContainer}>
                         <WrappedButton
