@@ -185,7 +185,7 @@ function NonMemoizedAuthenticatedPageTopBar(
             header: "Internal User",
             informationForMenuItems: [
                 {
-                    text: "Learning Center Editor",
+                    text: "Internal Admin Home",
                     onClick: navigateToLearningCenterEditor,
                 },
                 {

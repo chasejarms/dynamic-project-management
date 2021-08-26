@@ -229,6 +229,7 @@ export function Columns() {
 
     function onDragEnd(result: DropResult) {
         const { destination, source } = result;
+        if (!destination) return;
 
         setColumnData((previousLocalAndDatabaseColumns) => {
             const previousLocalColumns =
@@ -241,11 +242,11 @@ export function Columns() {
             const arrayWithItemRemoved = arrayBeforeItem.concat(arrayAfterItem);
 
             const updatedDestinationIndex =
-                destination!.index === 0
+                destination.index === 0
                     ? 1
-                    : destination!.index === previousLocalColumns.length - 1
+                    : destination.index === previousLocalColumns.length - 1
                     ? previousLocalColumns.length - 2
-                    : destination!.index;
+                    : destination.index;
 
             const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
                 0,

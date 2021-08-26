@@ -16,6 +16,10 @@ export function InternalUserContainer(props: IBoardContainerProps) {
             text: "Learning Center Editor",
             route: `/app/internal/learning-center-editor`,
         },
+        {
+            text: "Learning Center Videos",
+            route: `/app/internal/learning-center-videos`,
+        },
     ];
 
     return (

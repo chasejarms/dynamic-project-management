@@ -28,4 +28,12 @@ module.exports = function (app) {
             pathRewrite: { "^/api/s3Presigned": "" },
         })
     );
+    app.use(
+        "/api/s3LearningVideoPresigned",
+        createProxyMiddleware({
+            target: "https://learning-center-files.s3.us-east-1.amazonaws.com",
+            changeOrigin: true,
+            pathRewrite: { "^/api/s3LearningVideoPresigned": "" },
+        })
+    );
 };

@@ -52,6 +52,7 @@ export function Home() {
 
     function onDragEnd(result: DropResult) {
         const { destination, source, draggableId } = result;
+        if (!destination) return;
 
         setPriorityList((existingPriorityList) => {
             const arrayBeforeItem = existingPriorityList.slice(0, source.index);
@@ -60,10 +61,10 @@ export function Home() {
 
             const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
                 0,
-                destination!.index
+                destination.index
             );
             const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
-                destination!.index
+                destination.index
             );
             const actualTag = draggableId.replace("PRIORITIZEDCOLUMN-", "");
             const updatedPriorities = arrayBeforeInsertedIndex
