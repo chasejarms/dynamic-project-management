@@ -80,6 +80,7 @@ export function RequestDemo() {
             .capturePublicFormData({
                 name: nameControl.value,
                 email: emailControl.value,
+                phoneNumber: phoneControl.value,
                 company: companyControl.value,
                 additionalInformation: additionalInformationControl.value,
             })
