@@ -24,6 +24,7 @@ import {
     IIndentedAction,
     QuickActionsPopoverContent,
 } from "../quickActionsPopoverContent";
+import { CompanyLogoIcon } from "../companyLogoIcon";
 
 export interface IAuthenticatedPageTopBarProps {}
 
@@ -201,7 +202,12 @@ function NonMemoizedAuthenticatedPageTopBar(
     const classes = createClasses(theme);
     return (
         <div css={classes.topBarContainer}>
-            <div css={classes.breadcrumbContainer}>
+            <div css={classes.breadcrumbContainerAndLogoContainer}>
+                <div css={classes.logoIconOuterContainer}>
+                    <div css={classes.logoIconInnerContainer}>
+                        <CompanyLogoIcon />
+                    </div>
+                </div>
                 {breadcrumbTrail.map((breadcrumb, index) => {
                     const isNotLastItem = breadcrumbTrail.length - 1 !== index;
                     return (
@@ -256,7 +262,7 @@ function NonMemoizedAuthenticatedPageTopBar(
 }
 
 const createClasses = (theme: Theme) => {
-    const breadcrumbContainer = css`
+    const breadcrumbContainerAndLogoContainer = css`
         display: flex;
         justify-content: flex-start;
     `;
@@ -265,8 +271,8 @@ const createClasses = (theme: Theme) => {
         flex: 0 0 auto;
         display: flex;
         justify-content: space-between;
-        padding-left: ${theme.spacing() * 4}px;
-        padding-right: ${theme.spacing() * 4}px;
+        padding-left: ${theme.spacing() * 2}px;
+        padding-right: ${theme.spacing() * 2}px;
         align-items: center;
     `;
 
@@ -328,13 +334,23 @@ const createClasses = (theme: Theme) => {
         margin-bottom: 2px;
     `;
 
+    const logoIconOuterContainer = css`
+        position: relative;
+        width: 60px;
+    `;
+
+    const logoIconInnerContainer = css`
+        position: absolute;
+        top: -19px;
+    `;
+
     return {
         navContainer,
         innerContentContainer,
         backToBoard,
         backToBoardsText,
         listsContainer,
-        breadcrumbContainer,
+        breadcrumbContainerAndLogoContainer,
         rightPadding,
         breadcrumbAndIconContainer,
         arrowContainer,
@@ -342,6 +358,8 @@ const createClasses = (theme: Theme) => {
         leftPadding,
         topBarContainer,
         buttonContainer,
+        logoIconOuterContainer,
+        logoIconInnerContainer,
     };
 };
 

@@ -13,7 +13,7 @@ export function LargeNavBar(props: ILargeNavBarProps) {
     const classes = createClasses(theme);
     return (
         <div css={classes.container}>
-            <NavBar navItems={props.navItems} actionButtonType={"sign-in"} />;
+            <NavBar navItems={props.navItems} actionButtonType={"sign-in"} />
         </div>
     );
 }

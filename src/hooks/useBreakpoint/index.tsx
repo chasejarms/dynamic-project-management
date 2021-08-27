@@ -1,4 +1,9 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, {
+    useState,
+    useLayoutEffect,
+    createContext,
+    useContext,
+} from "react";
 
 const defaultValue = {};
 
@@ -26,7 +31,7 @@ const BreakpointProvider = ({
 }: IBreakpointProviderProps) => {
     const [queryMatch, setQueryMatch] = useState({});
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const mediaQueryLists: {
             [queryName: string]: MediaQueryList;
         } = {};
