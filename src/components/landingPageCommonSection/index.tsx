@@ -77,16 +77,16 @@ export function LandingPageCommonSection(
 }
 
 const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
-    const tenTimes = theme.spacing() * 10;
+    const fourTimes = theme.spacing() * 4;
     const sixTimes = theme.spacing() * 6;
 
     const paddingTop = hideTopAndBottomPadding ? 0 : sixTimes;
     const paddingBottom = hideTopAndBottomPadding ? 0 : sixTimes;
     const container = css`
         padding-top: ${paddingTop}px;
-        padding-right: ${tenTimes}px;
+        padding-right: ${fourTimes}px;
         padding-bottom: ${paddingBottom}px;
-        padding-left: ${tenTimes}px;
+        padding-left: ${fourTimes}px;
         display: grid;
         grid-gap: ${theme.spacing() * 3}px;
         width: 100vw;

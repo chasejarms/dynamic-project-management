@@ -3,6 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { Typography, Button, Theme, useTheme } from "@material-ui/core";
 import { composeCSS } from "../../styles/composeCSS";
 import { useHistory, useLocation } from "react-router-dom";
+import { CompanyLogo } from "../companyLogo";
 
 export interface INavBarItem {
     label: string;
@@ -36,7 +37,11 @@ export default function NavBar(props: INavBarProps) {
 
     return (
         <div css={classes.navBar}>
-            <div />
+            <div css={classes.logoContainer}>
+                <div css={classes.logoInnerContainer}>
+                    <CompanyLogo />
+                </div>
+            </div>
             <div css={classes.innerNavBar}>
                 {props.navItems?.map(({ label, route }) => {
                     const itemIsActive = location.pathname.endsWith(route);
@@ -99,6 +104,8 @@ export default function NavBar(props: INavBarProps) {
 const createClasses = (theme: Theme) => {
     const navBar = css`
         padding: ${theme.spacing() * 3}px;
+        padding-left: 0;
+        padding-right: 0;
         display: grid;
         position: relative;
     `;
@@ -140,6 +147,15 @@ const createClasses = (theme: Theme) => {
         visibility: hidden;
     `;
 
+    const logoContainer = css`
+        position: relative;
+    `;
+
+    const logoInnerContainer = css`
+        position: absolute;
+        top: -12px;
+    `;
+
     return {
         navBar,
         innerNavBar,
@@ -149,5 +165,7 @@ const createClasses = (theme: Theme) => {
         activeItem,
         navInactiveItem,
         hideNavItems,
+        logoInnerContainer,
+        logoContainer,
     };
 };
