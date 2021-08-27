@@ -6,6 +6,7 @@ import { makeStyles, Theme, Typography, useTheme } from "@material-ui/core";
 import { Close, Menu } from "@material-ui/icons";
 import { composeCSS } from "../../../styles/composeCSS";
 import { useLocation, useHistory } from "react-router-dom";
+import { CompanyLogo } from "../../companyLogo";
 
 interface ISmallNavBarProps {
     navItems: INavBarItem[];
@@ -34,6 +35,11 @@ export function SmallNavBar(props: ISmallNavBarProps) {
 
     return (
         <div css={classes.persistentNavBar}>
+            <div css={classes.logoContainer}>
+                <div css={classes.innerLogoContainer}>
+                    <CompanyLogo />
+                </div>
+            </div>
             <div css={classes.openCloseIconContainer}>
                 {!open && (
                     <div css={classes.iconWrapper}>
@@ -54,6 +60,7 @@ export function SmallNavBar(props: ISmallNavBarProps) {
                             classes.absolutePositionedPersistentNavBar
                         )}
                     >
+                        <div />
                         <div
                             css={composeCSS(
                                 classes.openCloseIconContainer,
@@ -114,7 +121,7 @@ function createClasses(theme: Theme) {
     const persistentNavBar = css`
         height: 60px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         width: 100vw;
     `;
 
@@ -169,7 +176,20 @@ function createClasses(theme: Theme) {
         /* font-size: 2rem; */
     `;
 
+    const logoContainer = css`
+        position: relative;
+    `;
+
+    const innerLogoContainer = css`
+        position: absolute;
+        padding-left: 24px;
+        top: 8px;
+        left: -2px;
+    `;
+
     return {
+        logoContainer,
+        innerLogoContainer,
         persistentNavBar,
         fullPageNavContainer,
         navTextSmallNav,
