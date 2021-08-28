@@ -119,7 +119,7 @@ export function Home() {
                 title={"Team Velocity Suffers"}
                 textSections={[
                     "Most of this work ends up falling on the project manager or the team lead. Instead of working on the product or spending time with customers, their time is consumed by administrative tasks.",
-                    "And in spite of their best efforts, prioritization and backlog grooming often take a back seat to other responsibilities. When this happens, team members unknowingly work on low priority tasks.",
+                    "And in spite of their best efforts, prioritization and backlog grooming often take a back seat to other responsibilities and team members unknowingly work on low priority tasks.",
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
@@ -131,7 +131,7 @@ export function Home() {
                     "Existing software solutions fall into one of two categories: Brute Force Prioritization and Fixed List Prioritization.",
                     "In brute force solutions, every ticket is managed individually and needs to be dragged up or down in the column to communicate priority. Not only is this time consuming but it's nearly impossible to maintain a perfectly prioritized board.",
                     "In fixed list solutions, the software provides a fixed list of tags like 'Low', 'Medium', and 'High'. When a project is small, this works great. But as the project grows, team members realize that 'Low' and 'Medium' tasks never get worked on so they begin adding the 'High' priority to every task",
-                    "Unfortunately, when everything is everything is a high priority nothing is.",
+                    "Unfortunately when everything is a high priority nothing is.",
                 ]}
                 placeContent="left"
                 wrappedButtonProps={wrappedButtonProps}
@@ -140,8 +140,8 @@ export function Home() {
             <LandingPageCommonSection
                 title={"Introducing Relative Prioritization"}
                 textSections={[
-                    "Instead of having fixed lists or prioritizing each task individually, tasks can be prioritized in large chunks using dynamic tags.",
-                    "Custom tags are applied to each ticket to indicate the type of work that the ticket represents. After applying proper tags and prioritizing the tags against each other, the backlog and all in progress tickets automatically adjust to reflect the new priorities.",
+                    "Instead of prioritizing each task individually or utilizing a fixed list tagging system, Butter utilizes dynamic tags to prioritize and organize large groups of tickets with a single click.",
+                    "Hundreds of tickets can be paired down to a much smaller list of tags which are then prioritized against each other with easy to use drag and drop elements.",
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}
