@@ -12,8 +12,12 @@ export default function NonAuthenticatedNavBar() {
             route: "/",
         },
         {
-            label: "Contact",
+            label: "Contact Us",
             route: "/contact",
+        },
+        {
+            label: "Sign Up",
+            route: "/sign-up",
         },
     ];
 

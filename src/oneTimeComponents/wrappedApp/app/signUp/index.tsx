@@ -102,12 +102,13 @@ export function SignUp() {
                         <Typography variant="h5">Sign Up</Typography>
                     </div>
                     <Typography>
-                        External sign up has been disabled for now.
+                        Use Butter for 14 days at no cost. No credit card
+                        required.
                     </Typography>
                     <WrappedTextField
                         value={nameControl.value}
                         autoFocus
-                        label="Full Name"
+                        label="Name"
                         onChange={nameControl.onChange}
                         error={showNameError ? nameControl.errorMessage : ""}
                     />
@@ -163,7 +164,7 @@ export function SignUp() {
                             </WrappedButton>
                         }
                         message={
-                            "A verification link has been sent to your email"
+                            "A verification link has been sent to your email."
                         }
                     />
                 </div>
