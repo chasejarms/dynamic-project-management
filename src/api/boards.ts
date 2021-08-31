@@ -32,7 +32,15 @@ export class BoardApi implements IBoardApi {
         const data = axiosResponse.data as {
             items: IBoard[];
         };
-        return data.items;
+
+        // solely for mock data usage
+
+        return data.items.map((item) => {
+            return {
+                ...item,
+                priorityType: BoardPriorityType.Weighted,
+            };
+        });
     }
 
     public async createBoardForCompany(
@@ -86,6 +94,13 @@ export class BoardApi implements IBoardApi {
             }
         );
 
-        return axiosResponse.data as IBoard;
+        // mock data
+
+        return {
+            ...axiosResponse.data,
+            priorityType: BoardPriorityType.Weighted,
+        };
+
+        // return axiosResponse.data as IBoard;
     }
 }

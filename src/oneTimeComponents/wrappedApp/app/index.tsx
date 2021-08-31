@@ -13,7 +13,7 @@ import { EnterNewPassword } from "./enterNewPassword";
 
 export function App() {
     useAxiosInterceptor();
-    useRouterDebug(true);
+    useRouterDebug(false);
 
     return (
         <Switch>

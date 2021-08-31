@@ -32,7 +32,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
     const classes = createClasses();
 
     return (
-        <div>
+        <div css={classes.fullWidth}>
             <FormControl fullWidth error={!!props.error}>
                 <InputLabel required={props.required}>{props.label}</InputLabel>
                 <Input
@@ -65,7 +65,12 @@ const createClasses = () => {
         min-height: 19px;
     `;
 
+    const fullWidth = css`
+        width: 100%;
+    `;
+
     return {
         helperTextContainer,
+        fullWidth,
     };
 };
