@@ -188,6 +188,7 @@ export const {
     updateWeightedTicketTemplateCreationTitle,
     updateWeightedTicketTemplateCreationSummary,
     overrideWeightedTicketCreationSection,
+    insertWeightedTicketCreationSection,
 } = weightedTicketTemplateCreationSlice.actions;
 
 export default weightedTicketTemplateCreationSlice.reducer;

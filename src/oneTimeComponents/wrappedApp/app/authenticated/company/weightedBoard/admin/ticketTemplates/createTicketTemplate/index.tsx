@@ -5,16 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { BottomPageToolbar } from "../../../../../../../../../components/bottomPageToolbar";
 import { WeightedBoardContainer } from "../../../../../../../../../components/weightedBoardContainer";
 import { WeightedPriorityTicketTemplateActions } from "../../../../../../../../../components/weightedPriorityTicketTemplateActions";
+import { WeightedTicketTemplateTextControl } from "../../../../../../../../../components/weightedTicketTemplateTextControl";
 import { IWrappedButtonProps } from "../../../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { IWeightedNumberSection } from "../../../../../../../../../models/weightedSections/weightedNumberSection";
+import { IWeightedTextSection } from "../../../../../../../../../models/weightedSections/weightedTextSection";
 import { IStoreState } from "../../../../../../../../../redux/storeState";
 import {
+    insertWeightedTicketCreationSection,
+    overrideWeightedTicketCreationSection,
     updateWeightedTicketTemplateCreationDescription,
     updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationSummary,
     updateWeightedTicketTemplateCreationTitle,
 } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
+import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
@@ -28,7 +34,32 @@ export function CreateTicketTemplate() {
     });
 
     function onClickAddAfter(index: number) {
-        return () => {};
+        return (type: string) => {
+            if (type === "text") {
+                const weightedTextSection: IWeightedTextSection = {
+                    type: "text",
+                    label: "Default Label",
+                    multiline: true,
+                    required: false,
+                };
+                const action = insertWeightedTicketCreationSection({
+                    value: weightedTextSection,
+                    index,
+                });
+                dispatch(action);
+            } else if (type === "number") {
+                const weightedNumberSection: IWeightedNumberSection = {
+                    type: "number",
+                    label: "Default Label",
+                    required: false,
+                };
+                const action = insertWeightedTicketCreationSection({
+                    value: weightedNumberSection,
+                    index,
+                });
+                dispatch(action);
+            }
+        };
     }
 
     function onClickDelete(index: number, uniqueId: string) {}
@@ -80,6 +111,41 @@ export function CreateTicketTemplate() {
         const value = eventType.target.value as string;
         const action = updateWeightedTicketTemplateCreationSummary(value);
         dispatch(action);
+    }
+
+    function onChangeLabelText(index: number) {
+        return (
+            eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            const value = eventType.target.value as string;
+            const updatedWeightedTextSection: IWeightedTextSection = {
+                ...(weightedTicketTemplate.sections[
+                    index
+                ] as IWeightedTextSection),
+                label: value,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedTextSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
+    function onChangeMultilineValue(index: number) {
+        return (checked: boolean) => {
+            const updatedWeightedTextSection: IWeightedTextSection = {
+                ...(weightedTicketTemplate.sections[
+                    index
+                ] as IWeightedTextSection),
+                multiline: checked,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedTextSection,
+                index,
+            });
+            dispatch(action);
+        };
     }
 
     const classes = createClasses();
@@ -182,6 +248,53 @@ export function CreateTicketTemplate() {
                                     />
                                 </div>
                             </div>
+                            {weightedTicketTemplate.sections.map(
+                                (section, index) => {
+                                    if (section.type === "text") {
+                                        return (
+                                            <div
+                                                css={composeCSS(
+                                                    classes.columnInputContainer,
+                                                    classes.textControlContainer
+                                                )}
+                                                key={index}
+                                            >
+                                                <div>
+                                                    <WeightedTicketTemplateTextControl
+                                                        label={section.label}
+                                                        multiline={
+                                                            section.multiline
+                                                        }
+                                                        disabled={
+                                                            isCreatingTicketTemplate
+                                                        }
+                                                        error={""}
+                                                        touched={false}
+                                                        onChangeLabelText={onChangeLabelText(
+                                                            index
+                                                        )}
+                                                        onChangeMultilineValue={onChangeMultilineValue(
+                                                            index
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <WeightedPriorityTicketTemplateActions
+                                                        disabled={
+                                                            isCreatingTicketTemplate
+                                                        }
+                                                        onClickAddAfter={onClickAddAfter(
+                                                            index
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
+                                    } else if (section.type === "number") {
+                                        // do something
+                                    }
+                                }
+                            )}
                         </div>
                     </div>
                 </div>
@@ -212,6 +325,7 @@ const createClasses = () => {
     const flexContentContainer = css`
         display: flex;
         flex-grow: 1;
+        overflow-y: auto;
     `;
 
     const formBuilderContainer = css`
@@ -233,6 +347,10 @@ const createClasses = () => {
         grid-gap: 32px;
     `;
 
+    const textControlContainer = css`
+        margin-top: 16px;
+    `;
+
     return {
         container,
         gridContentContainer,
@@ -240,5 +358,6 @@ const createClasses = () => {
         bottomToolbarContainer,
         flexContentContainer,
         columnInputContainer,
+        textControlContainer,
     };
 };

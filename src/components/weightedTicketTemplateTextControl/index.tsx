@@ -1,0 +1,69 @@
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
+import { ChangeEvent } from "react";
+import { WrappedTextField } from "../wrappedTextField";
+import React from "react";
+import { Checkbox, FormControlLabel, Theme, useTheme } from "@material-ui/core";
+
+export interface ITicketTemplateTextControlProps {
+    label: string;
+    multiline: boolean;
+    disabled: boolean;
+    error: string;
+    touched: boolean;
+    onChangeLabelText: (
+        eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+    onChangeMultilineValue: (checked: boolean) => void;
+}
+
+function NonMemoizedTicketTemplateTextControl(
+    props: ITicketTemplateTextControlProps
+) {
+    const showLabelError = !!props.error && props.touched;
+
+    const theme = useTheme();
+    const classes = createClasses(theme);
+    return (
+        <div css={classes.container}>
+            <WrappedTextField
+                value={props.label}
+                required
+                label="Text Field Label"
+                onChange={props.onChangeLabelText}
+                error={showLabelError ? props.error : ""}
+                disabled={props.disabled}
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        disabled={props.disabled}
+                        color="primary"
+                        checked={props.multiline}
+                        onChange={(unused, checked) =>
+                            props.onChangeMultilineValue(checked)
+                        }
+                        name="allowMultilineText"
+                    />
+                }
+                label="Allow Multiline Text"
+            />
+        </div>
+    );
+}
+
+const createClasses = (theme: Theme) => {
+    const container = css`
+        padding: 16px;
+        background-color: ${theme.palette.grey["200"]};
+        border-radius: 3px;
+    `;
+
+    return {
+        container,
+    };
+};
+
+export const WeightedTicketTemplateTextControl = React.memo(
+    NonMemoizedTicketTemplateTextControl
+);
