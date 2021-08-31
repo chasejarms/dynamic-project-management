@@ -11,10 +11,12 @@ export interface ITicketTemplateTextControlProps {
     disabled: boolean;
     error: string;
     touched: boolean;
+    required: boolean;
     onChangeLabelText: (
         eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
     onChangeMultilineValue: (checked: boolean) => void;
+    onChangeRequiredValue: (checked: boolean) => void;
 }
 
 function NonMemoizedTicketTemplateTextControl(
@@ -33,6 +35,20 @@ function NonMemoizedTicketTemplateTextControl(
                 onChange={props.onChangeLabelText}
                 error={showLabelError ? props.error : ""}
                 disabled={props.disabled}
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        disabled={props.disabled}
+                        color="primary"
+                        checked={props.required}
+                        onChange={(unused, checked) =>
+                            props.onChangeRequiredValue(checked)
+                        }
+                        name="required"
+                    />
+                }
+                label="Required"
             />
             <FormControlLabel
                 control={

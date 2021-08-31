@@ -148,6 +148,22 @@ export function CreateTicketTemplate() {
         };
     }
 
+    function onChangeRequiredValue(index: number) {
+        return (checked: boolean) => {
+            const updatedWeightedTextSection: IWeightedTextSection = {
+                ...(weightedTicketTemplate.sections[
+                    index
+                ] as IWeightedTextSection),
+                required: checked,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedTextSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
     const classes = createClasses();
     return (
         <WeightedBoardContainer>
@@ -270,10 +286,16 @@ export function CreateTicketTemplate() {
                                                         }
                                                         error={""}
                                                         touched={false}
+                                                        required={
+                                                            section.required
+                                                        }
                                                         onChangeLabelText={onChangeLabelText(
                                                             index
                                                         )}
                                                         onChangeMultilineValue={onChangeMultilineValue(
+                                                            index
+                                                        )}
+                                                        onChangeRequiredValue={onChangeRequiredValue(
                                                             index
                                                         )}
                                                     />
@@ -344,7 +366,7 @@ const createClasses = () => {
     const columnInputContainer = css`
         display: grid;
         grid-template-columns: 1fr 100px;
-        grid-gap: 32px;
+        grid-gap: 16px;
     `;
 
     const textControlContainer = css`
