@@ -1,13 +1,15 @@
 import { IBoard } from "../models/board";
 import { environmentVariables } from "../environmentVariables";
 import Axios from "axios";
+import { BoardPriorityType } from "../models/boardPriorityType";
 
 export interface IBoardApi {
     getBoardsForCompany(companyId: string): Promise<IBoard[]>;
     createBoardForCompany(
         companyId: string,
         boardName: string,
-        boardDescription: string
+        boardDescription: string,
+        priorityType: BoardPriorityType
     ): Promise<{
         id: string;
         name: string;
@@ -36,7 +38,8 @@ export class BoardApi implements IBoardApi {
     public async createBoardForCompany(
         companyId: string,
         boardName: string,
-        boardDescription: string
+        boardDescription: string,
+        priorityType: BoardPriorityType
     ) {
         const axiosResponse = await Axios.post(
             `${environmentVariables.baseAuthenticatedApiUrl}/board`,
@@ -44,6 +47,7 @@ export class BoardApi implements IBoardApi {
                 companyId,
                 boardName,
                 boardDescription,
+                priorityType,
             }
         );
         return axiosResponse.data as {

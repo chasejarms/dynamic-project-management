@@ -13,6 +13,7 @@ import { BottomPageToolbar } from "../../../../../../components/bottomPageToolba
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { setUserAsBoardAdmin } from "../../../../../../redux/appBootstrapInformation";
 import { useDispatch } from "react-redux";
+import { BoardPriorityType } from "../../../../../../models/boardPriorityType";
 
 export function CreateBoard() {
     const classes = createClasses();
@@ -77,7 +78,8 @@ export function CreateBoard() {
             .createBoardForCompany(
                 companyId as string,
                 boardNameControl.value,
-                boardDescriptionControl.value
+                boardDescriptionControl.value,
+                BoardPriorityType.TagBased
             )
             .then((board) => {
                 if (didCancel) return;
