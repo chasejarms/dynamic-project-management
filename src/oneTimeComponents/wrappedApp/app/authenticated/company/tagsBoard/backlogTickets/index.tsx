@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { Api } from "../../../../../../../api";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
 import {
     IAugmentedUITicket,
@@ -15,6 +14,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { prioritiesToPointValueMapping } from "../../../../../../../utils/prioritiesToPointValueMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
+import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
 
 export function BacklogTickets() {
     const { boardId, companyId } = useAppRouterParams();
@@ -72,7 +72,7 @@ export function BacklogTickets() {
     const classes = createClasses();
 
     return (
-        <BoardContainer>
+        <TagsBoardContainer>
             <div css={classes.pageContainer}>
                 <TicketContainer
                     title="Backlog Tickets"
@@ -114,7 +114,7 @@ export function BacklogTickets() {
                     )}
                 </TicketContainer>
             </div>
-        </BoardContainer>
+        </TagsBoardContainer>
     );
 }
 

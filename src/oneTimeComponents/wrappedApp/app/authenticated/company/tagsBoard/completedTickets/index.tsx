@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
+import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
@@ -100,7 +100,7 @@ export function CompletedTickets() {
     const classes = createClasses();
 
     return (
-        <BoardContainer>
+        <TagsBoardContainer>
             <div css={classes.pageContainer}>
                 <TicketContainer
                     title="Completed Tickets"
@@ -142,7 +142,7 @@ export function CompletedTickets() {
                     })}
                 </TicketContainer>
             </div>
-        </BoardContainer>
+        </TagsBoardContainer>
     );
 }
 

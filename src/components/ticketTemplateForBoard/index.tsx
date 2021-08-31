@@ -33,7 +33,7 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
 
     function openTicketTemplate() {
         history.push(
-            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/${ticketTemplate.shortenedItemId}`
+            `/app/company/${companyId}/tags-board/${boardId}/admin/ticket-templates/${ticketTemplate.shortenedItemId}`
         );
     }
 

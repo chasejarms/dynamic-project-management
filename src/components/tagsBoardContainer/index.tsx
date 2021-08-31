@@ -15,11 +15,11 @@ import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
 import { Typography } from "@material-ui/core";
 import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
 
-export interface IBoardContainerProps {
+export interface ITagsBoardContainer {
     children: React.ReactNode;
 }
 
-export function BoardContainer(props: IBoardContainerProps) {
+export function TagsBoardContainer(props: ITagsBoardContainer) {
     const { companyId, boardId } = useAppRouterParams();
 
     const board = useSelector((state: IStoreState) => {
@@ -58,27 +58,27 @@ export function BoardContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Board",
-            route: `/app/company/${companyId}/board/${boardId}/tickets`,
+            route: `/app/company/${companyId}/tags-board/${boardId}/tickets`,
         },
         {
             text: "Create Ticket",
-            route: `/app/company/${companyId}/board/${boardId}/create-ticket`,
+            route: `/app/company/${companyId}/tags-board/${boardId}/create-ticket`,
         },
         {
             text: "Priorities",
-            route: `/app/company/${companyId}/board/${boardId}/priorities`,
+            route: `/app/company/${companyId}/tags-board/${boardId}/priorities`,
         },
         {
             text: "Backlog Tickets",
-            route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
+            route: `/app/company/${companyId}/tags-board/${boardId}/backlog-tickets`,
         },
         {
             text: "Completed Tickets",
-            route: `/app/company/${companyId}/board/${boardId}/completed-tickets`,
+            route: `/app/company/${companyId}/tags-board/${boardId}/completed-tickets`,
         },
         isBoardAdmin && {
             text: "Admin",
-            route: `/app/company/${companyId}/board/${boardId}/admin/board-users`,
+            route: `/app/company/${companyId}/tags-board/${boardId}/admin/board-users`,
         },
     ].filter((tabValue) => !!tabValue) as IAuthenticatedNavItem[];
 

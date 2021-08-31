@@ -4,8 +4,8 @@ import { sortBy } from "lodash";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
 import { BoardColumnsContainer } from "../../../../../../../components/boardColumnsContainer";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
+import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
 import {
     IAugmentedUITicket,
@@ -194,7 +194,7 @@ export function BoardHome() {
     const classes = createClasses();
 
     return (
-        <BoardContainer>
+        <TagsBoardContainer>
             {isLoadingRequiredInformation ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
@@ -253,7 +253,7 @@ export function BoardHome() {
                     })}
                 </BoardColumnsContainer>
             )}
-        </BoardContainer>
+        </TagsBoardContainer>
     );
 }
 

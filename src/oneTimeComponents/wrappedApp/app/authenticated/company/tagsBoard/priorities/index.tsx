@@ -4,7 +4,6 @@ import { Theme, useTheme } from "@material-ui/core";
 import { useState, useEffect, useMemo } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Api } from "../../../../../../../api";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { ITag } from "../../../../../../../models/tag";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { NewTagDialog } from "../../../../../../../components/newTagDialog";
@@ -12,6 +11,7 @@ import { cloneDeep, sortBy } from "lodash";
 import { useIsBoardAdmin } from "../../../../../../../hooks/useIsBoardAdmin";
 import { PrioritizedTagsCard } from "../../../../../../../components/prioritizedTagsCard";
 import { UnprioritizedTagsCard } from "../../../../../../../components/unprioritizedTagsCard";
+import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
 
 export function Priorities() {
     const theme = useTheme();
@@ -265,7 +265,7 @@ export function Priorities() {
     }
 
     return (
-        <BoardContainer>
+        <TagsBoardContainer>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div css={classes.container}>
                     <PrioritizedTagsCard
@@ -295,7 +295,7 @@ export function Priorities() {
                     onCreateTagSuccess={onCreateTagSuccess}
                 />
             </DragDropContext>
-        </BoardContainer>
+        </TagsBoardContainer>
     );
 }
 

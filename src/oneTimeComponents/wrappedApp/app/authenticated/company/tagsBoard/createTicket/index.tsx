@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { useState, useEffect, ChangeEvent } from "react";
 import { Api } from "../../../../../../../api";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { BottomPageToolbar } from "../../../../../../../components/bottomPageToolbar";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
 import {
@@ -35,6 +34,7 @@ import {
     updateSection,
     updateStartingColumn,
 } from "../../../../../../../redux/ticketCreation";
+import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
 
 export function CreateTicket() {
     const history = useHistory();
@@ -213,7 +213,7 @@ export function CreateTicket() {
     }, [ticketCreateRequest]);
 
     function navigateToBoard() {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+        history.push(`/app/company/${companyId}/tags-board/${boardId}/tickets`);
     }
 
     const [tagsState, setTagsState] = useState<{
@@ -260,7 +260,7 @@ export function CreateTicket() {
     ];
 
     return (
-        <BoardContainer>
+        <TagsBoardContainer>
             {isLoadingTicketTemplates ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
@@ -392,7 +392,7 @@ export function CreateTicket() {
                     </WrappedButton>
                 }
             />
-        </BoardContainer>
+        </TagsBoardContainer>
     );
 }
 
