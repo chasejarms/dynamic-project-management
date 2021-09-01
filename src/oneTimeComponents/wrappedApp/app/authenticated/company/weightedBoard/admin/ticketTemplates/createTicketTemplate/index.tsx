@@ -3,6 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BottomPageToolbar } from "../../../../../../../../../components/bottomPageToolbar";
+import { TagChip } from "../../../../../../../../../components/tagChip";
 import { WeightedBoardContainer } from "../../../../../../../../../components/weightedBoardContainer";
 import { WeightedPriorityTicketTemplateActions } from "../../../../../../../../../components/weightedPriorityTicketTemplateActions";
 import { WeightedTicketTemplateNumberControl } from "../../../../../../../../../components/weightedTicketTemplateNumberControl";
@@ -26,6 +27,7 @@ import {
     WeightedTextSectionWithControls,
 } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
+import mathEvaluator from "math-expression-evaluator";
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
@@ -37,6 +39,14 @@ export function CreateTicketTemplate() {
     const weightedTicketTemplate = useSelector((store: IStoreState) => {
         return store.weightedTicketTemplateCreation;
     });
+    const validAliasList = weightedTicketTemplate.sections
+        .filter((section) => {
+            return section.value.type === "number" && !!section.value.alias;
+        })
+        .map(
+            (section) =>
+                (section as WeightedNumberSectionWithControls).value.alias
+        );
 
     const priorityWeightingCalculationFunction = useControl({
         value: "",
@@ -49,7 +59,7 @@ export function CreateTicketTemplate() {
             return event.target.value as string;
         },
         validatorError: (stringFunction: string) => {
-            const trimmedWords = stringFunction.match(/\b\w+/g);
+            const trimmedWords = stringFunction.match(/\b[a-zA-Z]+/g);
 
             const wordsAreValid = trimmedWords
                 ? trimmedWords.every((trimmedWord) => {
@@ -61,34 +71,41 @@ export function CreateTicketTemplate() {
                 return "The provided aliases are not valid.";
             }
 
-            const validAliases = weightedTicketTemplate.sections
-                .filter((section) => {
-                    return (
-                        section.value.type === "number" && !!section.value.alias
-                    );
-                })
-                .reduce<{
-                    [aliasName: string]: boolean;
-                }>((mapping, section) => {
-                    const weightedNumberSectionWithControls = section as WeightedNumberSectionWithControls;
-                    mapping[
-                        weightedNumberSectionWithControls.value.alias
-                    ] = true;
-                    return mapping;
-                }, {});
+            const validAliasMapping = validAliasList.reduce<{
+                [aliasName: string]: boolean;
+            }>((mapping, aliasName) => {
+                mapping[aliasName] = true;
+                return mapping;
+            }, {});
 
             const aliasesExist = trimmedWords
                 ? trimmedWords.every((trimmedWord) => {
-                      return validAliases[trimmedWord];
+                      return validAliasMapping[trimmedWord];
                   })
                 : true;
             if (!aliasesExist) {
                 return "The provided aliases do not exist on the ticket template";
             }
 
-            // validate that only the correct characters are in the function
+            const onlyAllowedCharactersArePresent = stringFunction.match(
+                /^$|^[a-zA-Z0-9\.\+\-\*\\() ]+$/
+            );
+            if (!onlyAllowedCharactersArePresent) {
+                return "Only simple math values are allowed (parenthesis, decimals, +, -, /, *)";
+            }
 
-            // try running a function where you replace all of the words with numbers
+            try {
+                let expressionToEvaluate = stringFunction;
+                Object.keys(validAliasMapping).forEach((key) => {
+                    expressionToEvaluate = expressionToEvaluate.replaceAll(
+                        key,
+                        "1"
+                    );
+                });
+                mathEvaluator.eval(expressionToEvaluate);
+            } catch (e) {
+                return "There is an error with the calculation setup";
+            }
 
             return "";
         },
@@ -628,6 +645,23 @@ export function CreateTicketTemplate() {
                         </div>
                         <div css={classes.priorityWeightAndPreviewContainer}>
                             <div>
+                                <div css={classes.validAliasContainer}>
+                                    {validAliasList.map((aliasName) => {
+                                        return (
+                                            <div
+                                                css={
+                                                    classes.individualChipContainer
+                                                }
+                                            >
+                                                <TagChip
+                                                    size="small"
+                                                    tagName={aliasName}
+                                                    tagColor={"gray"}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                                 <WrappedTextField
                                     value={
                                         priorityWeightingCalculationFunction.value
@@ -716,6 +750,16 @@ const createClasses = () => {
         padding-left: 16px;
     `;
 
+    const individualChipContainer = css`
+        margin-right: 4px;
+        margin-bottom: 4px;
+        display: inline-flex;
+    `;
+
+    const validAliasContainer = css`
+        padding-bottom: 8px;
+    `;
+
     return {
         container,
         gridContentContainer,
@@ -726,5 +770,7 @@ const createClasses = () => {
         sectionControlContainer,
         actionButtonContainerForTextField,
         priorityWeightAndPreviewContainer,
+        individualChipContainer,
+        validAliasContainer,
     };
 };
