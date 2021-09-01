@@ -5,4 +5,5 @@ export interface IWeightedNumberSection {
     minValue?: number;
     maxValue?: number;
     allowOnlyIntegers: boolean;
+    alias: string;
 }

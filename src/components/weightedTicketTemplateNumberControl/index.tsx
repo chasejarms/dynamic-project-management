@@ -15,6 +15,11 @@ export interface IWeightedTicketTemplateNumberControl {
     maxError: string;
     disabled: boolean;
     required: boolean;
+    alias: string;
+    aliasError: string;
+    onChangeAlias: (
+        eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
     onChangeLabelText: (
         eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
@@ -57,6 +62,13 @@ function NonMemoizedWeightedTicketTemplateNumberControl(
                 label="Max Value"
                 onChange={props.onChangeMaxValue}
                 error={props.maxError}
+                disabled={props.disabled}
+            />
+            <WrappedTextField
+                value={props.alias}
+                label="Alias"
+                onChange={props.onChangeAlias}
+                error={props.aliasError}
                 disabled={props.disabled}
             />
             <FormControlLabel

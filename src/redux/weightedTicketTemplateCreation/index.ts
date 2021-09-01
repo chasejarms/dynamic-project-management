@@ -15,6 +15,7 @@ export interface WeightedNumberSectionWithControls {
     labelError: string;
     minError: string;
     maxError: string;
+    aliasError: string;
 }
 
 type WeightedSectionWithControls =
@@ -198,11 +199,18 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                         ? "Max is less than min"
                         : "";
 
+                const aliasError = ControlValidator.string()
+                    .onlyAThroughZ(
+                        "The alias must be one word and only characters a through z."
+                    )
+                    .validate(updatedValue.alias);
+
                 const updatedSection: WeightedNumberSectionWithControls = {
                     value: weightedNumberSection,
                     labelError: updatedLabelError,
                     minError: updatedMinError,
                     maxError: updatedMaxError,
+                    aliasError,
                 };
 
                 clonedSections[index] = updatedSection;
@@ -256,11 +264,18 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                         ? "Max is less than min"
                         : "";
 
+                const aliasError = ControlValidator.string()
+                    .onlyAThroughZ(
+                        "The alias must be one word and only characters a through z."
+                    )
+                    .validate(weightedNumberSection.alias);
+
                 const weightedNumberSectionWithControls: WeightedNumberSectionWithControls = {
                     value: weightedNumberSection,
                     labelError: updatedLabelError,
                     minError: updatedMinError,
                     maxError: updatedMaxError,
+                    aliasError,
                 };
 
                 sectionWithControls = weightedNumberSectionWithControls;

@@ -51,6 +51,16 @@ export class ControlValidator {
         return this;
     }
 
+    public onlyAThroughZ(errorMessage?: string) {
+        this.validatorRules.push({
+            type: "regex",
+            regex: /^$|^[a-zA-Z]+$/,
+            errorMessage: errorMessage || "Only a through z is allowed",
+        });
+
+        return this;
+    }
+
     public required(errorMessage?: string) {
         this.validatorRules.push({
             type: "length",

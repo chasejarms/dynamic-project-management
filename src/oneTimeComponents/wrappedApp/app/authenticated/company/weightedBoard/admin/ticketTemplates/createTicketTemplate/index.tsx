@@ -93,6 +93,7 @@ export function CreateTicketTemplate() {
                     label: "Default Label",
                     required: false,
                     allowOnlyIntegers: false,
+                    alias: "",
                 };
                 const action = insertWeightedTicketCreationSection({
                     value: weightedNumberSection,
@@ -293,6 +294,24 @@ export function CreateTicketTemplate() {
         };
     }
 
+    function onChangeAlias(index: number) {
+        return (
+            eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            const value = eventType.target.value as string;
+            const updatedWeightedNumberSection: IWeightedNumberSection = {
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedNumberSection),
+                alias: value,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedNumberSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
     const classes = createClasses();
     return (
         <WeightedBoardContainer>
@@ -469,6 +488,15 @@ export function CreateTicketTemplate() {
                                             >
                                                 <div>
                                                     <WeightedTicketTemplateNumberControl
+                                                        alias={
+                                                            section.value.alias
+                                                        }
+                                                        aliasError={
+                                                            weightedNumberSectionWithControls.aliasError
+                                                        }
+                                                        onChangeAlias={onChangeAlias(
+                                                            index
+                                                        )}
                                                         label={
                                                             section.value.label
                                                         }
