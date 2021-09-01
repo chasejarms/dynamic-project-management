@@ -2,6 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { cloneDeep } from "lodash";
 import { IWeightedSection } from "../../models/weightedSections";
+import { IWeightedTextSection } from "../../models/weightedSections/weightedTextSection";
+import { IWeightedNumberSection } from "../../models/weightedSections/weightedNumberSection";
+
+export interface WeightedTextSectionWithControls {
+    value: IWeightedTextSection;
+    error: string;
+}
+
+export interface WeightedNumberSectionWithControls {
+    value: IWeightedNumberSection;
+    labelError: string;
+    minError: string;
+    maxError: string;
+}
+
+type WeightedSectionWithControls =
+    | WeightedTextSectionWithControls
+    | WeightedNumberSectionWithControls;
 
 export interface IWeightedTicketTemplateCreationState {
     name: {
@@ -29,10 +47,7 @@ export interface IWeightedTicketTemplateCreationState {
         touched: boolean;
         error: string;
     };
-    sections: {
-        value: IWeightedSection;
-        error: string;
-    }[];
+    sections: WeightedSectionWithControls[];
 }
 
 const defaultRequiredError = "This field is required";
@@ -69,9 +84,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
     name: "weightedTicketTemplateCreation",
     initialState,
     reducers: {
-        resetWeightedTicketTemplateCreationState: (
-            state: IWeightedTicketTemplateCreationState
-        ) => {
+        resetWeightedTicketTemplateCreationState: () => {
             return initialState;
         },
         updateWeightedTicketTemplateCreationTitle: (
@@ -148,20 +161,56 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             const clonedSections = cloneDeep(state.sections);
             const { index, value: updatedValue } = action.payload;
 
-            const updatedError = ControlValidator.string()
-                .required(defaultRequiredError)
-                .validate(updatedValue.label);
+            if (updatedValue.type === "text") {
+                const weightedTextSection = updatedValue as IWeightedTextSection;
+                const updatedError = ControlValidator.string()
+                    .required(defaultRequiredError)
+                    .validate(updatedValue.label);
 
-            const updatedSection = {
-                value: updatedValue,
-                error: updatedError,
-            };
+                const updatedSection: WeightedTextSectionWithControls = {
+                    value: weightedTextSection,
+                    error: updatedError,
+                };
 
-            clonedSections[index] = updatedSection;
-            return {
-                ...state,
-                sections: clonedSections,
-            };
+                clonedSections[index] = updatedSection;
+                return {
+                    ...state,
+                    sections: clonedSections,
+                };
+            } else if (updatedValue.type === "number") {
+                const weightedNumberSection = updatedValue as IWeightedNumberSection;
+                const updatedLabelError = ControlValidator.string()
+                    .required(defaultRequiredError)
+                    .validate(updatedValue.label);
+
+                const minExists = weightedNumberSection.minValue !== undefined;
+                const maxExists = weightedNumberSection.maxValue !== undefined;
+                const updatedMinError =
+                    minExists &&
+                    maxExists &&
+                    updatedValue.minValue! > updatedValue.maxValue!
+                        ? "Min is greater than max"
+                        : "";
+                const updatedMaxError =
+                    minExists &&
+                    maxExists &&
+                    updatedValue.maxValue! < updatedValue.minValue!
+                        ? "Max is less than min"
+                        : "";
+
+                const updatedSection: WeightedNumberSectionWithControls = {
+                    value: weightedNumberSection,
+                    labelError: updatedLabelError,
+                    minError: updatedMinError,
+                    maxError: updatedMaxError,
+                };
+
+                clonedSections[index] = updatedSection;
+                return {
+                    ...state,
+                    sections: clonedSections,
+                };
+            }
         },
         insertWeightedTicketCreationSection: (
             state: IWeightedTicketTemplateCreationState,
@@ -172,34 +221,66 @@ export const weightedTicketTemplateCreationSlice = createSlice({
         ) => {
             const { index, value } = action.payload;
             const clonedSections = cloneDeep(state.sections);
-            let error = "";
+            let sectionWithControls: WeightedSectionWithControls;
 
             if (value.type === "text") {
-                error = ControlValidator.string()
+                const weightedTextSection = value as IWeightedTextSection;
+                const weightedTextSectionWithControls: WeightedTextSectionWithControls = {
+                    value: weightedTextSection,
+                    error: ControlValidator.string()
+                        .required(defaultRequiredError)
+                        .validate(value.label),
+                };
+                sectionWithControls = weightedTextSectionWithControls;
+            } else if (value.type === "number") {
+                const weightedNumberSection = value as IWeightedNumberSection;
+
+                const updatedLabelError = ControlValidator.string()
                     .required(defaultRequiredError)
-                    .validate(value.label);
+                    .validate(weightedNumberSection.label);
+
+                const minExists = weightedNumberSection.minValue !== undefined;
+                const maxExists = weightedNumberSection.maxValue !== undefined;
+                const updatedMinError =
+                    minExists &&
+                    maxExists &&
+                    weightedNumberSection.minValue! >
+                        weightedNumberSection.maxValue!
+                        ? "Min is greater than max"
+                        : "";
+                const updatedMaxError =
+                    minExists &&
+                    maxExists &&
+                    weightedNumberSection.maxValue! <
+                        weightedNumberSection.minValue!
+                        ? "Max is less than min"
+                        : "";
+
+                const weightedNumberSectionWithControls: WeightedNumberSectionWithControls = {
+                    value: weightedNumberSection,
+                    labelError: updatedLabelError,
+                    minError: updatedMinError,
+                    maxError: updatedMaxError,
+                };
+
+                sectionWithControls = weightedNumberSectionWithControls;
+            }
+
+            if (!sectionWithControls!) {
+                return state;
             }
 
             if (index === -1) {
                 return {
                     ...state,
-                    sections: [
-                        {
-                            value,
-                            error,
-                        },
-                        ...clonedSections,
-                    ],
+                    sections: [sectionWithControls, ...clonedSections],
                 };
             } else {
-                const beforeSections = clonedSections.slice(0, index);
-                const afterSections = clonedSections.slice(index);
+                const beforeSections = clonedSections.slice(0, index + 1);
+                const afterSections = clonedSections.slice(index + 1);
                 const updatedSections = [
                     ...beforeSections,
-                    {
-                        value,
-                        error,
-                    },
+                    sectionWithControls,
                     ...afterSections,
                 ];
                 return {

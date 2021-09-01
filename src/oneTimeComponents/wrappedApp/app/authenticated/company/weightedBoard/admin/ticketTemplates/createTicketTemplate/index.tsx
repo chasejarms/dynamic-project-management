@@ -21,6 +21,8 @@ import {
     updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationSummary,
     updateWeightedTicketTemplateCreationTitle,
+    WeightedNumberSectionWithControls,
+    WeightedTextSectionWithControls,
 } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 
@@ -49,7 +51,17 @@ export function CreateTicketTemplate() {
         const titleIsValid = !title.error;
         const summaryIsValid = !summary.error;
         const sectionsAreValid = sections.every((section) => {
-            return !section.error;
+            if (section.value.type === "text") {
+                const textSectionWithControls = section as WeightedTextSectionWithControls;
+                return !textSectionWithControls.error;
+            } else if (section.value.type === "number") {
+                const numberSectionWithControls = section as WeightedNumberSectionWithControls;
+                return (
+                    !numberSectionWithControls.labelError &&
+                    !numberSectionWithControls.minError &&
+                    !numberSectionWithControls.maxError
+                );
+            }
         });
 
         return (
@@ -80,6 +92,7 @@ export function CreateTicketTemplate() {
                     type: "number",
                     label: "Default Label",
                     required: false,
+                    allowOnlyIntegers: false,
                 };
                 const action = insertWeightedTicketCreationSection({
                     value: weightedNumberSection,
@@ -194,6 +207,92 @@ export function CreateTicketTemplate() {
         };
     }
 
+    function onChangeNumberLabelText(index: number) {
+        return (
+            eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            const value = eventType.target.value as string;
+            const updatedWeightedNumberSection: IWeightedNumberSection = {
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedNumberSection),
+                label: value,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedNumberSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
+    function onChangeMinValue(index: number) {
+        return (
+            eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            const value = eventType.target.value as string;
+            const minValue = value !== "" ? Number(value) : undefined;
+            const updatedWeightedNumberSection: IWeightedNumberSection = {
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedNumberSection),
+                minValue,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedNumberSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
+    function onChangeMaxValue(index: number) {
+        return (
+            eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            const value = eventType.target.value as string;
+            const maxValue = value !== "" ? Number(value) : undefined;
+            const updatedWeightedNumberSection: IWeightedNumberSection = {
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedNumberSection),
+                maxValue,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedNumberSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
+    function onChangeAllowOnlyIntegers(index: number) {
+        return (checked: boolean) => {
+            const updatedWeightedNumberSection: IWeightedNumberSection = {
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedNumberSection),
+                allowOnlyIntegers: checked,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedNumberSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
+    function onChangeNumberRequiredValue(index: number) {
+        return (checked: boolean) => {
+            const updatedWeightedNumberSection: IWeightedNumberSection = {
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedNumberSection),
+                required: checked,
+            };
+            const action = overrideWeightedTicketCreationSection({
+                value: updatedWeightedNumberSection,
+                index,
+            });
+            dispatch(action);
+        };
+    }
+
     const classes = createClasses();
     return (
         <WeightedBoardContainer>
@@ -297,6 +396,7 @@ export function CreateTicketTemplate() {
                             {weightedTicketTemplate.sections.map(
                                 (section, index) => {
                                     if (section.value.type === "text") {
+                                        const weightedTextSectionWithControls = section as WeightedTextSectionWithControls;
                                         return (
                                             <div
                                                 css={composeCSS(
@@ -317,7 +417,9 @@ export function CreateTicketTemplate() {
                                                         disabled={
                                                             isCreatingTicketTemplate
                                                         }
-                                                        error={section.error}
+                                                        error={
+                                                            weightedTextSectionWithControls.error
+                                                        }
                                                         touched={true}
                                                         required={
                                                             section.value
@@ -356,6 +458,7 @@ export function CreateTicketTemplate() {
                                     } else if (
                                         section.value.type === "number"
                                     ) {
+                                        const weightedNumberSectionWithControls = section as WeightedNumberSectionWithControls;
                                         return (
                                             <div
                                                 css={composeCSS(
@@ -366,29 +469,51 @@ export function CreateTicketTemplate() {
                                             >
                                                 <div>
                                                     <WeightedTicketTemplateNumberControl
-                                                        label="hello"
-                                                        labelError="world"
+                                                        label={
+                                                            section.value.label
+                                                        }
+                                                        labelError={
+                                                            weightedNumberSectionWithControls.labelError
+                                                        }
                                                         allowOnlyIntegers={
-                                                            false
+                                                            section.value
+                                                                .allowOnlyIntegers
                                                         }
                                                         disabled={
                                                             isCreatingTicketTemplate
                                                         }
-                                                        required={false}
-                                                        onChangeLabelText={() =>
-                                                            null
+                                                        required={
+                                                            section.value
+                                                                .required
                                                         }
-                                                        onChangeMinValue={() =>
-                                                            null
+                                                        onChangeLabelText={onChangeNumberLabelText(
+                                                            index
+                                                        )}
+                                                        onChangeMinValue={onChangeMinValue(
+                                                            index
+                                                        )}
+                                                        onChangeMaxValue={onChangeMaxValue(
+                                                            index
+                                                        )}
+                                                        onChangeAllowOnlyIntegers={onChangeAllowOnlyIntegers(
+                                                            index
+                                                        )}
+                                                        onChangeRequiredValue={onChangeNumberRequiredValue(
+                                                            index
+                                                        )}
+                                                        minValue={
+                                                            section.value
+                                                                .minValue
                                                         }
-                                                        onChangeMaxValue={() =>
-                                                            null
+                                                        minError={
+                                                            weightedNumberSectionWithControls.minError
                                                         }
-                                                        onChangeAllowOnlyIntegers={() =>
-                                                            null
+                                                        maxValue={
+                                                            section.value
+                                                                .maxValue
                                                         }
-                                                        onChangeRequiredValue={() =>
-                                                            null
+                                                        maxError={
+                                                            weightedNumberSectionWithControls.maxError
                                                         }
                                                     />
                                                 </div>

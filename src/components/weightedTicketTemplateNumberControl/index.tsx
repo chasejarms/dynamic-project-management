@@ -10,7 +10,9 @@ export interface IWeightedTicketTemplateNumberControl {
     labelError: string;
     allowOnlyIntegers: boolean;
     minValue?: number;
+    minError: string;
     maxValue?: number;
+    maxError: string;
     disabled: boolean;
     required: boolean;
     onChangeLabelText: (
@@ -36,25 +38,25 @@ function NonMemoizedWeightedTicketTemplateNumberControl(
             <WrappedTextField
                 value={props.label}
                 required
-                label="Text Field Label"
+                label="Number Field Label"
                 onChange={props.onChangeLabelText}
                 error={props.labelError}
                 disabled={props.disabled}
             />
             <WrappedTextField
-                value={props.minValue}
+                value={props.minValue === undefined ? "" : props.minValue}
                 type="number"
                 label="Min Value"
                 onChange={props.onChangeMinValue}
-                error={props.labelError}
+                error={props.minError}
                 disabled={props.disabled}
             />
             <WrappedTextField
-                value={props.minValue}
+                value={props.maxValue === undefined ? "" : props.maxValue}
                 type="number"
                 label="Max Value"
-                onChange={props.onChangeMinValue}
-                error={props.labelError}
+                onChange={props.onChangeMaxValue}
+                error={props.maxError}
                 disabled={props.disabled}
             />
             <FormControlLabel
