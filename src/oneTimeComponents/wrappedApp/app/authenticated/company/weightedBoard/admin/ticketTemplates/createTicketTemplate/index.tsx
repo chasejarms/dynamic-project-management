@@ -33,6 +33,32 @@ export function CreateTicketTemplate() {
         return store.weightedTicketTemplateCreation;
     });
 
+    const allControlsAreValid = useSelector((store: IStoreState) => {
+        const {
+            name,
+            description,
+            title,
+            summary,
+            sections,
+        } = store.weightedTicketTemplateCreation;
+
+        const nameIsValid = !name.error;
+        const descriptionIsValid = !description.error;
+        const titleIsValid = !title.error;
+        const summaryIsValid = !summary.error;
+        const sectionsAreValid = sections.every((section) => {
+            return !section.error;
+        });
+
+        return (
+            nameIsValid &&
+            descriptionIsValid &&
+            titleIsValid &&
+            summaryIsValid &&
+            sectionsAreValid
+        );
+    });
+
     function onClickAddAfter(index: number) {
         return (type: string) => {
             if (type === "text") {
@@ -75,7 +101,7 @@ export function CreateTicketTemplate() {
                 setIsCreatingTicketTemplate(true);
             },
             color: "primary",
-            disabled: isCreatingTicketTemplate,
+            disabled: isCreatingTicketTemplate || !allControlsAreValid,
             showSpinner: isCreatingTicketTemplate,
             children: "Create Ticket Template",
         },
@@ -119,9 +145,8 @@ export function CreateTicketTemplate() {
         ) => {
             const value = eventType.target.value as string;
             const updatedWeightedTextSection: IWeightedTextSection = {
-                ...(weightedTicketTemplate.sections[
-                    index
-                ] as IWeightedTextSection),
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedTextSection),
                 label: value,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -135,9 +160,8 @@ export function CreateTicketTemplate() {
     function onChangeMultilineValue(index: number) {
         return (checked: boolean) => {
             const updatedWeightedTextSection: IWeightedTextSection = {
-                ...(weightedTicketTemplate.sections[
-                    index
-                ] as IWeightedTextSection),
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedTextSection),
                 multiline: checked,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -151,9 +175,8 @@ export function CreateTicketTemplate() {
     function onChangeRequiredValue(index: number) {
         return (checked: boolean) => {
             const updatedWeightedTextSection: IWeightedTextSection = {
-                ...(weightedTicketTemplate.sections[
-                    index
-                ] as IWeightedTextSection),
+                ...(weightedTicketTemplate.sections[index]
+                    .value as IWeightedTextSection),
                 required: checked,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -266,7 +289,7 @@ export function CreateTicketTemplate() {
                             </div>
                             {weightedTicketTemplate.sections.map(
                                 (section, index) => {
-                                    if (section.type === "text") {
+                                    if (section.value.type === "text") {
                                         return (
                                             <div
                                                 css={composeCSS(
@@ -277,17 +300,21 @@ export function CreateTicketTemplate() {
                                             >
                                                 <div>
                                                     <WeightedTicketTemplateTextControl
-                                                        label={section.label}
+                                                        label={
+                                                            section.value.label
+                                                        }
                                                         multiline={
-                                                            section.multiline
+                                                            section.value
+                                                                .multiline
                                                         }
                                                         disabled={
                                                             isCreatingTicketTemplate
                                                         }
-                                                        error={""}
-                                                        touched={false}
+                                                        error={section.error}
+                                                        touched={true}
                                                         required={
-                                                            section.required
+                                                            section.value
+                                                                .required
                                                         }
                                                         onChangeLabelText={onChangeLabelText(
                                                             index
@@ -300,7 +327,11 @@ export function CreateTicketTemplate() {
                                                         )}
                                                     />
                                                 </div>
-                                                <div>
+                                                <div
+                                                    css={
+                                                        classes.actionButtonContainerForTextField
+                                                    }
+                                                >
                                                     <WeightedPriorityTicketTemplateActions
                                                         disabled={
                                                             isCreatingTicketTemplate
@@ -312,7 +343,9 @@ export function CreateTicketTemplate() {
                                                 </div>
                                             </div>
                                         );
-                                    } else if (section.type === "number") {
+                                    } else if (
+                                        section.value.type === "number"
+                                    ) {
                                         // do something
                                     }
                                 }
@@ -373,6 +406,12 @@ const createClasses = () => {
         margin-top: 16px;
     `;
 
+    const actionButtonContainerForTextField = css`
+        height: 100%;
+        display: flex;
+        align-items: center;
+    `;
+
     return {
         container,
         gridContentContainer,
@@ -381,5 +420,6 @@ const createClasses = () => {
         flexContentContainer,
         columnInputContainer,
         textControlContainer,
+        actionButtonContainerForTextField,
     };
 };

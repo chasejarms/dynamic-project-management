@@ -29,7 +29,10 @@ export interface IWeightedTicketTemplateCreationState {
         touched: boolean;
         error: string;
     };
-    sections: IWeightedSection[];
+    sections: {
+        value: IWeightedSection;
+        error: string;
+    }[];
 }
 
 const defaultRequiredError = "This field is required";
@@ -143,7 +146,18 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             }>
         ) => {
             const clonedSections = cloneDeep(state.sections);
-            clonedSections[action.payload.index] = action.payload.value;
+            const { index, value: updatedValue } = action.payload;
+
+            const updatedError = ControlValidator.string()
+                .required(defaultRequiredError)
+                .validate(updatedValue.label);
+
+            const updatedSection = {
+                value: updatedValue,
+                error: updatedError,
+            };
+
+            clonedSections[index] = updatedSection;
             return {
                 ...state,
                 sections: clonedSections,
@@ -158,18 +172,34 @@ export const weightedTicketTemplateCreationSlice = createSlice({
         ) => {
             const { index, value } = action.payload;
             const clonedSections = cloneDeep(state.sections);
+            let error = "";
+
+            if (value.type === "text") {
+                error = ControlValidator.string()
+                    .required(defaultRequiredError)
+                    .validate(value.label);
+            }
 
             if (index === -1) {
                 return {
                     ...state,
-                    sections: [value, ...clonedSections],
+                    sections: [
+                        {
+                            value,
+                            error,
+                        },
+                        ...clonedSections,
+                    ],
                 };
             } else {
                 const beforeSections = clonedSections.slice(0, index);
                 const afterSections = clonedSections.slice(index);
                 const updatedSections = [
                     ...beforeSections,
-                    value,
+                    {
+                        value,
+                        error,
+                    },
                     ...afterSections,
                 ];
                 return {
