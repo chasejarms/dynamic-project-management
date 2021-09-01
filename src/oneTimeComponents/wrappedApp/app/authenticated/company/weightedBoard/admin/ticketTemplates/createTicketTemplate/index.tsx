@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BottomPageToolbar } from "../../../../../../../../../components/bottomPageToolbar";
 import { WeightedBoardContainer } from "../../../../../../../../../components/weightedBoardContainer";
 import { WeightedPriorityTicketTemplateActions } from "../../../../../../../../../components/weightedPriorityTicketTemplateActions";
+import { WeightedTicketTemplateNumberControl } from "../../../../../../../../../components/weightedTicketTemplateNumberControl";
 import { WeightedTicketTemplateTextControl } from "../../../../../../../../../components/weightedTicketTemplateTextControl";
 import { IWrappedButtonProps } from "../../../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
@@ -300,7 +301,7 @@ export function CreateTicketTemplate() {
                                             <div
                                                 css={composeCSS(
                                                     classes.columnInputContainer,
-                                                    classes.textControlContainer
+                                                    classes.sectionControlContainer
                                                 )}
                                                 key={index}
                                             >
@@ -355,6 +356,61 @@ export function CreateTicketTemplate() {
                                     } else if (
                                         section.value.type === "number"
                                     ) {
+                                        return (
+                                            <div
+                                                css={composeCSS(
+                                                    classes.columnInputContainer,
+                                                    classes.sectionControlContainer
+                                                )}
+                                                key={index}
+                                            >
+                                                <div>
+                                                    <WeightedTicketTemplateNumberControl
+                                                        label="hello"
+                                                        labelError="world"
+                                                        allowOnlyIntegers={
+                                                            false
+                                                        }
+                                                        disabled={
+                                                            isCreatingTicketTemplate
+                                                        }
+                                                        required={false}
+                                                        onChangeLabelText={() =>
+                                                            null
+                                                        }
+                                                        onChangeMinValue={() =>
+                                                            null
+                                                        }
+                                                        onChangeMaxValue={() =>
+                                                            null
+                                                        }
+                                                        onChangeAllowOnlyIntegers={() =>
+                                                            null
+                                                        }
+                                                        onChangeRequiredValue={() =>
+                                                            null
+                                                        }
+                                                    />
+                                                </div>
+                                                <div
+                                                    css={
+                                                        classes.actionButtonContainerForTextField
+                                                    }
+                                                >
+                                                    <WeightedPriorityTicketTemplateActions
+                                                        disabled={
+                                                            isCreatingTicketTemplate
+                                                        }
+                                                        onClickAddAfter={onClickAddAfter(
+                                                            index
+                                                        )}
+                                                        onClickDelete={onClickDelete(
+                                                            index
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
                                     }
                                 }
                             )}
@@ -410,7 +466,7 @@ const createClasses = () => {
         grid-gap: 16px;
     `;
 
-    const textControlContainer = css`
+    const sectionControlContainer = css`
         margin-top: 16px;
     `;
 
@@ -427,7 +483,7 @@ const createClasses = () => {
         bottomToolbarContainer,
         flexContentContainer,
         columnInputContainer,
-        textControlContainer,
+        sectionControlContainer,
         actionButtonContainerForTextField,
     };
 };

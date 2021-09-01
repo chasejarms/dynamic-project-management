@@ -16,7 +16,7 @@ export interface IWrapperTextFieldProps {
     ) => void;
     error?: string;
     hint?: string;
-    value: string;
+    value: unknown;
     type?: string;
     testIds?: {
         helperTextContainer?: string;
