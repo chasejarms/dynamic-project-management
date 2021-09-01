@@ -64,12 +64,19 @@ function NonMemoizedWeightedTicketTemplateNumberControl(
                 error={props.maxError}
                 disabled={props.disabled}
             />
-            <WrappedTextField
-                value={props.alias}
-                label="Alias"
-                onChange={props.onChangeAlias}
-                error={props.aliasError}
-                disabled={props.disabled}
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        disabled={props.disabled}
+                        color="primary"
+                        checked={props.allowOnlyIntegers}
+                        onChange={(unused, checked) =>
+                            props.onChangeAllowOnlyIntegers(checked)
+                        }
+                        name="allowMultilineText"
+                    />
+                }
+                label="Allow Only Integers"
             />
             <FormControlLabel
                 control={
@@ -85,20 +92,15 @@ function NonMemoizedWeightedTicketTemplateNumberControl(
                 }
                 label="Required"
             />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        disabled={props.disabled}
-                        color="primary"
-                        checked={props.allowOnlyIntegers}
-                        onChange={(unused, checked) =>
-                            props.onChangeAllowOnlyIntegers(checked)
-                        }
-                        name="allowMultilineText"
-                    />
-                }
-                label="Allow Only Integers"
-            />
+            {props.required && (
+                <WrappedTextField
+                    value={props.alias}
+                    label="Alias"
+                    onChange={props.onChangeAlias}
+                    error={props.aliasError}
+                    disabled={props.disabled}
+                />
+            )}
         </div>
     );
 }

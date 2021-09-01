@@ -10,6 +10,7 @@ import { WeightedTicketTemplateTextControl } from "../../../../../../../../../co
 import { IWrappedButtonProps } from "../../../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { useControl } from "../../../../../../../../../hooks/useControl";
 import { IWeightedNumberSection } from "../../../../../../../../../models/weightedSections/weightedNumberSection";
 import { IWeightedTextSection } from "../../../../../../../../../models/weightedSections/weightedTextSection";
 import { IStoreState } from "../../../../../../../../../redux/storeState";
@@ -35,6 +36,27 @@ export function CreateTicketTemplate() {
     const dispatch = useDispatch();
     const weightedTicketTemplate = useSelector((store: IStoreState) => {
         return store.weightedTicketTemplateCreation;
+    });
+
+    const priorityWeightingCalculationFunction = useControl({
+        value: "",
+        onChange: (
+            event: React.ChangeEvent<{
+                name?: string | undefined;
+                value: unknown;
+            }>
+        ) => {
+            return event.target.value as string;
+        },
+        validatorError: (stringFunction: string) => {
+            // validate that the aliases exist
+
+            // validate that only the correct characters are in the function
+
+            // try running a function where you replace all of the words with numbers
+
+            return "";
+        },
     });
 
     const allControlsAreValid = useSelector((store: IStoreState) => {
@@ -285,6 +307,7 @@ export function CreateTicketTemplate() {
                 ...(weightedTicketTemplate.sections[index]
                     .value as IWeightedNumberSection),
                 required: checked,
+                alias: "",
             };
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
@@ -568,6 +591,27 @@ export function CreateTicketTemplate() {
                                 }
                             )}
                         </div>
+                        <div css={classes.priorityWeightAndPreviewContainer}>
+                            <div>
+                                <WrappedTextField
+                                    value={
+                                        priorityWeightingCalculationFunction.value
+                                    }
+                                    label="Priority Weighting Calculation"
+                                    onChange={
+                                        priorityWeightingCalculationFunction.onChange
+                                    }
+                                    error={
+                                        priorityWeightingCalculationFunction.isTouched &&
+                                        !priorityWeightingCalculationFunction.isValid
+                                            ? priorityWeightingCalculationFunction.errorMessage
+                                            : ""
+                                    }
+                                    disabled={isCreatingTicketTemplate}
+                                />
+                            </div>
+                            <div>world</div>
+                        </div>
                     </div>
                 </div>
                 <div css={classes.bottomToolbarContainer}>
@@ -590,7 +634,6 @@ const createClasses = () => {
     const gridContentContainer = css`
         display: grid;
         grid-template-columns: 1fr 1fr;
-        padding: 0 32px;
         flex-grow: 1;
     `;
 
@@ -604,9 +647,9 @@ const createClasses = () => {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        padding-top: 32px;
-        padding-bottom: 32px;
+        padding: 32px;
         overflow-y: auto;
+        padding-right: 16px;
     `;
 
     const bottomToolbarContainer = css`
@@ -615,7 +658,7 @@ const createClasses = () => {
 
     const columnInputContainer = css`
         display: grid;
-        grid-template-columns: 1fr 140px;
+        grid-template-columns: 1fr 96px;
         grid-gap: 16px;
     `;
 
@@ -629,6 +672,15 @@ const createClasses = () => {
         align-items: center;
     `;
 
+    const priorityWeightAndPreviewContainer = css`
+        flex-grow: 1;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-gap: 16px;
+        padding: 32px;
+        padding-left: 16px;
+    `;
+
     return {
         container,
         gridContentContainer,
@@ -638,5 +690,6 @@ const createClasses = () => {
         columnInputContainer,
         sectionControlContainer,
         actionButtonContainerForTextField,
+        priorityWeightAndPreviewContainer,
     };
 };

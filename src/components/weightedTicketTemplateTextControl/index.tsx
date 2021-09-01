@@ -41,20 +41,6 @@ function NonMemoizedTicketTemplateTextControl(
                     <Checkbox
                         disabled={props.disabled}
                         color="primary"
-                        checked={props.required}
-                        onChange={(unused, checked) =>
-                            props.onChangeRequiredValue(checked)
-                        }
-                        name="required"
-                    />
-                }
-                label="Required"
-            />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        disabled={props.disabled}
-                        color="primary"
                         checked={props.multiline}
                         onChange={(unused, checked) =>
                             props.onChangeMultilineValue(checked)
@@ -63,6 +49,20 @@ function NonMemoizedTicketTemplateTextControl(
                     />
                 }
                 label="Allow Multiline Text"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        disabled={props.disabled}
+                        color="primary"
+                        checked={props.required}
+                        onChange={(unused, checked) =>
+                            props.onChangeRequiredValue(checked)
+                        }
+                        name="required"
+                    />
+                }
+                label="Required"
             />
         </div>
     );
