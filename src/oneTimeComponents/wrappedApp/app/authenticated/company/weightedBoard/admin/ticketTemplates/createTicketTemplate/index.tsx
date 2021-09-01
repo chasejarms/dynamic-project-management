@@ -49,7 +49,42 @@ export function CreateTicketTemplate() {
             return event.target.value as string;
         },
         validatorError: (stringFunction: string) => {
-            // validate that the aliases exist
+            const trimmedWords = stringFunction.match(/\b\w+/g);
+
+            const wordsAreValid = trimmedWords
+                ? trimmedWords.every((trimmedWord) => {
+                      return trimmedWord.match(/^$|^[a-zA-Z]+$/);
+                  })
+                : true;
+
+            if (!wordsAreValid) {
+                return "The provided aliases are not valid.";
+            }
+
+            const validAliases = weightedTicketTemplate.sections
+                .filter((section) => {
+                    return (
+                        section.value.type === "number" && !!section.value.alias
+                    );
+                })
+                .reduce<{
+                    [aliasName: string]: boolean;
+                }>((mapping, section) => {
+                    const weightedNumberSectionWithControls = section as WeightedNumberSectionWithControls;
+                    mapping[
+                        weightedNumberSectionWithControls.value.alias
+                    ] = true;
+                    return mapping;
+                }, {});
+
+            const aliasesExist = trimmedWords
+                ? trimmedWords.every((trimmedWord) => {
+                      return validAliases[trimmedWord];
+                  })
+                : true;
+            if (!aliasesExist) {
+                return "The provided aliases do not exist on the ticket template";
+            }
 
             // validate that only the correct characters are in the function
 
