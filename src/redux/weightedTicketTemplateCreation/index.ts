@@ -50,12 +50,12 @@ const initialState: IWeightedTicketTemplateCreationState = {
     title: {
         value: "Title",
         touched: false,
-        error: defaultRequiredError,
+        error: "",
     },
     summary: {
         value: "Summary",
         touched: false,
-        error: defaultRequiredError,
+        error: "",
     },
     type: {
         value: "",
@@ -208,6 +208,20 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 };
             }
         },
+        deleteWeightedTicketTemplateCreationSection: (
+            state: IWeightedTicketTemplateCreationState,
+            action: PayloadAction<number>
+        ) => {
+            const sectionsWithoutRemovedSection = state.sections.filter(
+                (_, index) => {
+                    return index !== action.payload;
+                }
+            );
+            return {
+                ...state,
+                sections: sectionsWithoutRemovedSection,
+            };
+        },
     },
 });
 
@@ -219,6 +233,7 @@ export const {
     updateWeightedTicketTemplateCreationSummary,
     overrideWeightedTicketCreationSection,
     insertWeightedTicketCreationSection,
+    deleteWeightedTicketTemplateCreationSection,
 } = weightedTicketTemplateCreationSlice.actions;
 
 export default weightedTicketTemplateCreationSlice.reducer;

@@ -86,8 +86,7 @@ const createClasses = () => {
         position: relative;
         width: 80px;
         display: grid;
-        grid-template-columns: auto;
-        grid-gap: 8px;
+        grid-auto-flow: column;
     `;
 
     return {

@@ -13,6 +13,7 @@ import { IWeightedNumberSection } from "../../../../../../../../../models/weight
 import { IWeightedTextSection } from "../../../../../../../../../models/weightedSections/weightedTextSection";
 import { IStoreState } from "../../../../../../../../../redux/storeState";
 import {
+    deleteWeightedTicketTemplateCreationSection,
     insertWeightedTicketCreationSection,
     overrideWeightedTicketCreationSection,
     updateWeightedTicketTemplateCreationDescription,
@@ -88,7 +89,12 @@ export function CreateTicketTemplate() {
         };
     }
 
-    function onClickDelete(index: number, uniqueId: string) {}
+    function onClickDelete(index: number) {
+        return () => {
+            const action = deleteWeightedTicketTemplateCreationSection(index);
+            dispatch(action);
+        };
+    }
 
     useEffect(() => {
         if (!isCreatingTicketTemplate) return;
@@ -339,6 +345,9 @@ export function CreateTicketTemplate() {
                                                         onClickAddAfter={onClickAddAfter(
                                                             index
                                                         )}
+                                                        onClickDelete={onClickDelete(
+                                                            index
+                                                        )}
                                                     />
                                                 </div>
                                             </div>
@@ -346,7 +355,6 @@ export function CreateTicketTemplate() {
                                     } else if (
                                         section.value.type === "number"
                                     ) {
-                                        // do something
                                     }
                                 }
                             )}
@@ -398,7 +406,7 @@ const createClasses = () => {
 
     const columnInputContainer = css`
         display: grid;
-        grid-template-columns: 1fr 100px;
+        grid-template-columns: 1fr 140px;
         grid-gap: 16px;
     `;
 
