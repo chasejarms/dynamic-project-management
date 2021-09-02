@@ -43,11 +43,6 @@ export interface IWeightedTicketTemplateCreationState {
         touched: boolean;
         error: string;
     };
-    type: {
-        value: string;
-        touched: boolean;
-        error: string;
-    };
     sections: WeightedSectionWithControls[];
 }
 
@@ -72,11 +67,6 @@ const initialState: IWeightedTicketTemplateCreationState = {
         value: "Summary",
         touched: false,
         error: "",
-    },
-    type: {
-        value: "",
-        touched: false,
-        error: defaultRequiredError,
     },
     sections: [],
 };

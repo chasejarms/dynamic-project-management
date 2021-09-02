@@ -88,7 +88,7 @@ export function CreateTicketTemplate() {
             }
 
             const onlyAllowedCharactersArePresent = stringFunction.match(
-                /^$|^[a-zA-Z0-9\.\+\-\*\\() ]+$/
+                /^$|^[a-zA-Z0-9\.\+\-\*\/() ]+$/
             );
             if (!onlyAllowedCharactersArePresent) {
                 return "Only simple math values are allowed (parenthesis, decimals, +, -, /, *)";
