@@ -26,9 +26,9 @@ export function App() {
             <Route path="/sign-in" exact>
                 <SignIn />
             </Route>
-            {/* <Route path="/sign-up" exact>
+            <Route path="/sign-up" exact>
                 <SignUp />
-            </Route> */}
+            </Route>
             <Route path="/reset-password" exact>
                 <ResetPassword />
             </Route>

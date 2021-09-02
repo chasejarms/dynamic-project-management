@@ -92,9 +92,9 @@ export function Home() {
         },
         {
             onClick: () => {
-                history.push("/contact");
+                history.push("/sign-up");
             },
-            children: "Request Demo",
+            children: "Free 14 Day Trial",
             color: "primary",
             variant: "outlined",
         },
