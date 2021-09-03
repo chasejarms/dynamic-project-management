@@ -275,9 +275,7 @@ export function TicketHome() {
                                                 label={
                                                     ticketTemplateSection.label
                                                 }
-                                                multiline={
-                                                    ticketTemplateSection.multiline
-                                                }
+                                                multiline={false}
                                                 onStateChange={onStateChange}
                                                 refreshToken={refreshToken}
                                                 value={section.value}

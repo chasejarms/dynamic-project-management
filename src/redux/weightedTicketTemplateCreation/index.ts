@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ControlValidator } from "../../classes/ControlValidator";
 import { cloneDeep } from "lodash";
-import { IWeightedSection } from "../../models/weightedSections";
-import { IWeightedTextSection } from "../../models/weightedSections/weightedTextSection";
-import { IWeightedNumberSection } from "../../models/weightedSections/weightedNumberSection";
+import { Section } from "../../models/ticketTemplate/section";
+import { ITextSection } from "../../models/ticketTemplate/section/textSection";
+import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
 
 export interface WeightedTextSectionWithControls {
-    value: IWeightedTextSection;
+    value: ITextSection;
     error: string;
 }
 
 export interface WeightedNumberSectionWithControls {
-    value: IWeightedNumberSection;
+    value: INumberSection;
     labelError: string;
     minError: string;
     maxError: string;
@@ -145,7 +145,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
         overrideWeightedTicketCreationSection: (
             state: IWeightedTicketTemplateCreationState,
             action: PayloadAction<{
-                value: IWeightedSection;
+                value: Section;
                 index: number;
             }>
         ) => {
@@ -153,7 +153,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             const { index, value: updatedValue } = action.payload;
 
             if (updatedValue.type === "text") {
-                const weightedTextSection = updatedValue as IWeightedTextSection;
+                const weightedTextSection = updatedValue as ITextSection;
                 const updatedError = ControlValidator.string()
                     .required(defaultRequiredError)
                     .validate(updatedValue.label);
@@ -169,7 +169,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                     sections: clonedSections,
                 };
             } else if (updatedValue.type === "number") {
-                const weightedNumberSection = updatedValue as IWeightedNumberSection;
+                const weightedNumberSection = updatedValue as INumberSection;
                 const updatedLabelError = ControlValidator.string()
                     .required(defaultRequiredError)
                     .validate(updatedValue.label);
@@ -213,7 +213,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
         insertWeightedTicketCreationSection: (
             state: IWeightedTicketTemplateCreationState,
             action: PayloadAction<{
-                value: IWeightedSection;
+                value: Section;
                 index: number;
             }>
         ) => {
@@ -222,7 +222,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             let sectionWithControls: WeightedSectionWithControls;
 
             if (value.type === "text") {
-                const weightedTextSection = value as IWeightedTextSection;
+                const weightedTextSection = value as ITextSection;
                 const weightedTextSectionWithControls: WeightedTextSectionWithControls = {
                     value: weightedTextSection,
                     error: ControlValidator.string()
@@ -231,7 +231,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 };
                 sectionWithControls = weightedTextSectionWithControls;
             } else if (value.type === "number") {
-                const weightedNumberSection = value as IWeightedNumberSection;
+                const weightedNumberSection = value as INumberSection;
 
                 const updatedLabelError = ControlValidator.string()
                     .required(defaultRequiredError)

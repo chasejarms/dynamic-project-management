@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { IStarterGhostControlParamsMapping } from "../../models/ghostControlPattern/starterGhostControlParamsMapping";
-import { ITextSection } from "../../models/ticketTemplate/textSection";
+import { ITextSection } from "../../models/ticketTemplate/section/textSection";
 import { BoardAdminContainer } from "../boardAdminContainer";
 import { BottomPageToolbar } from "../bottomPageToolbar";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";

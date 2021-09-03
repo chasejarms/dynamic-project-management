@@ -13,7 +13,7 @@ import { IGhostControlParams } from "../../../../../../../../../models/ghostCont
 import { IGhostControlParamsMapping } from "../../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
 import { IStarterGhostControlParamsMapping } from "../../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
-import { ITextSection } from "../../../../../../../../../models/ticketTemplate/textSection";
+import { ITextSection } from "../../../../../../../../../models/ticketTemplate/section/textSection";
 import { ITicketTemplatePutRequest } from "../../../../../../../../../models/ticketTemplate/ticketTemplatePutRequest";
 import { generateUniqueId } from "../../../../../../../../../utils/generateUniqueId";
 
@@ -213,6 +213,7 @@ export function EditTicketTemplate() {
             type: "text",
             label: "",
             multiline: true,
+            required: true,
         };
 
         setStarterGhostControlParamsMapping(

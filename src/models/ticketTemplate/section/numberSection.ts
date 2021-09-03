@@ -1,4 +1,4 @@
-export interface IWeightedNumberSection {
+export interface INumberSection {
     type: "number";
     label: string;
     required: boolean;

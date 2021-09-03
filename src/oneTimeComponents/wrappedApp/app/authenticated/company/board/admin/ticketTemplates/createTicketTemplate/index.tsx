@@ -11,8 +11,8 @@ import { IWrappedButtonProps } from "../../../../../../../../../components/wrapp
 import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../../../../../../hooks/useControl";
-import { IWeightedNumberSection } from "../../../../../../../../../models/weightedSections/weightedNumberSection";
-import { IWeightedTextSection } from "../../../../../../../../../models/weightedSections/weightedTextSection";
+import { INumberSection } from "../../../../../../../../../models/ticketTemplate/section/numberSection";
+import { ITextSection } from "../../../../../../../../../models/ticketTemplate/section/textSection";
 import { IStoreState } from "../../../../../../../../../redux/storeState";
 import {
     deleteWeightedTicketTemplateCreationSection,
@@ -164,7 +164,7 @@ export function CreateTicketTemplate() {
     function onClickAddAfter(index: number) {
         return (type: string) => {
             if (type === "text") {
-                const weightedTextSection: IWeightedTextSection = {
+                const weightedTextSection: ITextSection = {
                     type: "text",
                     label: "Default Label",
                     multiline: true,
@@ -176,7 +176,7 @@ export function CreateTicketTemplate() {
                 });
                 dispatch(action);
             } else if (type === "number") {
-                const weightedNumberSection: IWeightedNumberSection = {
+                const weightedNumberSection: INumberSection = {
                     type: "number",
                     label: "Default Label",
                     required: false,
@@ -253,9 +253,9 @@ export function CreateTicketTemplate() {
             eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => {
             const value = eventType.target.value as string;
-            const updatedWeightedTextSection: IWeightedTextSection = {
+            const updatedWeightedTextSection: ITextSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedTextSection),
+                    .value as ITextSection),
                 label: value,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -268,9 +268,9 @@ export function CreateTicketTemplate() {
 
     function onChangeMultilineValue(index: number) {
         return (checked: boolean) => {
-            const updatedWeightedTextSection: IWeightedTextSection = {
+            const updatedWeightedTextSection: ITextSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedTextSection),
+                    .value as ITextSection),
                 multiline: checked,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -283,9 +283,9 @@ export function CreateTicketTemplate() {
 
     function onChangeRequiredValue(index: number) {
         return (checked: boolean) => {
-            const updatedWeightedTextSection: IWeightedTextSection = {
+            const updatedWeightedTextSection: ITextSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedTextSection),
+                    .value as ITextSection),
                 required: checked,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -301,9 +301,9 @@ export function CreateTicketTemplate() {
             eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => {
             const value = eventType.target.value as string;
-            const updatedWeightedNumberSection: IWeightedNumberSection = {
+            const updatedWeightedNumberSection: INumberSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedNumberSection),
+                    .value as INumberSection),
                 label: value,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -320,9 +320,9 @@ export function CreateTicketTemplate() {
         ) => {
             const value = eventType.target.value as string;
             const minValue = value !== "" ? Number(value) : undefined;
-            const updatedWeightedNumberSection: IWeightedNumberSection = {
+            const updatedWeightedNumberSection: INumberSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedNumberSection),
+                    .value as INumberSection),
                 minValue,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -339,9 +339,9 @@ export function CreateTicketTemplate() {
         ) => {
             const value = eventType.target.value as string;
             const maxValue = value !== "" ? Number(value) : undefined;
-            const updatedWeightedNumberSection: IWeightedNumberSection = {
+            const updatedWeightedNumberSection: INumberSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedNumberSection),
+                    .value as INumberSection),
                 maxValue,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -354,9 +354,9 @@ export function CreateTicketTemplate() {
 
     function onChangeAllowOnlyIntegers(index: number) {
         return (checked: boolean) => {
-            const updatedWeightedNumberSection: IWeightedNumberSection = {
+            const updatedWeightedNumberSection: INumberSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedNumberSection),
+                    .value as INumberSection),
                 allowOnlyIntegers: checked,
             };
             const action = overrideWeightedTicketCreationSection({
@@ -369,9 +369,9 @@ export function CreateTicketTemplate() {
 
     function onChangeNumberRequiredValue(index: number) {
         return (checked: boolean) => {
-            const updatedWeightedNumberSection: IWeightedNumberSection = {
+            const updatedWeightedNumberSection: INumberSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedNumberSection),
+                    .value as INumberSection),
                 required: checked,
                 alias: "",
             };
@@ -388,9 +388,9 @@ export function CreateTicketTemplate() {
             eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => {
             const value = eventType.target.value as string;
-            const updatedWeightedNumberSection: IWeightedNumberSection = {
+            const updatedWeightedNumberSection: INumberSection = {
                 ...(weightedTicketTemplate.sections[index]
-                    .value as IWeightedNumberSection),
+                    .value as INumberSection),
                 alias: value,
             };
             const action = overrideWeightedTicketCreationSection({

@@ -324,9 +324,7 @@ export function CreateTicket() {
                                         return (
                                             <WrappedTextField
                                                 key={index}
-                                                multiline={
-                                                    equivalentTicketTemplateSection.multiline
-                                                }
+                                                multiline={false}
                                                 value={section.value}
                                                 label={
                                                     equivalentTicketTemplateSection.label
