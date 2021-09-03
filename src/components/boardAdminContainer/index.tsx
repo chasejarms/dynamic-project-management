@@ -27,10 +27,6 @@ export function BoardAdminContainer(props: IBoardContainerProps) {
             text: "Ticket Templates",
             route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
         },
-        {
-            text: "Tags Manager",
-            route: `/app/company/${companyId}/board/${boardId}/admin/tags-manager`,
-        },
     ];
 
     return (

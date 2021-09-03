@@ -5,7 +5,6 @@ import { useIsCheckingForBoardAdminAccess } from "../../../../../../../hooks/use
 import { Columns } from "./columns";
 import { BoardUsers } from "./boardUsers";
 import { TicketTemplates } from "./ticketTemplates";
-import { TagsManager } from "./tagsManager";
 
 export function Admin() {
     const { url } = useRouteMatch();
@@ -18,9 +17,6 @@ export function Admin() {
             </Route>
             <Route path={`${url}/columns`} exact>
                 <Columns />
-            </Route>
-            <Route path={`${url}/tags-manager`} exact>
-                <TagsManager />
             </Route>
             <Route path={`${url}/ticket-templates`}>
                 <TicketTemplates />

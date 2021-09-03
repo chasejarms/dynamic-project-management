@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     },
 });
 
-export function TagsManager() {
+export function InitiativeManager() {
     const { companyId, boardId } = useAppRouterParams();
     const [allTagsForBoard, setAllTagsForBoard] = useState<ITag[]>([]);
     const [isLoadingTags, setIsLoadingTags] = useState(true);

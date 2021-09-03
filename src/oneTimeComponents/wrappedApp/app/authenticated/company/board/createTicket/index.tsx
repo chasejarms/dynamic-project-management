@@ -21,7 +21,6 @@ import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketC
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
-import { TicketTags } from "../../../../../../../components/ticketTags";
 import { ISimplifiedTag } from "../../../../../../../models/simplifiedTag";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 import { useDispatch, useSelector } from "react-redux";
@@ -371,11 +370,6 @@ export function CreateTicket() {
                                 </div>
                             )}
                         </div>
-                        <TicketTags
-                            tags={tagsState.simplifiedTags}
-                            allTagsForBoard={allTagsForBoard}
-                            onTagsChange={onTagsChange}
-                        />
                     </div>
                     <BottomPageToolbar
                         wrappedButtonProps={wrappedButtonProps}

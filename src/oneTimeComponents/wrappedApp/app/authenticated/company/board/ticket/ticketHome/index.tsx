@@ -24,7 +24,6 @@ import {
     SummarySection,
     summarySectionUniqueId,
 } from "../../../../../../../../components/summarySection";
-import { TicketTags } from "../../../../../../../../components/ticketTags";
 import { IGhostControlParams } from "../../../../../../../../models/ghostControlPattern/ghostControlParams";
 import { IGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
 import { IStarterGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
@@ -287,11 +286,6 @@ export function TicketHome() {
                                     })}
                                 </div>
                             </div>
-                            <TicketTags
-                                tags={ticket?.tags || []}
-                                allTagsForBoard={allTagsForBoard}
-                                onTagsChange={onTagsChange}
-                            />
                         </div>
                     </div>
                 </OverflowContentAndActionBar>

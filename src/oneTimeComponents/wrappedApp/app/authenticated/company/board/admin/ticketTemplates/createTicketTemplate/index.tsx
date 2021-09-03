@@ -28,6 +28,20 @@ import {
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import mathEvaluator from "math-expression-evaluator";
 import { BoardContainer } from "../../../../../../../../../components/boardContainer";
+import {
+    Paper,
+    Typography,
+    makeStyles,
+    Theme,
+    useTheme,
+} from "@material-ui/core";
+import { ControlValidator } from "../../../../../../../../../classes/ControlValidator";
+
+const useStyles = makeStyles({
+    previewPaper: {
+        height: "100%",
+    },
+});
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
@@ -387,7 +401,39 @@ export function CreateTicketTemplate() {
         };
     }
 
-    const classes = createClasses();
+    const ticketTitleControl = useControl({
+        value: "",
+        onChange: (
+            event: React.ChangeEvent<{
+                name?: string | undefined;
+                value: unknown;
+            }>
+        ) => {
+            return event.target.value as string;
+        },
+        validatorError: (value: string) => {
+            return ControlValidator.string().required().validate(value);
+        },
+    });
+
+    const summaryControl = useControl({
+        value: "",
+        onChange: (
+            event: React.ChangeEvent<{
+                name?: string | undefined;
+                value: unknown;
+            }>
+        ) => {
+            return event.target.value as string;
+        },
+        validatorError: (value: string) => {
+            return ControlValidator.string().required().validate(value);
+        },
+    });
+
+    const theme = useTheme();
+    const classes = createClasses(theme);
+    const materialClasses = useStyles();
     return (
         <BoardContainer>
             <div css={classes.container}>
@@ -679,7 +725,71 @@ export function CreateTicketTemplate() {
                                     disabled={isCreatingTicketTemplate}
                                 />
                             </div>
-                            <div>world</div>
+                            <div>
+                                <Paper className={materialClasses.previewPaper}>
+                                    <div css={classes.ticketPreviewContainer}>
+                                        <div
+                                            css={
+                                                classes.ticketPreviewHeaderContainer
+                                            }
+                                        >
+                                            <Typography variant="h6">
+                                                Ticket Preview
+                                            </Typography>
+                                            <div
+                                                css={
+                                                    classes.priorityScoreContainer
+                                                }
+                                            >
+                                                <Typography>
+                                                    Priority Score: NA
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                        <div
+                                            css={
+                                                classes.ticketPreviewContentContainer
+                                            }
+                                        >
+                                            <WrappedTextField
+                                                value={ticketTitleControl.value}
+                                                label={
+                                                    weightedTicketTemplate.title
+                                                        .value
+                                                }
+                                                onChange={
+                                                    ticketTitleControl.onChange
+                                                }
+                                                error={
+                                                    ticketTitleControl.isTouched &&
+                                                    !ticketTitleControl.isValid
+                                                        ? ticketTitleControl.errorMessage
+                                                        : ""
+                                                }
+                                                required
+                                            />
+                                            <WrappedTextField
+                                                value={summaryControl.value}
+                                                label={
+                                                    weightedTicketTemplate
+                                                        .summary.value
+                                                }
+                                                onChange={
+                                                    summaryControl.onChange
+                                                }
+                                                error={
+                                                    summaryControl.isTouched &&
+                                                    !summaryControl.isValid
+                                                        ? summaryControl.errorMessage
+                                                        : ""
+                                                }
+                                                required
+                                                multiline
+                                            />
+                                        </div>
+                                    </div>
+                                </Paper>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -693,7 +803,7 @@ export function CreateTicketTemplate() {
     );
 }
 
-const createClasses = () => {
+const createClasses = (theme: Theme) => {
     const container = css`
         flex-grow: 1;
         display: flex;
@@ -760,7 +870,35 @@ const createClasses = () => {
         padding-bottom: 8px;
     `;
 
+    const ticketPreviewContainer = css`
+        display: grid;
+        grid-template-rows: auto 1fr;
+    `;
+
+    const ticketPreviewHeaderContainer = css`
+        display: flex;
+        justify-content: space-between;
+        background-color: ${theme.palette.grey["200"]};
+        padding: 16px;
+    `;
+
+    const ticketPreviewContentContainer = css`
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        padding: 16px;
+    `;
+
+    const priorityScoreContainer = css`
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `;
+
     return {
+        ticketPreviewHeaderContainer,
+        ticketPreviewContentContainer,
         container,
         gridContentContainer,
         formBuilderContainer,
@@ -772,5 +910,7 @@ const createClasses = () => {
         priorityWeightAndPreviewContainer,
         individualChipContainer,
         validAliasContainer,
+        ticketPreviewContainer,
+        priorityScoreContainer,
     };
 };
