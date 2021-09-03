@@ -7,10 +7,9 @@ import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
 import { CompletedTickets } from "./completedTickets";
 import { CreateTicket } from "./createTicket";
-import { Priorities } from "./priorities";
 import { Ticket } from "./ticket";
 
-export function TagsBoard() {
+export function Board() {
     const { url } = useRouteMatch();
     const isCheckingForBoardAccess = useIsCheckingForBoardAccess();
 
@@ -21,9 +20,6 @@ export function TagsBoard() {
             </Route>
             <Route path={`${url}/create-ticket`} exact>
                 <CreateTicket />
-            </Route>
-            <Route path={`${url}/priorities`} exact>
-                <Priorities />
             </Route>
             <Route path={`${url}/backlog-tickets`} exact>
                 <BacklogTickets />

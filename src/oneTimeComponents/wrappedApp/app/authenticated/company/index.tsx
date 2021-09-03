@@ -3,12 +3,10 @@ import { jsx, css } from "@emotion/react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
 import { useIsCheckingForCompanyAccess } from "../../../../../hooks/useIsCheckingForCompanyAccess";
 import { AddCompany } from "./addCompany";
-import { TagsBoard } from "./tagsBoard";
 import { Boards } from "./boards";
 import { CompanyUsers } from "./companyUsers";
 import { CreateBoard } from "./createBoard";
-import { WeightedBoard } from "./weightedBoard";
-import { BoardRouter } from "./boardRouter";
+import { Board } from "./board";
 
 export function Company() {
     const { url } = useRouteMatch();
@@ -28,14 +26,8 @@ export function Company() {
             <Route path={`${url}/add-company`} exact>
                 <AddCompany />
             </Route>
-            <Route path={`${url}/board-router/:boardId`}>
-                <BoardRouter />
-            </Route>
-            <Route path={`${url}/tags-board/:boardId`}>
-                <TagsBoard />
-            </Route>
-            <Route path={`${url}/weighted-board/:boardId`}>
-                <WeightedBoard />
+            <Route path={`${url}/board/:boardId`}>
+                <Board />
             </Route>
         </Switch>
     );

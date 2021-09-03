@@ -44,9 +44,7 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
 
     function openBoard(boardId: string) {
         return () => {
-            history.push(
-                `/app/company/${companyId}/board-router/${boardId}/tickets`
-            );
+            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
         };
     }
 

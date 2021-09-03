@@ -11,10 +11,9 @@ import {
 } from "../../../../../../../components/ticketForBoard";
 import { IColumn } from "../../../../../../../models/column";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { prioritiesToPointValueMapping } from "../../../../../../../utils/prioritiesToPointValueMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
-import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
+import { BoardContainer } from "../../../../../../../components/boardContainer";
 
 export function BacklogTickets() {
     const { boardId, companyId } = useAppRouterParams();
@@ -30,18 +29,11 @@ export function BacklogTickets() {
 
         Promise.all([
             Api.tickets.getBacklogTickets(companyId, boardId),
-            Api.priorities.getPrioritiesForBoard(companyId, boardId),
             Api.columns.getColumns(companyId, boardId),
         ])
-            .then(([tickets, priorities, columnsFromDatabase]) => {
+            .then(([tickets, columnsFromDatabase]) => {
                 if (didCancel) return;
-                const prioritiesToPointValueMappingLocal = prioritiesToPointValueMapping(
-                    priorities
-                );
-                const augmentedUITickets = ticketsToAugmentedUITickets(
-                    tickets,
-                    prioritiesToPointValueMappingLocal
-                );
+                const augmentedUITickets = ticketsToAugmentedUITickets(tickets);
                 const sortedTicketsAfterRequest = sortTickets(
                     augmentedUITickets
                 );
@@ -72,7 +64,7 @@ export function BacklogTickets() {
     const classes = createClasses();
 
     return (
-        <TagsBoardContainer>
+        <BoardContainer>
             <div css={classes.pageContainer}>
                 <TicketContainer
                     title="Backlog Tickets"
@@ -114,7 +106,7 @@ export function BacklogTickets() {
                     )}
                 </TicketContainer>
             </div>
-        </TagsBoardContainer>
+        </BoardContainer>
     );
 }
 

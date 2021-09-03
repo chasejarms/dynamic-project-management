@@ -2,16 +2,10 @@ import { ITicket } from "../../models/ticket";
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
 
 export function ticketsToAugmentedUITickets(
-    tickets: ITicket[],
-    priorityToPointValueMapping: {
-        [priorityName: string]: number;
-    }
+    tickets: ITicket[]
 ): IAugmentedUITicket[] {
     return tickets.map((ticket) => {
-        const pointValue = tagsPointValue(
-            priorityToPointValueMapping,
-            ticket.tags
-        );
+        const pointValue = 0;
         const ticketForUI: IAugmentedUITicket = {
             ...ticket,
             pointValueFromTags: pointValue,
@@ -19,19 +13,4 @@ export function ticketsToAugmentedUITickets(
 
         return ticketForUI;
     });
-}
-
-function tagsPointValue(
-    tagsMapping: {
-        [priority: string]: number;
-    },
-    tags: {
-        color: string;
-        name: string;
-    }[]
-) {
-    return tags.reduce<number>((pointValue, tag) => {
-        const pointValueForTag = tagsMapping[tag.name] || 0;
-        return pointValue + pointValueForTag;
-    }, 0);
 }

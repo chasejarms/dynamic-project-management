@@ -120,40 +120,34 @@ function NonMemoizedAuthenticatedPageTopBar(
                 });
             }
 
-            const isWeightedBoard = selectedBoard
-                ? selectedBoard.priorityType == BoardPriorityType.Weighted
-                : false;
-            const routeFragment = isWeightedBoard
-                ? "weighted-board"
-                : "tags-board";
             if (!!boardId) {
                 const boardText = selectedBoard
                     ? `Board (${selectedBoard.name})`
                     : "Board";
                 breadcrumbs.push({
                     text: boardText,
-                    route: `/app/company/${companyId}/${routeFragment}/${boardId}/tickets`,
+                    route: `/app/company/${companyId}/board/${boardId}/tickets`,
                 });
             }
 
             if (!!boardId && location.pathname.includes("/admin/")) {
                 breadcrumbs.push({
                     text: "Admin",
-                    route: `/app/company/${companyId}/${routeFragment}/${boardId}/admin/board-users`,
+                    route: `/app/company/${companyId}/board/${boardId}/admin/board-admins`,
                 });
             }
 
             if (!!ticketId) {
                 breadcrumbs.push({
                     text: "Ticket",
-                    route: `/app/company/${companyId}/${routeFragment}/${boardId}/ticket/${ticketId}/data`,
+                    route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
                 });
             }
 
             if (!!ticketTemplateId) {
                 breadcrumbs.push({
                     text: "Ticket Templates",
-                    route: `/app/company/${companyId}/${routeFragment}/${boardId}/admin/ticket-templates`,
+                    route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
                 });
             }
         }

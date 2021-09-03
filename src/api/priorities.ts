@@ -1,13 +1,8 @@
 import { ITag } from "../models/tag";
 import { environmentVariables } from "../environmentVariables";
-import { IBoardPriority } from "../models/boardPriority";
 import Axios from "axios";
 
 export interface IPriorityApi {
-    getPrioritiesForBoard(
-        companyId: string,
-        boardId: string
-    ): Promise<string[]>;
     updatePrioritiesForBoard(
         companyId: string,
         boardId: string,
@@ -34,23 +29,6 @@ export interface IPriorityApi {
 }
 
 export class PriorityApi implements IPriorityApi {
-    public async getPrioritiesForBoard(companyId: string, boardId: string) {
-        const axiosResponse = await Axios.get(
-            `${environmentVariables.baseAuthenticatedApiUrl}/getPriorityListForBoard`,
-            {
-                params: {
-                    companyId,
-                    boardId,
-                },
-            }
-        );
-
-        const priorityList = (axiosResponse.data as {
-            item: IBoardPriority;
-        }).item.priorities;
-        return priorityList;
-    }
-
     public async updatePrioritiesForBoard(
         companyId: string,
         boardId: string,

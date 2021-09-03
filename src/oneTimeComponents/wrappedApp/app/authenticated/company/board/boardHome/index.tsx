@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
 import { BoardColumnsContainer } from "../../../../../../../components/boardColumnsContainer";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
-import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
+import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
 import {
     IAugmentedUITicket,
@@ -48,14 +48,12 @@ export function BoardHome() {
         Promise.all([
             Api.columns.getColumns(companyId, boardId),
             Api.tickets.getInProgressTickets(companyId, boardId),
-            Api.priorities.getPrioritiesForBoard(companyId, boardId),
-            Api.users.getAllUsersForBoard(companyId, boardId),
+            Api.users.getAllUsersForCompany(companyId),
         ])
             .then(
                 ([
                     columnsFromDatabase,
                     inProgressTickets,
-                    priorities,
                     usersFromDatabase,
                 ]) => {
                     if (didCancel) return;
@@ -64,7 +62,6 @@ export function BoardHome() {
                     setUsers(sortedUsers);
 
                     const columnsMapping = createColumnsMapping(
-                        priorities,
                         columnsFromDatabase,
                         inProgressTickets
                     );
@@ -194,7 +191,7 @@ export function BoardHome() {
     const classes = createClasses();
 
     return (
-        <TagsBoardContainer>
+        <BoardContainer>
             {isLoadingRequiredInformation ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
@@ -253,7 +250,7 @@ export function BoardHome() {
                     })}
                 </BoardColumnsContainer>
             )}
-        </TagsBoardContainer>
+        </BoardContainer>
     );
 }
 

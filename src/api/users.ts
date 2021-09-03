@@ -6,7 +6,6 @@ import { BoardRightsAction } from "../models/boardRightsAction";
 
 export interface IUsersApi {
     getAllUsersForCompany(companyId: string): Promise<IUser[]>;
-    getAllUsersForBoard(companyId: string, boardId: string): Promise<IUser[]>;
     updateCompanyUserRights(
         companyId: string,
         userToUpdateShortenedItemId: string,

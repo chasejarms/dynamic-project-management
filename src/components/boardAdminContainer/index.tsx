@@ -16,20 +16,20 @@ export function BoardAdminContainer(props: IBoardContainerProps) {
 
     const navItems: IAuthenticatedNavItem[] = [
         {
-            text: "Board Rights",
-            route: `/app/company/${companyId}/tags-board/${boardId}/admin/board-users`,
+            text: "Board Admins",
+            route: `/app/company/${companyId}/board/${boardId}/admin/board-admins`,
         },
         {
             text: "Columns",
-            route: `/app/company/${companyId}/tags-board/${boardId}/admin/columns`,
+            route: `/app/company/${companyId}/board/${boardId}/admin/columns`,
         },
         {
             text: "Ticket Templates",
-            route: `/app/company/${companyId}/tags-board/${boardId}/admin/ticket-templates`,
+            route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
         },
         {
             text: "Tags Manager",
-            route: `/app/company/${companyId}/tags-board/${boardId}/admin/tags-manager`,
+            route: `/app/company/${companyId}/board/${boardId}/admin/tags-manager`,
         },
     ];
 

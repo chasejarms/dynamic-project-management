@@ -34,7 +34,7 @@ import {
     updateSection,
     updateStartingColumn,
 } from "../../../../../../../redux/ticketCreation";
-import { TagsBoardContainer } from "../../../../../../../components/tagsBoardContainer";
+import { BoardContainer } from "../../../../../../../components/boardContainer";
 
 export function CreateTicket() {
     const history = useHistory();
@@ -213,7 +213,7 @@ export function CreateTicket() {
     }, [ticketCreateRequest]);
 
     function navigateToBoard() {
-        history.push(`/app/company/${companyId}/tags-board/${boardId}/tickets`);
+        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
     }
 
     const [tagsState, setTagsState] = useState<{
@@ -260,7 +260,7 @@ export function CreateTicket() {
     ];
 
     return (
-        <TagsBoardContainer>
+        <BoardContainer>
             {isLoadingTicketTemplates ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
@@ -392,7 +392,7 @@ export function CreateTicket() {
                     </WrappedButton>
                 }
             />
-        </TagsBoardContainer>
+        </BoardContainer>
     );
 }
 

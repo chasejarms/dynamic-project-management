@@ -132,7 +132,7 @@ export function TicketTemplatesHome() {
 
     function navigateToCreateTicketTemplatePage() {
         history.push(
-            `/app/company/${companyId}/tags-board/${boardId}/admin/ticket-templates/create-ticket-template`
+            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/create-ticket-template`
         );
     }
 

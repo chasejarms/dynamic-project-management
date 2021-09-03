@@ -1,21 +1,11 @@
-import { cloneDeep } from "lodash";
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
 import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
 import { ITicket } from "../../models/ticket";
-import { prioritiesToPointValueMapping } from "../prioritiesToPointValueMapping";
 import { sortTickets } from "../sortTickets";
 import { ticketsToAugmentedUITickets } from "../ticketsToAugmentedUITickets";
 
-export function createColumnsMapping(
-    priorities: string[],
-    columns: IColumn[],
-    tickets: ITicket[]
-) {
-    const prioritiesToPointValueMappingLocal = prioritiesToPointValueMapping(
-        cloneDeep(priorities)
-    );
-
+export function createColumnsMapping(columns: IColumn[], tickets: ITicket[]) {
     const columnsMapping = columns.reduce<{
         [columnId: string]: {
             columnInformation: IColumn;
@@ -29,10 +19,7 @@ export function createColumnsMapping(
         return mapping;
     }, {});
 
-    const augmentedUITickets = ticketsToAugmentedUITickets(
-        tickets,
-        prioritiesToPointValueMappingLocal
-    );
+    const augmentedUITickets = ticketsToAugmentedUITickets(tickets);
     augmentedUITickets.forEach((ticketForUI) => {
         const columnId = ticketForUI.columnId;
         if (columnId && !!columnsMapping[columnId]) {

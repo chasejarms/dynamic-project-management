@@ -47,43 +47,6 @@ export function BoardUsers() {
         };
     }, []);
 
-    function onChangeIsBoardUser(user: IUser) {
-        return () => {
-            const updatedBoardRights = cloneDeep(user.boardRights);
-            const userHasBoardRights = updatedBoardRights[boardId];
-            if (userHasBoardRights) {
-                delete updatedBoardRights[boardId];
-            } else {
-                updatedBoardRights[boardId] = {
-                    isAdmin: false,
-                };
-            }
-            setUsers((previousUsers) => {
-                return previousUsers.map((compareUser) => {
-                    if (compareUser.shortenedItemId === user.shortenedItemId) {
-                        return {
-                            ...compareUser,
-                            boardRights: updatedBoardRights,
-                        };
-                    } else {
-                        return compareUser;
-                    }
-                });
-            });
-
-            Api.users
-                .updateUserBoardRights(
-                    companyId,
-                    boardId,
-                    user.shortenedItemId,
-                    userHasBoardRights
-                        ? BoardRightsAction.None
-                        : BoardRightsAction.User
-                )
-                .then(() => null);
-        };
-    }
-
     function onChangeIsBoardAdmin(user: IUser) {
         return () => {
             const updatedBoardRights = cloneDeep(user.boardRights);
@@ -132,7 +95,6 @@ export function BoardUsers() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>Board User</TableCell>
                                     <TableCell>Board Admin</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -150,32 +112,6 @@ export function BoardUsers() {
                                     return (
                                         <TableRow key={user.itemId}>
                                             <TableCell>{user.name}</TableCell>
-                                            <TableCell>
-                                                <div
-                                                    css={
-                                                        classes.relativePositionedTableCell
-                                                    }
-                                                >
-                                                    <div
-                                                        css={
-                                                            classes.absolutePositionedTableCell
-                                                        }
-                                                    >
-                                                        <Checkbox
-                                                            checked={
-                                                                isBoardUser
-                                                            }
-                                                            disabled={
-                                                                isBoardAdmin ||
-                                                                isCurrentSignedInUser
-                                                            }
-                                                            onChange={onChangeIsBoardUser(
-                                                                user
-                                                            )}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </TableCell>
                                             <TableCell>
                                                 <div
                                                     css={

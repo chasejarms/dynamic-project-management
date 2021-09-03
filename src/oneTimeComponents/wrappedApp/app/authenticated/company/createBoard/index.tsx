@@ -65,7 +65,7 @@ export function CreateBoard() {
     }
 
     function openBoard(boardId: string) {
-        history.push(`/app/company/${companyId}/tags-board/${boardId}/tickets`);
+        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
     }
 
     const dispatch = useDispatch();

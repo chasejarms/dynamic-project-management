@@ -17,11 +17,11 @@ export function TicketPageWrapper(props: ITicketPageWrapperProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Data",
-            route: `/app/company/${companyId}/tags-board/${boardId}/ticket/${ticketId}/data`,
+            route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
         },
         {
             text: "Images",
-            route: `/app/company/${companyId}/tags-board/${boardId}/ticket/${ticketId}/images`,
+            route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/images`,
         },
     ];
     return (

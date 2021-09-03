@@ -4,7 +4,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BottomPageToolbar } from "../../../../../../../../../components/bottomPageToolbar";
 import { TagChip } from "../../../../../../../../../components/tagChip";
-import { WeightedBoardContainer } from "../../../../../../../../../components/weightedBoardContainer";
 import { WeightedPriorityTicketTemplateActions } from "../../../../../../../../../components/weightedPriorityTicketTemplateActions";
 import { WeightedTicketTemplateNumberControl } from "../../../../../../../../../components/weightedTicketTemplateNumberControl";
 import { WeightedTicketTemplateTextControl } from "../../../../../../../../../components/weightedTicketTemplateTextControl";
@@ -28,6 +27,7 @@ import {
 } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import mathEvaluator from "math-expression-evaluator";
+import { BoardContainer } from "../../../../../../../../../components/boardContainer";
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
@@ -389,7 +389,7 @@ export function CreateTicketTemplate() {
 
     const classes = createClasses();
     return (
-        <WeightedBoardContainer>
+        <BoardContainer>
             <div css={classes.container}>
                 <div css={classes.flexContentContainer}>
                     <div css={classes.gridContentContainer}>
@@ -689,7 +689,7 @@ export function CreateTicketTemplate() {
                     />
                 </div>
             </div>
-        </WeightedBoardContainer>
+        </BoardContainer>
     );
 }
 

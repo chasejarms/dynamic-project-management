@@ -1,27 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useTheme, Theme, Typography } from "@material-ui/core";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { LandingPageCommonSection } from "../../../../components/landingPageCommonSection";
-import { BoardColumnsContainer } from "../../../../components/boardColumnsContainer";
-import {
-    mockColumnData,
-    mockPriorities,
-    mockTagsMapping,
-    mockTickets,
-} from "./mockData";
-import { TicketContainer } from "../../../../components/ticketContainer";
-import { useEffect, useState } from "react";
-import { createColumnsMapping } from "../../../../utils/createColumnsMapping";
-import {
-    IAugmentedUITicket,
-    TicketForBoard,
-} from "../../../../components/ticketForBoard";
-import { TicketType } from "../../../../models/ticket/ticketType";
-import { PrioritizedTagsCard } from "../../../../components/prioritizedTagsCard";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { IColumn } from "../../../../models/column";
-import { cloneDeep } from "lodash";
 import { IWrappedButtonProps } from "../../../../components/wrappedButton";
 import { useHistory } from "react-router-dom";
 import { PrioritizationIsToughSvg } from "../../../../components/landingPageSvgs/prioritizationIsTough";
@@ -31,70 +11,13 @@ import { RelativePrioritization } from "../../../../components/landingPageSvgs/r
 import { useBreakpoint } from "../../../../hooks/useBreakpoint";
 
 export function Home() {
-    const theme = useTheme();
-    const classes = createClasses(theme);
-    const [columnsMapping, setColumnsMapping] = useState<{
-        [columnId: string]: {
-            columnInformation: IColumn;
-            tickets: IAugmentedUITicket[];
-        };
-    }>({});
-    const [priorityList, setPriorityList] = useState(cloneDeep(mockPriorities));
-
-    useEffect(() => {
-        const updatedColumnsMapping = createColumnsMapping(
-            priorityList,
-            mockColumnData,
-            mockTickets
-        );
-        setColumnsMapping(updatedColumnsMapping);
-    }, [priorityList]);
-
-    function onDragEnd(result: DropResult) {
-        const { destination, source, draggableId } = result;
-        if (!destination) return;
-
-        setPriorityList((existingPriorityList) => {
-            const arrayBeforeItem = existingPriorityList.slice(0, source.index);
-            const arrayAfterItem = existingPriorityList.slice(source.index + 1);
-            const arrayWithItemRemoved = arrayBeforeItem.concat(arrayAfterItem);
-
-            const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
-                0,
-                destination.index
-            );
-            const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
-                destination.index
-            );
-            const actualTag = draggableId.replace("PRIORITIZEDCOLUMN-", "");
-            const updatedPriorities = arrayBeforeInsertedIndex
-                .concat([actualTag])
-                .concat(arrayAfterInsertedIndex);
-
-            return updatedPriorities;
-        });
-    }
-
     const history = useHistory();
-    function scrollToExample() {
-        const element = document.getElementById("example-section");
-        if (!element) return;
-        element.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-        });
-    }
     const wrappedButtonProps: IWrappedButtonProps[] = [
         {
-            onClick: scrollToExample,
-            children: "See An Example Project",
-            color: "primary",
-        },
-        {
             onClick: () => {
-                history.push("/sign-up");
+                history.push("/contact");
             },
-            children: "Free 14 Day Trial",
+            children: "Schedule A Demo",
             color: "primary",
             variant: "outlined",
         },
@@ -147,146 +70,6 @@ export function Home() {
                 wrappedButtonProps={wrappedButtonProps}
                 svgContent={<RelativePrioritization size={size} />}
             />
-            <div css={classes.exampleSection} id="example-section">
-                <div css={classes.exampleTextContainer}>
-                    <LandingPageCommonSection
-                        title={"Example Board"}
-                        textSections={[
-                            "Reorder any of the priorities below to see the board adjust in real time. In a live project, adjusting the priorities will also reorganize the board backlog.",
-                        ]}
-                        placeContent="left"
-                        hideTopAndBottomPadding
-                        wrappedButtonProps={[wrappedButtonProps[1]]}
-                    />
-                </div>
-                <div css={classes.exampleOverflow}>
-                    <div css={classes.prioritiesContainer}>
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <PrioritizedTagsCard
-                                isLoading={false}
-                                canDragTags={true}
-                                tagsPriorityList={priorityList}
-                                tagsPriorityListMapping={mockTagsMapping}
-                            />
-                        </DragDropContext>
-                    </div>
-                    <div css={classes.boardTicketsContainer}>
-                        <BoardColumnsContainer>
-                            {mockColumnData.map((column) => {
-                                const dataIsReady = !!columnsMapping[column.id];
-                                if (!dataIsReady) return null;
-                                const tickets =
-                                    columnsMapping[column.id].tickets;
-
-                                return (
-                                    <TicketContainer
-                                        key={column.id}
-                                        title={column.name}
-                                    >
-                                        {tickets.map((ticket, index) => {
-                                            const isFirstTicket = index === 0;
-                                            return (
-                                                <TicketForBoard
-                                                    key={ticket.title}
-                                                    ticket={ticket}
-                                                    isFirstTicket={
-                                                        isFirstTicket
-                                                    }
-                                                    ticketType={
-                                                        TicketType.InProgress
-                                                    }
-                                                    onUpdateTicketColumn={() =>
-                                                        null
-                                                    }
-                                                    onDeleteTicket={() => null}
-                                                    columnOptions={
-                                                        mockColumnData
-                                                    }
-                                                    onClickDemoTicket={() =>
-                                                        null
-                                                    }
-                                                />
-                                            );
-                                        })}
-                                    </TicketContainer>
-                                );
-                            })}
-                        </BoardColumnsContainer>
-                    </div>
-                </div>
-            </div>
         </NonAuthenticatedPageContainer>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const exampleOverflow = css`
-        width: 100%;
-        height: 600px;
-        display: flex;
-        flex-direction: row;
-        background-color: ${theme.palette.grey["200"]};
-    `;
-
-    const exampleTextContainer = css`
-        background-color: ${theme.palette.grey["200"]};
-        padding-top: 40px;
-    `;
-
-    const prioritiesContainer = css`
-        flex: 0 0 auto;
-        height: 100%;
-        padding-top: 24px;
-        padding-left: 24px;
-        padding-bottom: 24px;
-    `;
-
-    const boardTicketsContainer = css`
-        flex-grow: 1;
-        height: 100%;
-        display: flex;
-    `;
-
-    const headerTextContainer = css`
-        padding-bottom: 16px;
-    `;
-
-    const exampleDescriptionTextContainer = css`
-        width: 700px;
-    `;
-
-    const exampleSection = css`
-        width: 100%;
-        overflow-x: auto;
-        background-color: ${theme.palette.grey["200"]};
-    `;
-
-    const finalCTAContainer = css`
-        padding: 24px;
-        background-color: white;
-        display: flex;
-        justify-content: center;
-    `;
-
-    const innerCTAContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const ctaTextContainer = css`
-        margin-right: 24px;
-    `;
-
-    return {
-        exampleOverflow,
-        prioritiesContainer,
-        boardTicketsContainer,
-        exampleTextContainer,
-        headerTextContainer,
-        exampleDescriptionTextContainer,
-        exampleSection,
-        finalCTAContainer,
-        innerCTAContainer,
-        ctaTextContainer,
-    };
-};

@@ -14,11 +14,7 @@ export function useAppRouterParams() {
         const nextRouteFragment = routeSplitBySlashes[index + 1];
         if (routeFragment === "company") {
             companyId = nextRouteFragment;
-        } else if (
-            routeFragment === "tags-board" ||
-            routeFragment === "board-router" ||
-            routeFragment == "weighted-board"
-        ) {
+        } else if (routeFragment === "board") {
             boardId = nextRouteFragment;
         } else if (routeFragment === "ticket") {
             ticketId = nextRouteFragment;
