@@ -38,7 +38,10 @@ import {
 import { StringValidator } from "../../../../../../../../../classes/StringValidator";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 import { Ticket } from "../../../../../../../../../components/ticket";
-import { ticketPreviewId } from "../../../../../../../../../redux/ticket";
+import {
+    setInitialTicketData,
+    ticketPreviewId,
+} from "../../../../../../../../../redux/ticket";
 
 const useStyles = makeStyles({
     previewPaper: {
@@ -434,24 +437,51 @@ export function CreateTicketTemplate() {
         },
     });
 
-    const ticketTemplate: ITicketTemplate = {
-        itemId: "",
-        belongsTo: "",
-        shortenedItemId: "",
-        name: weightedTicketTemplate.name.value,
-        description: weightedTicketTemplate.description.value,
-        title: {
-            label: weightedTicketTemplate.title.value,
-        },
-        summary: {
-            label: weightedTicketTemplate.summary.value,
-        },
-        sections: weightedTicketTemplate.sections.map((section) => {
-            return section.value;
-        }),
-    };
+    useEffect(() => {
+        const ticketTemplate: ITicketTemplate = {
+            itemId: "",
+            belongsTo: "",
+            shortenedItemId: "",
+            name: weightedTicketTemplate.name.value,
+            description: weightedTicketTemplate.description.value,
+            title: {
+                label: weightedTicketTemplate.title.value,
+            },
+            summary: {
+                label: weightedTicketTemplate.summary.value,
+            },
+            sections: weightedTicketTemplate.sections.map((section) => {
+                return section.value;
+            }),
+        };
 
-    const ticket = useSelector((store: IStoreState) => {
+        const action = setInitialTicketData({
+            ticketTemplate,
+            ticketId: ticketPreviewId,
+            ticket: {
+                title: {
+                    value: "",
+                    touched: false,
+                    error: "",
+                },
+                summary: {
+                    value: "",
+                    touched: false,
+                    error: "",
+                },
+                sections: weightedTicketTemplate.sections.map((section) => {
+                    return {
+                        value: "",
+                        touched: false,
+                        error: "",
+                    };
+                }),
+            },
+        });
+        dispatch(action);
+    }, [weightedTicketTemplate]);
+
+    const ticketAndTicketTemplate = useSelector((store: IStoreState) => {
         return store.ticket[ticketPreviewId];
     });
 
@@ -771,8 +801,12 @@ export function CreateTicketTemplate() {
                                             </div>
                                         </div>
                                         <Ticket
-                                            ticket={ticket}
-                                            ticketTemplate={ticketTemplate}
+                                            ticket={
+                                                ticketAndTicketTemplate.ticket
+                                            }
+                                            ticketTemplate={
+                                                ticketAndTicketTemplate.ticketTemplate
+                                            }
                                             ticketId={ticketPreviewId}
                                         />
                                     </div>

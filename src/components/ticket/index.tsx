@@ -56,6 +56,13 @@ export function Ticket(props: ITicketProps) {
         dispatch(action);
     }
 
+    function onChangeTicketSectionValue(
+        event: React.ChangeEvent<{
+            name?: string | undefined;
+            value: unknown;
+        }>
+    ) {}
+
     return (
         <div css={classes.ticketPreviewContentContainer}>
             <WrappedTextField
@@ -73,6 +80,25 @@ export function Ticket(props: ITicketProps) {
                 required
                 multiline
             />
+            {ticketTemplate.sections.map((ticketTemplateSection, index) => {
+                const sectionFromTicket = props.ticket!.sections[index];
+                if (ticketTemplateSection.type === "number") {
+                    return (
+                        <WrappedTextField
+                            type="number"
+                            value={sectionFromTicket.value}
+                            label={ticketTemplateSection.label}
+                            onChange={onChangeTicketSectionValue}
+                            error={
+                                sectionFromTicket.touched
+                                    ? sectionFromTicket.error
+                                    : ""
+                            }
+                            required={ticketTemplateSection.required}
+                        />
+                    );
+                }
+            })}
         </div>
     );
 }

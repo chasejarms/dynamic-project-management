@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StringValidator } from "../../classes/StringValidator";
 import { cloneDeep } from "lodash";
 import { Section } from "../../models/ticketTemplate/section";
+import { ITicketTemplate } from "../../models/ticketTemplate";
 
 export const ticketPreviewId = "TICKET_PREVIEW";
 export const ticketCreateId = "TICKET_CREATE";
@@ -25,23 +26,42 @@ export interface ITicket {
 }
 
 export interface ITicketMappingState {
-    [ticketId: string]: ITicket;
+    [ticketId: string]: {
+        ticket: ITicket;
+        ticketTemplate: ITicketTemplate;
+    };
 }
 
 const defaultRequiredError = "This field is required";
 const initialState: ITicketMappingState = {
     TICKET_PREVIEW: {
-        title: {
-            value: "",
-            touched: false,
-            error: defaultRequiredError,
+        ticket: {
+            title: {
+                value: "",
+                touched: false,
+                error: defaultRequiredError,
+            },
+            summary: {
+                value: "",
+                touched: false,
+                error: defaultRequiredError,
+            },
+            sections: [],
         },
-        summary: {
-            value: "",
-            touched: false,
-            error: defaultRequiredError,
+        ticketTemplate: {
+            itemId: "",
+            belongsTo: "",
+            shortenedItemId: "",
+            name: "",
+            description: "",
+            title: {
+                label: "Title",
+            },
+            summary: {
+                label: "Summary",
+            },
+            sections: [],
         },
-        sections: [],
     },
 };
 
@@ -53,11 +73,15 @@ export const ticketMappingSlice = createSlice({
             state: ITicketMappingState,
             action: PayloadAction<{
                 ticket: ITicket;
+                ticketTemplate: ITicketTemplate;
                 ticketId: string;
             }>
         ) => {
             const clonedState = cloneDeep(state);
-            clonedState[action.payload.ticketId] = action.payload.ticket;
+            clonedState[action.payload.ticketId] = {
+                ticket: action.payload.ticket,
+                ticketTemplate: action.payload.ticketTemplate,
+            };
             return clonedState;
         },
         updateTicketTitle: (
@@ -71,15 +95,19 @@ export const ticketMappingSlice = createSlice({
                 .required(defaultRequiredError)
                 .validate(action.payload.value);
             const clonedState = cloneDeep(state);
-            const existingTicket = clonedState[action.payload.ticketId];
+            const existingTicketAndTicketTemplate =
+                clonedState[action.payload.ticketId];
             return {
                 ...clonedState,
                 [action.payload.ticketId]: {
-                    ...existingTicket,
-                    title: {
-                        touched: true,
-                        value: action.payload.value,
-                        error,
+                    ...existingTicketAndTicketTemplate,
+                    ticket: {
+                        ...existingTicketAndTicketTemplate.ticket,
+                        title: {
+                            touched: true,
+                            value: action.payload.value,
+                            error,
+                        },
                     },
                 },
             };
@@ -95,15 +123,19 @@ export const ticketMappingSlice = createSlice({
                 .required(defaultRequiredError)
                 .validate(action.payload.value);
             const clonedState = cloneDeep(state);
-            const existingTicket = clonedState[action.payload.ticketId];
+            const existingTicketAndTicketTemplate =
+                clonedState[action.payload.ticketId];
             return {
                 ...clonedState,
                 [action.payload.ticketId]: {
-                    ...existingTicket,
-                    summary: {
-                        touched: true,
-                        value: action.payload.value,
-                        error,
+                    ...existingTicketAndTicketTemplate,
+                    ticket: {
+                        ...existingTicketAndTicketTemplate.ticket,
+                        summary: {
+                            touched: true,
+                            value: action.payload.value,
+                            error,
+                        },
                     },
                 },
             };
@@ -114,11 +146,13 @@ export const ticketMappingSlice = createSlice({
                 index: number;
                 value: string | number;
                 ticketId: string;
-                section: Section;
+                updatedTicketTemplate: ITicketTemplate;
             }>
         ) => {
             const clonedState = cloneDeep(state);
-            const existingTicket = clonedState[action.payload.ticketId];
+            const { ticket: existingTicket } = clonedState[
+                action.payload.ticketId
+            ];
             const previousSections = existingTicket.sections;
             const beforeSectionToInsert = previousSections.slice(
                 0,
@@ -129,14 +163,17 @@ export const ticketMappingSlice = createSlice({
             );
 
             let error = "";
-            const { section } = action.payload;
+            const section =
+                action.payload.updatedTicketTemplate.sections[
+                    action.payload.index
+                ];
             if (section.type === "text") {
                 if (section.required) {
                     error = new StringValidator()
                         .required()
                         .validate(action.payload.value.toString());
                 }
-            } else if (action.payload.section.type === "number") {
+            } else if (section.type === "number") {
             }
 
             const sectionToInsert = {
@@ -150,11 +187,15 @@ export const ticketMappingSlice = createSlice({
                 sectionToInsert,
                 ...afterSectionToInsert,
             ];
+
             return {
                 ...clonedState,
                 [action.payload.ticketId]: {
-                    ...existingTicket,
-                    sections: updatedSections,
+                    ticket: {
+                        ...existingTicket,
+                        sections: updatedSections,
+                    },
+                    ticketTemplate: action.payload.updatedTicketTemplate,
                 },
             };
         },

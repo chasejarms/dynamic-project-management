@@ -83,7 +83,7 @@ export class StringValidator {
         return this;
     }
 
-    public validate(value: number | undefined | null) {
+    public validate(value: number | undefined | null | "") {
         for (let i = 0; i < this.validatorRules.length; i++) {
             const rule = this.validatorRules[i];
 
