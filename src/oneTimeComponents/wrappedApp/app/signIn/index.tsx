@@ -10,7 +10,7 @@ import {
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
-import { ControlValidator } from "../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../classes/StringValidator";
 import { userPool } from "../../../../classes/UserPool";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../../../../components/wrappedButton";
@@ -48,7 +48,7 @@ export function SignIn() {
             return event.target.value;
         },
         validatorError: (password: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A password is required")
                 .validate(password);
         },

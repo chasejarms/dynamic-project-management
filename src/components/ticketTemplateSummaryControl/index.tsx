@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent, useEffect } from "react";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
@@ -28,7 +28,7 @@ function NonMemoizedTicketTemplateSummaryControl(
             return event.target.value;
         },
         validatorError: (templateName: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(templateName);
         },

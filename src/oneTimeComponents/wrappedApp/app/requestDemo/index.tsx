@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar } from "@material-ui/core";
 import { ChangeEvent, useState, useEffect } from "react";
-import { ControlValidator } from "../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../components/wrappedTextField";
@@ -20,7 +20,7 @@ export function RequestDemo() {
             return event.target.value;
         },
         validatorError: (name: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(name);
         },
@@ -36,7 +36,7 @@ export function RequestDemo() {
             return event.target.value;
         },
         validatorError: (company: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(company);
         },
@@ -51,7 +51,7 @@ export function RequestDemo() {
             return event.target.value;
         },
         validatorError: (company: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(company);
         },

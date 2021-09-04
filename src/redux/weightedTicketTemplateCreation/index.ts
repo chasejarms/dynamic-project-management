@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { cloneDeep } from "lodash";
 import { Section } from "../../models/ticketTemplate/section";
 import { ITextSection } from "../../models/ticketTemplate/section/textSection";
@@ -82,7 +82,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             state: IWeightedTicketTemplateCreationState,
             action: PayloadAction<string>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload);
             return {
@@ -98,7 +98,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             state: IWeightedTicketTemplateCreationState,
             action: PayloadAction<string>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload);
             return {
@@ -114,7 +114,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             state: IWeightedTicketTemplateCreationState,
             action: PayloadAction<string>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload);
             return {
@@ -130,7 +130,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             state: IWeightedTicketTemplateCreationState,
             action: PayloadAction<string>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload);
             return {
@@ -154,7 +154,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
 
             if (updatedValue.type === "text") {
                 const weightedTextSection = updatedValue as ITextSection;
-                const updatedError = ControlValidator.string()
+                const updatedError = new StringValidator()
                     .required(defaultRequiredError)
                     .validate(updatedValue.label);
 
@@ -170,7 +170,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 };
             } else if (updatedValue.type === "number") {
                 const weightedNumberSection = updatedValue as INumberSection;
-                const updatedLabelError = ControlValidator.string()
+                const updatedLabelError = new StringValidator()
                     .required(defaultRequiredError)
                     .validate(updatedValue.label);
 
@@ -189,7 +189,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                         ? "Max is less than min"
                         : "";
 
-                const aliasError = ControlValidator.string()
+                const aliasError = new StringValidator()
                     .onlyAThroughZ(
                         "The alias must be one word and only characters a through z."
                     )
@@ -225,7 +225,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 const weightedTextSection = value as ITextSection;
                 const weightedTextSectionWithControls: WeightedTextSectionWithControls = {
                     value: weightedTextSection,
-                    error: ControlValidator.string()
+                    error: new StringValidator()
                         .required(defaultRequiredError)
                         .validate(value.label),
                 };
@@ -233,7 +233,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             } else if (value.type === "number") {
                 const weightedNumberSection = value as INumberSection;
 
-                const updatedLabelError = ControlValidator.string()
+                const updatedLabelError = new StringValidator()
                     .required(defaultRequiredError)
                     .validate(weightedNumberSection.label);
 
@@ -254,7 +254,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                         ? "Max is less than min"
                         : "";
 
-                const aliasError = ControlValidator.string()
+                const aliasError = new StringValidator()
                     .onlyAThroughZ(
                         "The alias must be one word and only characters a through z."
                     )

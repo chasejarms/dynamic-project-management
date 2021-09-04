@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar } from "@material-ui/core";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../api";
-import { ControlValidator } from "../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../components/wrappedTextField";
@@ -32,7 +32,7 @@ export function SignUp() {
             return event.target.value;
         },
         validatorError: (companyName: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A company name is required")
                 .validate(companyName);
         },

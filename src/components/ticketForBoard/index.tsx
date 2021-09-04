@@ -545,7 +545,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 </Typography>
                             </div>
                         )}
-                        {props.ticket.tags.length > 0 && (
+                        {/* {props.ticket.tags.length > 0 && (
                             <div css={classes.tagsContainer}>
                                 {props.ticket.tags.map((tag) => {
                                     return (
@@ -564,7 +564,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                     );
                                 })}
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </CardContent>
             </Card>

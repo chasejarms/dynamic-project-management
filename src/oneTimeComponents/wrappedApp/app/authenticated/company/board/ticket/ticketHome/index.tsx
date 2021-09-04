@@ -240,7 +240,7 @@ export function TicketHome() {
                         <div css={classes.ticketContentContainer}>
                             <div css={classes.nonTagTicketInformationContainer}>
                                 <div css={classes.ticketSectionsContainer}>
-                                    <TitleSection
+                                    {/* <TitleSection
                                         title={titleControl.value}
                                         label={
                                             ticket?.simplifiedTicketTemplate
@@ -248,8 +248,8 @@ export function TicketHome() {
                                         }
                                         onStateChange={onStateChange}
                                         refreshToken={refreshToken}
-                                    />
-                                    <SummarySection
+                                    /> */}
+                                    {/* <SummarySection
                                         summary={summaryControl.value}
                                         label={
                                             ticket?.simplifiedTicketTemplate
@@ -281,7 +281,7 @@ export function TicketHome() {
                                                 value={section.value}
                                             />
                                         );
-                                    })}
+                                    })} */}
                                 </div>
                             </div>
                         </div>

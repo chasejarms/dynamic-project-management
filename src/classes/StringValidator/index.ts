@@ -1,4 +1,4 @@
-export type IValidatorRule =
+export type IStringValidatorRule =
     | IStringRule
     | IRegexRule
     | ILengthRule
@@ -28,18 +28,13 @@ export interface ICustomRule {
     errorMessage: string;
 }
 
-export class ControlValidator {
-    public validatorRules: IValidatorRule[] = [];
-
-    public static string(errorMessage?: string) {
-        const controlValidator = new ControlValidator();
-        controlValidator.validatorRules.push({
+export class StringValidator {
+    public validatorRules: IStringValidatorRule[] = [
+        {
             type: "must-be-string",
-            errorMessage: errorMessage || "Must be string",
-        });
-
-        return controlValidator;
-    }
+            errorMessage: "Value must be string",
+        },
+    ];
 
     public email(errorMessage?: string) {
         this.validatorRules.push({

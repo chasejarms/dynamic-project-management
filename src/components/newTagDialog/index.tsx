@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../api";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { useControl } from "../../hooks/useControl";
 import { ITag } from "../../models/tag";
@@ -38,7 +38,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
             return event.target.value;
         },
         validatorError: (newTag: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(newTag);
         },

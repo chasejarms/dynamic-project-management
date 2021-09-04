@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useEffect } from "react";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { useControl } from "../../hooks/useControl";
 import { IGhostControlParams } from "../../models/ghostControlPattern/ghostControlParams";
 import { WrappedTextField } from "../wrappedTextField";
@@ -27,7 +27,7 @@ function NonMemoizedTitleSection(props: ITitleSectionProps) {
             return event.target.value as string;
         },
         validatorError: (title: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A title is required")
                 .validate(title);
         },

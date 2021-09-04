@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { useControl } from "../useControl";
 
 export function usePasswordCreationControl() {
@@ -11,7 +11,7 @@ export function usePasswordCreationControl() {
             return event.target.value;
         },
         validatorError: (password: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A password is required")
                 .min(8, "Password length must be at least 8 characters")
                 .customValidator((value: string) => {

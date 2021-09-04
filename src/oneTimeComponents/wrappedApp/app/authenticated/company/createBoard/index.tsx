@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../../../api";
-import { ControlValidator } from "../../../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../../../classes/StringValidator";
 import { BoardsContainer } from "../../../../../../components/boardsContainer";
 import { IWrappedButtonProps } from "../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
@@ -29,7 +29,7 @@ export function CreateBoard() {
             return event.target.value;
         },
         validatorError: (boardName: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("Board name is required")
                 .max(40, "Maximum board length is 40 characters")
                 .validate(boardName);
@@ -44,7 +44,7 @@ export function CreateBoard() {
             return event.target.value;
         },
         validatorError: (boardDescription: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .max(90, "Maximum board description is 90 characters")
                 .validate(boardDescription);
         },

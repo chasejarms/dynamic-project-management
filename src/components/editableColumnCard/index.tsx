@@ -6,7 +6,7 @@ import { IColumn } from "../../models/column";
 import { composeCSS } from "../../styles/composeCSS";
 import { useControl } from "../../hooks/useControl";
 import { ChangeEvent, useEffect } from "react";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { WrappedTextField } from "../wrappedTextField";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
@@ -38,7 +38,7 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
             return updatedName;
         },
         validatorError: (email: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(email);
         },

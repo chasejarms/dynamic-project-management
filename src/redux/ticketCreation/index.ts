@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { cloneDeep } from "lodash";
 
@@ -49,7 +49,7 @@ export const ticketCreationSlice = createSlice({
             state: ITicketCreationState,
             action: PayloadAction<string>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload);
             return {
@@ -65,7 +65,7 @@ export const ticketCreationSlice = createSlice({
             state: ITicketCreationState,
             action: PayloadAction<string>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload);
             return {

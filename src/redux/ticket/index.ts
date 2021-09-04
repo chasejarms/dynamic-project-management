@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ControlValidator } from "../../classes/ControlValidator";
-import { ITicketTemplate } from "../../models/ticketTemplate";
+import { StringValidator } from "../../classes/StringValidator";
 import { cloneDeep } from "lodash";
+import { Section } from "../../models/ticketTemplate/section";
 
 export const ticketPreviewId = "TICKET_PREVIEW";
 export const ticketCreateId = "TICKET_CREATE";
@@ -18,7 +18,9 @@ export interface ITicket {
         error: string;
     };
     sections: {
-        value: string;
+        value: string | number;
+        touched: boolean;
+        error: string;
     }[];
 }
 
@@ -65,7 +67,7 @@ export const ticketMappingSlice = createSlice({
                 ticketId: string;
             }>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload.value);
             const clonedState = cloneDeep(state);
@@ -89,7 +91,7 @@ export const ticketMappingSlice = createSlice({
                 ticketId: string;
             }>
         ) => {
-            const error = ControlValidator.string()
+            const error = new StringValidator()
                 .required(defaultRequiredError)
                 .validate(action.payload.value);
             const clonedState = cloneDeep(state);
@@ -103,6 +105,56 @@ export const ticketMappingSlice = createSlice({
                         value: action.payload.value,
                         error,
                     },
+                },
+            };
+        },
+        addSection: (
+            state: ITicketMappingState,
+            action: PayloadAction<{
+                index: number;
+                value: string | number;
+                ticketId: string;
+                section: Section;
+            }>
+        ) => {
+            const clonedState = cloneDeep(state);
+            const existingTicket = clonedState[action.payload.ticketId];
+            const previousSections = existingTicket.sections;
+            const beforeSectionToInsert = previousSections.slice(
+                0,
+                action.payload.index + 1
+            );
+            const afterSectionToInsert = previousSections.slice(
+                action.payload.index + 1
+            );
+
+            let error = "";
+            const { section } = action.payload;
+            if (section.type === "text") {
+                if (section.required) {
+                    error = new StringValidator()
+                        .required()
+                        .validate(action.payload.value.toString());
+                }
+            } else if (action.payload.section.type === "number") {
+            }
+
+            const sectionToInsert = {
+                value: action.payload.value,
+                error: "",
+                touched: false,
+            };
+
+            const updatedSections = [
+                ...beforeSectionToInsert,
+                sectionToInsert,
+                ...afterSectionToInsert,
+            ];
+            return {
+                ...clonedState,
+                [action.payload.ticketId]: {
+                    ...existingTicket,
+                    sections: updatedSections,
                 },
             };
         },

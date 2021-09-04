@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../../../api";
-import { ControlValidator } from "../../../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../../../classes/StringValidator";
 import { BoardsContainer } from "../../../../../../components/boardsContainer";
 import { IWrappedButtonProps } from "../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
@@ -32,7 +32,7 @@ export function AddCompany() {
             return event.target.value;
         },
         validatorError: (companyName: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A company name is required")
                 .validate(companyName);
         },
@@ -48,7 +48,7 @@ export function AddCompany() {
             return event.target.value;
         },
         validatorError: (secretKey: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A secret key is required")
                 .validate(secretKey);
         },

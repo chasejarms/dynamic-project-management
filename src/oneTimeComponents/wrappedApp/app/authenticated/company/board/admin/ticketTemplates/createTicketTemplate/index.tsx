@@ -35,7 +35,7 @@ import {
     Theme,
     useTheme,
 } from "@material-ui/core";
-import { ControlValidator } from "../../../../../../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../../../../../../classes/StringValidator";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 import { Ticket } from "../../../../../../../../../components/ticket";
 import { ticketPreviewId } from "../../../../../../../../../redux/ticket";
@@ -415,7 +415,7 @@ export function CreateTicketTemplate() {
             return event.target.value as string;
         },
         validatorError: (value: string) => {
-            return ControlValidator.string().required().validate(value);
+            return new StringValidator().required().validate(value);
         },
     });
 
@@ -430,7 +430,7 @@ export function CreateTicketTemplate() {
             return event.target.value as string;
         },
         validatorError: (value: string) => {
-            return ControlValidator.string().required().validate(value);
+            return new StringValidator().required().validate(value);
         },
     });
 

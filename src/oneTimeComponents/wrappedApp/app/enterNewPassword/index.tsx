@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar } from "@material-ui/core";
 import { ChangeEvent, useEffect, useState } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
-import { ControlValidator } from "../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../components/wrappedTextField";
@@ -29,7 +29,7 @@ export function EnterNewPassword() {
             return event.target.value;
         },
         validatorError: (email: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(email);
         },
@@ -45,7 +45,7 @@ export function EnterNewPassword() {
             return event.target.value;
         },
         validatorError: (password: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("A password is required")
                 .min(8, "Password length must be at least 8 characters")
                 .customValidator((value: string) => {

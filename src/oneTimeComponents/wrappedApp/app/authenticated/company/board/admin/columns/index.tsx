@@ -13,7 +13,7 @@ import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { isEqual, cloneDeep } from "lodash";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { Api } from "../../../../../../../../api";
-import { ControlValidator } from "../../../../../../../../classes/ControlValidator";
+import { StringValidator } from "../../../../../../../../classes/StringValidator";
 import {
     IWrappedButtonProps,
     WrappedButton,
@@ -219,7 +219,7 @@ export function Columns() {
             return updatedName;
         },
         validatorError: (email: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .validate(email);
         },

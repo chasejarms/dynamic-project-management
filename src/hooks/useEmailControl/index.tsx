@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { ControlValidator } from "../../classes/ControlValidator";
+import { StringValidator } from "../../classes/StringValidator";
 import { useControl } from "../useControl";
 
 export function useEmailControl() {
@@ -11,7 +11,7 @@ export function useEmailControl() {
             return event.target.value;
         },
         validatorError: (email: string) => {
-            return ControlValidator.string()
+            return new StringValidator()
                 .required("This field is required")
                 .email("A valid email is required")
                 .validate(email);
