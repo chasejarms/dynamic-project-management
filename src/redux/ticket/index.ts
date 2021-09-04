@@ -7,7 +7,6 @@ export const ticketPreviewId = "TICKET_PREVIEW";
 export const ticketCreateId = "TICKET_CREATE";
 
 export interface ITicket {
-    ticketTemplate: null | ITicketTemplate;
     title: {
         value: string;
         touched: boolean;
@@ -30,7 +29,6 @@ export interface ITicketMappingState {
 const defaultRequiredError = "This field is required";
 const initialState: ITicketMappingState = {
     TICKET_PREVIEW: {
-        ticketTemplate: null,
         title: {
             value: "",
             touched: false,
@@ -52,7 +50,6 @@ export const ticketMappingSlice = createSlice({
         setInitialTicketData: (
             state: ITicketMappingState,
             action: PayloadAction<{
-                value: string;
                 ticket: ITicket;
                 ticketId: string;
             }>
@@ -85,22 +82,30 @@ export const ticketMappingSlice = createSlice({
                 },
             };
         },
-        // updateTicketSummary: (
-        //     state: ITicketMappingState,
-        //     action: PayloadAction<string>
-        // ) => {
-        //     const error = ControlValidator.string()
-        //         .required(defaultRequiredError)
-        //         .validate(action.payload);
-        //     return {
-        //         ...state,
-        //         summary: {
-        //             touched: true,
-        //             value: action.payload,
-        //             error,
-        //         },
-        //     };
-        // },
+        updateTicketSummary: (
+            state: ITicketMappingState,
+            action: PayloadAction<{
+                value: string;
+                ticketId: string;
+            }>
+        ) => {
+            const error = ControlValidator.string()
+                .required(defaultRequiredError)
+                .validate(action.payload.value);
+            const clonedState = cloneDeep(state);
+            const existingTicket = clonedState[action.payload.ticketId];
+            return {
+                ...clonedState,
+                [action.payload.ticketId]: {
+                    ...existingTicket,
+                    summary: {
+                        touched: true,
+                        value: action.payload.value,
+                        error,
+                    },
+                },
+            };
+        },
         // updateTicketTemplate: (
         //     state: ITicketMappingState,
         //     action: PayloadAction<ITicketTemplate | null>
@@ -151,6 +156,7 @@ export const ticketMappingSlice = createSlice({
 export const {
     setInitialTicketData,
     updateTicketTitle,
+    updateTicketSummary,
     // updateTicketTitle,
     // updateTicketSummary,
     // updateTicketTemplate,

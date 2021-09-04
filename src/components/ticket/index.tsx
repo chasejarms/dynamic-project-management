@@ -1,7 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
+import { useDispatch } from "react-redux";
 import { ITicketTemplate } from "../../models/ticketTemplate";
-import { ITicket } from "../../redux/ticket";
+import {
+    ITicket,
+    updateTicketTitle,
+    updateTicketSummary,
+} from "../../redux/ticket";
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketProps {
@@ -11,6 +16,8 @@ export interface ITicketProps {
 }
 
 export function Ticket(props: ITicketProps) {
+    const dispatch = useDispatch();
+
     if (!props.ticket) {
         return <div />;
     }
@@ -27,8 +34,12 @@ export function Ticket(props: ITicketProps) {
             value: unknown;
         }>
     ) {
-        // dispatch the event
         const value = event.target.value as string;
+        const action = updateTicketTitle({
+            value,
+            ticketId: props.ticketId,
+        });
+        dispatch(action);
     }
 
     function onChangeTicketSummary(
@@ -37,8 +48,12 @@ export function Ticket(props: ITicketProps) {
             value: unknown;
         }>
     ) {
-        // dispatch the event
         const value = event.target.value as string;
+        const action = updateTicketSummary({
+            value,
+            ticketId: props.ticketId,
+        });
+        dispatch(action);
     }
 
     return (

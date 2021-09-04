@@ -38,7 +38,7 @@ import {
 import { ControlValidator } from "../../../../../../../../../classes/ControlValidator";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 import { Ticket } from "../../../../../../../../../components/ticket";
-import { ticketCreateId } from "../../../../../../../../../redux/ticket";
+import { ticketPreviewId } from "../../../../../../../../../redux/ticket";
 
 const useStyles = makeStyles({
     previewPaper: {
@@ -452,7 +452,7 @@ export function CreateTicketTemplate() {
     };
 
     const ticket = useSelector((store: IStoreState) => {
-        return store.ticket[ticketCreateId];
+        return store.ticket[ticketPreviewId];
     });
 
     const theme = useTheme();
@@ -773,7 +773,7 @@ export function CreateTicketTemplate() {
                                         <Ticket
                                             ticket={ticket}
                                             ticketTemplate={ticketTemplate}
-                                            ticketId={ticketCreateId}
+                                            ticketId={ticketPreviewId}
                                         />
                                     </div>
                                 </Paper>
