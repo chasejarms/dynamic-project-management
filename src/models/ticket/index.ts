@@ -19,7 +19,6 @@ export interface ITicket {
             label: string;
         };
         summary: {
-            isRequired: boolean;
             label: string;
         };
         sections: Section[];

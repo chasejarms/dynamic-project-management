@@ -13,7 +13,6 @@ export interface ITicketCreateRequest {
             label: string;
         };
         summary: {
-            isRequired: boolean;
             label: string;
         };
         sections: Section[];

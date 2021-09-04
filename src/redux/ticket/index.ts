@@ -23,12 +23,12 @@ export interface ITicket {
     }[];
 }
 
-export interface ITicketCreationState {
+export interface ITicketMappingState {
     [ticketId: string]: ITicket;
 }
 
 const defaultRequiredError = "This field is required";
-const initialState: ITicketCreationState = {
+const initialState: ITicketMappingState = {
     TICKET_PREVIEW: {
         ticketTemplate: null,
         title: {
@@ -50,7 +50,7 @@ export const ticketMappingSlice = createSlice({
     initialState,
     reducers: {
         setInitialTicketData: (
-            state: ITicketCreationState,
+            state: ITicketMappingState,
             action: PayloadAction<{
                 value: string;
                 ticket: ITicket;
@@ -62,7 +62,7 @@ export const ticketMappingSlice = createSlice({
             return clonedState;
         },
         updateTicketTitle: (
-            state: ITicketCreationState,
+            state: ITicketMappingState,
             action: PayloadAction<{
                 value: string;
                 ticketId: string;
@@ -86,7 +86,7 @@ export const ticketMappingSlice = createSlice({
             };
         },
         // updateTicketSummary: (
-        //     state: ITicketCreationState,
+        //     state: ITicketMappingState,
         //     action: PayloadAction<string>
         // ) => {
         //     const error = ControlValidator.string()
@@ -102,7 +102,7 @@ export const ticketMappingSlice = createSlice({
         //     };
         // },
         // updateTicketTemplate: (
-        //     state: ITicketCreationState,
+        //     state: ITicketMappingState,
         //     action: PayloadAction<ITicketTemplate | null>
         // ) => {
         //     const sections: {
@@ -122,7 +122,7 @@ export const ticketMappingSlice = createSlice({
         //     };
         // },
         // updateSection: (
-        //     state: ITicketCreationState,
+        //     state: ITicketMappingState,
         //     action: PayloadAction<{
         //         value: string;
         //         index: number;
@@ -137,7 +137,7 @@ export const ticketMappingSlice = createSlice({
         //     };
         // },
         // updateStartingColumn: (
-        //     state: ITicketCreationState,
+        //     state: ITicketMappingState,
         //     action: PayloadAction<string>
         // ) => {
         //     return {

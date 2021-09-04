@@ -3,6 +3,7 @@ import boards from "./boards";
 import appBootstrapInformation from "./appBootstrapInformation";
 import ticketCreation from "./ticketCreation";
 import weightedTicketTemplateCreation from "./weightedTicketTemplateCreation";
+import ticket from "./ticket";
 
 export const store = configureStore({
     reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
         appBootstrapInformation,
         ticketCreation,
         weightedTicketTemplateCreation,
+        ticket,
     },
 });

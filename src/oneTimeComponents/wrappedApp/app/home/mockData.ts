@@ -113,7 +113,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -138,7 +137,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -163,7 +161,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -188,7 +185,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -213,7 +209,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -238,7 +233,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -263,7 +257,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -288,7 +281,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -313,7 +305,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -338,7 +329,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -363,7 +353,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -388,7 +377,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -413,7 +401,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -438,7 +425,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -463,7 +449,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -488,7 +473,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -513,7 +497,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -538,7 +521,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -566,7 +548,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -594,7 +575,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -622,7 +602,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -650,7 +629,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -678,7 +656,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -703,7 +680,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -728,7 +704,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -753,7 +728,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],
@@ -778,7 +752,6 @@ export const mockTickets: ITicket[] = [
                 label: "",
             },
             summary: {
-                isRequired: false,
                 label: "",
             },
             sections: [],

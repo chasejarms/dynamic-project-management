@@ -36,6 +36,9 @@ import {
     useTheme,
 } from "@material-ui/core";
 import { ControlValidator } from "../../../../../../../../../classes/ControlValidator";
+import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
+import { Ticket } from "../../../../../../../../../components/ticket";
+import { ticketCreateId } from "../../../../../../../../../redux/ticket";
 
 const useStyles = makeStyles({
     previewPaper: {
@@ -431,6 +434,27 @@ export function CreateTicketTemplate() {
         },
     });
 
+    const ticketTemplate: ITicketTemplate = {
+        itemId: "",
+        belongsTo: "",
+        shortenedItemId: "",
+        name: weightedTicketTemplate.name.value,
+        description: weightedTicketTemplate.description.value,
+        title: {
+            label: weightedTicketTemplate.title.value,
+        },
+        summary: {
+            label: weightedTicketTemplate.summary.value,
+        },
+        sections: weightedTicketTemplate.sections.map((section) => {
+            return section.value;
+        }),
+    };
+
+    const ticket = useSelector((store: IStoreState) => {
+        return store.ticket[ticketCreateId];
+    });
+
     const theme = useTheme();
     const classes = createClasses(theme);
     const materialClasses = useStyles();
@@ -746,47 +770,11 @@ export function CreateTicketTemplate() {
                                                 </Typography>
                                             </div>
                                         </div>
-                                        <div
-                                            css={
-                                                classes.ticketPreviewContentContainer
-                                            }
-                                        >
-                                            <WrappedTextField
-                                                value={ticketTitleControl.value}
-                                                label={
-                                                    weightedTicketTemplate.title
-                                                        .value
-                                                }
-                                                onChange={
-                                                    ticketTitleControl.onChange
-                                                }
-                                                error={
-                                                    ticketTitleControl.isTouched &&
-                                                    !ticketTitleControl.isValid
-                                                        ? ticketTitleControl.errorMessage
-                                                        : ""
-                                                }
-                                                required
-                                            />
-                                            <WrappedTextField
-                                                value={summaryControl.value}
-                                                label={
-                                                    weightedTicketTemplate
-                                                        .summary.value
-                                                }
-                                                onChange={
-                                                    summaryControl.onChange
-                                                }
-                                                error={
-                                                    summaryControl.isTouched &&
-                                                    !summaryControl.isValid
-                                                        ? summaryControl.errorMessage
-                                                        : ""
-                                                }
-                                                required
-                                                multiline
-                                            />
-                                        </div>
+                                        <Ticket
+                                            ticket={ticket}
+                                            ticketTemplate={ticketTemplate}
+                                            ticketId={ticketCreateId}
+                                        />
                                     </div>
                                 </Paper>
                             </div>

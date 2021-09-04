@@ -160,7 +160,6 @@ export function EditTicketTemplate() {
             },
             summary: {
                 label: summaryControl.value,
-                isRequired: true,
             },
             sections: sectionOrder.map((sectionId) => {
                 const textSection = ghostControlParamsMapping[sectionId]
