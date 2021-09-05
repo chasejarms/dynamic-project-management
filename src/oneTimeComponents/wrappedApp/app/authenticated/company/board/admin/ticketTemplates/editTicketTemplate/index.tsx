@@ -166,6 +166,7 @@ export function EditTicketTemplate() {
                     .value as ITextSection;
                 return textSection;
             }),
+            priorityWeightingCalculation: "",
         };
 
         let didCancel = false;

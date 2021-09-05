@@ -2,9 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StringValidator } from "../../classes/StringValidator";
 import { cloneDeep } from "lodash";
 import { ITicketTemplate } from "../../models/ticketTemplate";
-import { Section } from "../../models/ticketTemplate/section";
-import { ITextSection } from "../../models/ticketTemplate/section/textSection";
-import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
 import { NumberValidator } from "../../classes/NumberValidator";
 
 export const ticketPreviewId = "TICKET_PREVIEW";
@@ -66,6 +63,7 @@ const initialState: ITicketMappingState = {
                 label: "Summary",
             },
             sections: [],
+            priorityWeightingCalculation: "",
         },
     },
 };
@@ -79,6 +77,10 @@ export const ticketMappingSlice = createSlice({
             action: PayloadAction<{
                 ticket: ITicket;
                 ticketTemplate: ITicketTemplate;
+                priorityWeightingFunction: {
+                    value: string;
+                    error: string;
+                };
                 ticketId: string;
             }>
         ) => {

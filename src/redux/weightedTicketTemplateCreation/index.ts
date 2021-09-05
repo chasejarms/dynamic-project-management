@@ -4,6 +4,7 @@ import { cloneDeep } from "lodash";
 import { Section } from "../../models/ticketTemplate/section";
 import { ITextSection } from "../../models/ticketTemplate/section/textSection";
 import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
+import mathEvaluator from "math-expression-evaluator";
 
 export interface WeightedTextSectionWithControls {
     value: ITextSection;
@@ -44,6 +45,10 @@ export interface IWeightedTicketTemplateCreationState {
         error: string;
     };
     sections: WeightedSectionWithControls[];
+    priorityWeightingCalculation: {
+        value: string;
+        error: string;
+    };
 }
 
 const defaultRequiredError = "This field is required";
@@ -69,6 +74,10 @@ const initialState: IWeightedTicketTemplateCreationState = {
         error: "",
     },
     sections: [],
+    priorityWeightingCalculation: {
+        value: "",
+        error: "",
+    },
 };
 
 export const weightedTicketTemplateCreationSlice = createSlice({
@@ -308,6 +317,89 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 sections: sectionsWithoutRemovedSection,
             };
         },
+        updatePriorityWeightingCalculation: (
+            state: IWeightedTicketTemplateCreationState,
+            action: PayloadAction<string>
+        ) => {
+            const updatedPriorityWeightingCalculation = action.payload;
+            const validAliasList = state.sections
+                .filter((section) => {
+                    return (
+                        section.value.type === "number" && !!section.value.alias
+                    );
+                })
+                .map(
+                    (section) =>
+                        (section as WeightedNumberSectionWithControls).value
+                            .alias
+                );
+
+            const error = (function () {
+                if (updatedPriorityWeightingCalculation.trim() === "") {
+                    return "";
+                }
+
+                const trimmedWords = updatedPriorityWeightingCalculation.match(
+                    /\b[a-zA-Z]+/g
+                );
+
+                const wordsAreValid = trimmedWords
+                    ? trimmedWords.every((trimmedWord) => {
+                          return trimmedWord.match(/^$|^[a-zA-Z]+$/);
+                      })
+                    : true;
+
+                if (!wordsAreValid) {
+                    return "The provided aliases are not valid.";
+                }
+
+                const validAliasMapping = validAliasList.reduce<{
+                    [aliasName: string]: boolean;
+                }>((mapping, aliasName) => {
+                    mapping[aliasName] = true;
+                    return mapping;
+                }, {});
+
+                const aliasesExist = trimmedWords
+                    ? trimmedWords.every((trimmedWord) => {
+                          return validAliasMapping[trimmedWord];
+                      })
+                    : true;
+                if (!aliasesExist) {
+                    return "The provided aliases do not exist on the ticket template";
+                }
+
+                const onlyAllowedCharactersArePresent = updatedPriorityWeightingCalculation.match(
+                    /^$|^[a-zA-Z0-9\.\+\-\*\/() ]+$/
+                );
+                if (!onlyAllowedCharactersArePresent) {
+                    return "Only simple math values are allowed (parenthesis, decimals, +, -, /, *)";
+                }
+
+                try {
+                    let expressionToEvaluate = updatedPriorityWeightingCalculation;
+                    Object.keys(validAliasMapping).forEach((key) => {
+                        expressionToEvaluate = expressionToEvaluate.replaceAll(
+                            key,
+                            "1"
+                        );
+                    });
+                    mathEvaluator.eval(expressionToEvaluate);
+                } catch (e) {
+                    return "There is an error with the calculation setup";
+                }
+
+                return "";
+            })();
+
+            return {
+                ...state,
+                priorityWeightingCalculation: {
+                    value: updatedPriorityWeightingCalculation,
+                    error,
+                },
+            };
+        },
     },
 });
 
@@ -320,6 +412,7 @@ export const {
     overrideWeightedTicketCreationSection,
     insertWeightedTicketCreationSection,
     deleteWeightedTicketTemplateCreationSection,
+    updatePriorityWeightingCalculation,
 } = weightedTicketTemplateCreationSlice.actions;
 
 export default weightedTicketTemplateCreationSlice.reducer;

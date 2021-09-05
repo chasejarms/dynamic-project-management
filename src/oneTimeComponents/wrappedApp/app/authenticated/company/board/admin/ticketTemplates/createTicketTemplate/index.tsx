@@ -42,6 +42,7 @@ import {
     setInitialTicketData,
     ticketPreviewId,
 } from "../../../../../../../../../redux/ticket";
+import { PriorityWeightingFunction } from "../../../../../../../../../components/priorityWeightingFunction";
 
 const useStyles = makeStyles({
     previewPaper: {
@@ -67,69 +68,6 @@ export function CreateTicketTemplate() {
             (section) =>
                 (section as WeightedNumberSectionWithControls).value.alias
         );
-
-    const priorityWeightingCalculationFunction = useControl({
-        value: "",
-        onChange: (
-            event: React.ChangeEvent<{
-                name?: string | undefined;
-                value: unknown;
-            }>
-        ) => {
-            return event.target.value as string;
-        },
-        validatorError: (stringFunction: string) => {
-            const trimmedWords = stringFunction.match(/\b[a-zA-Z]+/g);
-
-            const wordsAreValid = trimmedWords
-                ? trimmedWords.every((trimmedWord) => {
-                      return trimmedWord.match(/^$|^[a-zA-Z]+$/);
-                  })
-                : true;
-
-            if (!wordsAreValid) {
-                return "The provided aliases are not valid.";
-            }
-
-            const validAliasMapping = validAliasList.reduce<{
-                [aliasName: string]: boolean;
-            }>((mapping, aliasName) => {
-                mapping[aliasName] = true;
-                return mapping;
-            }, {});
-
-            const aliasesExist = trimmedWords
-                ? trimmedWords.every((trimmedWord) => {
-                      return validAliasMapping[trimmedWord];
-                  })
-                : true;
-            if (!aliasesExist) {
-                return "The provided aliases do not exist on the ticket template";
-            }
-
-            const onlyAllowedCharactersArePresent = stringFunction.match(
-                /^$|^[a-zA-Z0-9\.\+\-\*\/() ]+$/
-            );
-            if (!onlyAllowedCharactersArePresent) {
-                return "Only simple math values are allowed (parenthesis, decimals, +, -, /, *)";
-            }
-
-            try {
-                let expressionToEvaluate = stringFunction;
-                Object.keys(validAliasMapping).forEach((key) => {
-                    expressionToEvaluate = expressionToEvaluate.replaceAll(
-                        key,
-                        "1"
-                    );
-                });
-                mathEvaluator.eval(expressionToEvaluate);
-            } catch (e) {
-                return "There is an error with the calculation setup";
-            }
-
-            return "";
-        },
-    });
 
     const allControlsAreValid = useSelector((store: IStoreState) => {
         const {
@@ -453,6 +391,7 @@ export function CreateTicketTemplate() {
             sections: weightedTicketTemplate.sections.map((section) => {
                 return section.value;
             }),
+            priorityWeightingCalculation: "",
         };
 
         const action = setInitialTicketData({
@@ -477,6 +416,10 @@ export function CreateTicketTemplate() {
                     };
                 }),
             },
+            priorityWeightingFunction: {
+                value: "",
+                error: "",
+            },
         });
         dispatch(action);
     }, [weightedTicketTemplate]);
@@ -489,10 +432,17 @@ export function CreateTicketTemplate() {
     const classes = createClasses(theme);
     const materialClasses = useStyles();
 
+    const {
+        value: priorityWeightingCalculationFunction,
+        error: priorityWeightingCalculationError,
+    } = useSelector((store: IStoreState) => {
+        return store.weightedTicketTemplateCreation
+            .priorityWeightingCalculation;
+    });
     const priorityScore = useMemo(() => {
         if (
-            !priorityWeightingCalculationFunction.isValid ||
-            priorityWeightingCalculationFunction.value.trim() === ""
+            !!priorityWeightingCalculationError ||
+            priorityWeightingCalculationFunction.trim() === ""
         ) {
             return "NA";
         }
@@ -527,8 +477,7 @@ export function CreateTicketTemplate() {
         if (!canDoCalculation) {
             return "NA";
         } else {
-            let priorityWeightingCalculationFunctionValue =
-                priorityWeightingCalculationFunction.value;
+            let priorityWeightingCalculationFunctionValue = priorityWeightingCalculationFunction;
             Object.keys(requiredValuesByAliasMapping).forEach((alias) => {
                 const value = requiredValuesByAliasMapping[alias].value;
                 priorityWeightingCalculationFunctionValue = priorityWeightingCalculationFunctionValue.replaceAll(
@@ -823,20 +772,8 @@ export function CreateTicketTemplate() {
                                         );
                                     })}
                                 </div>
-                                <WrappedTextField
-                                    value={
-                                        priorityWeightingCalculationFunction.value
-                                    }
-                                    label="Priority Weighting Calculation"
-                                    onChange={
-                                        priorityWeightingCalculationFunction.onChange
-                                    }
-                                    error={
-                                        priorityWeightingCalculationFunction.isTouched &&
-                                        !priorityWeightingCalculationFunction.isValid
-                                            ? priorityWeightingCalculationFunction.errorMessage
-                                            : ""
-                                    }
+                                <PriorityWeightingFunction
+                                    ticketId={ticketPreviewId}
                                     disabled={isCreatingTicketTemplate}
                                 />
                             </div>
@@ -862,21 +799,7 @@ export function CreateTicketTemplate() {
                                                 </Typography>
                                             </div>
                                         </div>
-                                        <Ticket
-                                            ticket={
-                                                ticketAndTicketTemplate.ticket
-                                            }
-                                            ticketTemplate={
-                                                ticketAndTicketTemplate.ticketTemplate
-                                            }
-                                            ticketId={ticketPreviewId}
-                                            ticketFunction={
-                                                priorityWeightingCalculationFunction.value
-                                            }
-                                            ticketFunctionIsValid={
-                                                priorityWeightingCalculationFunction.isValid
-                                            }
-                                        />
+                                        <Ticket ticketId={ticketPreviewId} />
                                     </div>
                                 </Paper>
                             </div>

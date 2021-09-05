@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ITicketTemplate } from "../../models/ticketTemplate";
+import { IStoreState } from "../../redux/storeState";
 import {
     ITicket,
     updateTicketTitle,
@@ -11,25 +12,26 @@ import {
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketProps {
-    ticket?: ITicket;
     ticketId: string;
-    ticketTemplate: ITicketTemplate;
-    ticketFunction: string;
-    ticketFunctionIsValid: boolean;
 }
 
 export function Ticket(props: ITicketProps) {
     const dispatch = useDispatch();
 
-    if (!props.ticket) {
+    const ticketState = useSelector((store: IStoreState) => {
+        return store.ticket[props.ticketId];
+    });
+
+    if (!ticketState) {
         return <div />;
     }
 
-    const classes = createClasses();
     const {
-        ticket: { title, summary },
+        ticket: { title, summary, sections },
         ticketTemplate,
-    } = props;
+    } = ticketState;
+
+    const classes = createClasses();
 
     function onChangeTicketTitle(
         event: React.ChangeEvent<{
@@ -93,7 +95,7 @@ export function Ticket(props: ITicketProps) {
                 multiline
             />
             {ticketTemplate.sections.map((ticketTemplateSection, index) => {
-                const sectionFromTicket = props.ticket!.sections[index];
+                const sectionFromTicket = sections[index];
                 if (ticketTemplateSection.type === "text") {
                     return (
                         <WrappedTextField
