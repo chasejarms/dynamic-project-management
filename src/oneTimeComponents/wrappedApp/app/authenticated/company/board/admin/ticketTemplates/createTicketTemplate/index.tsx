@@ -11,13 +11,21 @@ import { Ticket } from "../../../../../../../../../components/ticket";
 import { useSetTicketFromTicketTemplateChange } from "../../../../../../../../../hooks/useSetTicketFromTicketTemplateChange";
 import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
 
+export function CreateTicketTemplate() {
+    return (
+        <BoardContainer>
+            <InnerCreateTicketTemplate />
+        </BoardContainer>
+    );
+}
+
 const useStyles = makeStyles({
     previewPaper: {
         height: "100%",
     },
 });
 
-export function CreateTicketTemplate() {
+function InnerCreateTicketTemplate() {
     const {
         isCreatingTicketTemplate,
         onClickCreateTicketTemplate,
@@ -30,41 +38,37 @@ export function CreateTicketTemplate() {
     const materialClasses = useStyles();
 
     return (
-        <BoardContainer>
-            <div css={classes.container}>
-                <div css={classes.flexContentContainer}>
-                    <div css={classes.gridContentContainer}>
-                        <TicketTemplateFieldsContainer
+        <div css={classes.container}>
+            <div css={classes.flexContentContainer}>
+                <div css={classes.gridContentContainer}>
+                    <TicketTemplateFieldsContainer
+                        disabled={isCreatingTicketTemplate}
+                    />
+                    <div css={classes.priorityWeightAndPreviewContainer}>
+                        <PriorityWeightingFunction
+                            ticketId={ticketPreviewId}
                             disabled={isCreatingTicketTemplate}
                         />
-                        <div css={classes.priorityWeightAndPreviewContainer}>
-                            <PriorityWeightingFunction
-                                ticketId={ticketPreviewId}
-                                disabled={isCreatingTicketTemplate}
-                            />
-                            <div>
-                                <Paper className={materialClasses.previewPaper}>
-                                    <div css={classes.ticketPreviewContainer}>
-                                        <TicketSummaryHeader
-                                            ticketId={ticketPreviewId}
-                                        />
-                                        <Ticket ticketId={ticketPreviewId} />
-                                    </div>
-                                </Paper>
-                            </div>
+                        <div>
+                            <Paper className={materialClasses.previewPaper}>
+                                <div css={classes.ticketPreviewContainer}>
+                                    <TicketSummaryHeader
+                                        ticketId={ticketPreviewId}
+                                    />
+                                    <Ticket ticketId={ticketPreviewId} />
+                                </div>
+                            </Paper>
                         </div>
                     </div>
                 </div>
-                <div css={classes.bottomToolbarContainer}>
-                    <TicketTemplateBottomToolbar
-                        onClickCreateTicketTemplate={
-                            onClickCreateTicketTemplate
-                        }
-                        isCreatingTicketTemplate={isCreatingTicketTemplate}
-                    />
-                </div>
             </div>
-        </BoardContainer>
+            <div css={classes.bottomToolbarContainer}>
+                <TicketTemplateBottomToolbar
+                    onClickCreateTicketTemplate={onClickCreateTicketTemplate}
+                    isCreatingTicketTemplate={isCreatingTicketTemplate}
+                />
+            </div>
+        </div>
     );
 }
 
