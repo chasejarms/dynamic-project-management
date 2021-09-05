@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BottomPageToolbar } from "../../../../../../../../../components/bottomPageToolbar";
 import { TagChip } from "../../../../../../../../../components/tagChip";
@@ -10,7 +10,6 @@ import { WeightedTicketTemplateTextControl } from "../../../../../../../../../co
 import { IWrappedButtonProps } from "../../../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
-import { useControl } from "../../../../../../../../../hooks/useControl";
 import { INumberSection } from "../../../../../../../../../models/ticketTemplate/section/numberSection";
 import { ITextSection } from "../../../../../../../../../models/ticketTemplate/section/textSection";
 import { IStoreState } from "../../../../../../../../../redux/storeState";
@@ -26,16 +25,8 @@ import {
     WeightedTextSectionWithControls,
 } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
-import mathEvaluator from "math-expression-evaluator";
 import { BoardContainer } from "../../../../../../../../../components/boardContainer";
-import {
-    Paper,
-    Typography,
-    makeStyles,
-    Theme,
-    useTheme,
-} from "@material-ui/core";
-import { StringValidator } from "../../../../../../../../../classes/StringValidator";
+import { Paper, makeStyles, Theme, useTheme } from "@material-ui/core";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 import { Ticket } from "../../../../../../../../../components/ticket";
 import {
@@ -43,6 +34,7 @@ import {
     ticketPreviewId,
 } from "../../../../../../../../../redux/ticket";
 import { PriorityWeightingFunction } from "../../../../../../../../../components/priorityWeightingFunction";
+import { TicketSummaryHeader } from "../../../../../../../../../components/ticketSummaryHeader";
 
 const useStyles = makeStyles({
     previewPaper: {
@@ -345,36 +337,6 @@ export function CreateTicketTemplate() {
         };
     }
 
-    const ticketTitleControl = useControl({
-        value: "",
-        onChange: (
-            event: React.ChangeEvent<{
-                name?: string | undefined;
-                value: unknown;
-            }>
-        ) => {
-            return event.target.value as string;
-        },
-        validatorError: (value: string) => {
-            return new StringValidator().required().validate(value);
-        },
-    });
-
-    const summaryControl = useControl({
-        value: "",
-        onChange: (
-            event: React.ChangeEvent<{
-                name?: string | undefined;
-                value: unknown;
-            }>
-        ) => {
-            return event.target.value as string;
-        },
-        validatorError: (value: string) => {
-            return new StringValidator().required().validate(value);
-        },
-    });
-
     useEffect(() => {
         const ticketTemplate: ITicketTemplate = {
             itemId: "",
@@ -424,79 +386,9 @@ export function CreateTicketTemplate() {
         dispatch(action);
     }, [weightedTicketTemplate]);
 
-    const ticketAndTicketTemplate = useSelector((store: IStoreState) => {
-        return store.ticket[ticketPreviewId];
-    });
-
     const theme = useTheme();
     const classes = createClasses(theme);
     const materialClasses = useStyles();
-
-    const {
-        value: priorityWeightingCalculationFunction,
-        error: priorityWeightingCalculationError,
-    } = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation
-            .priorityWeightingCalculation;
-    });
-    const priorityScore = useMemo(() => {
-        if (
-            !!priorityWeightingCalculationError ||
-            priorityWeightingCalculationFunction.trim() === ""
-        ) {
-            return "NA";
-        }
-
-        const requiredValuesByAliasMapping = ticketAndTicketTemplate.ticketTemplate.sections.reduce<{
-            [aliasName: string]: {
-                value: number | string;
-                valid: boolean;
-            };
-        }>((mapping, section, index) => {
-            if (section.type === "number") {
-                if (!!section.alias) {
-                    mapping[section.alias] = {
-                        value:
-                            ticketAndTicketTemplate.ticket.sections[index]
-                                .value,
-                        valid: !ticketAndTicketTemplate.ticket.sections[index]
-                            .error,
-                    };
-                }
-            }
-
-            return mapping;
-        }, {});
-
-        const canDoCalculation = Object.values(
-            requiredValuesByAliasMapping
-        ).every(({ value, valid }) => {
-            return valid;
-        });
-
-        if (!canDoCalculation) {
-            return "NA";
-        } else {
-            let priorityWeightingCalculationFunctionValue = priorityWeightingCalculationFunction;
-            Object.keys(requiredValuesByAliasMapping).forEach((alias) => {
-                const value = requiredValuesByAliasMapping[alias].value;
-                priorityWeightingCalculationFunctionValue = priorityWeightingCalculationFunctionValue.replaceAll(
-                    alias,
-                    value.toString()
-                );
-            });
-            try {
-                const priority = mathEvaluator.eval(
-                    priorityWeightingCalculationFunctionValue
-                );
-                return priority;
-            } catch {
-                return "NA";
-            }
-        }
-
-        return requiredValuesByAliasMapping;
-    }, [priorityWeightingCalculationFunction, ticketAndTicketTemplate]);
 
     return (
         <BoardContainer>
@@ -780,25 +672,9 @@ export function CreateTicketTemplate() {
                             <div>
                                 <Paper className={materialClasses.previewPaper}>
                                     <div css={classes.ticketPreviewContainer}>
-                                        <div
-                                            css={
-                                                classes.ticketPreviewHeaderContainer
-                                            }
-                                        >
-                                            <Typography variant="h6">
-                                                Ticket Preview
-                                            </Typography>
-                                            <div
-                                                css={
-                                                    classes.priorityScoreContainer
-                                                }
-                                            >
-                                                <Typography>
-                                                    Priority Score:{" "}
-                                                    {priorityScore}
-                                                </Typography>
-                                            </div>
-                                        </div>
+                                        <TicketSummaryHeader
+                                            ticketId={ticketPreviewId}
+                                        />
                                         <Ticket ticketId={ticketPreviewId} />
                                     </div>
                                 </Paper>
@@ -895,23 +771,9 @@ const createClasses = (theme: Theme) => {
         padding: 16px;
     `;
 
-    const ticketPreviewContentContainer = css`
-        display: flex;
-        flex-direction: column;
-        overflow: auto;
-        padding: 16px;
-    `;
-
-    const priorityScoreContainer = css`
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
     return {
         ticketPreviewHeaderContainer,
-        ticketPreviewContentContainer,
+        ticketPreviewContainer,
         container,
         gridContentContainer,
         formBuilderContainer,
@@ -923,7 +785,5 @@ const createClasses = (theme: Theme) => {
         priorityWeightAndPreviewContainer,
         individualChipContainer,
         validAliasContainer,
-        ticketPreviewContainer,
-        priorityScoreContainer,
     };
 };
