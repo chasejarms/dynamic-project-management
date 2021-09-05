@@ -1,23 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { TagChip } from "../../../../../../../../../components/tagChip";
-import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
-import { IStoreState } from "../../../../../../../../../redux/storeState";
-import { WeightedNumberSectionWithControls } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
 import { Paper, makeStyles, Theme, useTheme } from "@material-ui/core";
-import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
-import {
-    setInitialTicketData,
-    ticketPreviewId,
-} from "../../../../../../../../../redux/ticket";
+import { ticketPreviewId } from "../../../../../../../../../redux/ticket";
 import { PriorityWeightingFunction } from "../../../../../../../../../components/priorityWeightingFunction";
 import { TicketSummaryHeader } from "../../../../../../../../../components/ticketSummaryHeader";
 import { TicketTemplateFieldsContainer } from "../../../../../../../../../components/ticketTemplateFieldsContainer";
 import { TicketTemplateBottomToolbar } from "../../../../../../../../../components/ticketTemplateBottomToolbar";
 import { BoardContainer } from "../../../../../../../../../components/boardContainer";
 import { Ticket } from "../../../../../../../../../components/ticket";
+import { useSetTicketFromTicketTemplateChange } from "../../../../../../../../../hooks/useSetTicketFromTicketTemplateChange";
+import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
 
 const useStyles = makeStyles({
     previewPaper: {
@@ -26,73 +18,12 @@ const useStyles = makeStyles({
 });
 
 export function CreateTicketTemplate() {
-    const { boardId, companyId } = useAppRouterParams();
+    const {
+        isCreatingTicketTemplate,
+        onClickCreateTicketTemplate,
+    } = useCreateTicketTemplateCall();
 
-    const [isCreatingTicketTemplate, setIsCreatingTicketTemplate] = useState(
-        false
-    );
-    const dispatch = useDispatch();
-
-    const weightedTicketTemplate = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation;
-    });
-
-    useEffect(() => {
-        if (!isCreatingTicketTemplate) return;
-    }, [isCreatingTicketTemplate, companyId, boardId]);
-
-    useEffect(() => {
-        const ticketTemplate: ITicketTemplate = {
-            itemId: "",
-            belongsTo: "",
-            shortenedItemId: "",
-            name: weightedTicketTemplate.name.value,
-            description: weightedTicketTemplate.description.value,
-            title: {
-                label: weightedTicketTemplate.title.value,
-            },
-            summary: {
-                label: weightedTicketTemplate.summary.value,
-            },
-            sections: weightedTicketTemplate.sections.map((section) => {
-                return section.value;
-            }),
-            priorityWeightingCalculation: "",
-        };
-
-        const action = setInitialTicketData({
-            ticketTemplate,
-            ticketId: ticketPreviewId,
-            ticket: {
-                title: {
-                    value: "",
-                    touched: false,
-                    error: "",
-                },
-                summary: {
-                    value: "",
-                    touched: false,
-                    error: "",
-                },
-                sections: weightedTicketTemplate.sections.map((section) => {
-                    return {
-                        value: "",
-                        touched: false,
-                        error: "",
-                    };
-                }),
-            },
-            priorityWeightingFunction: {
-                value: "",
-                error: "",
-            },
-        });
-        dispatch(action);
-    }, [weightedTicketTemplate]);
-
-    function onClickCreateTicketTemplate() {
-        setIsCreatingTicketTemplate(true);
-    }
+    useSetTicketFromTicketTemplateChange();
 
     const theme = useTheme();
     const classes = createClasses(theme);
