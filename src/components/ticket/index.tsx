@@ -14,6 +14,8 @@ export interface ITicketProps {
     ticket?: ITicket;
     ticketId: string;
     ticketTemplate: ITicketTemplate;
+    ticketFunction: string;
+    ticketFunctionIsValid: boolean;
 }
 
 export function Ticket(props: ITicketProps) {

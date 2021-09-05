@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BottomPageToolbar } from "../../../../../../../../../components/bottomPageToolbar";
 import { TagChip } from "../../../../../../../../../components/tagChip";
@@ -488,6 +488,67 @@ export function CreateTicketTemplate() {
     const theme = useTheme();
     const classes = createClasses(theme);
     const materialClasses = useStyles();
+
+    const priorityScore = useMemo(() => {
+        if (
+            !priorityWeightingCalculationFunction.isValid ||
+            priorityWeightingCalculationFunction.value.trim() === ""
+        ) {
+            return "NA";
+        }
+
+        const requiredValuesByAliasMapping = ticketAndTicketTemplate.ticketTemplate.sections.reduce<{
+            [aliasName: string]: {
+                value: number | string;
+                valid: boolean;
+            };
+        }>((mapping, section, index) => {
+            if (section.type === "number") {
+                if (!!section.alias) {
+                    mapping[section.alias] = {
+                        value:
+                            ticketAndTicketTemplate.ticket.sections[index]
+                                .value,
+                        valid: !ticketAndTicketTemplate.ticket.sections[index]
+                            .error,
+                    };
+                }
+            }
+
+            return mapping;
+        }, {});
+
+        const canDoCalculation = Object.values(
+            requiredValuesByAliasMapping
+        ).every(({ value, valid }) => {
+            return valid;
+        });
+
+        if (!canDoCalculation) {
+            return "NA";
+        } else {
+            let priorityWeightingCalculationFunctionValue =
+                priorityWeightingCalculationFunction.value;
+            Object.keys(requiredValuesByAliasMapping).forEach((alias) => {
+                const value = requiredValuesByAliasMapping[alias].value;
+                priorityWeightingCalculationFunctionValue = priorityWeightingCalculationFunctionValue.replaceAll(
+                    alias,
+                    value.toString()
+                );
+            });
+            try {
+                const priority = mathEvaluator.eval(
+                    priorityWeightingCalculationFunctionValue
+                );
+                return priority;
+            } catch {
+                return "NA";
+            }
+        }
+
+        return requiredValuesByAliasMapping;
+    }, [priorityWeightingCalculationFunction, ticketAndTicketTemplate]);
+
     return (
         <BoardContainer>
             <div css={classes.container}>
@@ -796,7 +857,8 @@ export function CreateTicketTemplate() {
                                                 }
                                             >
                                                 <Typography>
-                                                    Priority Score: NA
+                                                    Priority Score:{" "}
+                                                    {priorityScore}
                                                 </Typography>
                                             </div>
                                         </div>
@@ -808,6 +870,12 @@ export function CreateTicketTemplate() {
                                                 ticketAndTicketTemplate.ticketTemplate
                                             }
                                             ticketId={ticketPreviewId}
+                                            ticketFunction={
+                                                priorityWeightingCalculationFunction.value
+                                            }
+                                            ticketFunctionIsValid={
+                                                priorityWeightingCalculationFunction.isValid
+                                            }
                                         />
                                     </div>
                                 </Paper>

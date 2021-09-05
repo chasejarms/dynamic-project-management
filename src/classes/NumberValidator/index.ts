@@ -88,7 +88,6 @@ export class NumberValidator {
             const rule = this.validatorRules[i];
 
             const isNumber = typeof value === "number";
-            console.log("isNumber: ", isNumber);
 
             if (isNumber) {
                 const numberValue = value as number;
