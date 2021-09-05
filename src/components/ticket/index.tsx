@@ -6,6 +6,7 @@ import {
     ITicket,
     updateTicketTitle,
     updateTicketSummary,
+    updateSectionValue,
 } from "../../redux/ticket";
 import { WrappedTextField } from "../wrappedTextField";
 
@@ -56,12 +57,21 @@ export function Ticket(props: ITicketProps) {
         dispatch(action);
     }
 
-    function onChangeTicketSectionValue(
-        event: React.ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>
-    ) {}
+    function onChangeTicketSectionValue(index: number) {
+        return (
+            event: React.ChangeEvent<{
+                name?: string | undefined;
+                value: unknown;
+            }>
+        ) => {
+            const action = updateSectionValue({
+                index,
+                value: event.target.value as string,
+                ticketId: props.ticketId,
+            });
+            dispatch(action);
+        };
+    }
 
     return (
         <div css={classes.ticketPreviewContentContainer}>
@@ -82,13 +92,28 @@ export function Ticket(props: ITicketProps) {
             />
             {ticketTemplate.sections.map((ticketTemplateSection, index) => {
                 const sectionFromTicket = props.ticket!.sections[index];
-                if (ticketTemplateSection.type === "number") {
+                if (ticketTemplateSection.type === "text") {
+                    return (
+                        <WrappedTextField
+                            value={sectionFromTicket.value}
+                            label={ticketTemplateSection.label}
+                            onChange={onChangeTicketSectionValue(index)}
+                            error={
+                                sectionFromTicket.touched
+                                    ? sectionFromTicket.error
+                                    : ""
+                            }
+                            required={ticketTemplateSection.required}
+                            multiline={ticketTemplateSection.multiline}
+                        />
+                    );
+                } else if (ticketTemplateSection.type === "number") {
                     return (
                         <WrappedTextField
                             type="number"
                             value={sectionFromTicket.value}
                             label={ticketTemplateSection.label}
-                            onChange={onChangeTicketSectionValue}
+                            onChange={onChangeTicketSectionValue(index)}
                             error={
                                 sectionFromTicket.touched
                                     ? sectionFromTicket.error

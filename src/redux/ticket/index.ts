@@ -1,11 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StringValidator } from "../../classes/StringValidator";
 import { cloneDeep } from "lodash";
-import { Section } from "../../models/ticketTemplate/section";
 import { ITicketTemplate } from "../../models/ticketTemplate";
+import { Section } from "../../models/ticketTemplate/section";
+import { ITextSection } from "../../models/ticketTemplate/section/textSection";
+import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
+import { NumberValidator } from "../../classes/NumberValidator";
 
 export const ticketPreviewId = "TICKET_PREVIEW";
 export const ticketCreateId = "TICKET_CREATE";
+
+export interface ISectionFormData {
+    value: string | number;
+    touched: boolean;
+    error: string;
+}
 
 export interface ITicket {
     title: {
@@ -18,11 +27,7 @@ export interface ITicket {
         touched: boolean;
         error: string;
     };
-    sections: {
-        value: string | number;
-        touched: boolean;
-        error: string;
-    }[];
+    sections: ISectionFormData[];
 }
 
 export interface ITicketMappingState {
@@ -140,51 +145,66 @@ export const ticketMappingSlice = createSlice({
                 },
             };
         },
-        addSection: (
+        updateSectionValue: (
             state: ITicketMappingState,
             action: PayloadAction<{
                 index: number;
                 value: string | number;
                 ticketId: string;
-                updatedTicketTemplate: ITicketTemplate;
             }>
         ) => {
             const clonedState = cloneDeep(state);
-            const { ticket: existingTicket } = clonedState[
-                action.payload.ticketId
+            const { index, value, ticketId } = action.payload;
+            const { ticket: existingTicket, ticketTemplate } = clonedState[
+                ticketId
             ];
             const previousSections = existingTicket.sections;
-            const beforeSectionToInsert = previousSections.slice(
-                0,
-                action.payload.index + 1
-            );
-            const afterSectionToInsert = previousSections.slice(
-                action.payload.index + 1
-            );
+            const beforeSectionToInsert = previousSections.slice(0, index);
+            const afterSectionToInsert = previousSections.slice(index + 1);
 
-            let error = "";
-            const section =
-                action.payload.updatedTicketTemplate.sections[
-                    action.payload.index
-                ];
+            let sectionToInsert: ISectionFormData;
+            const section = ticketTemplate.sections[index];
             if (section.type === "text") {
-                if (section.required) {
-                    error = new StringValidator()
-                        .required()
-                        .validate(action.payload.value.toString());
-                }
-            } else if (section.type === "number") {
-            }
+                const value = action.payload.value as string;
 
-            const sectionToInsert = {
-                value: action.payload.value,
-                error: "",
-                touched: false,
-            };
+                let error = "";
+                if (section.required) {
+                    error = new StringValidator().required().validate(value);
+                }
+
+                sectionToInsert = {
+                    value,
+                    error,
+                    touched: true,
+                };
+            } else if (section.type === "number") {
+                const value = action.payload.value as
+                    | number
+                    | undefined
+                    | null
+                    | "";
+
+                const numberValue =
+                    value !== undefined && value !== null && value !== ""
+                        ? Number(value)
+                        : value;
+                const error = new NumberValidator()
+                    .required(section.required)
+                    .integer(section.allowOnlyIntegers)
+                    .max(section.maxValue !== undefined, section.maxValue!)
+                    .min(section.minValue !== undefined, section.minValue!)
+                    .validate(numberValue);
+
+                sectionToInsert = {
+                    value: value || "",
+                    error,
+                    touched: true,
+                };
+            }
 
             const updatedSections = [
                 ...beforeSectionToInsert,
-                sectionToInsert,
+                sectionToInsert!,
                 ...afterSectionToInsert,
             ];
 
@@ -195,54 +215,10 @@ export const ticketMappingSlice = createSlice({
                         ...existingTicket,
                         sections: updatedSections,
                     },
-                    ticketTemplate: action.payload.updatedTicketTemplate,
+                    ticketTemplate,
                 },
             };
         },
-        // updateTicketTemplate: (
-        //     state: ITicketMappingState,
-        //     action: PayloadAction<ITicketTemplate | null>
-        // ) => {
-        //     const sections: {
-        //         value: string;
-        //     }[] = [];
-        //     if (action.payload !== null) {
-        //         action.payload.sections.forEach((section) => {
-        //             sections.push({
-        //                 value: "",
-        //             });
-        //         });
-        //     }
-        //     return {
-        //         ...state,
-        //         ticketTemplate: action.payload,
-        //         sections,
-        //     };
-        // },
-        // updateSection: (
-        //     state: ITicketMappingState,
-        //     action: PayloadAction<{
-        //         value: string;
-        //         index: number;
-        //     }>
-        // ) => {
-        //     const clonedSections = cloneDeep(state.sections);
-        //     const existingSection = clonedSections[action.payload.index];
-        //     existingSection.value = action.payload.value;
-        //     return {
-        //         ...state,
-        //         sections: clonedSections,
-        //     };
-        // },
-        // updateStartingColumn: (
-        //     state: ITicketMappingState,
-        //     action: PayloadAction<string>
-        // ) => {
-        //     return {
-        //         ...state,
-        //         startingColumn: action.payload,
-        //     };
-        // },
     },
 });
 
@@ -250,11 +226,7 @@ export const {
     setInitialTicketData,
     updateTicketTitle,
     updateTicketSummary,
-    // updateTicketTitle,
-    // updateTicketSummary,
-    // updateTicketTemplate,
-    // updateSection,
-    // updateStartingColumn,
+    updateSectionValue,
 } = ticketMappingSlice.actions;
 
 export default ticketMappingSlice.reducer;

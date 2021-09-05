@@ -32,10 +32,10 @@ export interface ICustomRule {
     errorMessage: string;
 }
 
-export class StringValidator {
+export class NumberValidator {
     public validatorRules: INumberValidatorRule[] = [];
 
-    public min(min: number, applyValidator: boolean, errorMessage?: string) {
+    public min(applyValidator: boolean, min: number, errorMessage?: string) {
         if (!!applyValidator) {
             this.validatorRules.push({
                 type: "min",
@@ -48,7 +48,7 @@ export class StringValidator {
         return this;
     }
 
-    public max(max: number, applyValidator: boolean, errorMessage?: string) {
+    public max(applyValidator: boolean, max: number, errorMessage?: string) {
         if (!!applyValidator) {
             this.validatorRules.push({
                 type: "max",
@@ -88,6 +88,7 @@ export class StringValidator {
             const rule = this.validatorRules[i];
 
             const isNumber = typeof value === "number";
+            console.log("isNumber: ", isNumber);
 
             if (isNumber) {
                 const numberValue = value as number;
@@ -111,7 +112,7 @@ export class StringValidator {
             }
 
             if (rule.type === "required") {
-                if (value === undefined || value === null) {
+                if (value === undefined || value === null || value === "") {
                     return rule.errorMessage;
                 }
             }
