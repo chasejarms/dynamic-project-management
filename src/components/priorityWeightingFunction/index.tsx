@@ -2,7 +2,11 @@
 import { jsx, css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../redux/storeState";
-import { updatePriorityWeightingCalculation } from "../../redux/weightedTicketTemplateCreation";
+import {
+    updatePriorityWeightingCalculation,
+    WeightedNumberSectionWithControls,
+} from "../../redux/weightedTicketTemplateCreation";
+import { TagChip } from "../tagChip";
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface IPriorityWeightingFunctionProps {
@@ -13,10 +17,23 @@ export interface IPriorityWeightingFunctionProps {
 export function PriorityWeightingFunction(
     props: IPriorityWeightingFunctionProps
 ) {
-    const priorityWeightingCalculation = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation
-            .priorityWeightingCalculation;
+    const weightedTicketTemplateCreation = useSelector((store: IStoreState) => {
+        return store.weightedTicketTemplateCreation;
     });
+
+    const {
+        sections,
+        priorityWeightingCalculation,
+    } = weightedTicketTemplateCreation;
+
+    const validAliasList = sections
+        .filter((section) => {
+            return section.value.type === "number" && !!section.value.alias;
+        })
+        .map(
+            (section) =>
+                (section as WeightedNumberSectionWithControls).value.alias
+        );
 
     const dispatch = useDispatch();
 
@@ -33,13 +50,46 @@ export function PriorityWeightingFunction(
         dispatch(action);
     }
 
+    const classes = createClasses();
     return (
-        <WrappedTextField
-            value={priorityWeightingCalculation.value}
-            label="Priority Weighting Calculation"
-            onChange={onChange}
-            error={priorityWeightingCalculation.error}
-            disabled={props.disabled}
-        />
+        <div>
+            <div css={classes.validAliasContainer}>
+                {validAliasList.map((aliasName) => {
+                    return (
+                        <div css={classes.individualChipContainer}>
+                            <TagChip
+                                size="small"
+                                tagName={aliasName}
+                                tagColor={"gray"}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+            <WrappedTextField
+                value={priorityWeightingCalculation.value}
+                label="Priority Weighting Calculation"
+                onChange={onChange}
+                error={priorityWeightingCalculation.error}
+                disabled={props.disabled}
+            />
+        </div>
     );
 }
+
+const createClasses = () => {
+    const validAliasContainer = css`
+        padding-bottom: 8px;
+    `;
+
+    const individualChipContainer = css`
+        margin-right: 4px;
+        margin-bottom: 4px;
+        display: inline-flex;
+    `;
+
+    return {
+        validAliasContainer,
+        individualChipContainer,
+    };
+};
