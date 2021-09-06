@@ -4,7 +4,7 @@ import { ITicketTemplate } from "../../models/ticketTemplate";
 import { IStoreState } from "../../redux/storeState";
 import { setInitialTicketData, ticketPreviewId } from "../../redux/ticket";
 
-export function useSetTicketFromTicketTemplateChange() {
+export function useSetTicketFromTicketTemplateChange(runEffect: boolean) {
     const dispatch = useDispatch();
 
     const weightedTicketTemplate = useSelector((store: IStoreState) => {
@@ -12,6 +12,8 @@ export function useSetTicketFromTicketTemplateChange() {
     });
 
     useEffect(() => {
+        if (!runEffect) return;
+
         const ticketTemplate: ITicketTemplate = {
             itemId: "",
             belongsTo: "",

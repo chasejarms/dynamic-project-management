@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
-import { ITicketTemplate } from "../../models/ticketTemplate";
+import { useSetTicketFromTicketTemplateChange } from "../../hooks/useSetTicketFromTicketTemplateChange";
 import { IStoreState } from "../../redux/storeState";
 import {
-    ITicket,
     updateTicketTitle,
     updateTicketSummary,
     updateSectionValue,
@@ -13,10 +12,13 @@ import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketProps {
     ticketId: string;
+    isTicketPreview: boolean;
 }
 
 export function Ticket(props: ITicketProps) {
     const dispatch = useDispatch();
+
+    useSetTicketFromTicketTemplateChange(props.isTicketPreview);
 
     const ticketState = useSelector((store: IStoreState) => {
         return store.ticket[props.ticketId];

@@ -8,7 +8,6 @@ import { TicketTemplateFieldsContainer } from "../../../../../../../../../compon
 import { TicketTemplateBottomToolbar } from "../../../../../../../../../components/ticketTemplateBottomToolbar";
 import { BoardContainer } from "../../../../../../../../../components/boardContainer";
 import { Ticket } from "../../../../../../../../../components/ticket";
-import { useSetTicketFromTicketTemplateChange } from "../../../../../../../../../hooks/useSetTicketFromTicketTemplateChange";
 import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
 
 export function CreateTicketTemplate() {
@@ -30,8 +29,6 @@ function InnerCreateTicketTemplate() {
         isCreatingTicketTemplate,
         onClickCreateTicketTemplate,
     } = useCreateTicketTemplateCall();
-
-    useSetTicketFromTicketTemplateChange();
 
     const theme = useTheme();
     const classes = createClasses(theme);
@@ -55,7 +52,10 @@ function InnerCreateTicketTemplate() {
                                     <TicketSummaryHeader
                                         ticketId={ticketPreviewId}
                                     />
-                                    <Ticket ticketId={ticketPreviewId} />
+                                    <Ticket
+                                        ticketId={ticketPreviewId}
+                                        isTicketPreview={true}
+                                    />
                                 </div>
                             </Paper>
                         </div>
