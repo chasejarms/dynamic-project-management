@@ -9,7 +9,12 @@ import { TicketTemplateBottomToolbar } from "../../../../../../../../../componen
 import { BoardContainer } from "../../../../../../../../../components/boardContainer";
 import { Ticket } from "../../../../../../../../../components/ticket";
 import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
-import { createTicketTemplateId } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
+import {
+    createTicketTemplateId,
+    resetWeightedTicketTemplateCreationState,
+} from "../../../../../../../../../redux/weightedTicketTemplateCreation";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export function CreateTicketTemplate() {
     return (
@@ -34,6 +39,14 @@ function InnerCreateTicketTemplate() {
     const theme = useTheme();
     const classes = createClasses(theme);
     const materialClasses = useStyles();
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        return () => {
+            const action = resetWeightedTicketTemplateCreationState();
+            dispatch(action);
+        };
+    }, []);
 
     return (
         <div css={classes.container}>
