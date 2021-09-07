@@ -6,11 +6,11 @@ import { useDispatch } from "react-redux";
 import { useCreateTicketTemplateCall } from "../../hooks/useCreateTicketTemplateCall";
 import { ticketPreviewId } from "../../redux/ticket";
 import { resetWeightedTicketTemplateCreationState } from "../../redux/weightedTicketTemplateCreation";
-import { PriorityWeightingFunction } from "../priorityWeightingFunction";
+import { PriorityWeightingFunction } from "./priorityWeightingFunction";
 import { Ticket } from "../ticket";
-import { TicketSummaryHeader } from "../ticketSummaryHeader";
-import { TicketTemplateBottomToolbar } from "../ticketTemplateBottomToolbar";
-import { TicketTemplateFieldsContainer } from "../ticketTemplateFieldsContainer";
+import { TicketSummaryHeader } from "./ticketSummaryHeader";
+import { TicketTemplateBottomToolbar } from "./ticketTemplateBottomToolbar";
+import { TicketTemplateFieldsContainer } from "./ticketTemplateFieldsContainer";
 
 const useStyles = makeStyles({
     previewPaper: {

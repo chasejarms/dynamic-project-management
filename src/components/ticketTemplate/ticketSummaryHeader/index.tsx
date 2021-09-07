@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
+import { IStoreState } from "../../../redux/storeState";
 import mathEvaluator from "math-expression-evaluator";
 import { Theme, Typography, useTheme } from "@material-ui/core";
 

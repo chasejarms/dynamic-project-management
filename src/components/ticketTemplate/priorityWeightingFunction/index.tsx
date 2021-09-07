@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
+import { IStoreState } from "../../../redux/storeState";
 import {
     updatePriorityWeightingCalculation,
     WeightedNumberSectionWithControls,
-} from "../../redux/weightedTicketTemplateCreation";
-import { TagChip } from "../tagChip";
-import { WrappedTextField } from "../wrappedTextField";
+} from "../../../redux/weightedTicketTemplateCreation";
+import { TagChip } from "../../tagChip";
+import { WrappedTextField } from "../../wrappedTextField";
 
 export interface IPriorityWeightingFunctionProps {
     ticketId: string;

@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
+import { IStoreState } from "../../../../redux/storeState";
 import {
     WeightedNumberSectionWithControls,
     WeightedTextSectionWithControls,
-} from "../../redux/weightedTicketTemplateCreation";
-import { TicketTemplateNumberField } from "../ticketTemplateNumberField";
-import { TicketTemplateTextField } from "../ticketTemplateTextField";
+} from "../../../../redux/weightedTicketTemplateCreation";
+import { TicketTemplateNumberField } from "./ticketTemplateNumberField";
+import { TicketTemplateTextField } from "./ticketTemplateTextField";
 
 export interface ITicketTemplateSectionWrapperProps {
     disabled: boolean;

@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
+import { IStoreState } from "../../../redux/storeState";
 import {
     WeightedTextSectionWithControls,
     WeightedNumberSectionWithControls,
-} from "../../redux/weightedTicketTemplateCreation";
-import { BottomPageToolbar } from "../bottomPageToolbar";
-import { IWrappedButtonProps } from "../wrappedButton";
+} from "../../../redux/weightedTicketTemplateCreation";
+import { BottomPageToolbar } from "../../bottomPageToolbar";
+import { IWrappedButtonProps } from "../../wrappedButton";
 
 export interface ITicketTemplateBottomToolbarProps {
     onClickCreateTicketTemplate: () => void;

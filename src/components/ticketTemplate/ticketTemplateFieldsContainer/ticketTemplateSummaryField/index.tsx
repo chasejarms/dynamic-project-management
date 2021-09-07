@@ -2,15 +2,15 @@
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
-import { ITextSection } from "../../models/ticketTemplate/section/textSection";
-import { IStoreState } from "../../redux/storeState";
+import { INumberSection } from "../../../../models/ticketTemplate/section/numberSection";
+import { ITextSection } from "../../../../models/ticketTemplate/section/textSection";
+import { IStoreState } from "../../../../redux/storeState";
 import {
     insertWeightedTicketCreationSection,
     updateWeightedTicketTemplateCreationSummary,
-} from "../../redux/weightedTicketTemplateCreation";
-import { WeightedPriorityTicketTemplateActions } from "../weightedPriorityTicketTemplateActions";
-import { WrappedTextField } from "../wrappedTextField";
+} from "../../../../redux/weightedTicketTemplateCreation";
+import { WeightedPriorityTicketTemplateActions } from "../../../weightedPriorityTicketTemplateActions";
+import { WrappedTextField } from "../../../wrappedTextField";
 
 export interface ITicketTemplateSummaryFieldProps {
     disabled: boolean;

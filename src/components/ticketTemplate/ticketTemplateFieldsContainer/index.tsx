@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
-import { composeCSS } from "../../styles/composeCSS";
-import { TicketTemplateNameField } from "../ticketTemplateNameField";
-import { TicketTemplateDescriptionField } from "../ticketTemplateDescriptionField";
-import { TicketTemplateTitleField } from "../ticketTemplateTitleField";
-import { TicketTemplateSummaryField } from "../ticketTemplateSummaryField";
-import { TicketTemplateSectionWrapper } from "../ticketTemplateSectionWrapper";
+import { IStoreState } from "../../../redux/storeState";
+import { composeCSS } from "../../../styles/composeCSS";
+import { TicketTemplateNameField } from "./ticketTemplateNameField";
+import { TicketTemplateDescriptionField } from "./ticketTemplateDescriptionField";
+import { TicketTemplateTitleField } from "./ticketTemplateTitleField";
+import { TicketTemplateSummaryField } from "./ticketTemplateSummaryField";
+import { TicketTemplateSectionWrapper } from "./ticketTemplateSectionWrapper";
 
 export interface ITicketTemplateFieldsContainerProps {
     disabled: boolean;

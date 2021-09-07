@@ -2,16 +2,16 @@
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
-import { ITextSection } from "../../models/ticketTemplate/section/textSection";
+import { INumberSection } from "../../../../../models/ticketTemplate/section/numberSection";
+import { ITextSection } from "../../../../../models/ticketTemplate/section/textSection";
 import {
     deleteWeightedTicketTemplateCreationSection,
     insertWeightedTicketCreationSection,
     overrideWeightedTicketCreationSection,
     WeightedNumberSectionWithControls,
-} from "../../redux/weightedTicketTemplateCreation";
-import { WeightedPriorityTicketTemplateActions } from "../weightedPriorityTicketTemplateActions";
-import { WeightedTicketTemplateNumberControl } from "../weightedTicketTemplateNumberControl";
+} from "../../../../../redux/weightedTicketTemplateCreation";
+import { WeightedPriorityTicketTemplateActions } from "../../../../weightedPriorityTicketTemplateActions";
+import { WeightedTicketTemplateNumberControl } from "../../../../weightedTicketTemplateNumberControl";
 
 export interface ITicketTemplateNumberFieldProps {
     disabled: boolean;
