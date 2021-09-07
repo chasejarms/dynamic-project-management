@@ -198,7 +198,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 value: updatedValue,
                 ticketTemplateId,
             } = action.payload;
-            const ticketTemplate = state.ticketTemplateId;
+            const ticketTemplate = state[ticketTemplateId];
 
             const clonedSections = cloneDeep(ticketTemplate.sections);
 
