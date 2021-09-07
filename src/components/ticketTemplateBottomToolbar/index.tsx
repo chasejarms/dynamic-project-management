@@ -12,6 +12,7 @@ import { IWrappedButtonProps } from "../wrappedButton";
 export interface ITicketTemplateBottomToolbarProps {
     onClickCreateTicketTemplate: () => void;
     isCreatingTicketTemplate: boolean;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateBottomToolbar(
@@ -24,7 +25,7 @@ export function TicketTemplateBottomToolbar(
             title,
             summary,
             sections,
-        } = store.weightedTicketTemplateCreation;
+        } = store.weightedTicketTemplateCreation[props.ticketTemplateId];
 
         const nameIsValid = !name.error;
         const descriptionIsValid = !description.error;

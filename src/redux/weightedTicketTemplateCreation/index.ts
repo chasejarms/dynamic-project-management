@@ -23,60 +23,66 @@ type WeightedSectionWithControls =
     | WeightedTextSectionWithControls
     | WeightedNumberSectionWithControls;
 
+export const createTicketTemplateId = "CREATE-TICKET-TEMPLATE-ID";
+
 export interface IWeightedTicketTemplateCreationState {
-    name: {
-        value: string;
-        touched: boolean;
-        error: string;
-    };
-    description: {
-        value: string;
-        touched: boolean;
-        error: string;
-    };
-    title: {
-        value: string;
-        touched: boolean;
-        error: string;
-    };
-    summary: {
-        value: string;
-        touched: boolean;
-        error: string;
-    };
-    sections: WeightedSectionWithControls[];
-    priorityWeightingCalculation: {
-        value: string;
-        error: string;
+    [ticketTemplateId: string]: {
+        name: {
+            value: string;
+            touched: boolean;
+            error: string;
+        };
+        description: {
+            value: string;
+            touched: boolean;
+            error: string;
+        };
+        title: {
+            value: string;
+            touched: boolean;
+            error: string;
+        };
+        summary: {
+            value: string;
+            touched: boolean;
+            error: string;
+        };
+        sections: WeightedSectionWithControls[];
+        priorityWeightingCalculation: {
+            value: string;
+            error: string;
+        };
     };
 }
 
 const defaultRequiredError = "This field is required";
 const initialState: IWeightedTicketTemplateCreationState = {
-    name: {
-        value: "",
-        touched: false,
-        error: defaultRequiredError,
-    },
-    description: {
-        value: "",
-        touched: false,
-        error: defaultRequiredError,
-    },
-    title: {
-        value: "Title",
-        touched: false,
-        error: "",
-    },
-    summary: {
-        value: "Summary",
-        touched: false,
-        error: "",
-    },
-    sections: [],
-    priorityWeightingCalculation: {
-        value: "",
-        error: "",
+    [createTicketTemplateId]: {
+        name: {
+            value: "",
+            touched: false,
+            error: defaultRequiredError,
+        },
+        description: {
+            value: "",
+            touched: false,
+            error: defaultRequiredError,
+        },
+        title: {
+            value: "Title",
+            touched: false,
+            error: "",
+        },
+        summary: {
+            value: "Summary",
+            touched: false,
+            error: "",
+        },
+        sections: [],
+        priorityWeightingCalculation: {
+            value: "",
+            error: "",
+        },
     },
 };
 
@@ -89,65 +95,93 @@ export const weightedTicketTemplateCreationSlice = createSlice({
         },
         updateWeightedTicketTemplateCreationTitle: (
             state: IWeightedTicketTemplateCreationState,
-            action: PayloadAction<string>
+            action: PayloadAction<{
+                title: string;
+                ticketTemplateId: string;
+            }>
         ) => {
+            const { title, ticketTemplateId } = action.payload;
             const error = new StringValidator()
                 .required(defaultRequiredError)
-                .validate(action.payload);
+                .validate(title);
             return {
                 ...state,
-                title: {
-                    touched: true,
-                    value: action.payload,
-                    error,
+                [ticketTemplateId]: {
+                    ...state[ticketTemplateId],
+                    title: {
+                        touched: true,
+                        value: title,
+                        error,
+                    },
                 },
             };
         },
         updateWeightedTicketTemplateCreationName: (
             state: IWeightedTicketTemplateCreationState,
-            action: PayloadAction<string>
+            action: PayloadAction<{
+                name: string;
+                ticketTemplateId: string;
+            }>
         ) => {
+            const { name, ticketTemplateId } = action.payload;
             const error = new StringValidator()
                 .required(defaultRequiredError)
-                .validate(action.payload);
+                .validate(name);
             return {
                 ...state,
-                name: {
-                    touched: true,
-                    value: action.payload,
-                    error,
+                [ticketTemplateId]: {
+                    ...state[ticketTemplateId],
+                    name: {
+                        touched: true,
+                        value: name,
+                        error,
+                    },
                 },
             };
         },
         updateWeightedTicketTemplateCreationDescription: (
             state: IWeightedTicketTemplateCreationState,
-            action: PayloadAction<string>
+            action: PayloadAction<{
+                description: string;
+                ticketTemplateId: string;
+            }>
         ) => {
+            const { description, ticketTemplateId } = action.payload;
             const error = new StringValidator()
                 .required(defaultRequiredError)
-                .validate(action.payload);
+                .validate(description);
             return {
                 ...state,
-                description: {
-                    touched: true,
-                    value: action.payload,
-                    error,
+                [ticketTemplateId]: {
+                    ...state[ticketTemplateId],
+                    description: {
+                        touched: true,
+                        value: description,
+                        error,
+                    },
                 },
             };
         },
         updateWeightedTicketTemplateCreationSummary: (
             state: IWeightedTicketTemplateCreationState,
-            action: PayloadAction<string>
+            action: PayloadAction<{
+                summary: string;
+                ticketTemplateId: string;
+            }>
         ) => {
+            const { summary, ticketTemplateId } = action.payload;
             const error = new StringValidator()
                 .required(defaultRequiredError)
-                .validate(action.payload);
+                .validate(summary);
             return {
                 ...state,
-                summary: {
-                    touched: true,
-                    value: action.payload,
-                    error,
+                [ticketTemplateId]: {
+                    ...state[ticketTemplateId],
+                    summary: {
+                        touched: true,
+                        value: summary,
+                        error,
+                    },
                 },
             };
         },
@@ -156,10 +190,17 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             action: PayloadAction<{
                 value: Section;
                 index: number;
+                ticketTemplateId: string;
             }>
         ) => {
-            const clonedSections = cloneDeep(state.sections);
-            const { index, value: updatedValue } = action.payload;
+            const {
+                index,
+                value: updatedValue,
+                ticketTemplateId,
+            } = action.payload;
+            const ticketTemplate = state.ticketTemplateId;
+
+            const clonedSections = cloneDeep(ticketTemplate.sections);
 
             if (updatedValue.type === "text") {
                 const weightedTextSection = updatedValue as ITextSection;
@@ -175,7 +216,10 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 clonedSections[index] = updatedSection;
                 return {
                     ...state,
-                    sections: clonedSections,
+                    [ticketTemplateId]: {
+                        ...ticketTemplate,
+                        sections: clonedSections,
+                    },
                 };
             } else if (updatedValue.type === "number") {
                 const weightedNumberSection = updatedValue as INumberSection;
@@ -215,14 +259,19 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 clonedSections[index] = updatedSection;
                 const error = priorityWeightingCalculationError(
                     clonedSections,
-                    state.priorityWeightingCalculation.value
+                    ticketTemplate.priorityWeightingCalculation.value
                 );
                 return {
                     ...state,
-                    sections: clonedSections,
-                    priorityWeightingCalculation: {
-                        value: state.priorityWeightingCalculation.value,
-                        error,
+                    [ticketTemplateId]: {
+                        ...ticketTemplate,
+                        sections: clonedSections,
+                        priorityWeightingCalculation: {
+                            value:
+                                ticketTemplate.priorityWeightingCalculation
+                                    .value,
+                            error,
+                        },
                     },
                 };
             }
@@ -232,10 +281,12 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             action: PayloadAction<{
                 value: Section;
                 index: number;
+                ticketTemplateId: string;
             }>
         ) => {
-            const { index, value } = action.payload;
-            const clonedSections = cloneDeep(state.sections);
+            const { index, value, ticketTemplateId } = action.payload;
+            const ticketTemplate = state[ticketTemplateId];
+            const clonedSections = cloneDeep(ticketTemplate.sections);
             let sectionWithControls: WeightedSectionWithControls;
 
             if (value.type === "text") {
@@ -295,7 +346,10 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             if (index === -1) {
                 return {
                     ...state,
-                    sections: [sectionWithControls, ...clonedSections],
+                    [ticketTemplateId]: {
+                        ...ticketTemplate,
+                        sections: [sectionWithControls, ...clonedSections],
+                    },
                 };
             } else {
                 const beforeSections = clonedSections.slice(0, index + 1);
@@ -307,39 +361,60 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                 ];
                 return {
                     ...state,
-                    sections: updatedSections,
+                    [ticketTemplateId]: {
+                        ...ticketTemplate,
+                        sections: updatedSections,
+                    },
                 };
             }
         },
         deleteWeightedTicketTemplateCreationSection: (
             state: IWeightedTicketTemplateCreationState,
-            action: PayloadAction<number>
+            action: PayloadAction<{
+                index: number;
+                ticketTemplateId: string;
+            }>
         ) => {
-            const sectionsWithoutRemovedSection = state.sections.filter(
-                (_, index) => {
-                    return index !== action.payload;
+            const { index, ticketTemplateId } = action.payload;
+            const ticketTemplate = state[ticketTemplateId];
+            const sectionsWithoutRemovedSection = ticketTemplate.sections.filter(
+                (_, compareIndex) => {
+                    return compareIndex !== index;
                 }
             );
             return {
                 ...state,
-                sections: sectionsWithoutRemovedSection,
+                [ticketTemplateId]: {
+                    ...ticketTemplate,
+                    sections: sectionsWithoutRemovedSection,
+                },
             };
         },
         updatePriorityWeightingCalculation: (
             state: IWeightedTicketTemplateCreationState,
-            action: PayloadAction<string>
+            action: PayloadAction<{
+                priorityWeightingCalculation: string;
+                ticketTemplateId: string;
+            }>
         ) => {
-            const updatedPriorityWeightingCalculation = action.payload;
+            const {
+                priorityWeightingCalculation,
+                ticketTemplateId,
+            } = action.payload;
+            const ticketTemplate = state[ticketTemplateId];
             const error = priorityWeightingCalculationError(
-                state.sections,
-                updatedPriorityWeightingCalculation
+                ticketTemplate.sections,
+                priorityWeightingCalculation
             );
 
             return {
                 ...state,
-                priorityWeightingCalculation: {
-                    value: updatedPriorityWeightingCalculation,
-                    error,
+                [ticketTemplateId]: {
+                    ...ticketTemplate,
+                    priorityWeightingCalculation: {
+                        value: priorityWeightingCalculation,
+                        error,
+                    },
                 },
             };
         },

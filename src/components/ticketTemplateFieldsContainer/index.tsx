@@ -11,13 +11,15 @@ import { TicketTemplateSectionWrapper } from "../ticketTemplateSectionWrapper";
 
 export interface ITicketTemplateFieldsContainerProps {
     disabled: boolean;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateFieldsContainer(
     props: ITicketTemplateFieldsContainerProps
 ) {
     const sectionLength = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.sections.length;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId]
+            .sections.length;
     });
 
     const classes = createClasses();
@@ -35,6 +37,7 @@ export function TicketTemplateFieldsContainer(
                 <TicketTemplateSectionWrapper
                     disabled={props.disabled}
                     index={i}
+                    ticketTemplateId={props.ticketTemplateId}
                 />
             </div>
         );
@@ -43,16 +46,28 @@ export function TicketTemplateFieldsContainer(
     return (
         <div css={classes.formBuilderContainer}>
             <div css={classes.columnInputContainer}>
-                <TicketTemplateNameField disabled={props.disabled} />
+                <TicketTemplateNameField
+                    disabled={props.disabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
             </div>
             <div css={classes.columnInputContainer}>
-                <TicketTemplateDescriptionField disabled={props.disabled} />
+                <TicketTemplateDescriptionField
+                    disabled={props.disabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
             </div>
             <div css={classes.columnInputContainer}>
-                <TicketTemplateTitleField disabled={props.disabled} />
+                <TicketTemplateTitleField
+                    disabled={props.disabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
             </div>
             <div css={classes.columnInputContainer}>
-                <TicketTemplateSummaryField disabled={props.disabled} />
+                <TicketTemplateSummaryField
+                    disabled={props.disabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
             </div>
             {sections}
         </div>

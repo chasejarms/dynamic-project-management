@@ -8,6 +8,7 @@ import { Theme, Typography, useTheme } from "@material-ui/core";
 
 export interface ITicketSummaryHeaderProps {
     ticketId: string;
+    ticketTemplateId: string;
 }
 
 export function TicketSummaryHeader(props: ITicketSummaryHeaderProps) {
@@ -18,10 +19,11 @@ export function TicketSummaryHeader(props: ITicketSummaryHeaderProps) {
         },
         ticketAndTicketTemplate,
     } = useSelector((store: IStoreState) => {
+        const priorityWeightingCalculation =
+            store.weightedTicketTemplateCreation[props.ticketTemplateId]
+                .priorityWeightingCalculation;
         return {
-            priorityWeightingCalculation:
-                store.weightedTicketTemplateCreation
-                    .priorityWeightingCalculation,
+            priorityWeightingCalculation,
             ticketAndTicketTemplate: store.ticket[props.ticketId],
         };
     });

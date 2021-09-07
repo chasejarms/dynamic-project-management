@@ -9,6 +9,7 @@ import { TicketTemplateBottomToolbar } from "../../../../../../../../../componen
 import { BoardContainer } from "../../../../../../../../../components/boardContainer";
 import { Ticket } from "../../../../../../../../../components/ticket";
 import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
+import { createTicketTemplateId } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
 
 export function CreateTicketTemplate() {
     return (
@@ -40,17 +41,22 @@ function InnerCreateTicketTemplate() {
                 <div css={classes.gridContentContainer}>
                     <TicketTemplateFieldsContainer
                         disabled={isCreatingTicketTemplate}
+                        ticketTemplateId={createTicketTemplateId}
                     />
                     <div css={classes.priorityWeightAndPreviewContainer}>
                         <PriorityWeightingFunction
                             ticketId={ticketPreviewId}
                             disabled={isCreatingTicketTemplate}
+                            ticketTemplateId={createTicketTemplateId}
                         />
                         <div>
                             <Paper className={materialClasses.previewPaper}>
                                 <div css={classes.ticketPreviewContainer}>
                                     <TicketSummaryHeader
                                         ticketId={ticketPreviewId}
+                                        ticketTemplateId={
+                                            createTicketTemplateId
+                                        }
                                     />
                                     <Ticket
                                         ticketId={ticketPreviewId}
@@ -66,6 +72,7 @@ function InnerCreateTicketTemplate() {
                 <TicketTemplateBottomToolbar
                     onClickCreateTicketTemplate={onClickCreateTicketTemplate}
                     isCreatingTicketTemplate={isCreatingTicketTemplate}
+                    ticketTemplateId={createTicketTemplateId}
                 />
             </div>
         </div>

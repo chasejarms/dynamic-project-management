@@ -14,21 +14,25 @@ import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketTemplateSummaryFieldProps {
     disabled: boolean;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateSummaryField(
     props: ITicketTemplateSummaryFieldProps
 ) {
     const value = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.summary.value;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId]
+            .summary.value;
     });
 
     const touched = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.summary.touched;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId]
+            .summary.touched;
     });
 
     const error = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.summary.error;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId]
+            .summary.error;
     });
 
     const dispatch = useDispatch();
@@ -36,7 +40,10 @@ export function TicketTemplateSummaryField(
         eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const value = eventType.target.value as string;
-        const action = updateWeightedTicketTemplateCreationSummary(value);
+        const action = updateWeightedTicketTemplateCreationSummary({
+            summary: value,
+            ticketTemplateId: props.ticketTemplateId,
+        });
         dispatch(action);
     }
 
@@ -52,6 +59,7 @@ export function TicketTemplateSummaryField(
                 const action = insertWeightedTicketCreationSection({
                     value: weightedTextSection,
                     index,
+                    ticketTemplateId: props.ticketTemplateId,
                 });
                 dispatch(action);
             } else if (type === "number") {
@@ -65,6 +73,7 @@ export function TicketTemplateSummaryField(
                 const action = insertWeightedTicketCreationSection({
                     value: weightedNumberSection,
                     index,
+                    ticketTemplateId: props.ticketTemplateId,
                 });
                 dispatch(action);
             }

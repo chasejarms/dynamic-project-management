@@ -17,6 +17,7 @@ export interface ITicketTemplateTextFieldProps {
     section: WeightedTextSectionWithControls;
     index: number;
     disabled: boolean;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
@@ -35,6 +36,7 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedTextSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -49,6 +51,7 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedTextSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -63,6 +66,7 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedTextSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -80,6 +84,7 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
                 const action = insertWeightedTicketCreationSection({
                     value: weightedTextSection,
                     index,
+                    ticketTemplateId: props.ticketTemplateId,
                 });
                 dispatch(action);
             } else if (type === "number") {
@@ -93,6 +98,7 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
                 const action = insertWeightedTicketCreationSection({
                     value: weightedNumberSection,
                     index,
+                    ticketTemplateId: props.ticketTemplateId,
                 });
                 dispatch(action);
             }
@@ -101,7 +107,10 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
 
     function onClickDelete(index: number) {
         return () => {
-            const action = deleteWeightedTicketTemplateCreationSection(index);
+            const action = deleteWeightedTicketTemplateCreationSection({
+                index,
+                ticketTemplateId: props.ticketTemplateId,
+            });
             dispatch(action);
         };
     }

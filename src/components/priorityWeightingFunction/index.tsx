@@ -12,13 +12,14 @@ import { WrappedTextField } from "../wrappedTextField";
 export interface IPriorityWeightingFunctionProps {
     ticketId: string;
     disabled: boolean;
+    ticketTemplateId: string;
 }
 
 export function PriorityWeightingFunction(
     props: IPriorityWeightingFunctionProps
 ) {
     const weightedTicketTemplateCreation = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId];
     });
 
     const {
@@ -44,9 +45,10 @@ export function PriorityWeightingFunction(
         }>
     ) {
         const updatedPriorityFunction = event.target.value as string;
-        const action = updatePriorityWeightingCalculation(
-            updatedPriorityFunction
-        );
+        const action = updatePriorityWeightingCalculation({
+            priorityWeightingCalculation: updatedPriorityFunction,
+            ticketTemplateId: props.ticketTemplateId,
+        });
         dispatch(action);
     }
 

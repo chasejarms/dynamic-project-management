@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { IStoreState } from "../../redux/storeState";
 import { setInitialTicketData, ticketPreviewId } from "../../redux/ticket";
+import { createTicketTemplateId } from "../../redux/weightedTicketTemplateCreation";
 
 export function useSetTicketFromTicketTemplateChange(runEffect: boolean) {
     const dispatch = useDispatch();
 
     const weightedTicketTemplate = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation;
+        return store.weightedTicketTemplateCreation[createTicketTemplateId];
     });
 
     useEffect(() => {

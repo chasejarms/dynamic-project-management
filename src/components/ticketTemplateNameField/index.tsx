@@ -8,19 +8,23 @@ import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketTemplateNameFieldProps {
     disabled: boolean;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateNameField(props: ITicketTemplateNameFieldProps) {
     const value = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.name.value;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId].name
+            .value;
     });
 
     const touched = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.name.touched;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId].name
+            .touched;
     });
 
     const error = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.name.error;
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId].name
+            .error;
     });
 
     const dispatch = useDispatch();
@@ -28,7 +32,10 @@ export function TicketTemplateNameField(props: ITicketTemplateNameFieldProps) {
         eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const value = eventType.target.value as string;
-        const action = updateWeightedTicketTemplateCreationName(value);
+        const action = updateWeightedTicketTemplateCreationName({
+            name: value,
+            ticketTemplateId: props.ticketTemplateId,
+        });
         dispatch(action);
     }
 

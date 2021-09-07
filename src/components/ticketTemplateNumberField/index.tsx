@@ -17,6 +17,7 @@ export interface ITicketTemplateNumberFieldProps {
     disabled: boolean;
     section: WeightedNumberSectionWithControls;
     index: number;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateNumberField(
@@ -37,6 +38,7 @@ export function TicketTemplateNumberField(
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -54,6 +56,7 @@ export function TicketTemplateNumberField(
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -72,6 +75,7 @@ export function TicketTemplateNumberField(
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -90,6 +94,7 @@ export function TicketTemplateNumberField(
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -104,6 +109,7 @@ export function TicketTemplateNumberField(
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -119,6 +125,7 @@ export function TicketTemplateNumberField(
             const action = overrideWeightedTicketCreationSection({
                 value: updatedWeightedNumberSection,
                 index,
+                ticketTemplateId: props.ticketTemplateId,
             });
             dispatch(action);
         };
@@ -136,6 +143,7 @@ export function TicketTemplateNumberField(
                 const action = insertWeightedTicketCreationSection({
                     value: weightedTextSection,
                     index,
+                    ticketTemplateId: props.ticketTemplateId,
                 });
                 dispatch(action);
             } else if (type === "number") {
@@ -149,6 +157,7 @@ export function TicketTemplateNumberField(
                 const action = insertWeightedTicketCreationSection({
                     value: weightedNumberSection,
                     index,
+                    ticketTemplateId: props.ticketTemplateId,
                 });
                 dispatch(action);
             }
@@ -157,7 +166,10 @@ export function TicketTemplateNumberField(
 
     function onClickDelete(index: number) {
         return () => {
-            const action = deleteWeightedTicketTemplateCreationSection(index);
+            const action = deleteWeightedTicketTemplateCreationSection({
+                index,
+                ticketTemplateId: props.ticketTemplateId,
+            });
             dispatch(action);
         };
     }

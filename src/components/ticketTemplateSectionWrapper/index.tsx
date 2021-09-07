@@ -12,13 +12,15 @@ import { TicketTemplateTextField } from "../ticketTemplateTextField";
 export interface ITicketTemplateSectionWrapperProps {
     disabled: boolean;
     index: number;
+    ticketTemplateId: string;
 }
 
 export function TicketTemplateSectionWrapper(
     props: ITicketTemplateSectionWrapperProps
 ) {
     const section = useSelector((store: IStoreState) => {
-        return store.weightedTicketTemplateCreation.sections[props.index];
+        return store.weightedTicketTemplateCreation[props.ticketTemplateId]
+            .sections[props.index];
     });
 
     if (section.value.type === "text") {
@@ -27,6 +29,7 @@ export function TicketTemplateSectionWrapper(
                 section={section as WeightedTextSectionWithControls}
                 index={props.index}
                 disabled={props.disabled}
+                ticketTemplateId={props.ticketTemplateId}
             />
         );
     } else if (section.value.type === "number") {
@@ -35,6 +38,7 @@ export function TicketTemplateSectionWrapper(
                 section={section as WeightedNumberSectionWithControls}
                 index={props.index}
                 disabled={props.disabled}
+                ticketTemplateId={props.ticketTemplateId}
             />
         );
     } else {
