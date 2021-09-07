@@ -10,8 +10,9 @@ import { BottomPageToolbar } from "../../bottomPageToolbar";
 import { IWrappedButtonProps } from "../../wrappedButton";
 
 export interface ITicketTemplateBottomToolbarProps {
-    onClickCreateTicketTemplate: () => void;
-    isCreatingTicketTemplate: boolean;
+    onClickActionButton: () => void;
+    actionButtonText: string;
+    showActionButtonSpinner: boolean;
     ticketTemplateId: string;
 }
 
@@ -61,12 +62,12 @@ export function TicketTemplateBottomToolbar(
         {
             variant: "contained",
             onClick: () => {
-                props.onClickCreateTicketTemplate();
+                props.onClickActionButton();
             },
             color: "primary",
-            disabled: props.isCreatingTicketTemplate || !allControlsAreValid,
-            showSpinner: props.isCreatingTicketTemplate,
-            children: "Create Ticket Template",
+            disabled: props.showActionButtonSpinner || !allControlsAreValid,
+            showSpinner: props.showActionButtonSpinner,
+            children: props.actionButtonText,
         },
     ];
 

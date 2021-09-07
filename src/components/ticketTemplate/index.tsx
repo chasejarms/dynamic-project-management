@@ -3,7 +3,6 @@ import { jsx, css, Theme, useTheme } from "@emotion/react";
 import { makeStyles, Paper } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useCreateTicketTemplateCall } from "../../hooks/useCreateTicketTemplateCall";
 import { ticketPreviewId } from "../../redux/ticket";
 import { resetWeightedTicketTemplateCreationState } from "../../redux/weightedTicketTemplateCreation";
 import { PriorityWeightingFunction } from "./priorityWeightingFunction";
@@ -20,14 +19,13 @@ const useStyles = makeStyles({
 
 export interface ITicketTemplateProps {
     ticketTemplateId: string;
+    fieldsAreDisabled: boolean;
+    onClickActionButton: () => void;
+    actionButtonText: string;
+    actionInProgress: boolean;
 }
 
 export function TicketTemplate(props: ITicketTemplateProps) {
-    const {
-        isCreatingTicketTemplate,
-        onClickCreateTicketTemplate,
-    } = useCreateTicketTemplateCall();
-
     const theme = useTheme();
     const classes = createClasses(theme);
     const materialClasses = useStyles();
@@ -45,13 +43,15 @@ export function TicketTemplate(props: ITicketTemplateProps) {
             <div css={classes.flexContentContainer}>
                 <div css={classes.gridContentContainer}>
                     <TicketTemplateFieldsContainer
-                        disabled={isCreatingTicketTemplate}
+                        disabled={
+                            props.actionInProgress || props.fieldsAreDisabled
+                        }
                         ticketTemplateId={props.ticketTemplateId}
                     />
                     <div css={classes.priorityWeightAndPreviewContainer}>
                         <PriorityWeightingFunction
                             ticketId={ticketPreviewId}
-                            disabled={isCreatingTicketTemplate}
+                            disabled={props.actionInProgress}
                             ticketTemplateId={props.ticketTemplateId}
                         />
                         <div>
@@ -66,7 +66,7 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                                     <Ticket
                                         ticketId={ticketPreviewId}
                                         isTicketPreview={true}
-                                        disabled={isCreatingTicketTemplate}
+                                        disabled={props.actionInProgress}
                                     />
                                 </div>
                             </Paper>
@@ -76,8 +76,9 @@ export function TicketTemplate(props: ITicketTemplateProps) {
             </div>
             <div css={classes.bottomToolbarContainer}>
                 <TicketTemplateBottomToolbar
-                    onClickCreateTicketTemplate={onClickCreateTicketTemplate}
-                    isCreatingTicketTemplate={isCreatingTicketTemplate}
+                    onClickActionButton={props.onClickActionButton}
+                    showActionButtonSpinner={props.actionInProgress}
+                    actionButtonText={props.actionButtonText}
                     ticketTemplateId={props.ticketTemplateId}
                 />
             </div>

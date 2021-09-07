@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Api } from "../../api";
 import { IStoreState } from "../../redux/storeState";
-import { createTicketTemplateId } from "../../redux/weightedTicketTemplateCreation";
+import {
+    createTicketTemplateId,
+    resetWeightedTicketTemplateCreationState,
+} from "../../redux/weightedTicketTemplateCreation";
 import { useAppRouterParams } from "../useAppRouterParams";
 
 export function useCreateTicketTemplateCall() {
@@ -21,6 +24,12 @@ export function useCreateTicketTemplateCall() {
         }
     );
 
+    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+    function closeSuccessSnackbar() {
+        setShowSuccessSnackbar(false);
+    }
+
+    const dispatch = useDispatch();
     useEffect(() => {
         if (!isCreatingTicketTemplate) return;
         let didCancel = false;
@@ -43,6 +52,9 @@ export function useCreateTicketTemplateCall() {
             })
             .then(() => {
                 if (didCancel) return;
+                const action = resetWeightedTicketTemplateCreationState();
+                dispatch(action);
+                setShowSuccessSnackbar(true);
             })
             .catch(() => {
                 if (didCancel) return;
@@ -60,5 +72,7 @@ export function useCreateTicketTemplateCall() {
     return {
         isCreatingTicketTemplate,
         onClickCreateTicketTemplate,
+        showSuccessSnackbar,
+        closeSuccessSnackbar,
     };
 }
