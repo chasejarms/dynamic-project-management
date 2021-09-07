@@ -66,6 +66,7 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                                     <Ticket
                                         ticketId={ticketPreviewId}
                                         isTicketPreview={true}
+                                        disabled={isCreatingTicketTemplate}
                                     />
                                 </div>
                             </Paper>

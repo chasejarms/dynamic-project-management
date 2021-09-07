@@ -13,6 +13,7 @@ import { WrappedTextField } from "../wrappedTextField";
 export interface ITicketProps {
     ticketId: string;
     isTicketPreview: boolean;
+    disabled: boolean;
 }
 
 export function Ticket(props: ITicketProps) {
@@ -87,6 +88,7 @@ export function Ticket(props: ITicketProps) {
                 onChange={onChangeTicketTitle}
                 error={title.touched ? title.error : ""}
                 required
+                disabled={props.disabled}
             />
             <WrappedTextField
                 value={summary.value}
@@ -95,6 +97,7 @@ export function Ticket(props: ITicketProps) {
                 error={summary.touched ? summary.error : ""}
                 required
                 multiline
+                disabled={props.disabled}
             />
             {ticketTemplate.sections.map((ticketTemplateSection, index) => {
                 const sectionFromTicket = sections[index];
@@ -111,6 +114,7 @@ export function Ticket(props: ITicketProps) {
                             }
                             required={ticketTemplateSection.required}
                             multiline={ticketTemplateSection.multiline}
+                            disabled={props.disabled}
                         />
                     );
                 } else if (ticketTemplateSection.type === "number") {
@@ -126,6 +130,7 @@ export function Ticket(props: ITicketProps) {
                                     : ""
                             }
                             required={ticketTemplateSection.required}
+                            disabled={props.disabled}
                         />
                     );
                 }

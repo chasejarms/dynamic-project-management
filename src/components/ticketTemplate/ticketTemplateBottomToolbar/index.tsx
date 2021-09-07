@@ -25,6 +25,7 @@ export function TicketTemplateBottomToolbar(
             title,
             summary,
             sections,
+            priorityWeightingCalculation,
         } = store.weightedTicketTemplateCreation[props.ticketTemplateId];
 
         const nameIsValid = !name.error;
@@ -44,13 +45,15 @@ export function TicketTemplateBottomToolbar(
                 );
             }
         });
+        const priorityWeightingCalculationIsValid = !priorityWeightingCalculation.error;
 
         return (
             nameIsValid &&
             descriptionIsValid &&
             titleIsValid &&
             summaryIsValid &&
-            sectionsAreValid
+            sectionsAreValid &&
+            priorityWeightingCalculationIsValid
         );
     });
 
