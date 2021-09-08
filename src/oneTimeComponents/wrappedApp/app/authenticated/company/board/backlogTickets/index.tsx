@@ -14,6 +14,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
+import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 
 export function BacklogTickets() {
     const { boardId, companyId } = useAppRouterParams();
@@ -30,10 +31,24 @@ export function BacklogTickets() {
         Promise.all([
             Api.tickets.getBacklogTickets(companyId, boardId),
             Api.columns.getColumns(companyId, boardId),
+            Api.ticketTemplates.getTicketTemplatesForBoard(companyId, boardId),
         ])
-            .then(([tickets, columnsFromDatabase]) => {
+            .then(([tickets, columnsFromDatabase, ticketTemplates]) => {
                 if (didCancel) return;
-                const augmentedUITickets = ticketsToAugmentedUITickets(tickets);
+
+                const ticketTemplatesMapping: {
+                    [ticketTemplateShortenedItemId: string]: ITicketTemplate;
+                } = {};
+                ticketTemplates.forEach((ticketTemplate) => {
+                    ticketTemplatesMapping[
+                        ticketTemplate.shortenedItemId
+                    ] = ticketTemplate;
+                });
+
+                const augmentedUITickets = ticketsToAugmentedUITickets(
+                    tickets,
+                    ticketTemplatesMapping
+                );
                 const sortedTicketsAfterRequest = sortTickets(
                     augmentedUITickets
                 );

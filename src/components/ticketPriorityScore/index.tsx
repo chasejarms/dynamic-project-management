@@ -5,10 +5,38 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../redux/storeState";
 import mathEvaluator from "math-expression-evaluator";
+import { ITicket } from "../../models/ticket";
+import { ITicketTemplate } from "../../models/ticketTemplate";
 
 export interface ITicketPriorityScore {
     ticketTemplateId: string;
     ticketId: string;
+}
+
+export function createTicketPriorityScore(
+    ticketTemplate: ITicketTemplate,
+    ticket: ITicket
+) {
+    if (!ticketTemplate.priorityWeightingCalculation.trim()) {
+        return -20000000;
+    }
+
+    let priorityWeightingCalculation =
+        ticketTemplate.priorityWeightingCalculation;
+    ticketTemplate.sections.forEach((section, index) => {
+        if (section.type === "number") {
+            if (!!section.alias) {
+                const sectionValue = ticket.sections[index];
+                priorityWeightingCalculation = priorityWeightingCalculation.replaceAll(
+                    section.alias,
+                    sectionValue.toString()
+                );
+            }
+        }
+    });
+
+    const priority = mathEvaluator.eval(priorityWeightingCalculation);
+    return Math.round(Number(priority));
 }
 
 export function TicketPriorityScore(props: ITicketPriorityScore) {
@@ -23,11 +51,6 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
             store.weightedTicketTemplateCreation[props.ticketTemplateId]
                 .priorityWeightingCalculation;
 
-        console.log(
-            "priorityWeightingCalculation: ",
-            priorityWeightingCalculation
-        );
-
         return {
             priorityWeightingCalculation,
             ticketAndTicketTemplate: store.ticket[props.ticketId],
@@ -41,8 +64,6 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
             return "NA";
         }
 
-        console.log("ticketTemplate: ", ticketAndTicketTemplate.ticketTemplate);
-        console.log("ticket: ", ticketAndTicketTemplate.ticket);
         const requiredValuesByAliasMapping = ticketAndTicketTemplate.ticketTemplate.sections.reduce<{
             [aliasName: string]: {
                 value: number | string;
@@ -85,7 +106,7 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
                 const priority = mathEvaluator.eval(
                     priorityWeightingCalculationFunctionValue
                 );
-                return priority;
+                return Math.round(Number(priority));
             } catch {
                 return "NA";
             }

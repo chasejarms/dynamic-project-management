@@ -2,10 +2,17 @@ import { IAugmentedUITicket } from "../../components/ticketForBoard";
 import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
 import { ITicket } from "../../models/ticket";
+import { ITicketTemplate } from "../../models/ticketTemplate";
 import { sortTickets } from "../sortTickets";
 import { ticketsToAugmentedUITickets } from "../ticketsToAugmentedUITickets";
 
-export function createColumnsMapping(columns: IColumn[], tickets: ITicket[]) {
+export function createColumnsMapping(
+    columns: IColumn[],
+    tickets: ITicket[],
+    ticketTemplatesMapping: {
+        [ticketTemplateShortenedItemId: string]: ITicketTemplate;
+    }
+) {
     const columnsMapping = columns.reduce<{
         [columnId: string]: {
             columnInformation: IColumn;
@@ -19,7 +26,10 @@ export function createColumnsMapping(columns: IColumn[], tickets: ITicket[]) {
         return mapping;
     }, {});
 
-    const augmentedUITickets = ticketsToAugmentedUITickets(tickets);
+    const augmentedUITickets = ticketsToAugmentedUITickets(
+        tickets,
+        ticketTemplatesMapping
+    );
     augmentedUITickets.forEach((ticketForUI) => {
         const columnId = ticketForUI.columnId;
         if (columnId && !!columnsMapping[columnId]) {

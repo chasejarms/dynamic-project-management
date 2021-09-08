@@ -21,6 +21,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { IUser } from "../../../../../../../models/user";
 import { createColumnsMapping } from "../../../../../../../utils/createColumnsMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
+import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 
 export function BoardHome() {
     const { companyId, boardId } = useAppRouterParams();
@@ -49,21 +50,35 @@ export function BoardHome() {
             Api.columns.getColumns(companyId, boardId),
             Api.tickets.getInProgressTickets(companyId, boardId),
             Api.users.getAllUsersForCompany(companyId),
+            Api.ticketTemplates.getTicketTemplatesForBoard(companyId, boardId),
         ])
             .then(
                 ([
                     columnsFromDatabase,
                     inProgressTickets,
                     usersFromDatabase,
+                    ticketTemplates,
                 ]) => {
                     if (didCancel) return;
+
+                    const ticketTemplatesMapping: {
+                        [
+                            ticketTemplateShortenedItemId: string
+                        ]: ITicketTemplate;
+                    } = {};
+                    ticketTemplates.forEach((ticketTemplate) => {
+                        ticketTemplatesMapping[
+                            ticketTemplate.shortenedItemId
+                        ] = ticketTemplate;
+                    });
 
                     const sortedUsers = sortBy(usersFromDatabase, "name");
                     setUsers(sortedUsers);
 
                     const columnsMapping = createColumnsMapping(
                         columnsFromDatabase,
-                        inProgressTickets
+                        inProgressTickets,
+                        ticketTemplatesMapping
                     );
 
                     setSortedAndMappedTickets(columnsMapping);

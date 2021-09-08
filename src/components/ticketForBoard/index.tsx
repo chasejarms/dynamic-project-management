@@ -527,6 +527,12 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 />
                             </Popover>
                         </div>
+                        <div css={classes.assignedToContainer}>
+                            <Typography variant="caption">
+                                Priority Score:{" "}
+                                {props.ticket.pointValueFromTags}
+                            </Typography>
+                        </div>
                         {!!props.ticket.assignedTo && (
                             <div css={classes.assignedToContainer}>
                                 <Typography variant="caption">

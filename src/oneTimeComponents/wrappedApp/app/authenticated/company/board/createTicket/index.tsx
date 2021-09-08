@@ -96,11 +96,18 @@ export function CreateTicket() {
         ])
             .then(([ticketTemplatesFromDatabase, columnsFromDatabase]) => {
                 if (didCancel) return;
+
+                const availableTicketTemplates = ticketTemplatesFromDatabase.filter(
+                    (ticketTemplate) => {
+                        return !ticketTemplate.hasBeenDeleted;
+                    }
+                );
+
                 const action = setWeightedTicketTemplates(
-                    ticketTemplatesFromDatabase
+                    availableTicketTemplates
                 );
                 dispatch(action);
-                setTicketTemplates(ticketTemplatesFromDatabase);
+                setTicketTemplates(availableTicketTemplates);
 
                 const startingColumns = columnsFromDatabase.filter(
                     (compareColumn) => {

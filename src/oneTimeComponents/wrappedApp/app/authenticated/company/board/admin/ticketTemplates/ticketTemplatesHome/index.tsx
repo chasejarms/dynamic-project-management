@@ -34,7 +34,12 @@ export function TicketTemplatesHome() {
             .getTicketTemplatesForBoard(companyId, boardId)
             .then((ticketTemplatesFromDatabase) => {
                 if (didCancel) return;
-                setTicketTemplates(ticketTemplatesFromDatabase);
+                const availableTicketTemplates = ticketTemplatesFromDatabase.filter(
+                    (ticketTemplate) => {
+                        return !ticketTemplate.hasBeenDeleted;
+                    }
+                );
+                setTicketTemplates(availableTicketTemplates);
             })
             .catch((error) => {
                 if (didCancel) return;

@@ -1,4 +1,3 @@
-import { IDiscountCodesApi, DiscountCodesApi } from "./discountCodes";
 import { BoardApi, IBoardApi } from "./boards";
 import { ICompanyApi, CompanyApi } from "./company";
 import { IPriorityApi, PriorityApi } from "./priorities";
@@ -11,7 +10,6 @@ import { ContactApi, IContactApi } from "./contact";
 import { IInternalApi, InternalApi } from "./internal";
 
 export interface IApi {
-    discountCodes: IDiscountCodesApi;
     board: IBoardApi;
     company: ICompanyApi;
     priorities: IPriorityApi;
@@ -25,7 +23,6 @@ export interface IApi {
 }
 
 class ApiClass implements IApi {
-    public discountCodes = new DiscountCodesApi();
     public board = new BoardApi();
     public company = new CompanyApi();
     public priorities = new PriorityApi();
