@@ -67,6 +67,9 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                                         ticketId={ticketPreviewId}
                                         isTicketPreview={true}
                                         disabled={props.actionInProgress}
+                                        ticketTemplateId={
+                                            props.ticketTemplateId
+                                        }
                                     />
                                 </div>
                             </Paper>

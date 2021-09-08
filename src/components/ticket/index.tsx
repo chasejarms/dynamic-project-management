@@ -11,6 +11,7 @@ import {
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketProps {
+    ticketTemplateId: string;
     ticketId: string;
     isTicketPreview: boolean;
     disabled: boolean;
@@ -19,7 +20,10 @@ export interface ITicketProps {
 export function Ticket(props: ITicketProps) {
     const dispatch = useDispatch();
 
-    useSetTicketFromTicketTemplateChange(props.isTicketPreview);
+    useSetTicketFromTicketTemplateChange(
+        props.isTicketPreview,
+        props.ticketTemplateId
+    );
 
     const ticketState = useSelector((store: IStoreState) => {
         return store.ticket[props.ticketId];
