@@ -1,48 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Api } from "../../../../../../../../../api";
+import { Snackbar } from "@material-ui/core";
 import { BoardAdminContainer } from "../../../../../../../../../components/boardAdminContainer";
 import { CenterLoadingSpinner } from "../../../../../../../../../components/centerLoadingSpinner";
 import { TicketTemplate } from "../../../../../../../../../components/ticketTemplate";
-import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
-import { setWeightedTicketTemplate } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
+import { useEditTicketTemplateEndpoints } from "../../../../../../../../../hooks/useEditTicketTemplateEndpoints";
 
 export function EditTicketTemplate() {
-    const { boardId, companyId, ticketTemplateId } = useAppRouterParams();
-    const [isLoadingTicketTemplate, setIsLoadingTicketTemplate] = useState(
-        true
-    );
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        let didCancel = false;
-
-        if (!isLoadingTicketTemplate) return;
-
-        Api.ticketTemplates
-            .getTicketTemplateForBoard(companyId, boardId, ticketTemplateId)
-            .then((ticketTemplateFromDatabase) => {
-                if (didCancel) return;
-                const action = setWeightedTicketTemplate({
-                    ticketTemplate: ticketTemplateFromDatabase,
-                    ticketTemplateId,
-                });
-                dispatch(action);
-            })
-            .catch(() => {
-                if (didCancel) return;
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsLoadingTicketTemplate(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, [isLoadingTicketTemplate]);
+    const {
+        isLoadingTicketTemplate,
+        ticketTemplateId,
+        showSuccessSnackbar,
+        closeSuccessSnackbar,
+    } = useEditTicketTemplateEndpoints();
 
     const classes = createClasses();
 
@@ -61,6 +31,11 @@ export function EditTicketTemplate() {
                     fieldsAreDisabled={true}
                 />
             )}
+            <Snackbar
+                open={showSuccessSnackbar}
+                onClose={closeSuccessSnackbar}
+                message={"Success! The priority calculation was updated."}
+            />
         </BoardAdminContainer>
     );
 }
