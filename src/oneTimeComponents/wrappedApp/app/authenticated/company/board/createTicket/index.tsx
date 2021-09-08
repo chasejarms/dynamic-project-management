@@ -86,7 +86,6 @@ export function CreateTicket() {
     const [potentialStartingColumns, setPotentialStartingColumns] = useState<
         IColumn[]
     >([]);
-    const [allTagsForBoard, setAllTagsForBoard] = useState<ITag[]>([]);
 
     useEffect(() => {
         if (!boardId || !companyId) return;
@@ -96,30 +95,26 @@ export function CreateTicket() {
         Promise.all([
             Api.ticketTemplates.getTicketTemplatesForBoard(companyId, boardId),
             Api.columns.getColumns(companyId, boardId),
-            Api.priorities.getAllTagsForBoard(companyId, boardId),
         ])
-            .then(
-                ([ticketTemplatesFromDatabase, columnsFromDatabase, tags]) => {
-                    if (didCancel) return;
-                    const action = setWeightedTicketTemplates(
-                        ticketTemplatesFromDatabase
-                    );
-                    dispatch(action);
-                    setTicketTemplates(ticketTemplatesFromDatabase);
-                    setAllTagsForBoard(tags);
+            .then(([ticketTemplatesFromDatabase, columnsFromDatabase]) => {
+                if (didCancel) return;
+                const action = setWeightedTicketTemplates(
+                    ticketTemplatesFromDatabase
+                );
+                dispatch(action);
+                setTicketTemplates(ticketTemplatesFromDatabase);
 
-                    const startingColumns = columnsFromDatabase.filter(
-                        (compareColumn) => {
-                            return (
-                                compareColumn.id !== "INTERNAL:UNCATEGORIZED" &&
-                                compareColumn.id !== "INTERNAL:DONE"
-                            );
-                        }
-                    );
+                const startingColumns = columnsFromDatabase.filter(
+                    (compareColumn) => {
+                        return (
+                            compareColumn.id !== "INTERNAL:UNCATEGORIZED" &&
+                            compareColumn.id !== "INTERNAL:DONE"
+                        );
+                    }
+                );
 
-                    setPotentialStartingColumns(startingColumns);
-                }
-            )
+                setPotentialStartingColumns(startingColumns);
+            })
             .catch((error) => {
                 if (didCancel) return;
             })
@@ -145,7 +140,6 @@ export function CreateTicket() {
         setShowSuccessSnackbar(false);
     }
 
-    const [refreshToken, setRefreshToken] = useState({});
     useEffect(() => {
         if (!ticketCreateRequest) return;
 
@@ -158,10 +152,6 @@ export function CreateTicket() {
                 setShowSuccessSnackbar(true);
                 const action = resetTicketCreation();
                 dispatch(action);
-                setTagsState({
-                    simplifiedTags: [],
-                    isDirty: false,
-                });
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -180,37 +170,28 @@ export function CreateTicket() {
         history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
     }
 
-    const [tagsState, setTagsState] = useState<{
-        simplifiedTags: ISimplifiedTag[];
-        isDirty: boolean;
-    }>({
-        simplifiedTags: [],
-        isDirty: false,
-    });
-    function onTagsChange(simplifiedTags: ISimplifiedTag[], isDirty: boolean) {
-        setTagsState({
-            simplifiedTags,
-            isDirty,
+    const ticket = useSelector(
+        (store: IStoreState) => {
+            return store.ticket[ticketPreviewId].ticket;
+        },
+        () => {
+            return !!ticketCreateRequest;
+        }
+    );
+
+    function onClickCreate() {
+        const sectionValues = ticket.sections.map((section) => section.value);
+
+        setTicketCreateRequest({
+            title: ticket.title.value,
+            summary: ticket.summary.value,
+            sections: sectionValues,
+            ticketTemplateShortenedItemId:
+                ticketTemplate?.shortenedItemId || "",
+            startingColumnId:
+                startingColumn === "BACKLOG" ? "" : startingColumn,
         });
     }
-
-    // function onClickCreate() {
-    //     const sectionValues = sections.map((section) => section.value);
-
-    //     setTicketCreateRequest({
-    //         title: title.value,
-    //         summary: summary.value,
-    //         sections: sectionValues,
-    //         tags: tagsState.simplifiedTags,
-    //         simplifiedTicketTemplate: {
-    //             title: ticketTemplate!.title,
-    //             summary: ticketTemplate!.summary,
-    //             sections: ticketTemplate!.sections,
-    //         },
-    //         startingColumnId:
-    //             startingColumn === "BACKLOG" ? "" : startingColumn,
-    //     });
-    // }
 
     return (
         <BoardContainer>
@@ -227,6 +208,7 @@ export function CreateTicket() {
                                         ticketTemplate?.shortenedItemId || ""
                                     }
                                     onChange={onChangeTicketTemplate}
+                                    disabled={!!ticketCreateRequest}
                                 >
                                     {ticketTemplates.map(
                                         (ticketTemplateFromDatabase) => {
@@ -264,6 +246,7 @@ export function CreateTicket() {
                                         <Select
                                             value={startingColumn}
                                             onChange={onChangeStartingColumn}
+                                            disabled={!!ticketCreateRequest}
                                         >
                                             <MenuItem value={"BACKLOG"}>
                                                 Backlog
@@ -296,8 +279,8 @@ export function CreateTicket() {
                         ticketTemplateId={ticketTemplate?.shortenedItemId}
                         ticketId={ticketPreviewId}
                         actionButtonText="Create Ticket"
-                        onClickActionButton={() => null}
-                        showActionButtonSpinner={false}
+                        onClickActionButton={onClickCreate}
+                        showActionButtonSpinner={!!ticketCreateRequest}
                     />
                 </div>
             )}
