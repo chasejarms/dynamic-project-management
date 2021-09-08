@@ -1,25 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
+import { Snackbar } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import { summarySectionUniqueId } from "../../../../../../../../components/summarySection";
 import { TicketBottomToolbar } from "../../../../../../../../components/ticketBottomToolbar";
 import { TicketFields } from "../../../../../../../../components/ticketFields";
 import { TicketPageWrapper } from "../../../../../../../../components/ticketPageWrapper";
-import { titleSectionUniqueId } from "../../../../../../../../components/titleSection";
-import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 import { IStoreState } from "../../../../../../../../redux/storeState";
-import ticket, {
-    setInitialTicketData,
-    ticketPreviewId,
-} from "../../../../../../../../redux/ticket";
+import { setInitialTicketData } from "../../../../../../../../redux/ticket";
 import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
-import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
 
 export function TicketHome() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
@@ -32,6 +26,7 @@ export function TicketHome() {
     const ticketState = useSelector((store: IStoreState) => {
         return store.ticket[ticketId];
     });
+    const [loadedTicket, setLoadedTicket] = useState<null | ITicket>();
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -44,6 +39,8 @@ export function TicketHome() {
         ])
             .then(([{ ticket, ticketTemplate }]) => {
                 if (didCancel) return;
+
+                setLoadedTicket(ticket);
 
                 const setWeightedTicketTemplateAction = setWeightedTicketTemplate(
                     {
@@ -95,88 +92,69 @@ export function TicketHome() {
         };
     }, [boardId, companyId]);
 
-    // const [
-    //     ticketUpdateRequest,
-    //     setTicketUpdateRequest,
-    // ] = useState<null | ITicketUpdateRequest>(null);
+    const [
+        ticketUpdateRequest,
+        setTicketUpdateRequest,
+    ] = useState<null | ITicketUpdateRequest>(null);
 
-    // useEffect(() => {
-    //     if (!ticketUpdateRequest) return;
+    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+    function onCloseSnackbar() {
+        setShowSuccessSnackbar(false);
+    }
 
-    //     let didCancel = false;
+    useEffect(() => {
+        if (!ticketUpdateRequest) return;
 
-    //     Api.tickets
-    //         .updateTicketInformation(
-    //             ticket?.itemId || "",
-    //             ticket?.belongsTo || "",
-    //             ticketUpdateRequest
-    //         )
-    //         .then((updatedTicket) => {
-    //             if (didCancel) return;
-    //             setTicket((previousTicket) => {
-    //                 return {
-    //                     ...(previousTicket as ITicket),
-    //                     ...ticketUpdateRequest,
-    //                 };
-    //             });
+        let didCancel = false;
 
-    //             const updatedStarterGhostControlParamsMapping: IStarterGhostControlParamsMapping = {};
-    //             Object.keys(ghostControlParamsMapping).forEach((key) => {
-    //                 const ghostControlParamsValue =
-    //                     ghostControlParamsMapping[key];
-    //                 updatedStarterGhostControlParamsMapping[key] = {
-    //                     uniqueId: key,
-    //                     value: ghostControlParamsValue.value,
-    //                 };
-    //             });
-    //             setStarterGhostControlParamsMappingAndSectionOrder(
-    //                 (previous) => {
-    //                     return {
-    //                         ...previous,
-    //                         starterGhostControlParamsMapping: updatedStarterGhostControlParamsMapping,
-    //                     };
-    //                 }
-    //             );
-    //         })
-    //         .catch((error) => {
-    //             if (didCancel) return;
-    //         })
-    //         .finally(() => {
-    //             if (didCancel) return;
-    //             setTicketUpdateRequest(null);
-    //         });
+        Api.tickets
+            .updateTicketInformation(
+                loadedTicket?.itemId || "",
+                loadedTicket?.belongsTo || "",
+                ticketUpdateRequest
+            )
+            .then(() => {
+                if (didCancel) return;
+                setShowSuccessSnackbar(true);
+            })
+            .catch((error) => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setTicketUpdateRequest(null);
+            });
 
-    //     return () => {
-    //         didCancel = true;
-    //     };
-    // }, [ticketUpdateRequest]);
+        return () => {
+            didCancel = true;
+        };
+    }, [ticketUpdateRequest]);
 
-    // function onClickUpdate() {
-    //     const title = ghostControlParamsMapping[titleSectionUniqueId].value;
-    //     const summary = ghostControlParamsMapping[summarySectionUniqueId].value;
-    //     const sections = sectionOrder.map((sectionId) => {
-    //         const sectionValue = ghostControlParamsMapping[sectionId].value;
-    //         return sectionValue;
-    //     });
+    const ticket = useSelector(
+        (store: IStoreState) => {
+            return store.ticket[ticketId]?.ticket;
+        },
+        () => {
+            return !!ticketUpdateRequest;
+        }
+    );
 
-    //     setTicketUpdateRequest({
-    //         title,
-    //         summary,
-    //         tags: tagsState.simplifiedTags,
-    //         sections,
-    //     });
-    // }
+    function onClickUpdate() {
+        const title = ticket.title.value;
+        const summary = ticket.summary.value;
+        const sections = ticket.sections.map((section) => {
+            return section.value;
+        });
 
-    const wrappedButtonProps: IWrappedButtonProps = {
-        color: "primary",
-        variant: "contained",
-        disabled: false, // someControlsAreInvalid || !!ticketUpdateRequest,
-        showSpinner: false, // !!ticketUpdateRequest,
-        onClick: () => null, // onClickUpdate,
-        children: "Update Ticket",
-    };
+        setTicketUpdateRequest({
+            title,
+            summary,
+            sections,
+        });
+    }
 
     const classes = createClasses();
+    const ticketUpdateInProgress = !!ticketUpdateRequest;
 
     return (
         <TicketPageWrapper>
@@ -192,7 +170,7 @@ export function TicketHome() {
                                 }
                                 ticketId={ticketId}
                                 isTicketPreview={false}
-                                disabled={false}
+                                disabled={ticketUpdateInProgress}
                                 removePadding
                             />
                         </div>
@@ -203,76 +181,18 @@ export function TicketHome() {
                         }
                         ticketId={ticketId}
                         actionButtonText="Update Ticket"
-                        onClickActionButton={() => null}
-                        showActionButtonSpinner={false}
+                        onClickActionButton={onClickUpdate}
+                        showActionButtonSpinner={ticketUpdateInProgress}
                     />
                 </div>
             )}
+            <Snackbar
+                open={showSuccessSnackbar}
+                onClose={onCloseSnackbar}
+                message={"Ticket successfully updated."}
+            />
         </TicketPageWrapper>
     );
-
-    //     return (
-    //         <TicketPageWrapper>
-    //             {isLoadingTicketInformation ? (
-    //                 <CenterLoadingSpinner size="large" />
-    //             ) : (
-    //                 <OverflowContentAndActionBar
-    //                     wrappedButtonProps={wrappedButtonProps}
-    //                 >
-    //                     <div css={classes.container}>
-    //                         <div css={classes.ticketContentContainer}>
-    //                             <div css={classes.nonTagTicketInformationContainer}>
-    //                                 <div css={classes.ticketSectionsContainer}>
-    //                                     <TitleSection
-    //                                         title={titleControl.value}
-    //                                         label={
-    //                                             ticket?.simplifiedTicketTemplate
-    //                                                 .title.label || ""
-    //                                         }
-    //                                         onStateChange={onStateChange}
-    //                                         refreshToken={refreshToken}
-    //                                     />
-    //                                     <SummarySection
-    //                                         summary={summaryControl.value}
-    //                                         label={
-    //                                             ticket?.simplifiedTicketTemplate
-    //                                                 .summary.label || ""
-    //                                         }
-    //                                         onStateChange={onStateChange}
-    //                                         refreshToken={refreshToken}
-    //                                     />
-    //                                     {sectionOrder.map((sectionId, index) => {
-    //                                         const section =
-    //                                             starterGhostControlParamsMapping[
-    //                                                 sectionId
-    //                                             ];
-    //                                         const ticketTemplateSection = ticket
-    //                                             ?.simplifiedTicketTemplate.sections[
-    //                                             index
-    //                                         ]!;
-
-    //                                         if (!ticketTemplateSection) return null;
-    //                                         return (
-    //                                             <TextSection
-    //                                                 uniqueId={sectionId}
-    //                                                 label={
-    //                                                     ticketTemplateSection.label
-    //                                                 }
-    //                                                 multiline={false}
-    //                                                 onStateChange={onStateChange}
-    //                                                 refreshToken={refreshToken}
-    //                                                 value={section.value}
-    //                                             />
-    //                                         );
-    //                                     })}
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </OverflowContentAndActionBar>
-    //             )}
-    //         </TicketPageWrapper>
-    //     );
 }
 
 const createClasses = () => {
