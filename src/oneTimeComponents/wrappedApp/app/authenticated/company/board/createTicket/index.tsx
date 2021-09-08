@@ -327,14 +327,15 @@ const createClasses = () => {
 
     const ticketContentContainer = css`
         flex-grow: 1;
-        display: grid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 32px;
-        grid-gap: 32px;
-        grid-template-columns: 1fr 1fr 1fr;
     `;
 
     const nonTagTicketInformationContainer = css`
         height: 100%;
+        width: 400px;
     `;
 
     const ticketSectionsContainer = css`
