@@ -19,7 +19,7 @@ export interface ITicketProps {
     removePadding?: boolean;
 }
 
-export function Ticket(props: ITicketProps) {
+export function TicketFields(props: ITicketProps) {
     const dispatch = useDispatch();
 
     useSetTicketFromTicketTemplateChange(

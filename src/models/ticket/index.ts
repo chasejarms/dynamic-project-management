@@ -4,9 +4,7 @@ export interface ITicket extends IDefaultPrimaryTableModel {
     shortenedItemId: string;
     title: string;
     summary: string;
-    sections: {
-        value: string | number;
-    }[];
+    sections: (string | number)[];
     ticketTemplateShortenedItemId: string;
     createdTimestamp: string;
     lastModifiedTimestamp: string;

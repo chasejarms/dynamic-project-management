@@ -8,6 +8,7 @@ import Axios from "axios";
 import { IFileForTicket } from "../models/fileForTicket";
 import { ICreateUploadTicketResponse } from "../models/createUploadTicketResponse";
 import { signedUrlReplace } from "../utils/signedUrlReplace";
+import { ITicketTemplate } from "../models/ticketTemplate";
 
 export interface ITicketsApi {
     createTicket(
@@ -52,7 +53,10 @@ export interface ITicketsApi {
         companyId: string,
         boardId: string,
         ticketId: string
-    ): Promise<ITicket>;
+    ): Promise<{
+        ticket: ITicket;
+        ticketTemplate: ITicketTemplate;
+    }>;
 
     updateTicketInformation(
         ticketItemId: string,
@@ -242,7 +246,10 @@ export class TicketsApi implements ITicketsApi {
         companyId: string,
         boardId: string,
         ticketId: string
-    ): Promise<ITicket> {
+    ): Promise<{
+        ticket: ITicket;
+        ticketTemplate: ITicketTemplate;
+    }> {
         const axiosResponse = await Axios.get(
             `${environmentVariables.baseAuthenticatedApiUrl}/getTicketInformationById`,
             {
@@ -254,7 +261,10 @@ export class TicketsApi implements ITicketsApi {
             }
         );
 
-        return axiosResponse.data as ITicket;
+        return axiosResponse.data as {
+            ticket: ITicket;
+            ticketTemplate: ITicketTemplate;
+        };
     }
 
     public async updateTicketInformation(

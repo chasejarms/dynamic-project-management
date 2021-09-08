@@ -1,153 +1,105 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useCallback, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import { Paper } from "@material-ui/core";
-import {
-    IWrappedButtonProps,
-    WrappedButton,
-} from "../../../../../../../../components/wrappedButton";
-import { ITag } from "../../../../../../../../models/tag";
-import { cloneDeep } from "lodash";
-import { ITicket } from "../../../../../../../../models/ticket";
-import { ISimplifiedTag } from "../../../../../../../../models/simplifiedTag";
-import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
-import { useHistory } from "react-router-dom";
+import { summarySectionUniqueId } from "../../../../../../../../components/summarySection";
+import { TicketBottomToolbar } from "../../../../../../../../components/ticketBottomToolbar";
+import { TicketFields } from "../../../../../../../../components/ticketFields";
 import { TicketPageWrapper } from "../../../../../../../../components/ticketPageWrapper";
-import {
-    TitleSection,
-    titleSectionUniqueId,
-} from "../../../../../../../../components/titleSection";
-import {
-    SummarySection,
-    summarySectionUniqueId,
-} from "../../../../../../../../components/summarySection";
-import { IGhostControlParams } from "../../../../../../../../models/ghostControlPattern/ghostControlParams";
-import { IGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/ghostControlParamsMapping";
-import { IStarterGhostControlParamsMapping } from "../../../../../../../../models/ghostControlPattern/starterGhostControlParamsMapping";
+import { titleSectionUniqueId } from "../../../../../../../../components/titleSection";
+import { IWrappedButtonProps } from "../../../../../../../../components/wrappedButton";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { ITicket } from "../../../../../../../../models/ticket";
+import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
+import { IStoreState } from "../../../../../../../../redux/storeState";
+import ticket, {
+    setInitialTicketData,
+    ticketPreviewId,
+} from "../../../../../../../../redux/ticket";
+import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
 import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
-import { TextSection } from "../../../../../../../../components/textSection";
-import { OverflowContentAndActionBar } from "../../../../../../../../components/overflowContentAndActionBar";
 
 export function TicketHome() {
-    // const { boardId, companyId, ticketId } = useAppRouterParams();
+    const { boardId, companyId, ticketId } = useAppRouterParams();
 
-    // const [
-    //     isLoadingTicketInformation,
-    //     setIsLoadingTicketInformation,
-    // ] = useState(true);
-    // const [allTagsForBoard, setAllTagsForBoard] = useState<ITag[]>([]);
-    // const [ticket, setTicket] = useState<ITicket | null>(null);
+    const [
+        isLoadingTicketInformation,
+        setIsLoadingTicketInformation,
+    ] = useState(true);
 
-    // const [tagsState, setTagsState] = useState<{
-    //     simplifiedTags: ISimplifiedTag[];
-    //     isDirty: boolean;
-    // }>({
-    //     simplifiedTags: [],
-    //     isDirty: false,
-    // });
-    // function onTagsChange(simplifiedTags: ISimplifiedTag[], isDirty: boolean) {
-    //     setTagsState({
-    //         simplifiedTags,
-    //         isDirty,
-    //     });
-    // }
+    const ticketState = useSelector((store: IStoreState) => {
+        return store.ticket[ticketId];
+    });
 
-    // const [
-    //     { starterGhostControlParamsMapping, sectionOrder },
-    //     setStarterGhostControlParamsMappingAndSectionOrder,
-    // ] = useState<{
-    //     starterGhostControlParamsMapping: IStarterGhostControlParamsMapping;
-    //     sectionOrder: string[];
-    // }>({
-    //     starterGhostControlParamsMapping: {},
-    //     sectionOrder: [],
-    // });
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (!boardId || !companyId || !ticketId) return;
 
-    // const [ghostControlParamsMapping, setGhostControlParamsMapping] = useState<
-    //     IGhostControlParamsMapping
-    // >({});
-    // const onStateChange = useCallback(
-    //     (ghostControlParams: IGhostControlParams) => {
-    //         setGhostControlParamsMapping((previousGhostControlParams) => {
-    //             const updatedGhostControlParams = {
-    //                 ...previousGhostControlParams,
-    //                 [ghostControlParams.uniqueId]: ghostControlParams,
-    //             };
+        let didCancel = false;
 
-    //             return updatedGhostControlParams;
-    //         });
-    //     },
-    //     []
-    // );
+        Promise.all([
+            Api.tickets.getTicketInformationById(companyId, boardId, ticketId),
+        ])
+            .then(([{ ticket, ticketTemplate }]) => {
+                if (didCancel) return;
 
-    // const someControlsAreInvalid = Object.values(
-    //     ghostControlParamsMapping
-    // ).some(({ error }) => !!error);
+                const setWeightedTicketTemplateAction = setWeightedTicketTemplate(
+                    {
+                        ticketTemplate,
+                        ticketTemplateId: ticketTemplate.shortenedItemId,
+                    }
+                );
+                dispatch(setWeightedTicketTemplateAction);
 
-    // useEffect(() => {
-    //     if (!boardId || !companyId || !ticketId) return;
+                const action = setInitialTicketData({
+                    ticket: {
+                        title: {
+                            value: ticket.title,
+                            touched: false,
+                            error: "",
+                        },
+                        summary: {
+                            value: ticket.summary,
+                            touched: false,
+                            error: "",
+                        },
+                        sections: ticket.sections.map((section) => {
+                            return {
+                                value: section,
+                                touched: false,
+                                error: "",
+                            };
+                        }),
+                    },
+                    ticketTemplate,
+                    priorityWeightingFunction: {
+                        value: ticketTemplate.priorityWeightingCalculation,
+                        error: "",
+                    },
+                    ticketId: ticket.shortenedItemId,
+                });
+                dispatch(action);
+            })
+            .catch((error) => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsLoadingTicketInformation(false);
+            });
 
-    //     let didCancel = false;
-
-    //     Promise.all([
-    //         Api.columns.getColumns(companyId, boardId),
-    //         Api.priorities.getAllTagsForBoard(companyId, boardId),
-    //         Api.tickets.getTicketInformationById(companyId, boardId, ticketId),
-    //     ])
-    //         .then(([columnsFromDatabase, tags, ticketFromDatabase]) => {
-    //             if (didCancel) return;
-    //             setAllTagsForBoard(tags);
-    //             setTicket(ticketFromDatabase);
-
-    //             const mapping: IStarterGhostControlParamsMapping = {
-    //                 [titleSectionUniqueId]: {
-    //                     uniqueId: titleSectionUniqueId,
-    //                     value: ticketFromDatabase.title,
-    //                 },
-    //                 [summarySectionUniqueId]: {
-    //                     uniqueId: summarySectionUniqueId,
-    //                     value: ticketFromDatabase.summary,
-    //                 },
-    //             };
-    //             const sectionOrderFromDatabase: string[] = [];
-    //             ticketFromDatabase.sections.forEach((sectionValue) => {
-    //                 const uniqueId = generateUniqueId(3);
-    //                 sectionOrderFromDatabase.push(uniqueId);
-
-    //                 mapping[uniqueId] = {
-    //                     uniqueId,
-    //                     value: sectionValue,
-    //                 };
-    //             });
-    //             setStarterGhostControlParamsMappingAndSectionOrder({
-    //                 starterGhostControlParamsMapping: mapping,
-    //                 sectionOrder: sectionOrderFromDatabase,
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             if (didCancel) return;
-    //         })
-    //         .finally(() => {
-    //             if (didCancel) return;
-    //             setIsLoadingTicketInformation(false);
-    //         });
-
-    //     return () => {
-    //         didCancel = true;
-    //     };
-    // }, [boardId, companyId]);
-
-    // const classes = createClasses();
+        return () => {
+            didCancel = true;
+        };
+    }, [boardId, companyId]);
 
     // const [
     //     ticketUpdateRequest,
     //     setTicketUpdateRequest,
     // ] = useState<null | ITicketUpdateRequest>(null);
 
-    // const [refreshToken, setRefreshToken] = useState({});
     // useEffect(() => {
     //     if (!ticketUpdateRequest) return;
 
@@ -215,20 +167,49 @@ export function TicketHome() {
     //     });
     // }
 
-    // const titleControl = starterGhostControlParamsMapping[titleSectionUniqueId];
-    // const summaryControl =
-    //     starterGhostControlParamsMapping[summarySectionUniqueId];
+    const wrappedButtonProps: IWrappedButtonProps = {
+        color: "primary",
+        variant: "contained",
+        disabled: false, // someControlsAreInvalid || !!ticketUpdateRequest,
+        showSpinner: false, // !!ticketUpdateRequest,
+        onClick: () => null, // onClickUpdate,
+        children: "Update Ticket",
+    };
 
-    // const wrappedButtonProps: IWrappedButtonProps = {
-    //     color: "primary",
-    //     variant: "contained",
-    //     disabled: someControlsAreInvalid || !!ticketUpdateRequest,
-    //     showSpinner: !!ticketUpdateRequest,
-    //     onClick: onClickUpdate,
-    //     children: "Update Ticket",
-    // };
+    const classes = createClasses();
 
-    return null;
+    return (
+        <TicketPageWrapper>
+            {isLoadingTicketInformation || !ticketState ? (
+                <CenterLoadingSpinner size="large" />
+            ) : (
+                <div css={classes.container}>
+                    <div css={classes.ticketContentContainer}>
+                        <div css={classes.ticketContentContainerInnerFields}>
+                            <TicketFields
+                                ticketTemplateId={
+                                    ticketState.ticketTemplate.shortenedItemId
+                                }
+                                ticketId={ticketId}
+                                isTicketPreview={false}
+                                disabled={false}
+                                removePadding
+                            />
+                        </div>
+                    </div>
+                    <TicketBottomToolbar
+                        ticketTemplateId={
+                            ticketState.ticketTemplate.shortenedItemId
+                        }
+                        ticketId={ticketId}
+                        actionButtonText="Update Ticket"
+                        onClickActionButton={() => null}
+                        showActionButtonSpinner={false}
+                    />
+                </div>
+            )}
+        </TicketPageWrapper>
+    );
 
     //     return (
     //         <TicketPageWrapper>
@@ -302,38 +283,20 @@ const createClasses = () => {
     `;
 
     const ticketContentContainer = css`
-        display: grid;
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 32px;
-        grid-gap: 32px;
-        grid-template-columns: 1fr 1fr 1fr;
     `;
 
-    const ticketActionBarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const ticketActionBarInnerContainer = css`
-        display: flex;
-        padding: 8px 16px;
-        justify-content: flex-end;
-    `;
-
-    const nonTagTicketInformationContainer = css`
-        height: 100%;
-    `;
-
-    const ticketSectionsContainer = css`
-        display: flex;
-        flex-direction: column;
-        margin-top: 16px;
+    const ticketContentContainerInnerFields = css`
+        width: 400px;
     `;
 
     return {
         container,
         ticketContentContainer,
-        ticketActionBarContainer,
-        ticketActionBarInnerContainer,
-        nonTagTicketInformationContainer,
-        ticketSectionsContainer,
+        ticketContentContainerInnerFields,
     };
 };

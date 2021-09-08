@@ -22,6 +22,12 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
         const priorityWeightingCalculation =
             store.weightedTicketTemplateCreation[props.ticketTemplateId]
                 .priorityWeightingCalculation;
+
+        console.log(
+            "priorityWeightingCalculation: ",
+            priorityWeightingCalculation
+        );
+
         return {
             priorityWeightingCalculation,
             ticketAndTicketTemplate: store.ticket[props.ticketId],
@@ -35,6 +41,8 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
             return "NA";
         }
 
+        console.log("ticketTemplate: ", ticketAndTicketTemplate.ticketTemplate);
+        console.log("ticket: ", ticketAndTicketTemplate.ticket);
         const requiredValuesByAliasMapping = ticketAndTicketTemplate.ticketTemplate.sections.reduce<{
             [aliasName: string]: {
                 value: number | string;

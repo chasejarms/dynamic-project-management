@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { ticketPreviewId } from "../../redux/ticket";
 import { resetWeightedTicketTemplateCreationState } from "../../redux/ticketTemplates";
 import { PriorityWeightingFunction } from "./priorityWeightingFunction";
-import { Ticket } from "../ticket";
+import { TicketFields } from "../ticketFields";
 import { TicketSummaryHeader } from "./ticketSummaryHeader";
 import { TicketTemplateBottomToolbar } from "./ticketTemplateBottomToolbar";
 import { TicketTemplateFieldsContainer } from "./ticketTemplateFieldsContainer";
@@ -63,7 +63,7 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                                             props.ticketTemplateId
                                         }
                                     />
-                                    <Ticket
+                                    <TicketFields
                                         ticketId={ticketPreviewId}
                                         isTicketPreview={true}
                                         disabled={props.actionInProgress}

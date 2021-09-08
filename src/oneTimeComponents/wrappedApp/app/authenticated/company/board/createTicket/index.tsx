@@ -12,12 +12,10 @@ import { Api } from "../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
 import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { IColumn } from "../../../../../../../models/column";
-import { ITag } from "../../../../../../../models/tag";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
-import { ISimplifiedTag } from "../../../../../../../models/simplifiedTag";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../redux/storeState";
 import {
@@ -26,7 +24,7 @@ import {
     updateStartingColumn,
 } from "../../../../../../../redux/ticketCreation";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { Ticket } from "../../../../../../../components/ticket";
+import { TicketFields } from "../../../../../../../components/ticketFields";
 import { ticketPreviewId } from "../../../../../../../redux/ticket";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { TicketBottomToolbar } from "../../../../../../../components/ticketBottomToolbar";
@@ -232,7 +230,7 @@ export function CreateTicket() {
                             </FormControl>
                             {!!ticketTemplate && (
                                 <div css={classes.ticketSectionsContainer}>
-                                    <Ticket
+                                    <TicketFields
                                         ticketTemplateId={
                                             ticketTemplate.shortenedItemId
                                         }
