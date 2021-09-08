@@ -9,7 +9,7 @@ import {
     insertWeightedTicketCreationSection,
     updateWeightedTicketTemplateCreationSummary,
 } from "../../../../redux/weightedTicketTemplateCreation";
-import { WeightedPriorityTicketTemplateActions } from "../../../weightedPriorityTicketTemplateActions";
+import { WeightedPriorityTicketTemplateActions } from "../weightedPriorityTicketTemplateActions";
 import { WrappedTextField } from "../../../wrappedTextField";
 
 export interface ITicketTemplateSummaryFieldProps {

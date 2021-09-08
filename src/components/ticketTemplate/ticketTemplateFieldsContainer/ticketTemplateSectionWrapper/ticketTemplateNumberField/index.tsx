@@ -10,8 +10,8 @@ import {
     overrideWeightedTicketCreationSection,
     WeightedNumberSectionWithControls,
 } from "../../../../../redux/weightedTicketTemplateCreation";
-import { WeightedPriorityTicketTemplateActions } from "../../../../weightedPriorityTicketTemplateActions";
-import { WeightedTicketTemplateNumberControl } from "../../../../weightedTicketTemplateNumberControl";
+import { WeightedPriorityTicketTemplateActions } from "../../weightedPriorityTicketTemplateActions";
+import { WeightedTicketTemplateNumberControl } from "./weightedTicketTemplateNumberControl";
 
 export interface ITicketTemplateNumberFieldProps {
     disabled: boolean;

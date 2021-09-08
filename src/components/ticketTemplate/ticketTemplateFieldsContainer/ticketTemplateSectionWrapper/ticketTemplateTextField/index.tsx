@@ -10,8 +10,8 @@ import {
     overrideWeightedTicketCreationSection,
     WeightedTextSectionWithControls,
 } from "../../../../../redux/weightedTicketTemplateCreation";
-import { WeightedPriorityTicketTemplateActions } from "../../../../weightedPriorityTicketTemplateActions";
-import { WeightedTicketTemplateTextControl } from "../../../../weightedTicketTemplateTextControl";
+import { WeightedPriorityTicketTemplateActions } from "../../weightedPriorityTicketTemplateActions";
+import { WeightedTicketTemplateTextControl } from "./weightedTicketTemplateTextControl";
 
 export interface ITicketTemplateTextFieldProps {
     section: WeightedTextSectionWithControls;
