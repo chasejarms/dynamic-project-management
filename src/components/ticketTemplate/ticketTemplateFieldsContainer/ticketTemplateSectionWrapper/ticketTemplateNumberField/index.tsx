@@ -8,14 +8,14 @@ import {
     deleteWeightedTicketTemplateCreationSection,
     insertWeightedTicketCreationSection,
     overrideWeightedTicketCreationSection,
-    WeightedNumberSectionWithControls,
-} from "../../../../../redux/weightedTicketTemplateCreation";
+    ITicketTemplateNumberSectionControlState,
+} from "../../../../../redux/ticketTemplates";
 import { WeightedPriorityTicketTemplateActions } from "../../weightedPriorityTicketTemplateActions";
 import { WeightedTicketTemplateNumberControl } from "./weightedTicketTemplateNumberControl";
 
 export interface ITicketTemplateNumberFieldProps {
     disabled: boolean;
-    section: WeightedNumberSectionWithControls;
+    section: ITicketTemplateNumberSectionControlState;
     index: number;
     ticketTemplateId: string;
 }

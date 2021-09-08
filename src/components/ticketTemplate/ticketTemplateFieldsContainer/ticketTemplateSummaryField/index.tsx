@@ -8,7 +8,7 @@ import { IStoreState } from "../../../../redux/storeState";
 import {
     insertWeightedTicketCreationSection,
     updateWeightedTicketTemplateCreationSummary,
-} from "../../../../redux/weightedTicketTemplateCreation";
+} from "../../../../redux/ticketTemplates";
 import { WeightedPriorityTicketTemplateActions } from "../weightedPriorityTicketTemplateActions";
 import { WrappedTextField } from "../../../wrappedTextField";
 

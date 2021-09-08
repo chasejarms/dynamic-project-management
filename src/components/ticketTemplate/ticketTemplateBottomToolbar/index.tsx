@@ -3,9 +3,9 @@ import { jsx, css } from "@emotion/react";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../redux/storeState";
 import {
-    WeightedTextSectionWithControls,
-    WeightedNumberSectionWithControls,
-} from "../../../redux/weightedTicketTemplateCreation";
+    ITicketTemplateTextSectionControlState,
+    ITicketTemplateNumberSectionControlState,
+} from "../../../redux/ticketTemplates";
 import { BottomPageToolbar } from "../../bottomPageToolbar";
 import { IWrappedButtonProps } from "../../wrappedButton";
 
@@ -35,10 +35,10 @@ export function TicketTemplateBottomToolbar(
         const summaryIsValid = !summary.error;
         const sectionsAreValid = sections.every((section) => {
             if (section.value.type === "text") {
-                const textSectionWithControls = section as WeightedTextSectionWithControls;
+                const textSectionWithControls = section as ITicketTemplateTextSectionControlState;
                 return !textSectionWithControls.error;
             } else if (section.value.type === "number") {
-                const numberSectionWithControls = section as WeightedNumberSectionWithControls;
+                const numberSectionWithControls = section as ITicketTemplateNumberSectionControlState;
                 return (
                     !numberSectionWithControls.labelError &&
                     !numberSectionWithControls.minError &&

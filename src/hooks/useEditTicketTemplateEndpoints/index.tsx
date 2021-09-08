@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Api } from "../../api";
 import { IStoreState } from "../../redux/storeState";
-import { setWeightedTicketTemplate } from "../../redux/weightedTicketTemplateCreation";
+import { setWeightedTicketTemplate } from "../../redux/ticketTemplates";
 import { useAppRouterParams } from "../useAppRouterParams";
 
 export function useEditTicketTemplateEndpoints() {

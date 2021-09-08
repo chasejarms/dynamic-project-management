@@ -3,9 +3,9 @@ import { jsx, css } from "@emotion/react";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../redux/storeState";
 import {
-    WeightedNumberSectionWithControls,
-    WeightedTextSectionWithControls,
-} from "../../../../redux/weightedTicketTemplateCreation";
+    ITicketTemplateNumberSectionControlState,
+    ITicketTemplateTextSectionControlState,
+} from "../../../../redux/ticketTemplates";
 import { TicketTemplateNumberField } from "./ticketTemplateNumberField";
 import { TicketTemplateTextField } from "./ticketTemplateTextField";
 
@@ -26,7 +26,7 @@ export function TicketTemplateSectionWrapper(
     if (section.value.type === "text") {
         return (
             <TicketTemplateTextField
-                section={section as WeightedTextSectionWithControls}
+                section={section as ITicketTemplateTextSectionControlState}
                 index={props.index}
                 disabled={props.disabled}
                 ticketTemplateId={props.ticketTemplateId}
@@ -35,7 +35,7 @@ export function TicketTemplateSectionWrapper(
     } else if (section.value.type === "number") {
         return (
             <TicketTemplateNumberField
-                section={section as WeightedNumberSectionWithControls}
+                section={section as ITicketTemplateNumberSectionControlState}
                 index={props.index}
                 disabled={props.disabled}
                 ticketTemplateId={props.ticketTemplateId}

@@ -4,7 +4,7 @@ import { makeStyles, Paper } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ticketPreviewId } from "../../redux/ticket";
-import { resetWeightedTicketTemplateCreationState } from "../../redux/weightedTicketTemplateCreation";
+import { resetWeightedTicketTemplateCreationState } from "../../redux/ticketTemplates";
 import { PriorityWeightingFunction } from "./priorityWeightingFunction";
 import { Ticket } from "../ticket";
 import { TicketSummaryHeader } from "./ticketSummaryHeader";

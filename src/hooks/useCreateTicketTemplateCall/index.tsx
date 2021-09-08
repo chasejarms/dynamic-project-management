@@ -5,7 +5,7 @@ import { IStoreState } from "../../redux/storeState";
 import {
     createTicketTemplateId,
     resetWeightedTicketTemplateCreationState,
-} from "../../redux/weightedTicketTemplateCreation";
+} from "../../redux/ticketTemplates";
 import { useAppRouterParams } from "../useAppRouterParams";
 
 export function useCreateTicketTemplateCall() {

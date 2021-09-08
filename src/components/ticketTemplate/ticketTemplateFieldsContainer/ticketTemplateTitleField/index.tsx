@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../redux/storeState";
-import { updateWeightedTicketTemplateCreationTitle } from "../../../../redux/weightedTicketTemplateCreation";
+import { updateWeightedTicketTemplateCreationTitle } from "../../../../redux/ticketTemplates";
 import { WrappedTextField } from "../../../wrappedTextField";
 
 export interface ITicketTemplateTitleFieldProps {

@@ -8,13 +8,13 @@ import {
     deleteWeightedTicketTemplateCreationSection,
     insertWeightedTicketCreationSection,
     overrideWeightedTicketCreationSection,
-    WeightedTextSectionWithControls,
-} from "../../../../../redux/weightedTicketTemplateCreation";
+    ITicketTemplateTextSectionControlState,
+} from "../../../../../redux/ticketTemplates";
 import { WeightedPriorityTicketTemplateActions } from "../../weightedPriorityTicketTemplateActions";
 import { WeightedTicketTemplateTextControl } from "./weightedTicketTemplateTextControl";
 
 export interface ITicketTemplateTextFieldProps {
-    section: WeightedTextSectionWithControls;
+    section: ITicketTemplateTextSectionControlState;
     index: number;
     disabled: boolean;
     ticketTemplateId: string;

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../redux/storeState";
 import {
     updatePriorityWeightingCalculation,
-    WeightedNumberSectionWithControls,
-} from "../../../redux/weightedTicketTemplateCreation";
+    ITicketTemplateNumberSectionControlState,
+} from "../../../redux/ticketTemplates";
 import { TagChip } from "../../tagChip";
 import { WrappedTextField } from "../../wrappedTextField";
 
@@ -33,7 +33,8 @@ export function PriorityWeightingFunction(
         })
         .map(
             (section) =>
-                (section as WeightedNumberSectionWithControls).value.alias
+                (section as ITicketTemplateNumberSectionControlState).value
+                    .alias
         );
 
     const dispatch = useDispatch();

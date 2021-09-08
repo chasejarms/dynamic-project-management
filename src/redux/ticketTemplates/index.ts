@@ -7,12 +7,12 @@ import { INumberSection } from "../../models/ticketTemplate/section/numberSectio
 import mathEvaluator from "math-expression-evaluator";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 
-export interface WeightedTextSectionWithControls {
+export interface ITicketTemplateTextSectionControlState {
     value: ITextSection;
     error: string;
 }
 
-export interface WeightedNumberSectionWithControls {
+export interface ITicketTemplateNumberSectionControlState {
     value: INumberSection;
     labelError: string;
     minError: string;
@@ -20,44 +20,46 @@ export interface WeightedNumberSectionWithControls {
     aliasError: string;
 }
 
-type WeightedSectionWithControls =
-    | WeightedTextSectionWithControls
-    | WeightedNumberSectionWithControls;
+type TicketTemplateSectionsWithControlState =
+    | ITicketTemplateTextSectionControlState
+    | ITicketTemplateNumberSectionControlState;
 
 export const createTicketTemplateId = "CREATE-TICKET-TEMPLATE-ID";
 
-export interface IWeightedTicketTemplateCreationState {
-    [ticketTemplateId: string]: {
-        name: {
-            value: string;
-            touched: boolean;
-            error: string;
-        };
-        description: {
-            value: string;
-            touched: boolean;
-            error: string;
-        };
-        title: {
-            value: string;
-            touched: boolean;
-            error: string;
-        };
-        summary: {
-            value: string;
-            touched: boolean;
-            error: string;
-        };
-        sections: WeightedSectionWithControls[];
-        priorityWeightingCalculation: {
-            value: string;
-            error: string;
-        };
+export interface ITicketTemplateControlState {
+    name: {
+        value: string;
+        touched: boolean;
+        error: string;
+    };
+    description: {
+        value: string;
+        touched: boolean;
+        error: string;
+    };
+    title: {
+        value: string;
+        touched: boolean;
+        error: string;
+    };
+    summary: {
+        value: string;
+        touched: boolean;
+        error: string;
+    };
+    sections: TicketTemplateSectionsWithControlState[];
+    priorityWeightingCalculation: {
+        value: string;
+        error: string;
     };
 }
 
+export interface ITicketTemplateControlStateMapping {
+    [ticketTemplateId: string]: ITicketTemplateControlState;
+}
+
 const defaultRequiredError = "This field is required";
-const initialState: IWeightedTicketTemplateCreationState = {
+const initialState: ITicketTemplateControlStateMapping = {
     [createTicketTemplateId]: {
         name: {
             value: "",
@@ -87,15 +89,15 @@ const initialState: IWeightedTicketTemplateCreationState = {
     },
 };
 
-export const weightedTicketTemplateCreationSlice = createSlice({
-    name: "weightedTicketTemplateCreation",
+export const ticketTemplateSlice = createSlice({
+    name: "ticketTemplate",
     initialState,
     reducers: {
         resetWeightedTicketTemplateCreationState: () => {
             return initialState;
         },
         setWeightedTicketTemplate: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 ticketTemplate: ITicketTemplate;
                 ticketTemplateId: string;
@@ -130,7 +132,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                             return {
                                 value: section,
                                 error: "",
-                            } as WeightedTextSectionWithControls;
+                            } as ITicketTemplateTextSectionControlState;
                         } else {
                             return {
                                 value: section,
@@ -138,7 +140,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                                 minError: "",
                                 maxError: "",
                                 aliasError: "",
-                            } as WeightedNumberSectionWithControls;
+                            } as ITicketTemplateNumberSectionControlState;
                         }
                     }),
                     priorityWeightingCalculation: {
@@ -149,7 +151,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             };
         },
         updateWeightedTicketTemplateCreationTitle: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 title: string;
                 ticketTemplateId: string;
@@ -172,7 +174,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             };
         },
         updateWeightedTicketTemplateCreationName: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 name: string;
                 ticketTemplateId: string;
@@ -195,7 +197,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             };
         },
         updateWeightedTicketTemplateCreationDescription: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 description: string;
                 ticketTemplateId: string;
@@ -218,7 +220,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             };
         },
         updateWeightedTicketTemplateCreationSummary: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 summary: string;
                 ticketTemplateId: string;
@@ -241,7 +243,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             };
         },
         overrideWeightedTicketCreationSection: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 value: Section;
                 index: number;
@@ -263,7 +265,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                     .required(defaultRequiredError)
                     .validate(updatedValue.label);
 
-                const updatedSection: WeightedTextSectionWithControls = {
+                const updatedSection: ITicketTemplateTextSectionControlState = {
                     value: weightedTextSection,
                     error: updatedError,
                 };
@@ -303,7 +305,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                     )
                     .validate(updatedValue.alias);
 
-                const updatedSection: WeightedNumberSectionWithControls = {
+                const updatedSection: ITicketTemplateNumberSectionControlState = {
                     value: weightedNumberSection,
                     labelError: updatedLabelError,
                     minError: updatedMinError,
@@ -332,7 +334,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             }
         },
         insertWeightedTicketCreationSection: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 value: Section;
                 index: number;
@@ -342,11 +344,11 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             const { index, value, ticketTemplateId } = action.payload;
             const ticketTemplate = state[ticketTemplateId];
             const clonedSections = cloneDeep(ticketTemplate.sections);
-            let sectionWithControls: WeightedSectionWithControls;
+            let sectionWithControls: TicketTemplateSectionsWithControlState;
 
             if (value.type === "text") {
                 const weightedTextSection = value as ITextSection;
-                const weightedTextSectionWithControls: WeightedTextSectionWithControls = {
+                const weightedTextSectionWithControls: ITicketTemplateTextSectionControlState = {
                     value: weightedTextSection,
                     error: new StringValidator()
                         .required(defaultRequiredError)
@@ -383,7 +385,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
                     )
                     .validate(weightedNumberSection.alias);
 
-                const weightedNumberSectionWithControls: WeightedNumberSectionWithControls = {
+                const weightedNumberSectionWithControls: ITicketTemplateNumberSectionControlState = {
                     value: weightedNumberSection,
                     labelError: updatedLabelError,
                     minError: updatedMinError,
@@ -424,7 +426,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             }
         },
         deleteWeightedTicketTemplateCreationSection: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 index: number;
                 ticketTemplateId: string;
@@ -446,7 +448,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
             };
         },
         updatePriorityWeightingCalculation: (
-            state: IWeightedTicketTemplateCreationState,
+            state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
                 priorityWeightingCalculation: string;
                 ticketTemplateId: string;
@@ -477,7 +479,7 @@ export const weightedTicketTemplateCreationSlice = createSlice({
 });
 
 function priorityWeightingCalculationError(
-    sections: WeightedSectionWithControls[],
+    sections: TicketTemplateSectionsWithControlState[],
     priorityWeightingCalculation: string
 ) {
     const validAliasList = sections
@@ -486,7 +488,8 @@ function priorityWeightingCalculationError(
         })
         .map(
             (section) =>
-                (section as WeightedNumberSectionWithControls).value.alias
+                (section as ITicketTemplateNumberSectionControlState).value
+                    .alias
         );
 
     const error = (function () {
@@ -559,6 +562,6 @@ export const {
     deleteWeightedTicketTemplateCreationSection,
     updatePriorityWeightingCalculation,
     setWeightedTicketTemplate,
-} = weightedTicketTemplateCreationSlice.actions;
+} = ticketTemplateSlice.actions;
 
-export default weightedTicketTemplateCreationSlice.reducer;
+export default ticketTemplateSlice.reducer;

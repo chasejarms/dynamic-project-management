@@ -7,7 +7,7 @@ import { TicketTemplate } from "../../../../../../../../../components/ticketTemp
 import { WrappedButton } from "../../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
 import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
-import { createTicketTemplateId } from "../../../../../../../../../redux/weightedTicketTemplateCreation";
+import { createTicketTemplateId } from "../../../../../../../../../redux/ticketTemplates";
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
