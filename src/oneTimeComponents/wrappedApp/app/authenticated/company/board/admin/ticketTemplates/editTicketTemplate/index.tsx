@@ -12,6 +12,8 @@ export function EditTicketTemplate() {
         ticketTemplateId,
         showSuccessSnackbar,
         closeSuccessSnackbar,
+        onClickUpdateTicketTemplate,
+        isUpdatingTicketTemplate,
     } = useEditTicketTemplateEndpoints();
 
     const classes = createClasses();
@@ -24,9 +26,9 @@ export function EditTicketTemplate() {
                 </div>
             ) : (
                 <TicketTemplate
-                    onClickActionButton={() => null}
+                    onClickActionButton={onClickUpdateTicketTemplate}
                     actionButtonText="Update Priority Calculation"
-                    actionInProgress={false}
+                    actionInProgress={isUpdatingTicketTemplate}
                     ticketTemplateId={ticketTemplateId}
                     fieldsAreDisabled={true}
                 />

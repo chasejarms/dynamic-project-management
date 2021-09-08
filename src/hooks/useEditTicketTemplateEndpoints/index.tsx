@@ -44,6 +44,10 @@ export function useEditTicketTemplateEndpoints() {
         false
     );
 
+    function onClickUpdateTicketTemplate() {
+        setIsUpdatingTicketTemplate(true);
+    }
+
     const weightedTicketTemplate = useSelector(
         (state: IStoreState) => {
             return state.weightedTicketTemplateCreation[ticketTemplateId];
@@ -96,5 +100,7 @@ export function useEditTicketTemplateEndpoints() {
         ticketTemplateId,
         showSuccessSnackbar,
         closeSuccessSnackbar,
+        onClickUpdateTicketTemplate,
+        isUpdatingTicketTemplate,
     };
 }
