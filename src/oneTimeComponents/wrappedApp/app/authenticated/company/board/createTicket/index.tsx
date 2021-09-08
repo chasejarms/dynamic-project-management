@@ -22,56 +22,34 @@ import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
 import { ISimplifiedTag } from "../../../../../../../models/simplifiedTag";
-import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../redux/storeState";
 import {
-    updateTicketTitle,
-    updateTicketSummary,
     updateTicketTemplate,
     resetTicketCreation,
-    updateSection,
     updateStartingColumn,
 } from "../../../../../../../redux/ticketCreation";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
+import { Ticket } from "../../../../../../../components/ticket";
+import { ticketPreviewId } from "../../../../../../../redux/ticket";
+import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
+import { TicketBottomToolbar } from "../../../../../../../components/ticketBottomToolbar";
 
 export function CreateTicket() {
     const history = useHistory();
     const { boardId, companyId } = useAppRouterParams();
 
-    const {
-        title,
-        summary,
-        ticketTemplate,
-        sections,
-        startingColumn,
-    } = useSelector((store: IStoreState) => {
-        return store.ticketCreation;
-    });
+    const { ticketTemplate, startingColumn } = useSelector(
+        (store: IStoreState) => {
+            return store.ticketCreation;
+        }
+    );
     const dispatch = useDispatch();
     useEffect(() => {
         // clear the form state when this component is first loaded
         const action = resetTicketCreation();
         dispatch(action);
     }, []);
-
-    const showTicketTitleError = title.touched && title.error;
-    function onChangeTicketTitle(
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-        const updatedTicketTitle = event.target.value;
-        const action = updateTicketTitle(updatedTicketTitle);
-        dispatch(action);
-    }
-
-    const showSummaryError = summary.touched && summary.error;
-    function onChangeTicketSummary(
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-        const updatedTicketSummary = event.target.value;
-        const action = updateTicketSummary(updatedTicketSummary);
-        dispatch(action);
-    }
 
     function onChangeTicketTemplate(
         event: React.ChangeEvent<{
@@ -92,17 +70,6 @@ export function CreateTicket() {
         dispatch(action);
     }
 
-    function onChangeSectionValue(index: number) {
-        return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            const updatedSectionValue = event.target.value;
-            const action = updateSection({
-                value: updatedSectionValue,
-                index,
-            });
-            dispatch(action);
-        };
-    }
-
     function onChangeStartingColumn(
         event: ChangeEvent<{
             name?: string | undefined;
@@ -113,8 +80,6 @@ export function CreateTicket() {
         const action = updateStartingColumn(updatedStartingColumn);
         dispatch(action);
     }
-
-    const controlsAreInvalid = !!title.error || !!summary.error;
 
     const [isLoadingTicketTemplates, setIsLoadingTicketTemplates] = useState(
         true
@@ -140,6 +105,10 @@ export function CreateTicket() {
             .then(
                 ([ticketTemplatesFromDatabase, columnsFromDatabase, tags]) => {
                     if (didCancel) return;
+                    const action = setWeightedTicketTemplates(
+                        ticketTemplatesFromDatabase
+                    );
+                    dispatch(action);
                     setTicketTemplates(ticketTemplatesFromDatabase);
                     setAllTagsForBoard(tags);
 
@@ -229,34 +198,23 @@ export function CreateTicket() {
         });
     }
 
-    function onClickCreate() {
-        const sectionValues = sections.map((section) => section.value);
+    // function onClickCreate() {
+    //     const sectionValues = sections.map((section) => section.value);
 
-        setTicketCreateRequest({
-            title: title.value,
-            summary: summary.value,
-            sections: sectionValues,
-            tags: tagsState.simplifiedTags,
-            simplifiedTicketTemplate: {
-                title: ticketTemplate!.title,
-                summary: ticketTemplate!.summary,
-                sections: ticketTemplate!.sections,
-            },
-            startingColumnId:
-                startingColumn === "BACKLOG" ? "" : startingColumn,
-        });
-    }
-
-    const wrappedButtonProps: IWrappedButtonProps[] = [
-        {
-            color: "primary",
-            variant: "contained",
-            disabled: controlsAreInvalid || !!ticketCreateRequest,
-            showSpinner: !!ticketCreateRequest,
-            onClick: onClickCreate,
-            children: "Create Ticket",
-        },
-    ];
+    //     setTicketCreateRequest({
+    //         title: title.value,
+    //         summary: summary.value,
+    //         sections: sectionValues,
+    //         tags: tagsState.simplifiedTags,
+    //         simplifiedTicketTemplate: {
+    //             title: ticketTemplate!.title,
+    //             summary: ticketTemplate!.summary,
+    //             sections: ticketTemplate!.sections,
+    //         },
+    //         startingColumnId:
+    //             startingColumn === "BACKLOG" ? "" : startingColumn,
+    //     });
+    // }
 
     return (
         <BoardContainer>
@@ -296,46 +254,15 @@ export function CreateTicket() {
                             </FormControl>
                             {!!ticketTemplate && (
                                 <div css={classes.ticketSectionsContainer}>
-                                    <WrappedTextField
-                                        value={title.value}
-                                        label={"Title"}
-                                        onChange={onChangeTicketTitle}
-                                        error={
-                                            showTicketTitleError
-                                                ? title.error
-                                                : ""
+                                    <Ticket
+                                        ticketTemplateId={
+                                            ticketTemplate.shortenedItemId
                                         }
+                                        ticketId={ticketPreviewId}
+                                        isTicketPreview={true}
+                                        disabled={!!ticketCreateRequest}
+                                        removePadding
                                     />
-                                    <WrappedTextField
-                                        multiline
-                                        value={summary.value}
-                                        label={"Summary"}
-                                        onChange={onChangeTicketSummary}
-                                        error={
-                                            showSummaryError
-                                                ? summary.error
-                                                : ""
-                                        }
-                                    />
-                                    {sections.map((section, index) => {
-                                        const equivalentTicketTemplateSection =
-                                            ticketTemplate.sections[index];
-
-                                        return (
-                                            <WrappedTextField
-                                                key={index}
-                                                multiline={false}
-                                                value={section.value}
-                                                label={
-                                                    equivalentTicketTemplateSection.label
-                                                }
-                                                onChange={onChangeSectionValue(
-                                                    index
-                                                )}
-                                                error={""}
-                                            />
-                                        );
-                                    })}
                                     <FormControl fullWidth>
                                         <InputLabel>Send Ticket To</InputLabel>
                                         <Select
@@ -369,8 +296,11 @@ export function CreateTicket() {
                             )}
                         </div>
                     </div>
-                    <BottomPageToolbar
-                        wrappedButtonProps={wrappedButtonProps}
+                    <TicketBottomToolbar
+                        ticketId={ticketPreviewId}
+                        actionButtonText="Create Ticket"
+                        onClickActionButton={() => null}
+                        showActionButtonSpinner={false}
                     />
                 </div>
             )}

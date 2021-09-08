@@ -3,9 +3,9 @@ import { StringValidator } from "../../classes/StringValidator";
 import { cloneDeep } from "lodash";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { NumberValidator } from "../../classes/NumberValidator";
+import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
 
 export const ticketPreviewId = "TICKET_PREVIEW";
-export const ticketCreateId = "TICKET_CREATE";
 
 export interface ISectionFormData {
     value: string | number;
@@ -98,9 +98,7 @@ export const ticketMappingSlice = createSlice({
                 ticketId: string;
             }>
         ) => {
-            const error = new StringValidator()
-                .required(defaultRequiredError)
-                .validate(action.payload.value);
+            const error = ticketTitleError(action.payload.value);
             const clonedState = cloneDeep(state);
             const existingTicketAndTicketTemplate =
                 clonedState[action.payload.ticketId];
@@ -126,9 +124,7 @@ export const ticketMappingSlice = createSlice({
                 ticketId: string;
             }>
         ) => {
-            const error = new StringValidator()
-                .required(defaultRequiredError)
-                .validate(action.payload.value);
+            const error = ticketSummaryError(action.payload.value);
             const clonedState = cloneDeep(state);
             const existingTicketAndTicketTemplate =
                 clonedState[action.payload.ticketId];
@@ -156,7 +152,7 @@ export const ticketMappingSlice = createSlice({
             }>
         ) => {
             const clonedState = cloneDeep(state);
-            const { index, value, ticketId } = action.payload;
+            const { index, ticketId } = action.payload;
             const { ticket: existingTicket, ticketTemplate } = clonedState[
                 ticketId
             ];
@@ -169,10 +165,7 @@ export const ticketMappingSlice = createSlice({
             if (section.type === "text") {
                 const value = action.payload.value as string;
 
-                let error = "";
-                if (section.required) {
-                    error = new StringValidator().required().validate(value);
-                }
+                const error = textSectionError(value, section.required);
 
                 sectionToInsert = {
                     value,
@@ -186,16 +179,7 @@ export const ticketMappingSlice = createSlice({
                     | null
                     | "";
 
-                const numberValue =
-                    value !== undefined && value !== null && value !== ""
-                        ? Number(value)
-                        : value;
-                const error = new NumberValidator()
-                    .required(section.required)
-                    .integer(section.allowOnlyIntegers)
-                    .max(section.maxValue !== undefined, section.maxValue!)
-                    .min(section.minValue !== undefined, section.minValue!)
-                    .validate(numberValue);
+                const error = numberSectionError(value, section);
 
                 sectionToInsert = {
                     value: value || "",
@@ -230,5 +214,47 @@ export const {
     updateTicketSummary,
     updateSectionValue,
 } = ticketMappingSlice.actions;
+
+export function ticketSummaryError(summary: string) {
+    const error = new StringValidator()
+        .required(defaultRequiredError)
+        .validate(summary);
+
+    return error;
+}
+
+export function ticketTitleError(title: string) {
+    const error = new StringValidator()
+        .required(defaultRequiredError)
+        .validate(title);
+
+    return error;
+}
+
+export function textSectionError(value: string, required: boolean) {
+    if (required) {
+        return new StringValidator().required().validate(value);
+    }
+
+    return "";
+}
+
+export function numberSectionError(
+    value: number | undefined | null | "",
+    section: INumberSection
+) {
+    const numberValue =
+        value !== undefined && value !== null && value !== ""
+            ? Number(value)
+            : value;
+    const error = new NumberValidator()
+        .required(section.required)
+        .integer(section.allowOnlyIntegers)
+        .max(section.maxValue !== undefined, section.maxValue!)
+        .min(section.minValue !== undefined, section.minValue!)
+        .validate(numberValue);
+
+    return error;
+}
 
 export default ticketMappingSlice.reducer;

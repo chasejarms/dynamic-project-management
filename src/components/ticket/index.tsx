@@ -8,6 +8,7 @@ import {
     updateTicketSummary,
     updateSectionValue,
 } from "../../redux/ticket";
+import { composeCSS } from "../../styles/composeCSS";
 import { WrappedTextField } from "../wrappedTextField";
 
 export interface ITicketProps {
@@ -15,6 +16,7 @@ export interface ITicketProps {
     ticketId: string;
     isTicketPreview: boolean;
     disabled: boolean;
+    removePadding?: boolean;
 }
 
 export function Ticket(props: ITicketProps) {
@@ -85,7 +87,12 @@ export function Ticket(props: ITicketProps) {
     }
 
     return (
-        <div css={classes.ticketPreviewContentContainer}>
+        <div
+            css={composeCSS(
+                classes.ticketPreviewContentContainer,
+                !!props.removePadding && classes.noPadding
+            )}
+        >
             <WrappedTextField
                 value={title.value}
                 label={ticketTemplate.title.label}
@@ -151,7 +158,12 @@ const createClasses = () => {
         padding: 16px;
     `;
 
+    const noPadding = css`
+        padding: 0;
+    `;
+
     return {
         ticketPreviewContentContainer,
+        noPadding,
     };
 };

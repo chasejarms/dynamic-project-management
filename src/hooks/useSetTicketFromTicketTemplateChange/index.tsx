@@ -2,7 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { IStoreState } from "../../redux/storeState";
-import { setInitialTicketData, ticketPreviewId } from "../../redux/ticket";
+import {
+    numberSectionError,
+    setInitialTicketData,
+    textSectionError,
+    ticketPreviewId,
+    ticketSummaryError,
+    ticketTitleError,
+} from "../../redux/ticket";
 
 export function useSetTicketFromTicketTemplateChange(
     runEffect: boolean,
@@ -42,18 +49,22 @@ export function useSetTicketFromTicketTemplateChange(
                 title: {
                     value: "",
                     touched: false,
-                    error: "",
+                    error: ticketTitleError(""),
                 },
                 summary: {
                     value: "",
                     touched: false,
-                    error: "",
+                    error: ticketSummaryError(""),
                 },
                 sections: weightedTicketTemplate.sections.map((section) => {
+                    const error =
+                        section.value.type === "text"
+                            ? textSectionError("", section.value.required)
+                            : numberSectionError("", section.value);
                     return {
                         value: "",
                         touched: false,
-                        error: "",
+                        error,
                     };
                 }),
             },

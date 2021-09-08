@@ -104,51 +104,26 @@ export const ticketTemplateSlice = createSlice({
             }>
         ) => {
             const { ticketTemplate, ticketTemplateId } = action.payload;
-            return {
-                ...state,
-                [ticketTemplateId]: {
-                    name: {
-                        value: ticketTemplate.name,
-                        touched: false,
-                        error: "",
-                    },
-                    description: {
-                        value: ticketTemplate.description,
-                        touched: false,
-                        error: "",
-                    },
-                    title: {
-                        value: ticketTemplate.title.label,
-                        touched: false,
-                        error: "",
-                    },
-                    summary: {
-                        value: ticketTemplate.summary.label,
-                        touched: false,
-                        error: "",
-                    },
-                    sections: ticketTemplate.sections.map((section) => {
-                        if (section.type === "text") {
-                            return {
-                                value: section,
-                                error: "",
-                            } as ITicketTemplateTextSectionControlState;
-                        } else {
-                            return {
-                                value: section,
-                                labelError: "",
-                                minError: "",
-                                maxError: "",
-                                aliasError: "",
-                            } as ITicketTemplateNumberSectionControlState;
-                        }
-                    }),
-                    priorityWeightingCalculation: {
-                        value: ticketTemplate.priorityWeightingCalculation,
-                        error: "",
-                    },
+            return mappingFromTicketTemplateMetadata(state, [
+                {
+                    ticketTemplate,
+                    ticketTemplateId,
                 },
-            };
+            ]);
+        },
+        setWeightedTicketTemplates: (
+            state: ITicketTemplateControlStateMapping,
+            action: PayloadAction<ITicketTemplate[]>
+        ) => {
+            return mappingFromTicketTemplateMetadata(
+                state,
+                action.payload.map((ticketTemplate) => {
+                    return {
+                        ticketTemplate,
+                        ticketTemplateId: ticketTemplate.shortenedItemId,
+                    };
+                })
+            );
         },
         updateWeightedTicketTemplateCreationTitle: (
             state: ITicketTemplateControlStateMapping,
@@ -551,6 +526,67 @@ function priorityWeightingCalculationError(
     return error;
 }
 
+function mappingFromTicketTemplateMetadata(
+    state: ITicketTemplateControlStateMapping,
+    ticketTemplateMetadataList: {
+        ticketTemplateId: string;
+        ticketTemplate: ITicketTemplate;
+    }[]
+): ITicketTemplateControlStateMapping {
+    const ticketTemplateObject = ticketTemplateMetadataList.reduce<{
+        [ticketTemplateId: string]: ITicketTemplateControlState;
+    }>((mapping, ticketTemplateMetadata) => {
+        const { ticketTemplateId, ticketTemplate } = ticketTemplateMetadata;
+        mapping[ticketTemplateId] = {
+            name: {
+                value: ticketTemplate.name,
+                touched: false,
+                error: "",
+            },
+            description: {
+                value: ticketTemplate.description,
+                touched: false,
+                error: "",
+            },
+            title: {
+                value: ticketTemplate.title.label,
+                touched: false,
+                error: "",
+            },
+            summary: {
+                value: ticketTemplate.summary.label,
+                touched: false,
+                error: "",
+            },
+            sections: ticketTemplate.sections.map((section) => {
+                if (section.type === "text") {
+                    return {
+                        value: section,
+                        error: "",
+                    } as ITicketTemplateTextSectionControlState;
+                } else {
+                    return {
+                        value: section,
+                        labelError: "",
+                        minError: "",
+                        maxError: "",
+                        aliasError: "",
+                    } as ITicketTemplateNumberSectionControlState;
+                }
+            }),
+            priorityWeightingCalculation: {
+                value: ticketTemplate.priorityWeightingCalculation,
+                error: "",
+            },
+        };
+        return mapping;
+    }, {});
+    return {
+        ...state,
+        ...ticketTemplateObject,
+    };
+}
+
 export const {
     updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationDescription,
@@ -562,6 +598,7 @@ export const {
     deleteWeightedTicketTemplateCreationSection,
     updatePriorityWeightingCalculation,
     setWeightedTicketTemplate,
+    setWeightedTicketTemplates,
 } = ticketTemplateSlice.actions;
 
 export default ticketTemplateSlice.reducer;
