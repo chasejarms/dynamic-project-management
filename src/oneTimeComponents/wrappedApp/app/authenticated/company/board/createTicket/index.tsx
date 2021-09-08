@@ -9,12 +9,8 @@ import {
 } from "@material-ui/core";
 import { useState, useEffect, ChangeEvent } from "react";
 import { Api } from "../../../../../../../api";
-import { BottomPageToolbar } from "../../../../../../../components/bottomPageToolbar";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
-import {
-    IWrappedButtonProps,
-    WrappedButton,
-} from "../../../../../../../components/wrappedButton";
+import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { IColumn } from "../../../../../../../models/column";
 import { ITag } from "../../../../../../../models/tag";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
@@ -297,6 +293,7 @@ export function CreateTicket() {
                         </div>
                     </div>
                     <TicketBottomToolbar
+                        ticketTemplateId={ticketTemplate?.shortenedItemId}
                         ticketId={ticketPreviewId}
                         actionButtonText="Create Ticket"
                         onClickActionButton={() => null}

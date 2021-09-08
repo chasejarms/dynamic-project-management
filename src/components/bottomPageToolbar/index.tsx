@@ -6,6 +6,7 @@ import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
 
 export interface IBottomPageToolbarProps {
     wrappedButtonProps: IWrappedButtonProps[];
+    leftContent?: React.ReactNode;
 }
 
 export function BottomPageToolbar(props: IBottomPageToolbarProps) {
@@ -15,18 +16,23 @@ export function BottomPageToolbar(props: IBottomPageToolbarProps) {
         <div css={classes.ticketActionBarContainer}>
             <Paper elevation={10}>
                 <div css={classes.ticketFlexContainer}>
-                    {props.wrappedButtonProps.map(
-                        (wrappedButtonProps, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    css={classes.individualButtonContainer}
-                                >
-                                    <WrappedButton {...wrappedButtonProps} />
-                                </div>
-                            );
-                        }
-                    )}
+                    <div>{props.leftContent}</div>
+                    <div css={classes.buttonsContainer}>
+                        {props.wrappedButtonProps.map(
+                            (wrappedButtonProps, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        css={classes.individualButtonContainer}
+                                    >
+                                        <WrappedButton
+                                            {...wrappedButtonProps}
+                                        />
+                                    </div>
+                                );
+                            }
+                        )}
+                    </div>
                 </div>
             </Paper>
         </div>
@@ -41,7 +47,7 @@ const createClasses = () => {
     const ticketFlexContainer = css`
         display: flex;
         padding: 8px 16px;
-        justify-content: flex-end;
+        justify-content: space-between;
         flex-direction: row;
     `;
 
@@ -49,9 +55,15 @@ const createClasses = () => {
         margin-left: 8px;
     `;
 
+    const buttonsContainer = css`
+        display: flex;
+        flex-direction: row;
+    `;
+
     return {
         ticketActionBarContainer,
         ticketFlexContainer,
         individualButtonContainer,
+        buttonsContainer,
     };
 };
