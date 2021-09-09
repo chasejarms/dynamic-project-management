@@ -61,10 +61,10 @@ export function Home() {
                 svgContent={<ExistingSolutionsAreLimiting size={size} />}
             />
             <LandingPageCommonSection
-                title={"Introducing Relative Prioritization"}
+                title={"Dynamic Prioritization"}
                 textSections={[
-                    "Instead of prioritizing each task individually or utilizing a fixed list tagging system, Butter utilizes dynamic tags to prioritize and organize large groups of tickets with a single click.",
-                    "Hundreds of tickets can be paired down to a much smaller list of tags which are then prioritized against each other with easy to use drag and drop elements.",
+                    "Instead of prioritizing each task individually or utilizing a fixed list tagging system, Butter utilizes dynamic functions and automatically prioritizes your entire board.",
+                    "Using simple Excel-like functions, Butter calculates a priority score for every ticket and organizes tickets in each column. The prioritization function is completely customizable and can fit any workflow.",
                 ]}
                 placeContent="right"
                 wrappedButtonProps={wrappedButtonProps}

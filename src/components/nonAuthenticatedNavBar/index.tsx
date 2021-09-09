@@ -15,10 +15,6 @@ export default function NonAuthenticatedNavBar() {
             label: "Contact Us",
             route: "/contact",
         },
-        {
-            label: "Sign Up",
-            route: "/sign-up",
-        },
     ];
 
     return breakpoints.max768 ? (
