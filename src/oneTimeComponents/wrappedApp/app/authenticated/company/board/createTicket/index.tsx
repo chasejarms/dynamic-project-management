@@ -10,7 +10,10 @@ import {
 import { useState, useEffect, ChangeEvent } from "react";
 import { Api } from "../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
-import { WrappedButton } from "../../../../../../../components/wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../../../../../../components/wrappedButton";
 import { IColumn } from "../../../../../../../models/column";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
@@ -28,8 +31,11 @@ import { TicketFields } from "../../../../../../../components/ticketFields";
 import { ticketPreviewId } from "../../../../../../../redux/ticket";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { TicketBottomToolbar } from "../../../../../../../components/ticketBottomToolbar";
+import { NoDataWithActionButton } from "../../../../../../../components/noDataWithActionButton";
+import { useIsBoardAdmin } from "../../../../../../../hooks/useIsBoardAdmin";
 
 export function CreateTicket() {
+    const isBoardAdmin = useIsBoardAdmin();
     const history = useHistory();
     const { boardId, companyId } = useAppRouterParams();
 
@@ -198,10 +204,33 @@ export function CreateTicket() {
         });
     }
 
+    function navigateToCreateTicketTemplatePage() {
+        history.push(
+            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/create-ticket-template`
+        );
+    }
+
+    const createTicketTemplateButtonProps:
+        | IWrappedButtonProps
+        | undefined = isBoardAdmin
+        ? {
+              color: "primary",
+              onClick: navigateToCreateTicketTemplatePage,
+              children: "Create Ticket Template",
+          }
+        : undefined;
+
     return (
         <BoardContainer>
             {isLoadingTicketTemplates ? (
                 <CenterLoadingSpinner size="large" />
+            ) : ticketTemplates.length === 0 ? (
+                <NoDataWithActionButton
+                    text={
+                        "No ticket templates have been created for this board"
+                    }
+                    wrappedButtonProps={createTicketTemplateButtonProps}
+                />
             ) : (
                 <div css={classes.container}>
                     <div css={classes.ticketContentContainer}>

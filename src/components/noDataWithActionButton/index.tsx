@@ -5,7 +5,7 @@ import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
 
 export interface INoDataWithActionButtonProps {
     text: string;
-    wrappedButtonProps: IWrappedButtonProps;
+    wrappedButtonProps?: IWrappedButtonProps;
 }
 
 const useStyles = makeStyles({
@@ -24,11 +24,13 @@ export function NoDataWithActionButton(props: INoDataWithActionButtonProps) {
                     variant="h6"
                     className={materialClasses.noImagesText}
                 >
-                    No images have been added to this tickets
+                    {props.text}
                 </Typography>
-                <div css={classes.wrappedButtonContainer}>
-                    <WrappedButton {...props.wrappedButtonProps} />
-                </div>
+                {!!props.wrappedButtonProps && (
+                    <div css={classes.wrappedButtonContainer}>
+                        <WrappedButton {...props.wrappedButtonProps} />
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -45,7 +47,7 @@ const createClasses = () => {
 
     const noTicketsContainer = css`
         display: flex;
-        width: 200px;
+        width: 300px;
         flex-direction: column;
     `;
 
