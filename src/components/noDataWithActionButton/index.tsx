@@ -43,12 +43,6 @@ const createClasses = () => {
         align-items: center;
     `;
 
-    const actionButtonHeaderContainer = css`
-        display: flex;
-        justify-content: flex-start;
-        padding: 16px 32px 16px 32px;
-    `;
-
     const noTicketsContainer = css`
         display: flex;
         width: 200px;
@@ -63,7 +57,6 @@ const createClasses = () => {
     `;
 
     return {
-        actionButtonHeaderContainer,
         centerContainer,
         noTicketsContainer,
         wrappedButtonContainer,

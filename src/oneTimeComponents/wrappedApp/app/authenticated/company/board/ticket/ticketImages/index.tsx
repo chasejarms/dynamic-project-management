@@ -263,14 +263,6 @@ export function TicketImages() {
 }
 
 const createClasses = () => {
-    const centerContainer = css`
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
     const container = css`
         width: 100%;
         display: grid;
@@ -291,25 +283,9 @@ const createClasses = () => {
         padding: 0px 32px 32px 32px;
     `;
 
-    const noTicketsContainer = css`
-        display: flex;
-        width: 200px;
-        flex-direction: column;
-    `;
-
-    const wrappedButtonContainer = css`
-        margin-top: 16px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    `;
-
     return {
         container,
         actionButtonHeaderContainer,
         imagesContainer,
-        centerContainer,
-        noTicketsContainer,
-        wrappedButtonContainer,
     };
 };

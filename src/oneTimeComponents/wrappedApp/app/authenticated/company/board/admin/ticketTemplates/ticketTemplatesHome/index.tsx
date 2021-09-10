@@ -7,8 +7,12 @@ import { Api } from "../../../../../../../../../api";
 import { BoardAdminContainer } from "../../../../../../../../../components/boardAdminContainer";
 import { CenterLoadingSpinner } from "../../../../../../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../../../../../../../components/confirmDialog";
+import { NoDataWithActionButton } from "../../../../../../../../../components/noDataWithActionButton";
 import { TicketTemplateForBoard } from "../../../../../../../../../components/ticketTemplateForBoard";
-import { WrappedButton } from "../../../../../../../../../components/wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 
@@ -141,21 +145,27 @@ export function TicketTemplatesHome() {
         );
     }
 
+    const createTicketTemplateButtonProps: IWrappedButtonProps = {
+        color: "primary",
+        onClick: navigateToCreateTicketTemplatePage,
+        children: "Add Ticket Template",
+    };
+
     return (
         <BoardAdminContainer>
             {isLoadingTicketTemplates ? (
                 <div css={classes.loadingSpinnerContainer}>
                     <CenterLoadingSpinner size="large" />
                 </div>
+            ) : ticketTemplates.length === 0 ? (
+                <NoDataWithActionButton
+                    text="No ticket templates have been created for this board"
+                    wrappedButtonProps={createTicketTemplateButtonProps}
+                />
             ) : (
                 <div css={classes.contentContainer}>
                     <div css={classes.addTicketTemplateButtonContainer}>
-                        <WrappedButton
-                            color="primary"
-                            onClick={navigateToCreateTicketTemplatePage}
-                        >
-                            Add Ticket Template
-                        </WrappedButton>
+                        <WrappedButton {...createTicketTemplateButtonProps} />
                     </div>
                     <div css={classes.ticketTemplatesContainer}>
                         {ticketTemplates.map((ticketTemplate) => {
