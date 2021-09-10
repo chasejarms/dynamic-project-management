@@ -11,13 +11,7 @@ import { CenterLoadingSpinner } from "../../../../../../../../components/centerL
 import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
 import { TicketImageContainer } from "../../../../../../../../components/ticketImageContainer";
 import { sortBy } from "lodash";
-import { makeStyles, Typography } from "@material-ui/core";
-
-const useStyles = makeStyles({
-    noImagesText: {
-        textAlign: "center",
-    },
-});
+import { NoDataWithActionButton } from "../../../../../../../../components/noDataWithActionButton";
 
 export function TicketImages() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -187,7 +181,6 @@ export function TicketImages() {
     }, [isLoadingFiles]);
 
     const classes = createClasses();
-    const materialClasses = useStyles();
 
     function onDeleteFile(file: IFileForTicket) {
         return () => {
@@ -204,21 +197,15 @@ export function TicketImages() {
             {isLoadingFiles ? (
                 <CenterLoadingSpinner size="large" />
             ) : filesForTicket.length === 0 ? (
-                <div css={classes.centerContainer}>
-                    <div css={classes.noTicketsContainer}>
-                        <Typography
-                            variant="h6"
-                            className={materialClasses.noImagesText}
-                        >
-                            No images have been added to this tickets
-                        </Typography>
-                        <div css={classes.wrappedButtonContainer}>
-                            <WrappedButton
-                                color="primary"
-                                component="label"
-                                disabled={isUploadingFiles}
-                                showSpinner={isUploadingFiles}
-                            >
+                <NoDataWithActionButton
+                    text="No images have been added to this tickets"
+                    wrappedButtonProps={{
+                        color: "primary",
+                        component: "label",
+                        disabled: isUploadingFiles,
+                        showSpinner: isUploadingFiles,
+                        children: (
+                            <>
                                 Upload Image(s)
                                 <input
                                     value=""
@@ -228,10 +215,10 @@ export function TicketImages() {
                                     onChange={onChange}
                                     multiple
                                 />
-                            </WrappedButton>
-                        </div>
-                    </div>
-                </div>
+                            </>
+                        ),
+                    }}
+                />
             ) : (
                 <div css={classes.container}>
                     <div css={classes.actionButtonHeaderContainer}>
