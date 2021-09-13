@@ -12,6 +12,7 @@ import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace
 import { TicketImageContainer } from "../../../../../../../../components/ticketImageContainer";
 import { sortBy } from "lodash";
 import { NoDataWithActionButton } from "../../../../../../../../components/noDataWithActionButton";
+import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
 
 export function TicketImages() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -193,7 +194,7 @@ export function TicketImages() {
     }
 
     return (
-        <TicketPageWrapper>
+        <TicketDrawerContainer>
             {isLoadingFiles ? (
                 <CenterLoadingSpinner size="large" />
             ) : filesForTicket.length === 0 ? (
@@ -258,7 +259,7 @@ export function TicketImages() {
                     </div>
                 </div>
             )}
-        </TicketPageWrapper>
+        </TicketDrawerContainer>
     );
 }
 

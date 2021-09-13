@@ -1,21 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Snackbar } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import { TicketBottomToolbar } from "../../../../../../../../components/ticketBottomToolbar";
+import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
+import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
 import { TicketFields } from "../../../../../../../../components/ticketFields";
-import { TicketPageWrapper } from "../../../../../../../../components/ticketPageWrapper";
+import { WrappedButton } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicket } from "../../../../../../../../models/ticket";
+import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 import { IStoreState } from "../../../../../../../../redux/storeState";
 import { setInitialTicketData } from "../../../../../../../../redux/ticket";
 import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
 
-export function TicketHome() {
+export interface ITicketHomeProps {
+    onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
+    onDeleteTicket: (columnId: string, itemId: string) => void;
+    ticketType: TicketType;
+}
+
+export function TicketHome(props: ITicketHomeProps) {
     const { boardId, companyId, ticketId } = useAppRouterParams();
 
     const [
@@ -97,11 +105,6 @@ export function TicketHome() {
         setTicketUpdateRequest,
     ] = useState<null | ITicketUpdateRequest>(null);
 
-    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-    function onCloseSnackbar() {
-        setShowSuccessSnackbar(false);
-    }
-
     useEffect(() => {
         if (!ticketUpdateRequest) return;
 
@@ -115,7 +118,7 @@ export function TicketHome() {
             )
             .then(() => {
                 if (didCancel) return;
-                setShowSuccessSnackbar(true);
+                props.onUpdateTicket(ticketUpdateRequest);
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -139,6 +142,47 @@ export function TicketHome() {
         }
     );
 
+    const [
+        showConfirmDeleteTicketDialog,
+        setShowConfirmDeleteTicketDialog,
+    ] = useState(false);
+    function onClickDeleteTicketButton() {
+        setShowConfirmDeleteTicketDialog(true);
+    }
+
+    const [isDeletingTicket, setIsDeletingTicket] = useState(false);
+    useEffect(() => {
+        if (!isDeletingTicket || !loadedTicket) return;
+
+        let didCancel = false;
+
+        Api.tickets
+            .deleteTicket(
+                companyId,
+                boardId,
+                loadedTicket.shortenedItemId,
+                props.ticketType
+            )
+            .then(() => {
+                if (didCancel) return;
+                props.onDeleteTicket(
+                    loadedTicket.columnId!,
+                    loadedTicket.itemId
+                );
+            })
+            .catch((error) => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsDeletingTicket(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isDeletingTicket]);
+
     function onClickUpdate() {
         const title = ticket.title.value;
         const summary = ticket.summary.value;
@@ -155,68 +199,108 @@ export function TicketHome() {
 
     const classes = createClasses();
     const ticketUpdateInProgress = !!ticketUpdateRequest;
+    const history = useHistory();
+
+    function closeDrawer() {
+        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+    }
 
     return (
-        <TicketPageWrapper>
+        <TicketDrawerContainer>
             {isLoadingTicketInformation || !ticketState ? (
-                <CenterLoadingSpinner size="large" />
+                <div css={classes.drawerContentContainerLoading}>
+                    <CenterLoadingSpinner size="large" />
+                </div>
             ) : (
-                <div css={classes.container}>
-                    <div css={classes.ticketContentContainer}>
-                        <div css={classes.ticketContentContainerInnerFields}>
-                            <TicketFields
-                                ticketTemplateId={
-                                    ticketState.ticketTemplate.shortenedItemId
-                                }
-                                ticketId={ticketId}
-                                isTicketPreview={false}
-                                disabled={ticketUpdateInProgress}
-                                removePadding
-                            />
-                        </div>
+                <div css={classes.drawerContentContainerLoaded}>
+                    <div css={classes.drawerInnerContentContainer}>
+                        <TicketFields
+                            ticketTemplateId={
+                                ticketState.ticketTemplate.shortenedItemId
+                            }
+                            ticketId={ticketId}
+                            isTicketPreview={false}
+                            disabled={
+                                ticketUpdateInProgress || isDeletingTicket
+                            }
+                            removePadding
+                        />
                     </div>
-                    <TicketBottomToolbar
-                        ticketTemplateId={
-                            ticketState.ticketTemplate.shortenedItemId
-                        }
-                        ticketId={ticketId}
-                        actionButtonText="Update Ticket"
-                        onClickActionButton={onClickUpdate}
-                        showActionButtonSpinner={ticketUpdateInProgress}
-                    />
+                    <div css={classes.drawerActionButtonContainer}>
+                        <WrappedButton
+                            variant="text"
+                            onClick={onClickDeleteTicketButton}
+                            color="secondary"
+                            disabled={
+                                ticketUpdateInProgress || isDeletingTicket
+                            }
+                            showSpinner={isDeletingTicket}
+                            children={"Delete"}
+                        />
+                        <WrappedButton
+                            variant="contained"
+                            onClick={onClickUpdate}
+                            color="primary"
+                            disabled={
+                                ticketUpdateInProgress || isDeletingTicket
+                            }
+                            showSpinner={ticketUpdateInProgress}
+                            children={"Update"}
+                        />
+                    </div>
                 </div>
             )}
-            <Snackbar
-                open={showSuccessSnackbar}
-                onClose={onCloseSnackbar}
-                message={"Ticket successfully updated."}
-            />
-        </TicketPageWrapper>
+            {showConfirmDeleteTicketDialog && (
+                <ConfirmDialog
+                    open={showConfirmDeleteTicketDialog}
+                    isPerformingAction={isDeletingTicket}
+                    onConfirm={() => setIsDeletingTicket(true)}
+                    onClose={() => setShowConfirmDeleteTicketDialog(false)}
+                    title="Delete Ticket Confirmation"
+                    content={`Are you sure want to delete ticket ${loadedTicket?.title}? This action cannot be undone.`}
+                    confirmButtonText="Yes"
+                />
+            )}
+        </TicketDrawerContainer>
     );
 }
 
 const createClasses = () => {
-    const container = css`
+    const drawerContentContainerLoaded = css`
         display: flex;
-        flex-grow: 1;
         flex-direction: column;
+        flex-grow: 1;
     `;
 
-    const ticketContentContainer = css`
-        flex-grow: 1;
+    const drawerContentContainerLoading = css`
+        height: 100%;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 32px;
     `;
 
-    const ticketContentContainerInnerFields = css`
-        width: 400px;
+    const drawerInnerContentContainer = css`
+        padding: 16px;
+        flex-grow: 1;
+        overflow-y: auto;
+        height: 0px;
+    `;
+
+    const drawerActionButtonContainer = css`
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        flex: 0 0 60px;
+        overflow: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
     `;
 
     return {
-        container,
-        ticketContentContainer,
-        ticketContentContainerInnerFields,
+        drawerInnerContentContainer,
+        drawerActionButtonContainer,
+        drawerContentContainerLoaded,
+        drawerContentContainerLoading,
     };
 };

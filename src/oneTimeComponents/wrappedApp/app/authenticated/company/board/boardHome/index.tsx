@@ -23,9 +23,10 @@ import { IUser } from "../../../../../../../models/user";
 import { createColumnsMapping } from "../../../../../../../utils/createColumnsMapping";
 import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
-import { Route, useRouteMatch, useHistory } from "react-router-dom";
-import { TicketDrawerHome } from "../../../../../../../components/ticketDrawerHome";
+import { Route, useRouteMatch, useHistory, Switch } from "react-router-dom";
 import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
+import { TicketHome } from "../ticket/ticketHome";
+import { TicketImages } from "../ticket/ticketImages";
 
 export function BoardHome() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -257,13 +258,18 @@ export function BoardHome() {
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.contentContainer}>
-                    <Route path={`${url}/:ticketId`}>
-                        <TicketDrawerHome
-                            onUpdateTicket={onUpdateTicket}
-                            onDeleteTicket={onDeleteTicket}
-                            ticketType={TicketType.InProgress}
-                        />
-                    </Route>
+                    <Switch>
+                        <Route path={`${url}/:ticketId/data`} exact>
+                            <TicketHome
+                                onUpdateTicket={onUpdateTicket}
+                                onDeleteTicket={onDeleteTicket}
+                                ticketType={TicketType.InProgress}
+                            />
+                        </Route>
+                        <Route path={`${url}/:ticketId/images`} exact>
+                            <TicketImages />
+                        </Route>
+                    </Switch>
                     <BoardColumnsContainer>
                         {columns.map((column) => {
                             const isDoneColumn =

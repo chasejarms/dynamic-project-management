@@ -7,7 +7,6 @@ import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
 import { CompletedTickets } from "./completedTickets";
 import { CreateTicket } from "./createTicket";
-import { Ticket } from "./ticket";
 
 export function Board() {
     const { url } = useRouteMatch();
@@ -26,9 +25,6 @@ export function Board() {
             </Route>
             <Route path={`${url}/completed-tickets`} exact>
                 <CompletedTickets />
-            </Route>
-            <Route path={`${url}/ticket/:ticketId`}>
-                <Ticket />
             </Route>
             <Route path={`${url}/admin`}>
                 <Admin />
