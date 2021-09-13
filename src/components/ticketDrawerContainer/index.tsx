@@ -20,9 +20,9 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
             return `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/data`;
         } else if (props.ticketType === TicketType.Backlog) {
             return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/data`;
+        } else {
+            return `/app/company/${companyId}/board/${boardId}/completed-tickets/${ticketId}/data`;
         }
-
-        return "";
     }
 
     function ticketImagesRoute() {
@@ -30,9 +30,9 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
             return `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/images`;
         } else if (props.ticketType === TicketType.Backlog) {
             return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/images`;
+        } else {
+            return `/app/company/${companyId}/board/${boardId}/completed-tickets/${ticketId}/images`;
         }
-
-        return "";
     }
 
     const tabs: {
@@ -66,7 +66,19 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
 
     function closeDrawer() {
         if (!props.disallowPageNavigation) {
-            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+            if (props.ticketType === TicketType.InProgress) {
+                history.push(
+                    `/app/company/${companyId}/board/${boardId}/tickets`
+                );
+            } else if (props.ticketType === TicketType.Backlog) {
+                history.push(
+                    `/app/company/${companyId}/board/${boardId}/backlog-tickets`
+                );
+            } else {
+                history.push(
+                    `/app/company/${companyId}/board/${boardId}/completed-tickets`
+                );
+            }
         }
     }
 

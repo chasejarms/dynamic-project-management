@@ -19,7 +19,8 @@ export function useAppRouterParams() {
         } else if (
             routeFragment === "ticket" ||
             routeFragment === "tickets" ||
-            routeFragment === "backlog-tickets"
+            routeFragment === "backlog-tickets" ||
+            routeFragment === "completed-tickets"
         ) {
             ticketId = nextRouteFragment || "";
         } else if (routeFragment === "ticket-templates") {

@@ -2,7 +2,6 @@
 import { jsx, css } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
-import { TicketPageWrapper } from "../../../../../../../../components/ticketPageWrapper";
 import { WrappedButton } from "../../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import Axios, { AxiosResponse } from "axios";

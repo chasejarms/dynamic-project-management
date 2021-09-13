@@ -343,6 +343,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             history.push(
                 `/app/company/${companyId}/board/${boardId}/backlog-tickets/${props.ticket.shortenedItemId}/data`
             );
+        } else {
+            history.push(
+                `/app/company/${companyId}/board/${boardId}/completed-tickets/${props.ticket.shortenedItemId}/data`
+            );
         }
     }
 

@@ -23,7 +23,7 @@ export function Board() {
             <Route path={`${url}/backlog-tickets`}>
                 <BacklogTickets />
             </Route>
-            <Route path={`${url}/completed-tickets`} exact>
+            <Route path={`${url}/completed-tickets`}>
                 <CompletedTickets />
             </Route>
             <Route path={`${url}/admin`}>
