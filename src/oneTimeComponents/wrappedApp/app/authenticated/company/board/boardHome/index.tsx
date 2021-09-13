@@ -154,6 +154,8 @@ export function BoardHome() {
                 },
             };
         });
+
+        closeDrawer();
     }
 
     function onMoveTicketToBacklogOrDone(columnId: string, itemId: string) {
@@ -256,7 +258,11 @@ export function BoardHome() {
             ) : (
                 <div css={classes.contentContainer}>
                     <Route path={`${url}/:ticketId`}>
-                        <TicketDrawerHome onUpdateTicket={onUpdateTicket} />
+                        <TicketDrawerHome
+                            onUpdateTicket={onUpdateTicket}
+                            onDeleteTicket={onDeleteTicket}
+                            ticketType={TicketType.InProgress}
+                        />
                     </Route>
                     <BoardColumnsContainer>
                         {columns.map((column) => {

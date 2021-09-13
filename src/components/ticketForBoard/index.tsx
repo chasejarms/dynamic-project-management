@@ -283,46 +283,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         };
     }, [ticketToUpdate]);
 
-    const [
-        showConfirmDeleteTicketDialog,
-        setShowConfirmDeleteTicketDialog,
-    ] = useState(false);
-    function onClickDeleteTicketMenuItem() {
-        setShowConfirmDeleteTicketDialog(true);
-    }
-    const [isDeletingTicket, setIsDeletingTicket] = useState(false);
-    useEffect(() => {
-        if (!isDeletingTicket) return;
-
-        let didCancel = false;
-
-        Api.tickets
-            .deleteTicket(
-                companyId,
-                boardId,
-                props.ticket.shortenedItemId,
-                props.ticketType
-            )
-            .then(() => {
-                if (didCancel) return;
-                props.onDeleteTicket(
-                    props.ticket.columnId!,
-                    props.ticket.itemId
-                );
-            })
-            .catch((error) => {
-                if (didCancel) return;
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsDeletingTicket(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, [isDeletingTicket]);
-
     const [isMovingTicketToBacklog, setIsMovingTicketToBacklog] = useState(
         false
     );
@@ -367,7 +327,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     const isPerformingAction =
         !!ticketToMarkAsDone ||
         !!ticketToUpdate ||
-        isDeletingTicket ||
         !!nonInProgressTicketWithUpdatedColumn ||
         isMovingTicketToBacklog ||
         isAssigningTicket;
@@ -400,12 +359,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                     onClick: isDemoMode
                         ? props.onClickDemoTicket
                         : navigateToTicketPage,
-                },
-                {
-                    text: "Delete Ticket",
-                    onClick: isDemoMode
-                        ? props.onClickDemoTicket
-                        : onClickDeleteTicketMenuItem,
                 },
             ],
         },
@@ -576,17 +529,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                     </div>
                 </CardContent>
             </Card>
-            {showConfirmDeleteTicketDialog && (
-                <ConfirmDialog
-                    open={showConfirmDeleteTicketDialog}
-                    isPerformingAction={isDeletingTicket}
-                    onConfirm={() => setIsDeletingTicket(true)}
-                    onClose={() => setShowConfirmDeleteTicketDialog(false)}
-                    title="Delete Ticket Confirmation"
-                    content={`Are you sure want to delete ticket ${props.ticket.title}? This action cannot be undone.`}
-                    confirmButtonText="Yes"
-                />
-            )}
         </div>
     );
 }

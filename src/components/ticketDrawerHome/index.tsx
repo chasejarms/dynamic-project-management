@@ -15,9 +15,13 @@ import { TicketFields } from "../ticketFields";
 import { WrappedButton } from "../wrappedButton";
 import { useHistory } from "react-router-dom";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
+import { TicketType } from "../../models/ticket/ticketType";
+import { ConfirmDialog } from "../confirmDialog";
 
 export interface ITicketDrawerHomeProps {
     onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
+    onDeleteTicket: (columnId: string, itemId: string) => void;
+    ticketType: TicketType;
 }
 
 export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
@@ -102,11 +106,6 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
         setTicketUpdateRequest,
     ] = useState<null | ITicketUpdateRequest>(null);
 
-    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-    function onCloseSnackbar() {
-        setShowSuccessSnackbar(false);
-    }
-
     useEffect(() => {
         if (!ticketUpdateRequest) return;
 
@@ -121,7 +120,6 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
             .then(() => {
                 if (didCancel) return;
                 props.onUpdateTicket(ticketUpdateRequest);
-                setShowSuccessSnackbar(true);
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -144,6 +142,47 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
             return !!ticketUpdateRequest;
         }
     );
+
+    const [
+        showConfirmDeleteTicketDialog,
+        setShowConfirmDeleteTicketDialog,
+    ] = useState(false);
+    function onClickDeleteTicketButton() {
+        setShowConfirmDeleteTicketDialog(true);
+    }
+
+    const [isDeletingTicket, setIsDeletingTicket] = useState(false);
+    useEffect(() => {
+        if (!isDeletingTicket || !loadedTicket) return;
+
+        let didCancel = false;
+
+        Api.tickets
+            .deleteTicket(
+                companyId,
+                boardId,
+                loadedTicket.shortenedItemId,
+                props.ticketType
+            )
+            .then(() => {
+                if (didCancel) return;
+                props.onDeleteTicket(
+                    loadedTicket.columnId!,
+                    loadedTicket.itemId
+                );
+            })
+            .catch((error) => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsDeletingTicket(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isDeletingTicket]);
 
     function onClickUpdate() {
         const title = ticket.title.value;
@@ -179,7 +218,11 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
                     <div css={classes.drawerContentContainerLoaded}>
                         <div css={classes.drawerHeaderContainer}>
                             <Typography variant="h6">Edit Ticket</Typography>
-                            <IconButton disabled={ticketUpdateInProgress}>
+                            <IconButton
+                                disabled={
+                                    ticketUpdateInProgress || isDeletingTicket
+                                }
+                            >
                                 <Clear onClick={closeDrawer} />
                             </IconButton>
                         </div>
@@ -190,24 +233,30 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
                                 }
                                 ticketId={ticketId}
                                 isTicketPreview={false}
-                                disabled={ticketUpdateInProgress}
+                                disabled={
+                                    ticketUpdateInProgress || isDeletingTicket
+                                }
                                 removePadding
                             />
                         </div>
                         <div css={classes.drawerActionButtonContainer}>
                             <WrappedButton
                                 variant="text"
-                                onClick={() => null}
+                                onClick={onClickDeleteTicketButton}
                                 color="secondary"
-                                disabled={ticketUpdateInProgress}
-                                showSpinner={false}
+                                disabled={
+                                    ticketUpdateInProgress || isDeletingTicket
+                                }
+                                showSpinner={isDeletingTicket}
                                 children={"Delete"}
                             />
                             <WrappedButton
                                 variant="contained"
                                 onClick={onClickUpdate}
                                 color="primary"
-                                disabled={ticketUpdateInProgress}
+                                disabled={
+                                    ticketUpdateInProgress || isDeletingTicket
+                                }
                                 showSpinner={ticketUpdateInProgress}
                                 children={"Update"}
                             />
@@ -215,6 +264,17 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
                     </div>
                 )}
             </div>
+            {showConfirmDeleteTicketDialog && (
+                <ConfirmDialog
+                    open={showConfirmDeleteTicketDialog}
+                    isPerformingAction={isDeletingTicket}
+                    onConfirm={() => setIsDeletingTicket(true)}
+                    onClose={() => setShowConfirmDeleteTicketDialog(false)}
+                    title="Delete Ticket Confirmation"
+                    content={`Are you sure want to delete ticket ${loadedTicket?.title}? This action cannot be undone.`}
+                    confirmButtonText="Yes"
+                />
+            )}
         </div>
     );
 }
