@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { IconButton, Theme, Typography, useTheme } from "@material-ui/core";
-import { Clear } from "@material-ui/icons";
-import { sortBy } from "lodash";
+import { Theme, useTheme } from "@material-ui/core";
+import { cloneDeep, sortBy } from "lodash";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../api";
 import { BoardColumnsContainer } from "../../../../../../../components/boardColumnsContainer";
@@ -29,7 +28,7 @@ import { TicketDrawerHome } from "../../../../../../../components/ticketDrawerHo
 import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
 
 export function BoardHome() {
-    const { companyId, boardId } = useAppRouterParams();
+    const { companyId, boardId, ticketId } = useAppRouterParams();
     const { url } = useRouteMatch();
 
     const [columns, setColumns] = useState<IColumn[]>([]);
@@ -216,7 +215,39 @@ export function BoardHome() {
 
     const theme = useTheme();
     const classes = createClasses(theme);
-    function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {}
+    function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
+        setSortedAndMappedTickets((previousSortedAndMappedTickets) => {
+            const clone = cloneDeep(previousSortedAndMappedTickets);
+            const updatedSortedAndMappedTickets = Object.keys(clone).reduce<{
+                [columnId: string]: {
+                    columnInformation: IColumn;
+                    tickets: IAugmentedUITicket[];
+                };
+            }>((mapping, columnId) => {
+                const existingData = clone[columnId];
+
+                const updatedMapping = {
+                    ...existingData,
+                    tickets: clone[columnId].tickets.map((ticket) => {
+                        if (ticket.shortenedItemId === ticketId) {
+                            // recalculate the priority score
+                            return {
+                                ...ticket,
+                                ...ticketUpdateRequest,
+                            };
+                        } else {
+                            return ticket;
+                        }
+                    }),
+                };
+
+                mapping[columnId] = updatedMapping;
+                return mapping;
+            }, {});
+
+            return updatedSortedAndMappedTickets;
+        });
+    }
 
     return (
         <BoardContainer>

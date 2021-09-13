@@ -45,9 +45,6 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
             .then(([{ ticket, ticketTemplate }]) => {
                 if (didCancel) return;
 
-                console.log("ticket: ", ticket);
-                console.log("ticket template: ", ticketTemplate);
-
                 setLoadedTicket(ticket);
 
                 const setWeightedTicketTemplateAction = setWeightedTicketTemplate(
@@ -242,11 +239,13 @@ const createClasses = () => {
         box-shadow: 0px 8px 10px -5px rgb(0 0 0 / 20%),
             0px 16px 24px 2px rgb(0 0 0 / 14%),
             0px 6px 30px 5px rgb(0 0 0 / 12%);
+        display: flex;
     `;
 
     const drawerContentContainerLoaded = css`
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
     `;
 
     const drawerContentContainerLoading = css`
