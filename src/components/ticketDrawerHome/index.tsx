@@ -268,6 +268,8 @@ const createClasses = () => {
     const drawerInnerContentContainer = css`
         padding: 16px;
         flex-grow: 1;
+        overflow-y: auto;
+        height: 0px;
     `;
 
     const drawerActionButtonContainer = css`

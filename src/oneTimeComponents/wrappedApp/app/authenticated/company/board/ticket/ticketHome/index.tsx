@@ -40,9 +40,6 @@ export function TicketHome() {
             .then(([{ ticket, ticketTemplate }]) => {
                 if (didCancel) return;
 
-                console.log("ticket: ", ticket);
-                console.log("ticket template: ", ticketTemplate);
-
                 setLoadedTicket(ticket);
 
                 const setWeightedTicketTemplateAction = setWeightedTicketTemplate(
