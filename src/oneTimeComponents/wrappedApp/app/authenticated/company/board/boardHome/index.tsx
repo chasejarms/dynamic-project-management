@@ -233,7 +233,7 @@ export function BoardHome() {
                     ...existingData,
                     tickets: clone[columnId].tickets.map((ticket) => {
                         if (ticket.shortenedItemId === ticketId) {
-                            // recalculate the priority score
+                            // TODO: recalculate priority score and reorganize tickets
                             return {
                                 ...ticket,
                                 ...ticketUpdateRequest,

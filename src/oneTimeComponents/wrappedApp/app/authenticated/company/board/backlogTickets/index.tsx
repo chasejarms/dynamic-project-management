@@ -18,9 +18,10 @@ import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
+import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
 
 export function BacklogTickets() {
-    const { boardId, companyId } = useAppRouterParams();
+    const { boardId, companyId, ticketId } = useAppRouterParams();
     const [isLoadingTickets, setIsLoadingTickets] = useState(true);
     const [sortedTickets, setSortedTickets] = useState<IAugmentedUITicket[]>(
         []
@@ -80,8 +81,20 @@ export function BacklogTickets() {
         });
     }
 
-    function onUpdateTicket() {
-        // do something here
+    function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
+        setSortedTickets((previousSortedTicket) => {
+            return previousSortedTicket.filter((ticket) => {
+                if (ticket.shortenedItemId === ticketId) {
+                    // TODO: recalculate priority score and reorganize tickets
+                    return {
+                        ...ticket,
+                        ...ticketUpdateRequest,
+                    };
+                } else {
+                    return ticket;
+                }
+            });
+        });
     }
 
     const classes = createClasses();
