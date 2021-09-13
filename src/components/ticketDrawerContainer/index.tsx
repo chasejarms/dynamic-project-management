@@ -21,7 +21,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
         } else if (props.ticketType === TicketType.Backlog) {
             return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/data`;
         } else {
-            return `/app/company/${companyId}/board/${boardId}/completed-tickets/${ticketId}/data`;
+            return `/app/company/${companyId}/board/${boardId}/archived-tickets/${ticketId}/data`;
         }
     }
 
@@ -31,7 +31,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
         } else if (props.ticketType === TicketType.Backlog) {
             return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/images`;
         } else {
-            return `/app/company/${companyId}/board/${boardId}/completed-tickets/${ticketId}/images`;
+            return `/app/company/${companyId}/board/${boardId}/archived-tickets/${ticketId}/images`;
         }
     }
 
@@ -76,7 +76,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
                 );
             } else {
                 history.push(
-                    `/app/company/${companyId}/board/${boardId}/completed-tickets`
+                    `/app/company/${companyId}/board/${boardId}/archived-tickets`
                 );
             }
         }

@@ -11,6 +11,7 @@ import { WrappedTextField } from "../wrappedTextField";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
 import { WrappedButton } from "../wrappedButton";
+import { doneColumnReservedId } from "../../constants/reservedColumnIds";
 
 export interface IEditableColumnCardProps {
     column: IColumn;
@@ -29,8 +30,9 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
         props.onDeleteColumn(props.index);
     }
 
+    const isDoneColumn = props.column.id === doneColumnReservedId;
     const columnNameControl = useControl({
-        value: props.column.name,
+        value: isDoneColumn ? "Archive" : props.column.name,
         onChange: (
             event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => {

@@ -346,7 +346,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             );
         } else {
             history.push(
-                `/app/company/${companyId}/board/${boardId}/completed-tickets/${props.ticket.shortenedItemId}/data`
+                `/app/company/${companyId}/board/${boardId}/archived-tickets/${props.ticket.shortenedItemId}/data`
             );
         }
     }
@@ -406,7 +406,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                             : moveTicketToNewColumn(column);
 
                         return {
-                            text: column.name,
+                            text: isDoneColumn ? "Archive" : column.name,
                             onClick: isDemoMode
                                 ? props.onClickDemoTicket
                                 : onClick,

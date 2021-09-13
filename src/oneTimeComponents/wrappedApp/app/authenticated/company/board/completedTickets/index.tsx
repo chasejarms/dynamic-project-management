@@ -93,7 +93,7 @@ export function CompletedTickets() {
     const history = useHistory();
     function closeDrawer() {
         history.push(
-            `/app/company/${companyId}/board/${boardId}/completed-tickets`
+            `/app/company/${companyId}/board/${boardId}/archived-tickets`
         );
     }
 
@@ -145,7 +145,7 @@ export function CompletedTickets() {
                     </Route>
                 </Switch>
                 <TicketContainer
-                    title="Completed Tickets"
+                    title="Archived Tickets"
                     showCenterSpinner={
                         isLoadingColumns || (isLoadingTickets && isFirstLoad)
                     }
