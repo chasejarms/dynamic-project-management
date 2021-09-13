@@ -13,6 +13,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
 import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
+import { useHistory } from "react-router-dom";
 
 export function CompletedTickets() {
     const { url } = useRouteMatch();
@@ -89,12 +90,20 @@ export function CompletedTickets() {
         };
     }, [isLoadingTickets, companyId, boardId, noMoreTicketsToLoad]);
 
+    const history = useHistory();
+    function closeDrawer() {
+        history.push(
+            `/app/company/${companyId}/board/${boardId}/completed-tickets`
+        );
+    }
+
     function onDeleteTicket(columnId: string, itemId: string) {
         setTickets((previousTickets) => {
             return previousTickets.filter((compareTicket) => {
                 return compareTicket.itemId !== itemId;
             });
         });
+        closeDrawer();
     }
 
     function onReachBottomOfList() {

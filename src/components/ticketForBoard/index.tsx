@@ -5,12 +5,12 @@ import { composeCSS } from "../../styles/composeCSS";
 import {
     CardContent,
     Card,
-    IconButton,
     Typography,
     Popover,
     makeStyles,
+    IconButton,
 } from "@material-ui/core";
-import { Visibility } from "@material-ui/icons";
+import { MoreHoriz } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { IColumn } from "../../models/column";
 import { Api } from "../../api";
@@ -70,6 +70,8 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false);
     function toggleMoreOptions(event: any) {
+        event.preventDefault();
+        event.stopPropagation();
         setAnchorEl(event.currentTarget);
         setMoreOptionsIsOpen((previous) => !previous);
     }
@@ -360,17 +362,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     const isDemoMode = !!props.onClickDemoTicket;
     const indentedActions: IIndentedAction[] = [
         {
-            header: "Quick Actions",
-            informationForMenuItems: [
-                {
-                    text: "View Ticket",
-                    onClick: isDemoMode
-                        ? props.onClickDemoTicket
-                        : navigateToTicketPage,
-                },
-            ],
-        },
-        {
             header: "Move To",
             informationForMenuItems:
                 columnsWithBacklogColumn
@@ -442,10 +433,13 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         },
     ].filter((action) => !!action) as IIndentedAction[];
 
-    function onClose() {
+    function onClose(event: any) {
+        event.preventDefault();
+        event.stopPropagation();
         setMoreOptionsIsOpen(false);
     }
 
+    const hidePointValue = props.ticketType === TicketType.Done;
     return (
         <div
             css={composeCSS(
@@ -472,14 +466,12 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                     classes.moreIconButtonContainer
                                 )}
                             >
-                                {/* <IconButton
+                                <IconButton
                                     size="small"
                                     onClick={toggleMoreOptions}
                                 >
-                                    <Visibility
-                                        onClick={navigateToTicketPage}
-                                    />
-                                </IconButton> */}
+                                    <MoreHoriz />
+                                </IconButton>
                             </div>
                             <Popover
                                 open={moreOptionsIsOpen}
@@ -492,14 +484,15 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 />
                             </Popover>
                         </div>
-                        {props.ticket.pointValueFromTags !== -20000000 && (
-                            <div css={classes.assignedToContainer}>
-                                <Typography variant="caption">
-                                    Priority Score:{" "}
-                                    {props.ticket.pointValueFromTags}
-                                </Typography>
-                            </div>
-                        )}
+                        {!hidePointValue &&
+                            props.ticket.pointValueFromTags !== -20000000 && (
+                                <div css={classes.assignedToContainer}>
+                                    <Typography variant="caption">
+                                        Priority Score:{" "}
+                                        {props.ticket.pointValueFromTags}
+                                    </Typography>
+                                </div>
+                            )}
                         {!!props.ticket.assignedTo && (
                             <div css={classes.assignedToContainer}>
                                 <Typography variant="caption">

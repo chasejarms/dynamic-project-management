@@ -19,6 +19,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
 import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
+import { useHistory } from "react-router-dom";
 
 export function BacklogTickets() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
@@ -80,12 +81,20 @@ export function BacklogTickets() {
         };
     }, [isLoadingTickets, companyId, boardId]);
 
+    const history = useHistory();
+    function closeDrawer() {
+        history.push(
+            `/app/company/${companyId}/board/${boardId}/backlog-tickets`
+        );
+    }
+
     function onDeleteTicket(columnId: string, itemId: string) {
         setSortedTickets((previousSortedTickets) => {
             return previousSortedTickets.filter((ticket) => {
                 return ticket.itemId !== itemId;
             });
         });
+        closeDrawer();
     }
 
     function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {

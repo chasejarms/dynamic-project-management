@@ -137,13 +137,6 @@ function NonMemoizedAuthenticatedPageTopBar(
                 });
             }
 
-            if (!!ticketId) {
-                breadcrumbs.push({
-                    text: "Ticket",
-                    route: `/app/company/${companyId}/board/${boardId}/ticket/${ticketId}/data`,
-                });
-            }
-
             if (!!ticketTemplateId) {
                 breadcrumbs.push({
                     text: "Ticket Templates",
