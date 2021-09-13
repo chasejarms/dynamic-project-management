@@ -27,6 +27,7 @@ import { Route, useRouteMatch, useHistory, Switch } from "react-router-dom";
 import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
+import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
 
 export function BoardHome() {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -38,6 +39,13 @@ export function BoardHome() {
             columnInformation: IColumn;
             tickets: IAugmentedUITicket[];
         };
+    }>({});
+
+    const [
+        cachedTicketTemplatesMapping,
+        setCachedTicketTemplatesMapping,
+    ] = useState<{
+        [ticketTemplateShortenedItemId: string]: ITicketTemplate;
     }>({});
 
     const [
@@ -77,6 +85,7 @@ export function BoardHome() {
                             ticketTemplate.shortenedItemId
                         ] = ticketTemplate;
                     });
+                    setCachedTicketTemplatesMapping(ticketTemplatesMapping);
 
                     const sortedUsers = sortBy(usersFromDatabase, "name");
                     setUsers(sortedUsers);
@@ -228,20 +237,28 @@ export function BoardHome() {
                 };
             }>((mapping, columnId) => {
                 const existingData = clone[columnId];
+                const updatedTickets = clone[columnId].tickets.map((ticket) => {
+                    if (ticket.shortenedItemId === ticketId) {
+                        const updatedTicket: IAugmentedUITicket = {
+                            ...ticket,
+                            ...ticketUpdateRequest,
+                        };
+
+                        const augmentedUITickets = ticketsToAugmentedUITickets(
+                            [updatedTicket],
+                            cachedTicketTemplatesMapping
+                        );
+
+                        return augmentedUITickets[0];
+                    } else {
+                        return ticket;
+                    }
+                });
+                const sortedUpdatedTickets = sortTickets(updatedTickets);
 
                 const updatedMapping = {
                     ...existingData,
-                    tickets: clone[columnId].tickets.map((ticket) => {
-                        if (ticket.shortenedItemId === ticketId) {
-                            // TODO: recalculate priority score and reorganize tickets
-                            return {
-                                ...ticket,
-                                ...ticketUpdateRequest,
-                            };
-                        } else {
-                            return ticket;
-                        }
-                    }),
+                    tickets: sortedUpdatedTickets,
                 };
 
                 mapping[columnId] = updatedMapping;

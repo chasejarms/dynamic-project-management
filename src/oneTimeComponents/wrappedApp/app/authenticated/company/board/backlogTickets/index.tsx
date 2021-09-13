@@ -28,6 +28,12 @@ export function BacklogTickets() {
     );
     const [columns, setColumns] = useState<IColumn[]>([]);
     const { url } = useRouteMatch();
+    const [
+        cachedTicketTemplatesMapping,
+        setCachedTicketTemplatesMapping,
+    ] = useState<{
+        [ticketTemplateShortenedItemId: string]: ITicketTemplate;
+    }>({});
     useEffect(() => {
         if (!isLoadingTickets || !companyId || !boardId) return;
 
@@ -49,6 +55,7 @@ export function BacklogTickets() {
                         ticketTemplate.shortenedItemId
                     ] = ticketTemplate;
                 });
+                setCachedTicketTemplatesMapping(ticketTemplatesMapping);
 
                 const augmentedUITickets = ticketsToAugmentedUITickets(
                     tickets,
@@ -83,17 +90,26 @@ export function BacklogTickets() {
 
     function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
         setSortedTickets((previousSortedTicket) => {
-            return previousSortedTicket.filter((ticket) => {
+            const updatedTickets = previousSortedTicket.map((ticket) => {
                 if (ticket.shortenedItemId === ticketId) {
-                    // TODO: recalculate priority score and reorganize tickets
-                    return {
+                    const updatedTicket: IAugmentedUITicket = {
                         ...ticket,
                         ...ticketUpdateRequest,
                     };
+
+                    const augmentedUITickets = ticketsToAugmentedUITickets(
+                        [updatedTicket],
+                        cachedTicketTemplatesMapping
+                    );
+
+                    return augmentedUITickets[0];
                 } else {
                     return ticket;
                 }
             });
+
+            const sortedUpdatedTickets = sortTickets(updatedTickets);
+            return sortedUpdatedTickets;
         });
     }
 

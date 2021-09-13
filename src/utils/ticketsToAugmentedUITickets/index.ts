@@ -12,7 +12,12 @@ export function ticketsToAugmentedUITickets(
     return tickets.map((ticket) => {
         const ticketTemplate =
             ticketTemplatesMapping[ticket.ticketTemplateShortenedItemId];
-        const pointValue = createTicketPriorityScore(ticketTemplate, ticket);
+        let pointValue = 0;
+        if (ticketTemplate.priorityWeightingCalculation.trim() === "") {
+            pointValue = -20000000;
+        } else {
+            pointValue = createTicketPriorityScore(ticketTemplate, ticket);
+        }
         const ticketForUI: IAugmentedUITicket = {
             ...ticket,
             pointValueFromTags: pointValue,

@@ -105,9 +105,8 @@ export function CompletedTickets() {
 
     function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
         setTickets((previousTickets) => {
-            return previousTickets.filter((compareTicket) => {
+            return previousTickets.map((compareTicket) => {
                 if (compareTicket.shortenedItemId === ticketId) {
-                    // TODO: recalculate priority score and reorganize tickets
                     return {
                         ...compareTicket,
                         ...ticketUpdateRequest,
