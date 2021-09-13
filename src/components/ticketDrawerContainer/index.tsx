@@ -7,7 +7,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 export interface TicketDrawerContainerProps {
     children: React.ReactNode;
-    disallowClosingDrawer?: boolean;
+    disallowPageNavigation?: boolean;
 }
 
 export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
@@ -43,7 +43,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
     const classes = createClasses();
 
     function closeDrawer() {
-        if (!props.disallowClosingDrawer) {
+        if (!props.disallowPageNavigation) {
             history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
         }
     }
@@ -57,6 +57,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
             <div css={classes.drawerContentContainer}>
                 <div css={classes.drawerAppBarContainer}>
                     <Tabs
+                        disabled={!!props.disallowPageNavigation}
                         value={matchingTabValue}
                         variant="scrollable"
                         scrollButtons="auto"
@@ -66,6 +67,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
                         {tabs.map(({ route, label }, index) => {
                             return (
                                 <Tab
+                                    disabled={!!props.disallowPageNavigation}
                                     label={label}
                                     onClick={navigateToRoute(route)}
                                     value={route}

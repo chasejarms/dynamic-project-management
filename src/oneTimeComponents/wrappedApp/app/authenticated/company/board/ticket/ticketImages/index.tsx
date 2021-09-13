@@ -194,7 +194,7 @@ export function TicketImages() {
     }
 
     return (
-        <TicketDrawerContainer>
+        <TicketDrawerContainer disallowPageNavigation={isUploadingFiles}>
             {isLoadingFiles ? (
                 <CenterLoadingSpinner size="large" />
             ) : filesForTicket.length === 0 ? (
