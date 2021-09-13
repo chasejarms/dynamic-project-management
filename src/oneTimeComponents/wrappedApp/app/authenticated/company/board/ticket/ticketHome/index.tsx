@@ -2,7 +2,6 @@
 import { jsx, css } from "@emotion/react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
@@ -199,14 +198,11 @@ export function TicketHome(props: ITicketHomeProps) {
 
     const classes = createClasses();
     const ticketUpdateInProgress = !!ticketUpdateRequest;
-    const history = useHistory();
-
-    function closeDrawer() {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
-    }
 
     return (
-        <TicketDrawerContainer>
+        <TicketDrawerContainer
+            disallowClosingDrawer={ticketUpdateInProgress || isDeletingTicket}
+        >
             {isLoadingTicketInformation || !ticketState ? (
                 <div css={classes.drawerContentContainerLoading}>
                     <CenterLoadingSpinner size="large" />

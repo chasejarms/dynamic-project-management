@@ -7,6 +7,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 export interface TicketDrawerContainerProps {
     children: React.ReactNode;
+    disallowClosingDrawer?: boolean;
 }
 
 export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
@@ -41,9 +42,18 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
 
     const classes = createClasses();
 
+    function closeDrawer() {
+        if (!props.disallowClosingDrawer) {
+            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+        }
+    }
+
     return (
         <div css={classes.drawerContainer}>
-            <div css={classes.drawerDarkOpacityContainer}></div>
+            <div
+                css={classes.drawerDarkOpacityContainer}
+                onClick={closeDrawer}
+            ></div>
             <div css={classes.drawerContentContainer}>
                 <div css={classes.drawerAppBarContainer}>
                     <Tabs
