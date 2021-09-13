@@ -13,8 +13,13 @@ import { TicketImageContainer } from "../../../../../../../../components/ticketI
 import { sortBy } from "lodash";
 import { NoDataWithActionButton } from "../../../../../../../../components/noDataWithActionButton";
 import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
+import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 
-export function TicketImages() {
+export interface ITicketImagesProps {
+    ticketType: TicketType;
+}
+
+export function TicketImages(props: ITicketImagesProps) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
     const [{ files, isUploadingFiles }, setSignedUrlData] = useState<{
@@ -194,7 +199,10 @@ export function TicketImages() {
     }
 
     return (
-        <TicketDrawerContainer disallowPageNavigation={isUploadingFiles}>
+        <TicketDrawerContainer
+            disallowPageNavigation={isUploadingFiles}
+            ticketType={props.ticketType}
+        >
             {isLoadingFiles ? (
                 <CenterLoadingSpinner size="large" />
             ) : filesForTicket.length === 0 ? (

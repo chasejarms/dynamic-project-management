@@ -29,7 +29,6 @@ import {
     IIndentedAction,
     QuickActionsPopoverContent,
 } from "../quickActionsPopoverContent";
-import { TagChip } from "../tagChip";
 import { IUser } from "../../models/user";
 
 export interface ITicketForBoardProps {
@@ -336,9 +335,15 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     }
 
     function navigateToTicketPage() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/tickets/${props.ticket.shortenedItemId}/data`
-        );
+        if (props.ticketType === TicketType.InProgress) {
+            history.push(
+                `/app/company/${companyId}/board/${boardId}/tickets/${props.ticket.shortenedItemId}/data`
+            );
+        } else if (props.ticketType === TicketType.Backlog) {
+            history.push(
+                `/app/company/${companyId}/board/${boardId}/backlog-tickets/${props.ticket.shortenedItemId}/data`
+            );
+        }
     }
 
     const columnsWithBacklogColumn: IColumn[] = [

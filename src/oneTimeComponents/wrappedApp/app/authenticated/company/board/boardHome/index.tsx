@@ -267,7 +267,7 @@ export function BoardHome() {
                             />
                         </Route>
                         <Route path={`${url}/:ticketId/images`} exact>
-                            <TicketImages />
+                            <TicketImages ticketType={TicketType.InProgress} />
                         </Route>
                     </Switch>
                     <BoardColumnsContainer>

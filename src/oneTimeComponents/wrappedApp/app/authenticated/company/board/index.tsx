@@ -20,7 +20,7 @@ export function Board() {
             <Route path={`${url}/create-ticket`} exact>
                 <CreateTicket />
             </Route>
-            <Route path={`${url}/backlog-tickets`} exact>
+            <Route path={`${url}/backlog-tickets`}>
                 <BacklogTickets />
             </Route>
             <Route path={`${url}/completed-tickets`} exact>

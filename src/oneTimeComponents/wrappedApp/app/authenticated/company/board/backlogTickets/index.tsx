@@ -15,6 +15,9 @@ import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { TicketHome } from "../ticket/ticketHome";
+import { TicketImages } from "../ticket/ticketImages";
 
 export function BacklogTickets() {
     const { boardId, companyId } = useAppRouterParams();
@@ -23,6 +26,7 @@ export function BacklogTickets() {
         []
     );
     const [columns, setColumns] = useState<IColumn[]>([]);
+    const { url } = useRouteMatch();
     useEffect(() => {
         if (!isLoadingTickets || !companyId || !boardId) return;
 
@@ -76,11 +80,27 @@ export function BacklogTickets() {
         });
     }
 
+    function onUpdateTicket() {
+        // do something here
+    }
+
     const classes = createClasses();
 
     return (
         <BoardContainer>
             <div css={classes.pageContainer}>
+                <Switch>
+                    <Route path={`${url}/:ticketId/data`} exact>
+                        <TicketHome
+                            onUpdateTicket={onUpdateTicket}
+                            onDeleteTicket={onDeleteTicket}
+                            ticketType={TicketType.Backlog}
+                        />
+                    </Route>
+                    <Route path={`${url}/:ticketId/images`} exact>
+                        <TicketImages ticketType={TicketType.Backlog} />
+                    </Route>
+                </Switch>
                 <TicketContainer
                     title="Backlog Tickets"
                     showCenterSpinner={isLoadingTickets}
@@ -132,6 +152,7 @@ const createClasses = () => {
         justify-content: center;
         align-items: center;
         width: 100%;
+        position: relative;
     `;
 
     const noTicketsContainer = css`

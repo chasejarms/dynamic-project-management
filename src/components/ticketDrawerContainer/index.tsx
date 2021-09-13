@@ -4,14 +4,36 @@ import React from "react";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { Tabs, Tab } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
+import { TicketType } from "../../models/ticket/ticketType";
 
 export interface TicketDrawerContainerProps {
     children: React.ReactNode;
     disallowPageNavigation?: boolean;
+    ticketType: TicketType;
 }
 
 export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
+
+    function ticketDataRoute() {
+        if (props.ticketType === TicketType.InProgress) {
+            return `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/data`;
+        } else if (props.ticketType === TicketType.Backlog) {
+            return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/data`;
+        }
+
+        return "";
+    }
+
+    function ticketImagesRoute() {
+        if (props.ticketType === TicketType.InProgress) {
+            return `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/images`;
+        } else if (props.ticketType === TicketType.Backlog) {
+            return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/images`;
+        }
+
+        return "";
+    }
 
     const tabs: {
         label: string;
@@ -19,11 +41,11 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
     }[] = [
         {
             label: "Data",
-            route: `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/data`,
+            route: ticketDataRoute(),
         },
         {
             label: "Images",
-            route: `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/images`,
+            route: ticketImagesRoute(),
         },
     ];
 

@@ -202,6 +202,7 @@ export function TicketHome(props: ITicketHomeProps) {
     return (
         <TicketDrawerContainer
             disallowPageNavigation={ticketUpdateInProgress || isDeletingTicket}
+            ticketType={props.ticketType}
         >
             {isLoadingTicketInformation || !ticketState ? (
                 <div css={classes.drawerContentContainerLoading}>
