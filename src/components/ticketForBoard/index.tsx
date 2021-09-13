@@ -378,7 +378,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 
     function navigateToTicketPage() {
         history.push(
-            `/app/company/${companyId}/board/${boardId}/ticket/${props.ticket.shortenedItemId}/data`
+            `/app/company/${companyId}/board/${boardId}/tickets/${props.ticket.shortenedItemId}/data`
         );
     }
 

@@ -1,21 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Snackbar } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
+import { Clear } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Api } from "../../../../../../../../api";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
-import { TicketBottomToolbar } from "../../../../../../../../components/ticketBottomToolbar";
-import { TicketFields } from "../../../../../../../../components/ticketFields";
-import { TicketPageWrapper } from "../../../../../../../../components/ticketPageWrapper";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
-import { ITicket } from "../../../../../../../../models/ticket";
-import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
-import { IStoreState } from "../../../../../../../../redux/storeState";
-import { setInitialTicketData } from "../../../../../../../../redux/ticket";
-import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
+import { Api } from "../../api";
+import { useAppRouterParams } from "../../hooks/useAppRouterParams";
+import { ITicket } from "../../models/ticket";
+import { ITicketUpdateRequest } from "../../models/ticketUpdateRequest";
+import { IStoreState } from "../../redux/storeState";
+import { setInitialTicketData } from "../../redux/ticket";
+import { setWeightedTicketTemplate } from "../../redux/ticketTemplates";
+import { TicketFields } from "../ticketFields";
+import { WrappedButton } from "../wrappedButton";
+import { useHistory } from "react-router-dom";
+import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 
-export function TicketHome() {
+export function TicketDrawerHome() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
 
     const [
@@ -158,15 +159,29 @@ export function TicketHome() {
 
     const classes = createClasses();
     const ticketUpdateInProgress = !!ticketUpdateRequest;
+    const history = useHistory();
+
+    function closeDrawer() {
+        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+    }
 
     return (
-        <TicketPageWrapper>
-            {isLoadingTicketInformation || !ticketState ? (
-                <CenterLoadingSpinner size="large" />
-            ) : (
-                <div css={classes.container}>
-                    <div css={classes.ticketContentContainer}>
-                        <div css={classes.ticketContentContainerInnerFields}>
+        <div css={classes.drawerContainer}>
+            <div css={classes.drawerDarkOpacityContainer}></div>
+            <div css={classes.drawerContentContainer}>
+                {isLoadingTicketInformation || !ticketState ? (
+                    <div css={classes.drawerContentContainerLoading}>
+                        <CenterLoadingSpinner size="large" />
+                    </div>
+                ) : (
+                    <div css={classes.drawerContentContainerLoaded}>
+                        <div css={classes.drawerHeaderContainer}>
+                            <Typography variant="h6">Edit Ticket</Typography>
+                            <IconButton>
+                                <Clear onClick={closeDrawer} />
+                            </IconButton>
+                        </div>
+                        <div css={classes.drawerInnerContentContainer}>
                             <TicketFields
                                 ticketTemplateId={
                                     ticketState.ticketTemplate.shortenedItemId
@@ -177,49 +192,98 @@ export function TicketHome() {
                                 removePadding
                             />
                         </div>
+                        <div css={classes.drawerActionButtonContainer}>
+                            <WrappedButton
+                                variant="text"
+                                onClick={() => null}
+                                color="secondary"
+                                disabled={false}
+                                showSpinner={false}
+                                children={"Delete"}
+                            />
+                            <WrappedButton
+                                variant="contained"
+                                onClick={() => null}
+                                color="primary"
+                                disabled={false}
+                                showSpinner={false}
+                                children={"Update"}
+                            />
+                        </div>
                     </div>
-                    <TicketBottomToolbar
-                        ticketTemplateId={
-                            ticketState.ticketTemplate.shortenedItemId
-                        }
-                        ticketId={ticketId}
-                        actionButtonText="Update Ticket"
-                        onClickActionButton={onClickUpdate}
-                        showActionButtonSpinner={ticketUpdateInProgress}
-                    />
-                </div>
-            )}
-            <Snackbar
-                open={showSuccessSnackbar}
-                onClose={onCloseSnackbar}
-                message={"Ticket successfully updated."}
-            />
-        </TicketPageWrapper>
+                )}
+            </div>
+        </div>
     );
 }
 
 const createClasses = () => {
-    const container = css`
+    const drawerContainer = css`
+        position: absolute;
+        right: 0;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: auto 400px;
+        height: 100%;
+        width: 100%;
+    `;
+
+    const drawerDarkOpacityContainer = css`
+        background-color: rgba(0, 0, 0, 0.5);
+    `;
+
+    const drawerContentContainer = css`
+        background-color: white;
+        box-shadow: 0px 8px 10px -5px rgb(0 0 0 / 20%),
+            0px 16px 24px 2px rgb(0 0 0 / 14%),
+            0px 6px 30px 5px rgb(0 0 0 / 12%);
+    `;
+
+    const drawerContentContainerLoaded = css`
         display: flex;
-        flex-grow: 1;
         flex-direction: column;
     `;
 
-    const ticketContentContainer = css`
-        flex-grow: 1;
+    const drawerContentContainerLoading = css`
+        height: 100%;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 32px;
     `;
 
-    const ticketContentContainerInnerFields = css`
-        width: 400px;
+    const drawerHeaderContainer = css`
+        flex: 0 0 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 8px 0 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    `;
+
+    const drawerInnerContentContainer = css`
+        padding: 16px;
+        flex-grow: 1;
+    `;
+
+    const drawerActionButtonContainer = css`
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        flex: 0 0 60px;
+        overflow: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
     `;
 
     return {
-        container,
-        ticketContentContainer,
-        ticketContentContainerInnerFields,
+        drawerContainer,
+        drawerDarkOpacityContainer,
+        drawerContentContainer,
+        drawerHeaderContainer,
+        drawerInnerContentContainer,
+        drawerActionButtonContainer,
+        drawerContentContainerLoaded,
+        drawerContentContainerLoading,
     };
 };

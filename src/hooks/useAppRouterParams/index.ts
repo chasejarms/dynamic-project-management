@@ -16,8 +16,8 @@ export function useAppRouterParams() {
             companyId = nextRouteFragment;
         } else if (routeFragment === "board") {
             boardId = nextRouteFragment;
-        } else if (routeFragment === "ticket") {
-            ticketId = nextRouteFragment;
+        } else if (routeFragment === "ticket" || routeFragment === "tickets") {
+            ticketId = nextRouteFragment || "";
         } else if (routeFragment === "ticket-templates") {
             ticketTemplateId = nextRouteFragment;
         }

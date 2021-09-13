@@ -15,7 +15,7 @@ export function Board() {
 
     return isCheckingForBoardAccess ? null : (
         <Switch>
-            <Route path={`${url}/tickets`} exact>
+            <Route path={`${url}/tickets`}>
                 <BoardHome />
             </Route>
             <Route path={`${url}/create-ticket`} exact>
