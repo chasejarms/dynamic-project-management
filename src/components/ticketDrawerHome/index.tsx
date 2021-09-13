@@ -222,8 +222,9 @@ export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
                                 disabled={
                                     ticketUpdateInProgress || isDeletingTicket
                                 }
+                                onClick={closeDrawer}
                             >
-                                <Clear onClick={closeDrawer} />
+                                <Clear />
                             </IconButton>
                         </div>
                         <div css={classes.drawerInnerContentContainer}>
