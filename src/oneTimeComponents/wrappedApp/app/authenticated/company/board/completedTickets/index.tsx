@@ -12,11 +12,12 @@ import { ITicket } from "../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
+import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
 
 export function CompletedTickets() {
     const { url } = useRouteMatch();
 
-    const { boardId, companyId } = useAppRouterParams();
+    const { boardId, companyId, ticketId } = useAppRouterParams();
     const [isLoadingTickets, setIsLoadingTickets] = useState(true);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
@@ -102,8 +103,20 @@ export function CompletedTickets() {
         setIsLoadingTickets(true);
     }
 
-    function onUpdateTicket() {
-        //
+    function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
+        setTickets((previousTickets) => {
+            return previousTickets.filter((compareTicket) => {
+                if (compareTicket.shortenedItemId === ticketId) {
+                    // TODO: recalculate priority score and reorganize tickets
+                    return {
+                        ...compareTicket,
+                        ...ticketUpdateRequest,
+                    };
+                } else {
+                    return compareTicket;
+                }
+            });
+        });
     }
 
     const classes = createClasses();
