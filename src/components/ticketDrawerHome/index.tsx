@@ -16,7 +16,11 @@ import { WrappedButton } from "../wrappedButton";
 import { useHistory } from "react-router-dom";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
 
-export function TicketDrawerHome() {
+export interface ITicketDrawerHomeProps {
+    onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
+}
+
+export function TicketDrawerHome(props: ITicketDrawerHomeProps) {
     const { boardId, companyId, ticketId } = useAppRouterParams();
 
     const [
@@ -119,6 +123,7 @@ export function TicketDrawerHome() {
             )
             .then(() => {
                 if (didCancel) return;
+                props.onUpdateTicket(ticketUpdateRequest);
                 setShowSuccessSnackbar(true);
             })
             .catch((error) => {
@@ -177,7 +182,7 @@ export function TicketDrawerHome() {
                     <div css={classes.drawerContentContainerLoaded}>
                         <div css={classes.drawerHeaderContainer}>
                             <Typography variant="h6">Edit Ticket</Typography>
-                            <IconButton>
+                            <IconButton disabled={ticketUpdateInProgress}>
                                 <Clear onClick={closeDrawer} />
                             </IconButton>
                         </div>
@@ -197,16 +202,16 @@ export function TicketDrawerHome() {
                                 variant="text"
                                 onClick={() => null}
                                 color="secondary"
-                                disabled={false}
+                                disabled={ticketUpdateInProgress}
                                 showSpinner={false}
                                 children={"Delete"}
                             />
                             <WrappedButton
                                 variant="contained"
-                                onClick={() => null}
+                                onClick={onClickUpdate}
                                 color="primary"
-                                disabled={false}
-                                showSpinner={false}
+                                disabled={ticketUpdateInProgress}
+                                showSpinner={ticketUpdateInProgress}
                                 children={"Update"}
                             />
                         </div>

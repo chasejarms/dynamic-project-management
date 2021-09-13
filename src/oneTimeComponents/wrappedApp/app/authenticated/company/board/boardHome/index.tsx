@@ -26,6 +26,7 @@ import { sortTickets } from "../../../../../../../utils/sortTickets";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { Route, useRouteMatch, useHistory } from "react-router-dom";
 import { TicketDrawerHome } from "../../../../../../../components/ticketDrawerHome";
+import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
 
 export function BoardHome() {
     const { companyId, boardId } = useAppRouterParams();
@@ -215,6 +216,7 @@ export function BoardHome() {
 
     const theme = useTheme();
     const classes = createClasses(theme);
+    function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {}
 
     return (
         <BoardContainer>
@@ -223,7 +225,7 @@ export function BoardHome() {
             ) : (
                 <div css={classes.contentContainer}>
                     <Route path={`${url}/:ticketId`}>
-                        <TicketDrawerHome />
+                        <TicketDrawerHome onUpdateTicket={onUpdateTicket} />
                     </Route>
                     <BoardColumnsContainer>
                         {columns.map((column) => {
