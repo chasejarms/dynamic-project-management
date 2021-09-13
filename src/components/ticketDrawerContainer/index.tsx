@@ -40,7 +40,7 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
         route: string;
     }[] = [
         {
-            label: "Data",
+            label: "Fields",
             route: ticketDataRoute(),
         },
         {

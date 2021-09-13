@@ -137,15 +137,11 @@ export function BacklogTickets() {
                     {sortedTickets.length > 0 ? (
                         sortedTickets.map((ticket, index) => {
                             const isFirstTicket = index === 0;
-                            const augmentedTicket = {
-                                ...ticket,
-                                pointValueFromTags: 0,
-                            };
                             return (
                                 <TicketForBoard
                                     key={ticket.itemId}
                                     isFirstTicket={isFirstTicket}
-                                    ticket={augmentedTicket}
+                                    ticket={ticket}
                                     onDeleteTicket={onDeleteTicket}
                                     ticketType={TicketType.Backlog}
                                     columnOptions={columns}
