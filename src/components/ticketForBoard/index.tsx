@@ -10,12 +10,11 @@ import {
     Popover,
     makeStyles,
 } from "@material-ui/core";
-import { MoreHoriz } from "@material-ui/icons";
+import { Visibility } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { IColumn } from "../../models/column";
 import { Api } from "../../api";
 import { CenterLoadingSpinner } from "../centerLoadingSpinner";
-import { ConfirmDialog } from "../confirmDialog";
 import { TicketType } from "../../models/ticket/ticketType";
 import {
     backlogColumnReservedId,
@@ -451,8 +450,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         <div
             css={composeCSS(
                 props.isFirstTicket && classes.firstCard,
-                classes.bottomCardPadding
+                classes.bottomCardPadding,
+                classes.container
             )}
+            onClick={navigateToTicketPage}
         >
             <Card elevation={3}>
                 <CardContent className={materialClasses.cardContentRoot}>
@@ -471,12 +472,14 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                     classes.moreIconButtonContainer
                                 )}
                             >
-                                <IconButton
+                                {/* <IconButton
                                     size="small"
                                     onClick={toggleMoreOptions}
                                 >
-                                    <MoreHoriz />
-                                </IconButton>
+                                    <Visibility
+                                        onClick={navigateToTicketPage}
+                                    />
+                                </IconButton> */}
                             </div>
                             <Popover
                                 open={moreOptionsIsOpen}
@@ -543,6 +546,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 }
 
 const createClasses = () => {
+    const container = css`
+        cursor: pointer;
+    `;
+
     const firstCard = css`
         padding-top: 16px;
     `;
@@ -617,5 +624,6 @@ const createClasses = () => {
         spinnerOverlay,
         completedDateContainer,
         assignedToContainer,
+        container,
     };
 };
