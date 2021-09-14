@@ -20,7 +20,7 @@ export function useAppRouterParams() {
             routeFragment === "ticket" ||
             routeFragment === "tickets" ||
             routeFragment === "backlog-tickets" ||
-            routeFragment === "completed-tickets"
+            routeFragment === "archived-tickets"
         ) {
             ticketId = nextRouteFragment || "";
         } else if (routeFragment === "ticket-templates") {

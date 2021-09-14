@@ -5,10 +5,9 @@ import { TicketContainer } from "../../../../../../../components/ticketContainer
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
-import { url } from "inspector";
 import { useNonCompletedBoardLogic } from "../../../../../../../hooks/useNonCompletedBoardLogic";
 import { backlogColumnReservedId } from "../../../../../../../constants/reservedColumnIds";
 
@@ -24,6 +23,7 @@ export function BacklogTickets() {
     const backlogTickets =
         sortedAndMappedTickets[backlogColumnReservedId].tickets;
 
+    const { url } = useRouteMatch();
     const classes = createClasses();
 
     return (

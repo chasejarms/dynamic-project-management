@@ -24,6 +24,9 @@ export interface ITicketHomeProps {
 
 export function TicketHome(props: ITicketHomeProps) {
     const { boardId, companyId, ticketId } = useAppRouterParams();
+    console.log("boardId: ", boardId);
+    console.log("ticketId: ", ticketId);
+    console.log("companyId: ", companyId);
 
     const [
         isLoadingTicketInformation,
@@ -41,10 +44,9 @@ export function TicketHome(props: ITicketHomeProps) {
 
         let didCancel = false;
 
-        Promise.all([
-            Api.tickets.getTicketInformationById(companyId, boardId, ticketId),
-        ])
-            .then(([{ ticket, ticketTemplate }]) => {
+        Api.tickets
+            .getTicketInformationById(companyId, boardId, ticketId)
+            .then(({ ticket, ticketTemplate }) => {
                 if (didCancel) return;
 
                 setLoadedTicket(ticket);
