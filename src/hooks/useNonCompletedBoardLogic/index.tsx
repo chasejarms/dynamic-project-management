@@ -3,7 +3,10 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../api";
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
-import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
+import {
+    backlogColumnReservedId,
+    uncategorizedColumnReservedId,
+} from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
 import { ITicket } from "../../models/ticket";
 import { TicketType } from "../../models/ticket/ticketType";
@@ -63,7 +66,7 @@ export function useNonCompletedBoardLogic(
             .then(
                 ([
                     columnsFromDatabase,
-                    inProgressTickets,
+                    tickets,
                     usersFromDatabase,
                     ticketTemplates,
                 ]) => {
@@ -86,8 +89,9 @@ export function useNonCompletedBoardLogic(
 
                     const columnsMapping = createColumnsMapping(
                         columnsFromDatabase,
-                        inProgressTickets,
-                        ticketTemplatesMapping
+                        tickets,
+                        ticketTemplatesMapping,
+                        ticketType === TicketType.Backlog
                     );
 
                     setSortedAndMappedTickets(columnsMapping);

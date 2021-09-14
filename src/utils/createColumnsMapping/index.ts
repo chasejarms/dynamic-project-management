@@ -1,5 +1,8 @@
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
-import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
+import {
+    backlogColumnReservedId,
+    uncategorizedColumnReservedId,
+} from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
 import { ITicket } from "../../models/ticket";
 import { ITicketTemplate } from "../../models/ticketTemplate";
@@ -11,19 +14,30 @@ export function createColumnsMapping(
     tickets: ITicket[],
     ticketTemplatesMapping: {
         [ticketTemplateShortenedItemId: string]: ITicketTemplate;
-    }
+    },
+    pushAllTicketsToBacklog?: boolean
 ) {
-    const columnsMapping = columns.reduce<{
+    const columnsMapping: {
         [columnId: string]: {
             columnInformation: IColumn;
             tickets: IAugmentedUITicket[];
         };
-    }>((mapping, column) => {
-        mapping[column.id] = {
+    } = {
+        [backlogColumnReservedId]: {
+            columnInformation: {
+                name: "Backlog",
+                id: backlogColumnReservedId,
+                canBeModified: false,
+            },
+            tickets: [],
+        },
+    };
+
+    columns.forEach((column) => {
+        columnsMapping[column.id] = {
             columnInformation: column,
             tickets: [],
         };
-        return mapping;
     }, {});
 
     const augmentedUITickets = ticketsToAugmentedUITickets(
@@ -31,8 +45,14 @@ export function createColumnsMapping(
         ticketTemplatesMapping
     );
     augmentedUITickets.forEach((ticketForUI) => {
+        if (!!pushAllTicketsToBacklog) {
+            columnsMapping[backlogColumnReservedId].tickets.push(ticketForUI);
+            return;
+        }
+
         const columnId = ticketForUI.columnId;
-        if (columnId && !!columnsMapping[columnId]) {
+        const columnExists = !!columnsMapping[columnId];
+        if (columnExists) {
             columnsMapping[columnId].tickets.push(ticketForUI);
         } else {
             columnsMapping[uncategorizedColumnReservedId].tickets.push(

@@ -19,9 +19,10 @@ export function BacklogTickets() {
         columns,
         sortedAndMappedTickets,
         onRemoveTicketFromCurrentUI,
-    } = useNonCompletedBoardLogic(TicketType.InProgress);
+    } = useNonCompletedBoardLogic(TicketType.Backlog);
+
     const backlogTickets =
-        sortedAndMappedTickets[backlogColumnReservedId].tickets;
+        sortedAndMappedTickets[backlogColumnReservedId]?.tickets || [];
 
     const { url } = useRouteMatch();
     const classes = createClasses();
