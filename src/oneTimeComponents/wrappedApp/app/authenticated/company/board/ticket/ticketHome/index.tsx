@@ -24,9 +24,6 @@ export interface ITicketHomeProps {
 
 export function TicketHome(props: ITicketHomeProps) {
     const { boardId, companyId, ticketId } = useAppRouterParams();
-    console.log("boardId: ", boardId);
-    console.log("ticketId: ", ticketId);
-    console.log("companyId: ", companyId);
 
     const [
         isLoadingTicketInformation,
