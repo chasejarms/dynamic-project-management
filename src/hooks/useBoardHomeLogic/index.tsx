@@ -5,6 +5,8 @@ import { Api } from "../../api";
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
 import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
+import { ITicket } from "../../models/ticket";
+import { TicketType } from "../../models/ticket/ticketType";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { ITicketUpdateRequest } from "../../models/ticketUpdateRequest";
 import { IUser } from "../../models/user";
@@ -13,7 +15,9 @@ import { sortTickets } from "../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../utils/ticketsToAugmentedUITickets";
 import { useAppRouterParams } from "../useAppRouterParams";
 
-export function useBoardHomeLogic() {
+export function useBoardHomeLogic(
+    ticketType: TicketType.Backlog | TicketType.InProgress
+) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
     const [columns, setColumns] = useState<IColumn[]>([]);
@@ -31,21 +35,28 @@ export function useBoardHomeLogic() {
         [ticketTemplateShortenedItemId: string]: ITicketTemplate;
     }>({});
 
-    const [
-        isLoadingRequiredInformation,
-        setIsLoadingRequiredInformation,
-    ] = useState(true);
+    const [isLoadingData, setIsLoadingData] = useState(true);
 
-    const [users, setUsers] = useState<IUser[]>([]);
+    const [allCompanyUsers, setAllCompanyUsers] = useState<IUser[]>([]);
+
+    function createGetTicketsPromise(): Promise<ITicket[]> {
+        if (ticketType === TicketType.InProgress) {
+            return Api.tickets.getInProgressTickets(companyId, boardId);
+        } else {
+            return Api.tickets.getBacklogTickets(companyId, boardId);
+        }
+    }
 
     useEffect(() => {
         if (!companyId || !boardId) return;
 
         let didCancel = false;
 
+        const getTicketsPromise = createGetTicketsPromise();
+
         Promise.all([
             Api.columns.getColumns(companyId, boardId),
-            Api.tickets.getInProgressTickets(companyId, boardId),
+            getTicketsPromise,
             Api.users.getAllUsersForCompany(companyId),
             Api.ticketTemplates.getTicketTemplatesForBoard(companyId, boardId),
         ])
@@ -71,7 +82,7 @@ export function useBoardHomeLogic() {
                     setCachedTicketTemplatesMapping(ticketTemplatesMapping);
 
                     const sortedUsers = sortBy(usersFromDatabase, "name");
-                    setUsers(sortedUsers);
+                    setAllCompanyUsers(sortedUsers);
 
                     const columnsMapping = createColumnsMapping(
                         columnsFromDatabase,
@@ -85,10 +96,11 @@ export function useBoardHomeLogic() {
             )
             .catch((error) => {
                 if (didCancel) return;
+                // TODO: Need to show some sort of error if the tickets failed to load
             })
             .finally(() => {
                 if (didCancel) return;
-                setIsLoadingRequiredInformation(false);
+                setIsLoadingData(false);
             });
 
         return () => {
@@ -96,7 +108,7 @@ export function useBoardHomeLogic() {
         };
     }, [companyId, boardId]);
 
-    function onUpdateTicketColumn(
+    function onUpdateInProgressTicketColumn(
         previousColumnId: string,
         updatedTicket: IAugmentedUITicket
     ) {
@@ -151,7 +163,7 @@ export function useBoardHomeLogic() {
         closeDrawer();
     }
 
-    function onMoveTicketToBacklogOrDone(columnId: string, itemId: string) {
+    function onRemoveTicketFromCurrentUI(columnId: string, itemId: string) {
         setSortedAndMappedTickets((previousSortedAndMappedTickets) => {
             const columnIdExists = !!previousSortedAndMappedTickets[columnId];
             const trueColumnId = columnIdExists
@@ -251,14 +263,14 @@ export function useBoardHomeLogic() {
     }
 
     return {
-        isLoadingRequiredInformation,
+        isLoadingData,
         onUpdateTicket,
         onDeleteTicket,
         columns,
         sortedAndMappedTickets,
-        onUpdateTicketColumn,
-        onMoveTicketToBacklogOrDone,
+        onUpdateInProgressTicketColumn,
+        onRemoveTicketFromCurrentUI,
         onChangeAssignTo,
-        users,
+        allCompanyUsers,
     };
 }

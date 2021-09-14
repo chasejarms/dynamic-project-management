@@ -18,21 +18,21 @@ import { useBoardHomeLogic } from "../../../../../../../hooks/useBoardHomeLogic"
 export function BoardHome() {
     const classes = createClasses();
     const {
-        isLoadingRequiredInformation,
+        isLoadingData,
         onUpdateTicket,
         onDeleteTicket,
         columns,
         sortedAndMappedTickets,
-        onUpdateTicketColumn,
-        onMoveTicketToBacklogOrDone,
+        onUpdateInProgressTicketColumn,
+        onRemoveTicketFromCurrentUI,
         onChangeAssignTo,
-        users,
-    } = useBoardHomeLogic();
+        allCompanyUsers,
+    } = useBoardHomeLogic(TicketType.InProgress);
     const { url } = useRouteMatch();
 
     return (
         <BoardContainer>
-            {isLoadingRequiredInformation ? (
+            {isLoadingData ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.contentContainer}>
@@ -80,22 +80,22 @@ export function BoardHome() {
                                                 isFirstTicket={isFirstCard}
                                                 columnOptions={columns}
                                                 onUpdateTicketColumn={
-                                                    onUpdateTicketColumn
+                                                    onUpdateInProgressTicketColumn
                                                 }
                                                 onMarkTicketAsDone={
-                                                    onMoveTicketToBacklogOrDone
+                                                    onRemoveTicketFromCurrentUI
                                                 }
                                                 onDeleteTicket={onDeleteTicket}
                                                 ticketType={
                                                     TicketType.InProgress
                                                 }
                                                 onMoveTicketToBacklog={
-                                                    onMoveTicketToBacklogOrDone
+                                                    onRemoveTicketFromCurrentUI
                                                 }
                                                 onChangeAssignTo={
                                                     onChangeAssignTo
                                                 }
-                                                usersForBoard={users}
+                                                usersForBoard={allCompanyUsers}
                                             />
                                         );
                                     })}
