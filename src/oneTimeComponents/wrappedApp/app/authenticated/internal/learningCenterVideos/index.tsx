@@ -152,7 +152,7 @@ export function LearningCenterVideos() {
     );
 }
 
-export function createClasses() {
+function createClasses() {
     const container = css`
         width: 100%;
         display: grid;
