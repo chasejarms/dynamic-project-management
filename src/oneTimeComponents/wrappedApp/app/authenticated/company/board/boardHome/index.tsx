@@ -13,7 +13,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
-import { useBoardHomeLogic } from "../../../../../../../hooks/useBoardHomeLogic";
+import { useNonCompletedBoardLogic } from "../../../../../../../hooks/useNonCompletedBoardLogic";
 
 export function BoardHome() {
     const classes = createClasses();
@@ -27,7 +27,7 @@ export function BoardHome() {
         onRemoveTicketFromCurrentUI,
         onChangeAssignTo,
         allCompanyUsers,
-    } = useBoardHomeLogic(TicketType.InProgress);
+    } = useNonCompletedBoardLogic(TicketType.InProgress);
     const { url } = useRouteMatch();
 
     return (

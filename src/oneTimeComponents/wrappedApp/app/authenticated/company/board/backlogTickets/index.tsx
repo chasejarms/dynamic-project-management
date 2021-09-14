@@ -1,126 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
-import { Api } from "../../../../../../../api";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
-import {
-    IAugmentedUITicket,
-    TicketForBoard,
-} from "../../../../../../../components/ticketForBoard";
-import { IColumn } from "../../../../../../../models/column";
+import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { sortTickets } from "../../../../../../../utils/sortTickets";
-import { ticketsToAugmentedUITickets } from "../../../../../../../utils/ticketsToAugmentedUITickets";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { TicketHome } from "../ticket/ticketHome";
 import { TicketImages } from "../ticket/ticketImages";
-import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
-import { useHistory } from "react-router-dom";
+import { url } from "inspector";
+import { useNonCompletedBoardLogic } from "../../../../../../../hooks/useNonCompletedBoardLogic";
+import { backlogColumnReservedId } from "../../../../../../../constants/reservedColumnIds";
 
 export function BacklogTickets() {
-    const { boardId, companyId, ticketId } = useAppRouterParams();
-    const [isLoadingTickets, setIsLoadingTickets] = useState(true);
-    const [sortedTickets, setSortedTickets] = useState<IAugmentedUITicket[]>(
-        []
-    );
-    const [columns, setColumns] = useState<IColumn[]>([]);
-    const { url } = useRouteMatch();
-    const [
-        cachedTicketTemplatesMapping,
-        setCachedTicketTemplatesMapping,
-    ] = useState<{
-        [ticketTemplateShortenedItemId: string]: ITicketTemplate;
-    }>({});
-    useEffect(() => {
-        if (!isLoadingTickets || !companyId || !boardId) return;
-
-        let didCancel = false;
-
-        Promise.all([
-            Api.tickets.getBacklogTickets(companyId, boardId),
-            Api.columns.getColumns(companyId, boardId),
-            Api.ticketTemplates.getTicketTemplatesForBoard(companyId, boardId),
-        ])
-            .then(([tickets, columnsFromDatabase, ticketTemplates]) => {
-                if (didCancel) return;
-
-                const ticketTemplatesMapping: {
-                    [ticketTemplateShortenedItemId: string]: ITicketTemplate;
-                } = {};
-                ticketTemplates.forEach((ticketTemplate) => {
-                    ticketTemplatesMapping[
-                        ticketTemplate.shortenedItemId
-                    ] = ticketTemplate;
-                });
-                setCachedTicketTemplatesMapping(ticketTemplatesMapping);
-
-                const augmentedUITickets = ticketsToAugmentedUITickets(
-                    tickets,
-                    ticketTemplatesMapping
-                );
-                const sortedTicketsAfterRequest = sortTickets(
-                    augmentedUITickets
-                );
-                setSortedTickets(sortedTicketsAfterRequest);
-                setColumns(columnsFromDatabase);
-            })
-            .catch((error) => {
-                if (didCancel) return;
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsLoadingTickets(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, [isLoadingTickets, companyId, boardId]);
-
-    const history = useHistory();
-    function closeDrawer() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/backlog-tickets`
-        );
-    }
-
-    function onDeleteTicket(columnId: string, itemId: string) {
-        setSortedTickets((previousSortedTickets) => {
-            return previousSortedTickets.filter((ticket) => {
-                return ticket.itemId !== itemId;
-            });
-        });
-        closeDrawer();
-    }
-
-    function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
-        setSortedTickets((previousSortedTicket) => {
-            const updatedTickets = previousSortedTicket.map((ticket) => {
-                if (ticket.shortenedItemId === ticketId) {
-                    const updatedTicket: IAugmentedUITicket = {
-                        ...ticket,
-                        ...ticketUpdateRequest,
-                    };
-
-                    const augmentedUITickets = ticketsToAugmentedUITickets(
-                        [updatedTicket],
-                        cachedTicketTemplatesMapping
-                    );
-
-                    return augmentedUITickets[0];
-                } else {
-                    return ticket;
-                }
-            });
-
-            const sortedUpdatedTickets = sortTickets(updatedTickets);
-            return sortedUpdatedTickets;
-        });
-    }
+    const {
+        isLoadingData,
+        onUpdateTicket,
+        onDeleteTicket,
+        columns,
+        sortedAndMappedTickets,
+        onRemoveTicketFromCurrentUI,
+    } = useNonCompletedBoardLogic(TicketType.InProgress);
+    const backlogTickets =
+        sortedAndMappedTickets[backlogColumnReservedId].tickets;
 
     const classes = createClasses();
 
@@ -141,10 +43,10 @@ export function BacklogTickets() {
                 </Switch>
                 <TicketContainer
                     title="Backlog Tickets"
-                    showCenterSpinner={isLoadingTickets}
+                    showCenterSpinner={isLoadingData}
                 >
-                    {sortedTickets.length > 0 ? (
-                        sortedTickets.map((ticket, index) => {
+                    {backlogTickets.length > 0 ? (
+                        backlogTickets.map((ticket, index) => {
                             const isFirstTicket = index === 0;
                             return (
                                 <TicketForBoard
@@ -154,9 +56,9 @@ export function BacklogTickets() {
                                     onDeleteTicket={onDeleteTicket}
                                     ticketType={TicketType.Backlog}
                                     columnOptions={columns}
-                                    onMarkTicketAsDone={() => {
-                                        onDeleteTicket("", ticket.itemId);
-                                    }}
+                                    onMarkTicketAsDone={
+                                        onRemoveTicketFromCurrentUI
+                                    }
                                     onUpdateTicketColumn={() => {
                                         onDeleteTicket("", ticket.itemId);
                                     }}

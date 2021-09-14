@@ -15,7 +15,7 @@ import { sortTickets } from "../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../utils/ticketsToAugmentedUITickets";
 import { useAppRouterParams } from "../useAppRouterParams";
 
-export function useBoardHomeLogic(
+export function useNonCompletedBoardLogic(
     ticketType: TicketType.Backlog | TicketType.InProgress
 ) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
@@ -217,7 +217,13 @@ export function useBoardHomeLogic(
 
     const history = useHistory();
     function closeDrawer() {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+        if (ticketType === TicketType.InProgress) {
+            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+        } else {
+            history.push(
+                `/app/company/${companyId}/board/${boardId}/backlog-tickets`
+            );
+        }
     }
 
     function onUpdateTicket(ticketUpdateRequest: ITicketUpdateRequest) {
