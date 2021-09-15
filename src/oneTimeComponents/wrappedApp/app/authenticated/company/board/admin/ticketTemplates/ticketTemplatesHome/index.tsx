@@ -8,7 +8,7 @@ import { BoardAdminContainer } from "../../../../../../../../../components/board
 import { CenterLoadingSpinner } from "../../../../../../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../../../../../../../components/confirmDialog";
 import { NoDataWithActionButton } from "../../../../../../../../../components/noDataWithActionButton";
-import { TicketTemplateForBoard } from "../../../../../../../../../components/ticketTemplateForBoard";
+import { TicketTemplateForBoard } from "../components/ticketTemplateForBoard";
 import {
     IWrappedButtonProps,
     WrappedButton,

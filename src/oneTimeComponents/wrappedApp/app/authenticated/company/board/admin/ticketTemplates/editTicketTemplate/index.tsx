@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { Snackbar } from "@material-ui/core";
 import { BoardAdminContainer } from "../../../../../../../../../components/boardAdminContainer";
 import { CenterLoadingSpinner } from "../../../../../../../../../components/centerLoadingSpinner";
-import { TicketTemplate } from "../../../../../../../../../components/ticketTemplate";
+import { TicketTemplate } from "../components/ticketTemplate";
 import { useEditTicketTemplateEndpoints } from "../../../../../../../../../hooks/useEditTicketTemplateEndpoints";
 
 export function EditTicketTemplate() {
