@@ -6,7 +6,6 @@ import { Admin } from "./admin";
 import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
 import { ArchivedTickets } from "./archivedTickets";
-import { CreateTicket } from "./createTicket";
 
 export function Board() {
     const { url } = useRouteMatch();
@@ -16,9 +15,6 @@ export function Board() {
         <Switch>
             <Route path={`${url}/tickets`}>
                 <BoardHome />
-            </Route>
-            <Route path={`${url}/create-ticket`} exact>
-                <CreateTicket />
             </Route>
             <Route path={`${url}/backlog-tickets`}>
                 <BacklogTickets />

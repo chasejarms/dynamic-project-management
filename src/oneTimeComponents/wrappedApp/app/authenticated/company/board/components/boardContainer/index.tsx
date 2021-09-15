@@ -61,10 +61,6 @@ export function BoardContainer(props: IBoardContainer) {
             route: `/app/company/${companyId}/board/${boardId}/tickets`,
         },
         {
-            text: "Create Ticket",
-            route: `/app/company/${companyId}/board/${boardId}/create-ticket`,
-        },
-        {
             text: "Backlog Tickets",
             route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
         },
