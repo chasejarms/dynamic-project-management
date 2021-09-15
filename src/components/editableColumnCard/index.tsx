@@ -7,10 +7,10 @@ import { composeCSS } from "../../styles/composeCSS";
 import { useControl } from "../../hooks/useControl";
 import { ChangeEvent, useEffect } from "react";
 import { StringValidator } from "../../classes/StringValidator";
-import { WrappedTextField } from "../wrappedTextField";
-import { useDebounce } from "../../hooks/useDebounce";
+import { WrappedTextField } from "../../oneTimeComponents/components/wrappedTextField";
+import { useDebounce } from "../../oneTimeComponents/hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
-import { WrappedButton } from "../wrappedButton";
+import { WrappedButton } from "../../oneTimeComponents/components/wrappedButton";
 import { doneColumnReservedId } from "../../constants/reservedColumnIds";
 
 export interface IEditableColumnCardProps {

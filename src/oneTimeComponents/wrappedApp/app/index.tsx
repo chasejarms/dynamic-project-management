@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { SignIn } from "./signIn";
 import { useAxiosInterceptor } from "../../../hooks/useAxiosInterceptor";
 import { Authenticated } from "./authenticated";
-import { useRouterDebug } from "../../../hooks/useRouterDebug";
+import { useRouterDebug } from "./hooks/useRouterDebug";
 import { Home } from "./home";
 import { RequestDemo } from "./requestDemo";
 import { SignUp } from "./signUp";

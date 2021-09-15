@@ -7,7 +7,7 @@ import {
     ITicketTemplateNumberSectionControlState,
 } from "../../../redux/ticketTemplates";
 import { TagChip } from "../../tagChip";
-import { WrappedTextField } from "../../wrappedTextField";
+import { WrappedTextField } from "../../../oneTimeComponents/components/wrappedTextField";
 
 export interface IPriorityWeightingFunctionProps {
     ticketId: string;

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { IStoreState } from "../../redux/storeState";
 import { BottomPageToolbar } from "../bottomPageToolbar";
 import { TicketPriorityScore } from "../ticketPriorityScore";
-import { IWrappedButtonProps } from "../wrappedButton";
+import { IWrappedButtonProps } from "../../oneTimeComponents/components/wrappedButton";
 
 export interface ITicketBottomToolbarProps {
     onClickActionButton: () => void;

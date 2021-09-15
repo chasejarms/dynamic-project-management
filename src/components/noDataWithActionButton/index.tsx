@@ -1,7 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { makeStyles, Typography } from "@material-ui/core";
-import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../oneTimeComponents/components/wrappedButton";
 
 export interface INoDataWithActionButtonProps {
     text: string;

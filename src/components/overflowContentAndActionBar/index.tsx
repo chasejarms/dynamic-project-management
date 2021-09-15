@@ -1,7 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Paper } from "@material-ui/core";
-import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../oneTimeComponents/components/wrappedButton";
 import React from "react";
 
 export interface IOverflowContentAndActionBarProps {

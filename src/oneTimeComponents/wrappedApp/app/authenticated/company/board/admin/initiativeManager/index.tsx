@@ -21,7 +21,7 @@ import { CenterLoadingSpinner } from "../../../../../../../../components/centerL
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
 import { ITag } from "../../../../../../../../models/tag";
-import { WrappedButton } from "../../../../../../../../components/wrappedButton";
+import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { NewTagDialog } from "../../../../../../../../components/newTagDialog";
 import { sortBy } from "lodash";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";

@@ -2,7 +2,10 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 import { Paper } from "@material-ui/core";
-import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../oneTimeComponents/components/wrappedButton";
 
 export interface IBottomPageToolbarProps {
     wrappedButtonProps: IWrappedButtonProps[];

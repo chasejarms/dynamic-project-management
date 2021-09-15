@@ -9,7 +9,7 @@ import {
     updateSectionValue,
 } from "../../redux/ticket";
 import { composeCSS } from "../../styles/composeCSS";
-import { WrappedTextField } from "../wrappedTextField";
+import { WrappedTextField } from "../../oneTimeComponents/components/wrappedTextField";
 
 export interface ITicketProps {
     ticketTemplateId: string;

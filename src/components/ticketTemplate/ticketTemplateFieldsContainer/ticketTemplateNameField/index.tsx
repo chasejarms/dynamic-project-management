@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../redux/storeState";
 import { updateWeightedTicketTemplateCreationName } from "../../../../redux/ticketTemplates";
-import { WrappedTextField } from "../../../wrappedTextField";
+import { WrappedTextField } from "../../../../oneTimeComponents/components/wrappedTextField";
 
 export interface ITicketTemplateNameFieldProps {
     disabled: boolean;

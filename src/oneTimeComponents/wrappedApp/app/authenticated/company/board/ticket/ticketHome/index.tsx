@@ -7,7 +7,7 @@ import { CenterLoadingSpinner } from "../../../../../../../../components/centerL
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
 import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
 import { TicketFields } from "../../../../../../../../components/ticketFields";
-import { WrappedButton } from "../../../../../../../../components/wrappedButton";
+import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";

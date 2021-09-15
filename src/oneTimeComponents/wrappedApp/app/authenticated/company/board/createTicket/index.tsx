@@ -13,7 +13,7 @@ import { CenterLoadingSpinner } from "../../../../../../../components/centerLoad
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../../../components/wrappedButton";
+} from "../../../../../../components/wrappedButton";
 import { IColumn } from "../../../../../../../models/column";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";

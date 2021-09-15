@@ -4,7 +4,10 @@ import { Theme, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { composeCSS } from "../../styles/composeCSS";
-import { IWrappedButtonProps, WrappedButton } from "../wrappedButton";
+import {
+    IWrappedButtonProps,
+    WrappedButton,
+} from "../../oneTimeComponents/components/wrappedButton";
 
 export interface ILandingPageCommonSectionProps {
     title: string;

@@ -17,8 +17,8 @@ import { tagColors } from "../../models/tagColor";
 import { composeCSS } from "../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
-import { WrappedButton } from "../wrappedButton";
-import { WrappedTextField } from "../wrappedTextField";
+import { WrappedButton } from "../../oneTimeComponents/components/wrappedButton";
+import { WrappedTextField } from "../../oneTimeComponents/components/wrappedTextField";
 
 export interface INewTagDialogProps {
     open: boolean;
