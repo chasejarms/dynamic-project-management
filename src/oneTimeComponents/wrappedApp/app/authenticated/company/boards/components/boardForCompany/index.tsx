@@ -14,13 +14,13 @@ import {
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import React, { useState } from "react";
-import { IBoard } from "../../models/board";
+import { IBoard } from "../../../../../../../../models/board";
 import { useHistory } from "react-router-dom";
-import { useAppRouterParams } from "../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../quickActionsPopoverContent";
+} from "../../../../../../../../components/quickActionsPopoverContent";
 
 export interface IBoardForCompanyProps {
     board: IBoard;

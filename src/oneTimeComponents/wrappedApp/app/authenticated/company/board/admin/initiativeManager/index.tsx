@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
-import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
+import { BoardAdminContainer } from "../components/boardAdminContainer";
 import { ITag } from "../../../../../../../../models/tag";
 import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { NewTagDialog } from "../../../../../../../../components/newTagDialog";

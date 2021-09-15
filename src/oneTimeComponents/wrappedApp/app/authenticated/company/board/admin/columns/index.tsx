@@ -24,7 +24,7 @@ import { IColumn } from "../../../../../../../../models/column";
 import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
 import { EditableColumnCard } from "../../../../../../../../components/editableColumnCard";
 import { BottomPageToolbar } from "../../../../../../../../components/bottomPageToolbar";
-import { BoardAdminContainer } from "../../../../../../../../components/boardAdminContainer";
+import { BoardAdminContainer } from "../components/boardAdminContainer";
 
 export function Columns() {
     const classes = createClasses();

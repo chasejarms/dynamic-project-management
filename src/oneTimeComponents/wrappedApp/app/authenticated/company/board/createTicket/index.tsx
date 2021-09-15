@@ -26,8 +26,8 @@ import {
     resetTicketCreation,
     updateStartingColumn,
 } from "../../../../../../../redux/ticketCreation";
-import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { TicketFields } from "../../../../../../../components/ticketFields";
+import { BoardContainer } from "../components/boardContainer";
+import { TicketFields } from "../components/ticketFields";
 import { ticketPreviewId } from "../../../../../../../redux/ticket";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { TicketBottomToolbar } from "../../../../../../../components/ticketBottomToolbar";
