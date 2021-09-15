@@ -5,9 +5,9 @@ import { TicketContainer } from "../../../../../../../components/ticketContainer
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { useNonArchivedBoardLogic } from "../../../../../../../hooks/useNonArchivedBoardLogic";
+import { useNonArchivedBoardLogic } from "../hooks/useNonArchivedBoardLogic";
 import { backlogColumnReservedId } from "../../../../../../../constants/reservedColumnIds";
-import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
+import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 
 export function BacklogTickets() {
     const {

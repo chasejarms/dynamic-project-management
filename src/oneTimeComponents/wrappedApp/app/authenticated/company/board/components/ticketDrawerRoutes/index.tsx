@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
-import { TicketType } from "../../models/ticket/ticketType";
-import { ITicketUpdateRequest } from "../../models/ticketUpdateRequest";
-import { TicketHome } from "../../oneTimeComponents/wrappedApp/app/authenticated/company/board/ticket/ticketHome";
-import { TicketImages } from "../../oneTimeComponents/wrappedApp/app/authenticated/company/board/ticket/ticketImages";
+import { TicketType } from "../../../../../../../../models/ticket/ticketType";
+import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
+import { TicketHome } from "../../ticket/ticketHome";
+import { TicketImages } from "../../ticket/ticketImages";
 
 export interface ITicketDrawerRoutesProps {
     onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;

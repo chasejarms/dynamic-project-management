@@ -10,8 +10,8 @@ import {
     uncategorizedColumnReservedId,
 } from "../../../../../../../constants/reservedColumnIds";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { useNonArchivedBoardLogic } from "../../../../../../../hooks/useNonArchivedBoardLogic";
-import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
+import { useNonArchivedBoardLogic } from "../hooks/useNonArchivedBoardLogic";
+import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 
 export function BoardHome() {
     const classes = createClasses();

@@ -1,19 +1,19 @@
 import { sortBy, cloneDeep } from "lodash";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Api } from "../../api";
-import { IAugmentedUITicket } from "../../components/ticketForBoard";
-import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
-import { IColumn } from "../../models/column";
-import { ITicket } from "../../models/ticket";
-import { TicketType } from "../../models/ticket/ticketType";
-import { ITicketTemplate } from "../../models/ticketTemplate";
-import { ITicketUpdateRequest } from "../../models/ticketUpdateRequest";
-import { IUser } from "../../models/user";
-import { createColumnsMapping } from "../../utils/createColumnsMapping";
-import { sortTickets } from "../../utils/sortTickets";
-import { ticketsToAugmentedUITickets } from "../../utils/ticketsToAugmentedUITickets";
-import { useAppRouterParams } from "../useAppRouterParams";
+import { Api } from "../../../../../../../../api";
+import { IAugmentedUITicket } from "../../../../../../../../components/ticketForBoard";
+import { uncategorizedColumnReservedId } from "../../../../../../../../constants/reservedColumnIds";
+import { IColumn } from "../../../../../../../../models/column";
+import { ITicket } from "../../../../../../../../models/ticket";
+import { TicketType } from "../../../../../../../../models/ticket/ticketType";
+import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
+import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
+import { IUser } from "../../../../../../../../models/user";
+import { createColumnsMapping } from "../../../../../../../../utils/createColumnsMapping";
+import { sortTickets } from "../../../../../../../../utils/sortTickets";
+import { ticketsToAugmentedUITickets } from "../../../../../../../../utils/ticketsToAugmentedUITickets";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 
 export function useNonArchivedBoardLogic(
     ticketType: TicketType.Backlog | TicketType.InProgress

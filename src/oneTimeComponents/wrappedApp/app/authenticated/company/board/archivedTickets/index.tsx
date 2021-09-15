@@ -4,7 +4,7 @@ import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
+import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 import { useArchivedTickets } from "./hooks/useArchivedTickets";
 
 export function ArchivedTickets() {
