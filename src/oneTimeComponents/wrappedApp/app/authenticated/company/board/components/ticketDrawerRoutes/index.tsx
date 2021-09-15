@@ -21,11 +21,11 @@ export function TicketDrawerRoutes(props: ITicketDrawerRoutesProps) {
                 <TicketHome
                     onUpdateTicket={props.onUpdateTicket}
                     onDeleteTicket={props.onDeleteTicket}
-                    ticketType={TicketType.Backlog}
+                    ticketType={props.ticketType}
                 />
             </Route>
             <Route path={`${url}/:ticketId/images`} exact>
-                <TicketImages ticketType={TicketType.Backlog} />
+                <TicketImages ticketType={props.ticketType} />
             </Route>
         </Switch>
     );
