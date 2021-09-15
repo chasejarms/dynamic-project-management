@@ -3,10 +3,7 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../api";
 import { IAugmentedUITicket } from "../../components/ticketForBoard";
-import {
-    backlogColumnReservedId,
-    uncategorizedColumnReservedId,
-} from "../../constants/reservedColumnIds";
+import { uncategorizedColumnReservedId } from "../../constants/reservedColumnIds";
 import { IColumn } from "../../models/column";
 import { ITicket } from "../../models/ticket";
 import { TicketType } from "../../models/ticket/ticketType";
@@ -18,7 +15,7 @@ import { sortTickets } from "../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../utils/ticketsToAugmentedUITickets";
 import { useAppRouterParams } from "../useAppRouterParams";
 
-export function useNonCompletedBoardLogic(
+export function useNonArchivedBoardLogic(
     ticketType: TicketType.Backlog | TicketType.InProgress
 ) {
     const { companyId, boardId, ticketId } = useAppRouterParams();

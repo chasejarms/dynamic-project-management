@@ -10,7 +10,7 @@ import {
     uncategorizedColumnReservedId,
 } from "../../../../../../../constants/reservedColumnIds";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { useNonCompletedBoardLogic } from "../../../../../../../hooks/useNonCompletedBoardLogic";
+import { useNonArchivedBoardLogic } from "../../../../../../../hooks/useNonArchivedBoardLogic";
 import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
 
 export function BoardHome() {
@@ -25,7 +25,7 @@ export function BoardHome() {
         onRemoveTicketFromCurrentUI,
         onChangeAssignTo,
         allCompanyUsers,
-    } = useNonCompletedBoardLogic(TicketType.InProgress);
+    } = useNonArchivedBoardLogic(TicketType.InProgress);
 
     return (
         <BoardContainer>

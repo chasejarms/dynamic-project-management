@@ -6,7 +6,7 @@ import { IColumn } from "../../../../../../../../models/column";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 
-export function useCompletedTickets() {
+export function useArchivedTickets() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
     const [isLoadingTickets, setIsLoadingTickets] = useState(true);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -48,7 +48,7 @@ export function useCompletedTickets() {
         let didCancel = false;
 
         Api.tickets
-            .getDoneTicketPaginated(
+            .getArchivedTicketsPaginated(
                 companyId,
                 boardId,
                 lastEvaluatedItemId,

@@ -5,9 +5,9 @@ import { TicketContainer } from "../../../../../../../components/ticketContainer
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
-import { useCompletedTickets } from "./hooks/useCompletedTickets";
+import { useArchivedTickets } from "./hooks/useArchivedTickets";
 
-export function CompletedTickets() {
+export function ArchivedTickets() {
     const {
         onUpdateTicket,
         onDeleteTicket,
@@ -18,7 +18,7 @@ export function CompletedTickets() {
         onReachBottomOfList,
         tickets,
         columns,
-    } = useCompletedTickets();
+    } = useArchivedTickets();
 
     const classes = createClasses();
 

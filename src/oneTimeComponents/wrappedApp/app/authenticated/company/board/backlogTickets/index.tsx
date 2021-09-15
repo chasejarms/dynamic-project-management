@@ -5,7 +5,7 @@ import { TicketContainer } from "../../../../../../../components/ticketContainer
 import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
-import { useNonCompletedBoardLogic } from "../../../../../../../hooks/useNonCompletedBoardLogic";
+import { useNonArchivedBoardLogic } from "../../../../../../../hooks/useNonArchivedBoardLogic";
 import { backlogColumnReservedId } from "../../../../../../../constants/reservedColumnIds";
 import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
 
@@ -17,7 +17,7 @@ export function BacklogTickets() {
         columns,
         sortedAndMappedTickets,
         onRemoveTicketFromCurrentUI,
-    } = useNonCompletedBoardLogic(TicketType.Backlog);
+    } = useNonArchivedBoardLogic(TicketType.Backlog);
 
     const backlogTickets =
         sortedAndMappedTickets[backlogColumnReservedId]?.tickets || [];

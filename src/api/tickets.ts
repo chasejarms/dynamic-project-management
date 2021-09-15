@@ -43,7 +43,7 @@ export interface ITicketsApi {
         ticketType: TicketType
     ): Promise<void>;
 
-    getDoneTicketPaginated(
+    getArchivedTicketsPaginated(
         companyId: string,
         boardId: string,
         lastEvaluatedKey?: string
@@ -220,7 +220,7 @@ export class TicketsApi implements ITicketsApi {
         );
     }
 
-    public async getDoneTicketPaginated(
+    public async getArchivedTicketsPaginated(
         companyId: string,
         boardId: string,
         lastEvaluatedItemId?: string,

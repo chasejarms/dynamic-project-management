@@ -5,7 +5,7 @@ import { useIsCheckingForBoardAccess } from "../../../../../../hooks/useIsChecki
 import { Admin } from "./admin";
 import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
-import { CompletedTickets } from "./completedTickets";
+import { ArchivedTickets } from "./archivedTickets";
 import { CreateTicket } from "./createTicket";
 
 export function Board() {
@@ -24,7 +24,7 @@ export function Board() {
                 <BacklogTickets />
             </Route>
             <Route path={`${url}/archived-tickets`}>
-                <CompletedTickets />
+                <ArchivedTickets />
             </Route>
             <Route path={`${url}/admin`}>
                 <Admin />
