@@ -10,10 +10,8 @@ import {
     uncategorizedColumnReservedId,
 } from "../../../../../../../constants/reservedColumnIds";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import { TicketHome } from "../ticket/ticketHome";
-import { TicketImages } from "../ticket/ticketImages";
 import { useNonCompletedBoardLogic } from "../../../../../../../hooks/useNonCompletedBoardLogic";
+import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
 
 export function BoardHome() {
     const classes = createClasses();
@@ -28,7 +26,6 @@ export function BoardHome() {
         onChangeAssignTo,
         allCompanyUsers,
     } = useNonCompletedBoardLogic(TicketType.InProgress);
-    const { url } = useRouteMatch();
 
     return (
         <BoardContainer>
@@ -36,18 +33,11 @@ export function BoardHome() {
                 <CenterLoadingSpinner size="large" />
             ) : (
                 <div css={classes.contentContainer}>
-                    <Switch>
-                        <Route path={`${url}/:ticketId/data`} exact>
-                            <TicketHome
-                                onUpdateTicket={onUpdateTicket}
-                                onDeleteTicket={onDeleteTicket}
-                                ticketType={TicketType.InProgress}
-                            />
-                        </Route>
-                        <Route path={`${url}/:ticketId/images`} exact>
-                            <TicketImages ticketType={TicketType.InProgress} />
-                        </Route>
-                    </Switch>
+                    <TicketDrawerRoutes
+                        onUpdateTicket={onUpdateTicket}
+                        onDeleteTicket={onDeleteTicket}
+                        ticketType={TicketType.InProgress}
+                    />
                     <BoardColumnsContainer>
                         {columns.map((column) => {
                             const isDoneColumn =

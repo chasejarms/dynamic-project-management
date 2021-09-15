@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useState, useEffect } from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Api } from "../../../../../../../api";
 import { BoardContainer } from "../../../../../../../components/boardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
@@ -10,14 +9,11 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { IColumn } from "../../../../../../../models/column";
 import { ITicket } from "../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { TicketHome } from "../ticket/ticketHome";
-import { TicketImages } from "../ticket/ticketImages";
 import { ITicketUpdateRequest } from "../../../../../../../models/ticketUpdateRequest";
 import { useHistory } from "react-router-dom";
+import { TicketDrawerRoutes } from "../../../../../../../components/ticketDrawerRoutes";
 
 export function CompletedTickets() {
-    const { url } = useRouteMatch();
-
     const { boardId, companyId, ticketId } = useAppRouterParams();
     const [isLoadingTickets, setIsLoadingTickets] = useState(true);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -132,18 +128,11 @@ export function CompletedTickets() {
     return (
         <BoardContainer>
             <div css={classes.pageContainer}>
-                <Switch>
-                    <Route path={`${url}/:ticketId/data`} exact>
-                        <TicketHome
-                            onUpdateTicket={onUpdateTicket}
-                            onDeleteTicket={onDeleteTicket}
-                            ticketType={TicketType.Done}
-                        />
-                    </Route>
-                    <Route path={`${url}/:ticketId/images`} exact>
-                        <TicketImages ticketType={TicketType.Done} />
-                    </Route>
-                </Switch>
+                <TicketDrawerRoutes
+                    onUpdateTicket={onUpdateTicket}
+                    onDeleteTicket={onDeleteTicket}
+                    ticketType={TicketType.Done}
+                />
                 <TicketContainer
                     title="Archived Tickets"
                     showCenterSpinner={
