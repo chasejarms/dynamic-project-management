@@ -1,5 +1,5 @@
 import { sortBy } from "lodash";
-import { IAugmentedUITicket } from "../../components/ticketForBoard";
+import { IAugmentedUITicket } from "../../models/augmentedUITicket";
 
 export function sortTickets(tickets: IAugmentedUITicket[]) {
     return sortBy(

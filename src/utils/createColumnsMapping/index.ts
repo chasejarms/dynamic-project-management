@@ -1,8 +1,8 @@
-import { IAugmentedUITicket } from "../../components/ticketForBoard";
 import {
     backlogColumnReservedId,
     uncategorizedColumnReservedId,
 } from "../../constants/reservedColumnIds";
+import { IAugmentedUITicket } from "../../models/augmentedUITicket";
 import { IColumn } from "../../models/column";
 import { ITicket } from "../../models/ticket";
 import { ITicketTemplate } from "../../models/ticketTemplate";

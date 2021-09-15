@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { ITicket } from "../../models/ticket";
-import { composeCSS } from "../../styles/composeCSS";
+import { ITicket } from "../../../../../../../../models/ticket";
+import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import {
     CardContent,
     Card,
@@ -12,23 +12,24 @@ import {
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
 import { useState, useEffect } from "react";
-import { IColumn } from "../../models/column";
-import { Api } from "../../api";
-import { CenterLoadingSpinner } from "../centerLoadingSpinner";
-import { TicketType } from "../../models/ticket/ticketType";
+import { IColumn } from "../../../../../../../../models/column";
+import { Api } from "../../../../../../../../api";
+import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import {
     backlogColumnReservedId,
     doneColumnReservedId,
     uncategorizedColumnReservedId,
-} from "../../constants/reservedColumnIds";
+} from "../../../../../../../../constants/reservedColumnIds";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
-import { useAppRouterParams } from "../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../quickActionsPopoverContent";
-import { IUser } from "../../models/user";
+} from "../../../../../../../../components/quickActionsPopoverContent";
+import { IUser } from "../../../../../../../../models/user";
+import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -46,10 +47,6 @@ export interface ITicketForBoardProps {
     ticketType: TicketType;
     usersForBoard?: IUser[];
     onClickDemoTicket?: () => void;
-}
-
-export interface IAugmentedUITicket extends ITicket {
-    pointValueFromTags: number;
 }
 
 const useStyles = makeStyles({

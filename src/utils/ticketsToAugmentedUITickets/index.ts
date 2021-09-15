@@ -1,7 +1,7 @@
 import { ITicket } from "../../models/ticket";
-import { IAugmentedUITicket } from "../../components/ticketForBoard";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { createTicketPriorityScore } from "../../components/ticketPriorityScore";
+import { IAugmentedUITicket } from "../../models/augmentedUITicket";
 
 export function ticketsToAugmentedUITickets(
     tickets: ITicket[],

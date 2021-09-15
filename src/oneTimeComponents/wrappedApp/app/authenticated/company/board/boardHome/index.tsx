@@ -4,7 +4,7 @@ import { BoardColumnsContainer } from "./components/boardColumnsContainer";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
 import { BoardContainer } from "../components/boardContainer";
 import { TicketContainer } from "../../../../../../../components/ticketContainer";
-import { TicketForBoard } from "../../../../../../../components/ticketForBoard";
+import { TicketForBoard } from "../components/ticketForBoard";
 import {
     doneColumnReservedId,
     uncategorizedColumnReservedId,

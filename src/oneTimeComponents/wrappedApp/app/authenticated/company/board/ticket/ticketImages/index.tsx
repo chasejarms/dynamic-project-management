@@ -8,7 +8,7 @@ import Axios, { AxiosResponse } from "axios";
 import { IFileForTicket } from "../../../../../../../../models/fileForTicket";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
-import { TicketImageContainer } from "../../../../../../../../components/ticketImageContainer";
+import { TicketImageContainer } from "./components/ticketImageContainer";
 import { sortBy } from "lodash";
 import { NoDataWithActionButton } from "../../../../../../../../components/noDataWithActionButton";
 import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
