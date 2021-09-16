@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useCompanyUser } from "../useCompanyUser";
+import { useCompanyUser } from "../../../../../../../../hooks/useCompanyUser";
 
 export function useIsCheckingForBoardAccess() {
     const user = useCompanyUser();
