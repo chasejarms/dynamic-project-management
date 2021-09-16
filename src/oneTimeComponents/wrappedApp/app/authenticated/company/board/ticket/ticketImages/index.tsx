@@ -10,7 +10,7 @@ import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinne
 import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
 import { TicketImageContainer } from "./components/ticketImageContainer";
 import { sortBy } from "lodash";
-import { NoDataWithActionButton } from "../../../../../../../../components/noDataWithActionButton";
+import { NoDataWithActionButton } from "../../components/noDataWithActionButton";
 import { TicketDrawerContainer } from "../components/ticketDrawerContainer";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 

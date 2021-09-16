@@ -8,17 +8,17 @@ import {
     useTheme,
 } from "@material-ui/core";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Api } from "../../api";
-import { StringValidator } from "../../classes/StringValidator";
-import { useAppRouterParams } from "../../hooks/useAppRouterParams";
-import { useControl } from "../../hooks/useControl";
-import { ITag } from "../../models/tag";
-import { tagColors } from "../../models/tagColor";
-import { composeCSS } from "../../styles/composeCSS";
-import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
-import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
-import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
-import { WrappedTextField } from "../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
+import { Api } from "../../../../../../../../../../api";
+import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
+import { useAppRouterParams } from "../../../../../../../../../../hooks/useAppRouterParams";
+import { useControl } from "../../../../../../../../../../hooks/useControl";
+import { ITag } from "../../../../../../../../../../models/tag";
+import { tagColors } from "../../../../../../../../../../models/tagColor";
+import { composeCSS } from "../../../../../../../../../../styles/composeCSS";
+import { mapColorToMaterialThemeColorLight } from "../../../../../../../../../../utils/mapColorToMaterialThemeColorLight";
+import { mapColorToMaterialThemeColorMain } from "../../../../../../../../../../utils/mapColorToMaterialThemeColorMain";
+import { WrappedButton } from "../../../../../../../components/wrappedButton";
+import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 
 export interface INewTagDialogProps {
     open: boolean;

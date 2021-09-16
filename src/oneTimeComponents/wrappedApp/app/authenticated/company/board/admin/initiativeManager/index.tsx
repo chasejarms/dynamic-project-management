@@ -22,7 +22,7 @@ import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterPa
 import { BoardAdminContainer } from "../components/boardAdminContainer";
 import { ITag } from "../../../../../../../../models/tag";
 import { WrappedButton } from "../../../../../components/wrappedButton";
-import { NewTagDialog } from "../../../../../../../../components/newTagDialog";
+import { NewTagDialog } from "./components/newTagDialog";
 import { sortBy } from "lodash";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../../../../../../../utils/mapColorToMaterialThemeColorLight";

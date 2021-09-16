@@ -4,10 +4,10 @@ import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthent
 import { LandingPageCommonSection } from "./components/landingPageCommonSection";
 import { IWrappedButtonProps } from "../components/wrappedButton";
 import { useHistory } from "react-router-dom";
-import { PrioritizationIsToughSvg } from "../../../../components/landingPageSvgs/prioritizationIsTough";
-import { TeamVelocitySuffers } from "../../../../components/landingPageSvgs/teamVelocitySuffers";
-import { ExistingSolutionsAreLimiting } from "../../../../components/landingPageSvgs/existingSolutionsAreLimiting";
-import { RelativePrioritization } from "../../../../components/landingPageSvgs/relativePrioritization";
+import { PrioritizationIsToughSvg } from "./components/landingPageSvgs/prioritizationIsTough";
+import { TeamVelocitySuffers } from "./components/landingPageSvgs/teamVelocitySuffers";
+import { ExistingSolutionsAreLimiting } from "./components/landingPageSvgs/existingSolutionsAreLimiting";
+import { RelativePrioritization } from "./components/landingPageSvgs/relativePrioritization";
 import { useBreakpoint } from "../../../../hooks/useBreakpoint";
 
 export function Home() {
