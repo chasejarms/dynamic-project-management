@@ -278,25 +278,31 @@ export function useNonArchivedBoardLogic(
                     tickets: IAugmentedUITicket[];
                 };
             }>((mapping, columnId) => {
+                const ticketShouldGoInCurrentColumn =
+                    newlyCreatedTicket.columnId === columnId;
                 const existingData = clone[columnId];
-                const augmentedUITickets = ticketsToAugmentedUITickets(
-                    [newlyCreatedTicket],
-                    cachedTicketTemplatesMapping
-                );
-                const newlyCreatedAugmentedTicket = augmentedUITickets[0];
-                const ticketsWithAddedTicket = clone[columnId].tickets.concat(
-                    newlyCreatedAugmentedTicket
-                );
-                const sortedUpdatedTickets = sortTickets(
-                    ticketsWithAddedTicket
-                );
+                if (ticketShouldGoInCurrentColumn) {
+                    const augmentedUITickets = ticketsToAugmentedUITickets(
+                        [newlyCreatedTicket],
+                        cachedTicketTemplatesMapping
+                    );
+                    const newlyCreatedAugmentedTicket = augmentedUITickets[0];
+                    const ticketsWithAddedTicket = clone[
+                        columnId
+                    ].tickets.concat(newlyCreatedAugmentedTicket);
+                    const sortedUpdatedTickets = sortTickets(
+                        ticketsWithAddedTicket
+                    );
 
-                const updatedMapping = {
-                    ...existingData,
-                    tickets: sortedUpdatedTickets,
-                };
+                    const updatedMapping = {
+                        ...existingData,
+                        tickets: sortedUpdatedTickets,
+                    };
 
-                mapping[columnId] = updatedMapping;
+                    mapping[columnId] = updatedMapping;
+                } else {
+                    mapping[columnId] = existingData;
+                }
                 return mapping;
             }, {});
 
