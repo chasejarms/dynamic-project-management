@@ -8,7 +8,7 @@ import {
     Divider,
 } from "@material-ui/core";
 import ReactVisibilitySensor from "react-visibility-sensor";
-import { CenterLoadingSpinner } from "../centerLoadingSpinner";
+import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 
 export interface ITicketContainerProps {
     children: React.ReactNode;

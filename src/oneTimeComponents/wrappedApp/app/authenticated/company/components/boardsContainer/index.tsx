@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import { useAppRouterParams } from "../../hooks/useAppRouterParams";
-import { useCompanyUser } from "../../hooks/useCompanyUser";
+import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
+import { useCompanyUser } from "../../../../../../../hooks/useCompanyUser";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
-} from "../authenticatedPageContainer";
+} from "../../../../../../../components/authenticatedPageContainer";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;
