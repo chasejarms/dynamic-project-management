@@ -18,7 +18,7 @@ import { composeCSS } from "../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
-import { WrappedTextField } from "../../oneTimeComponents/components/wrappedTextField";
+import { WrappedTextField } from "../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
 
 export interface IEditTagDialogProps {
     open: boolean;

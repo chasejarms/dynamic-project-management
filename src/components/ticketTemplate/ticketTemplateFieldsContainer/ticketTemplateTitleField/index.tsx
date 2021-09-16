@@ -2,40 +2,40 @@
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IStoreState } from "../../../../../../../../../../../../redux/storeState";
-import { updateWeightedTicketTemplateCreationDescription } from "../../../../../../../../../../../../redux/ticketTemplates";
-import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
+import { IStoreState } from "../../../../redux/storeState";
+import { updateWeightedTicketTemplateCreationTitle } from "../../../../redux/ticketTemplates";
+import { WrappedTextField } from "../../../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
 
-export interface ITicketTemplateDescriptionFieldProps {
+export interface ITicketTemplateTitleFieldProps {
     disabled: boolean;
     ticketTemplateId: string;
 }
 
-export function TicketTemplateDescriptionField(
-    props: ITicketTemplateDescriptionFieldProps
+export function TicketTemplateTitleField(
+    props: ITicketTemplateTitleFieldProps
 ) {
     const value = useSelector((store: IStoreState) => {
         return store.weightedTicketTemplateCreation[props.ticketTemplateId]
-            .description.value;
+            .title.value;
     });
 
     const touched = useSelector((store: IStoreState) => {
         return store.weightedTicketTemplateCreation[props.ticketTemplateId]
-            .description.touched;
+            .title.touched;
     });
 
     const error = useSelector((store: IStoreState) => {
         return store.weightedTicketTemplateCreation[props.ticketTemplateId]
-            .description.error;
+            .title.error;
     });
 
     const dispatch = useDispatch();
-    function onChangeTicketTemplateDescription(
+    function onChangeTicketTemplateTitle(
         eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const value = eventType.target.value as string;
-        const action = updateWeightedTicketTemplateCreationDescription({
-            description: value,
+        const action = updateWeightedTicketTemplateCreationTitle({
+            title: value,
             ticketTemplateId: props.ticketTemplateId,
         });
         dispatch(action);
@@ -46,8 +46,8 @@ export function TicketTemplateDescriptionField(
             <div>
                 <WrappedTextField
                     value={value}
-                    label="Template Description"
-                    onChange={onChangeTicketTemplateDescription}
+                    label="Template Title"
+                    onChange={onChangeTicketTemplateTitle}
                     error={(touched && error) || ""}
                     disabled={props.disabled}
                     multiline

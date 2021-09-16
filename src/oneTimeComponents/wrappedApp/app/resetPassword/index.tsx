@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../components/wrappedButton";
-import { WrappedTextField } from "../../../components/wrappedTextField";
+import { WrappedTextField } from "../components/wrappedTextField";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { userPool } from "../../../../classes/UserPool";
 import { useHistory } from "react-router-dom";

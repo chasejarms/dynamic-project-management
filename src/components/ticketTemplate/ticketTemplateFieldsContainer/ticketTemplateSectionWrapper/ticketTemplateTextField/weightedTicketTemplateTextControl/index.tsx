@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
-import { WrappedTextField } from "../../../../../../../../../../../components/wrappedTextField";
+import { WrappedTextField } from "../../../../../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
 import React from "react";
 import { Checkbox, FormControlLabel, Theme, useTheme } from "@material-ui/core";
 

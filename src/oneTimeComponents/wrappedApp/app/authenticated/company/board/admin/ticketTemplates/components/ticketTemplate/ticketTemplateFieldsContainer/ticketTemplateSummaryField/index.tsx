@@ -10,7 +10,7 @@ import {
     updateWeightedTicketTemplateCreationSummary,
 } from "../../../../../../../../../../../../redux/ticketTemplates";
 import { WeightedPriorityTicketTemplateActions } from "../weightedPriorityTicketTemplateActions";
-import { WrappedTextField } from "../../../../../../../../../../../components/wrappedTextField";
+import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
 
 export interface ITicketTemplateSummaryFieldProps {
     disabled: boolean;

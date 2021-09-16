@@ -2,9 +2,9 @@
 import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IStoreState } from "../../../../../../../../../../../../redux/storeState";
-import { updateWeightedTicketTemplateCreationDescription } from "../../../../../../../../../../../../redux/ticketTemplates";
-import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
+import { IStoreState } from "../../../../redux/storeState";
+import { updateWeightedTicketTemplateCreationDescription } from "../../../../redux/ticketTemplates";
+import { WrappedTextField } from "../../../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
 
 export interface ITicketTemplateDescriptionFieldProps {
     disabled: boolean;

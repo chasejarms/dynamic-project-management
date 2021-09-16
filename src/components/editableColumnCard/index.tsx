@@ -7,7 +7,7 @@ import { composeCSS } from "../../styles/composeCSS";
 import { useControl } from "../../hooks/useControl";
 import { ChangeEvent, useEffect } from "react";
 import { StringValidator } from "../../classes/StringValidator";
-import { WrappedTextField } from "../../oneTimeComponents/components/wrappedTextField";
+import { WrappedTextField } from "../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
 import { useDebounce } from "../../oneTimeComponents/hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
 import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";

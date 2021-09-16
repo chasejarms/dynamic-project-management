@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../../../../../../redux/storeState";
 import { updateWeightedTicketTemplateCreationTitle } from "../../../../../../../../../../../../redux/ticketTemplates";
-import { WrappedTextField } from "../../../../../../../../../../../components/wrappedTextField";
+import { WrappedTextField } from "../../../../../../../../../components/wrappedTextField";
 
 export interface ITicketTemplateTitleFieldProps {
     disabled: boolean;
