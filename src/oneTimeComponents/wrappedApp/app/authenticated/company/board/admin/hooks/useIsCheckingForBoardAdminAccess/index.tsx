@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useAppRouterParams } from "../useAppRouterParams";
-import { useCompanyUser } from "../useCompanyUser";
+import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { useCompanyUser } from "../../../../../../../../../hooks/useCompanyUser";
 
 export function useIsCheckingForBoardAdminAccess() {
     const user = useCompanyUser();

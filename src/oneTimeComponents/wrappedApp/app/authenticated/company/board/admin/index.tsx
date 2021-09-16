@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
-import { useIsCheckingForBoardAdminAccess } from "../../../../../../../hooks/useIsCheckingForBoardAdminAccess";
+import { useIsCheckingForBoardAdminAccess } from "./hooks/useIsCheckingForBoardAdminAccess";
 import { Columns } from "./columns";
 import { BoardUsers } from "./boardUsers";
 import { TicketTemplates } from "./ticketTemplates";
