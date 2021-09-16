@@ -6,7 +6,7 @@ import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import Axios, { AxiosResponse } from "axios";
 import { IFileForTicket } from "../../../../../../../../models/fileForTicket";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace";
 import { TicketImageContainer } from "./components/ticketImageContainer";
 import { sortBy } from "lodash";

@@ -21,7 +21,7 @@ import {
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../api";
 import { BoardsContainer } from "../components/boardsContainer";
-import { CenterLoadingSpinner } from "../../../../../../components/centerLoadingSpinner";
+import { CenterLoadingSpinner } from "../../components/centerLoadingSpinner";
 import { WrappedButton } from "../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";

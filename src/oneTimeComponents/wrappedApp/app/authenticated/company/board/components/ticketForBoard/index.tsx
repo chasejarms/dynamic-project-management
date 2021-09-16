@@ -14,7 +14,7 @@ import { MoreHoriz } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { IColumn } from "../../../../../../../../models/column";
 import { Api } from "../../../../../../../../api";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import {
     backlogColumnReservedId,

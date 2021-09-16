@@ -17,7 +17,7 @@ import {
 import { Delete, Edit } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { BoardAdminContainer } from "../components/boardAdminContainer";
 import { ITag } from "../../../../../../../../models/tag";

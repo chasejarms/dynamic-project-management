@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { Api } from "../../../../api";
-import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
+import { CenterLoadingSpinner } from "./components/centerLoadingSpinner";
 import { setAppBootstrapInformation } from "../../../../redux/appBootstrapInformation";
 import { IStoreState } from "../../../../redux/storeState";
 import { Internal } from "./internal";

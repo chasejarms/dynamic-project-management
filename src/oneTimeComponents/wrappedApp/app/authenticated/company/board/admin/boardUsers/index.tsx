@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
-import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
+import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { IUser } from "../../../../../../../../models/user";
 import { cloneDeep } from "lodash";
