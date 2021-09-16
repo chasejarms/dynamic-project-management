@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSetTicketFromTicketTemplateChange } from "../../../../../../../../hooks/useSetTicketFromTicketTemplateChange";
+import { useSetTicketFromTicketTemplateChange } from "./hooks/useSetTicketFromTicketTemplateChange";
 import { IStoreState } from "../../../../../../../../redux/storeState";
 import {
     updateTicketTitle,

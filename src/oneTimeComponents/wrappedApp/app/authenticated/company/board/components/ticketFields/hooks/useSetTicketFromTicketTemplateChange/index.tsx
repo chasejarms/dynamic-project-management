@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ITicketTemplate } from "../../models/ticketTemplate";
-import { IStoreState } from "../../redux/storeState";
+import { ITicketTemplate } from "../../../../../../../../../../models/ticketTemplate";
+import { IStoreState } from "../../../../../../../../../../redux/storeState";
 import {
     numberSectionError,
     setInitialTicketData,
@@ -9,7 +9,7 @@ import {
     ticketPreviewId,
     ticketSummaryError,
     ticketTitleError,
-} from "../../redux/ticket";
+} from "../../../../../../../../../../redux/ticket";
 
 export function useSetTicketFromTicketTemplateChange(
     runEffect: boolean,
