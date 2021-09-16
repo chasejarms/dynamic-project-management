@@ -33,7 +33,7 @@ import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { Delete } from "@material-ui/icons";
 import { ConfirmDialog } from "../components/confirmDialog";
 import { sortBy } from "lodash";
-import { useIsCheckingForManageCompanyUserAccess } from "../../../../../../hooks/useIsCheckingForManageCompanyUserAccess";
+import { useIsCheckingForManageCompanyUserAccess } from "./hooks/useIsCheckingForManageCompanyUserAccess";
 import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
 
 const useStyles = makeStyles({
