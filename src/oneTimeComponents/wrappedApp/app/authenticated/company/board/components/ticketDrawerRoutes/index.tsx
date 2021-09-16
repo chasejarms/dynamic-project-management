@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
+import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 import { CreateTicketDrawer } from "../../createTicketDrawer";
@@ -10,6 +11,7 @@ import { TicketImages } from "../../ticket/ticketImages";
 export interface ITicketDrawerRoutesProps {
     onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
     onDeleteTicket: (columnId: string, itemId: string) => void;
+    onCreateTicket?: (newlyCreatedTicket: ITicket) => void;
     ticketType: TicketType;
 }
 
@@ -19,7 +21,10 @@ export function TicketDrawerRoutes(props: ITicketDrawerRoutesProps) {
     return (
         <Switch>
             <Route path={`${url}/create-ticket`} exact>
-                <CreateTicketDrawer ticketType={props.ticketType} />
+                <CreateTicketDrawer
+                    ticketType={props.ticketType}
+                    onCreateTicket={props.onCreateTicket}
+                />
             </Route>
             <Route path={`${url}/:ticketId/data`} exact>
                 <TicketHome

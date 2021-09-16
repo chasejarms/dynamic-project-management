@@ -28,6 +28,7 @@ export function BoardHome() {
         onRemoveTicketFromCurrentUI,
         onChangeAssignTo,
         allCompanyUsers,
+        onCreateTicket,
     } = useNonArchivedBoardLogic(TicketType.InProgress);
 
     const history = useHistory();
@@ -47,6 +48,7 @@ export function BoardHome() {
                     <TicketDrawerRoutes
                         onUpdateTicket={onUpdateTicket}
                         onDeleteTicket={onDeleteTicket}
+                        onCreateTicket={onCreateTicket}
                         ticketType={TicketType.InProgress}
                     />
                     <div css={classes.actionButtonContainer}>

@@ -25,9 +25,11 @@ import { CenterLoadingSpinner } from "../../../../../../../components/centerLoad
 import { NoDataWithActionButton } from "../../../../../../../components/noDataWithActionButton";
 import { TicketFields } from "../components/ticketFields";
 import { DrawerContentsWithActionBar } from "../components/drawerContentsWithActionBar";
+import { ITicket } from "../../../../../../../models/ticket";
 
 export interface ICreateTicketDrawerProps {
     ticketType: TicketType;
+    onCreateTicket?: (newlyCreatedTicket: ITicket) => void;
 }
 
 export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
@@ -158,11 +160,6 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
     ] = useState<null | ITicketCreateRequest>(null);
     const isCreatingTicket = !!ticketCreateRequest;
 
-    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-    function onCloseSnackbar() {
-        setShowSuccessSnackbar(false);
-    }
-
     useEffect(() => {
         if (!ticketCreateRequest) return;
 
@@ -170,9 +167,21 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
 
         Api.tickets
             .createTicket(companyId, boardId, ticketCreateRequest)
-            .then(() => {
+            .then((newlyCreatedTicket) => {
                 if (didCancel) return;
-                setShowSuccessSnackbar(true);
+                if (
+                    !!props.onCreateTicket &&
+                    ticketCreateRequest.startingColumnId === "" &&
+                    props.ticketType === TicketType.Backlog
+                ) {
+                    props.onCreateTicket(newlyCreatedTicket);
+                } else if (
+                    !!props.onCreateTicket &&
+                    ticketCreateRequest.startingColumnId !== "" &&
+                    props.ticketType === TicketType.InProgress
+                ) {
+                    props.onCreateTicket(newlyCreatedTicket);
+                }
                 const action = resetTicketCreation();
                 dispatch(action);
             })
@@ -253,7 +262,9 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
     ];
 
     return (
-        <DrawerContainer darkOpacityOnClick={closeDrawer}>
+        <DrawerContainer
+            darkOpacityOnClick={isCreatingTicket ? undefined : closeDrawer}
+        >
             <DrawerContentsWithActionBar
                 title="Create Ticket"
                 rightWrappedButtonProps={rightWrappedButtonProps}

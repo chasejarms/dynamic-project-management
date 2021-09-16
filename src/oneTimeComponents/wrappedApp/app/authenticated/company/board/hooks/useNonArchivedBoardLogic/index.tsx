@@ -269,10 +269,46 @@ export function useNonArchivedBoardLogic(
         });
     }
 
+    function onCreateTicket(newlyCreatedTicket: ITicket) {
+        setSortedAndMappedTickets((previousSortedAndMappedTickets) => {
+            const clone = cloneDeep(previousSortedAndMappedTickets);
+            const updatedSortedAndMappedTickets = Object.keys(clone).reduce<{
+                [columnId: string]: {
+                    columnInformation: IColumn;
+                    tickets: IAugmentedUITicket[];
+                };
+            }>((mapping, columnId) => {
+                const existingData = clone[columnId];
+                const augmentedUITickets = ticketsToAugmentedUITickets(
+                    [newlyCreatedTicket],
+                    cachedTicketTemplatesMapping
+                );
+                const newlyCreatedAugmentedTicket = augmentedUITickets[0];
+                const ticketsWithAddedTicket = clone[columnId].tickets.concat(
+                    newlyCreatedAugmentedTicket
+                );
+                const sortedUpdatedTickets = sortTickets(
+                    ticketsWithAddedTicket
+                );
+
+                const updatedMapping = {
+                    ...existingData,
+                    tickets: sortedUpdatedTickets,
+                };
+
+                mapping[columnId] = updatedMapping;
+                return mapping;
+            }, {});
+
+            return updatedSortedAndMappedTickets;
+        });
+    }
+
     return {
         isLoadingData,
         onUpdateTicket,
         onDeleteTicket,
+        onCreateTicket,
         columns,
         sortedAndMappedTickets,
         onUpdateInProgressTicketColumn,
