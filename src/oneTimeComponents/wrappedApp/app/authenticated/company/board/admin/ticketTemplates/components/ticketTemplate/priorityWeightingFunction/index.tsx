@@ -6,7 +6,7 @@ import {
     updatePriorityWeightingCalculation,
     ITicketTemplateNumberSectionControlState,
 } from "../../../../../../../../../../../redux/ticketTemplates";
-import { TagChip } from "../../../../../../../../../../../components/tagChip";
+import { TagChip } from "../../../../../components/tagChip";
 import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
 
 export interface IPriorityWeightingFunctionProps {

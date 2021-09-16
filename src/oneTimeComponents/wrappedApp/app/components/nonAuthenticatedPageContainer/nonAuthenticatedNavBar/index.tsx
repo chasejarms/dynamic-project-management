@@ -1,5 +1,5 @@
 import { useBreakpoint } from "../../../../../../hooks/useBreakpoint";
-import { INavBarItem } from "../../../../../../components/navBar";
+import { INavBarItem } from "./navBar";
 import { LargeNavBar } from "./largeNavBar";
 import { SmallNavBar } from "./smallNavBar";
 

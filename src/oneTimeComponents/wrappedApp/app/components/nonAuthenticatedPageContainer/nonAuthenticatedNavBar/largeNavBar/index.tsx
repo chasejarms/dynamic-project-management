@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import NavBar, { INavBarItem } from "../../../../../../../components/navBar";
+import NavBar, { INavBarItem } from "../navBar";
 import { useTheme, Theme } from "@material-ui/core";
 
 export interface ILargeNavBarProps {
