@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetAppBootstrapInformation } from "../../../../../../../../../redux/appBootstrapInformation";
 import { resetBoardAction } from "../../../../../../../../../redux/boards";
 import { IStoreState } from "../../../../../../../../../redux/storeState";
-import { createCompanyBoardKey } from "../../../../../../../../../utils/createCompanyBoardKey";
+import { createCompanyBoardKey } from "../../../utils/createCompanyBoardKey";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,

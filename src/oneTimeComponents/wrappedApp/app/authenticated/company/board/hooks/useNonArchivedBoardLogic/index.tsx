@@ -2,14 +2,16 @@ import { sortBy, cloneDeep } from "lodash";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
-import { uncategorizedColumnReservedId } from "../../../../../../../../constants/reservedColumnIds";
+import {
+    backlogColumnReservedId,
+    uncategorizedColumnReservedId,
+} from "../../../../../../../../constants/reservedColumnIds";
 import { IColumn } from "../../../../../../../../models/column";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 import { IUser } from "../../../../../../../../models/user";
-import { createColumnsMapping } from "../../../../../../../../utils/createColumnsMapping";
 import { sortTickets } from "../../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../../utils/ticketsToAugmentedUITickets";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
@@ -322,4 +324,65 @@ export function useNonArchivedBoardLogic(
         onChangeAssignTo,
         allCompanyUsers,
     };
+}
+
+function createColumnsMapping(
+    columns: IColumn[],
+    tickets: ITicket[],
+    ticketTemplatesMapping: {
+        [ticketTemplateShortenedItemId: string]: ITicketTemplate;
+    },
+    pushAllTicketsToBacklog?: boolean
+) {
+    const columnsMapping: {
+        [columnId: string]: {
+            columnInformation: IColumn;
+            tickets: IAugmentedUITicket[];
+        };
+    } = {
+        [backlogColumnReservedId]: {
+            columnInformation: {
+                name: "Backlog",
+                id: backlogColumnReservedId,
+                canBeModified: false,
+            },
+            tickets: [],
+        },
+    };
+
+    columns.forEach((column) => {
+        columnsMapping[column.id] = {
+            columnInformation: column,
+            tickets: [],
+        };
+    }, {});
+
+    const augmentedUITickets = ticketsToAugmentedUITickets(
+        tickets,
+        ticketTemplatesMapping
+    );
+    augmentedUITickets.forEach((ticketForUI) => {
+        if (!!pushAllTicketsToBacklog) {
+            columnsMapping[backlogColumnReservedId].tickets.push(ticketForUI);
+            return;
+        }
+
+        const columnId = ticketForUI.columnId;
+        const columnExists = !!columnsMapping[columnId];
+        if (columnExists) {
+            columnsMapping[columnId].tickets.push(ticketForUI);
+        } else {
+            columnsMapping[uncategorizedColumnReservedId].tickets.push(
+                ticketForUI
+            );
+        }
+    });
+
+    Object.keys(columnsMapping).forEach((columnId) => {
+        columnsMapping[columnId].tickets = sortTickets(
+            columnsMapping[columnId].tickets
+        );
+    });
+
+    return columnsMapping;
 }
