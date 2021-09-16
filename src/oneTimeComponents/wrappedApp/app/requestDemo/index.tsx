@@ -8,7 +8,7 @@ import { WrappedButton } from "../components/wrappedButton";
 import { WrappedTextField } from "../components/wrappedTextField";
 import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
-import { useEmailControl } from "../../../../hooks/useEmailControl";
+import { useEmailControl } from "../hooks/useEmailControl";
 import { Api } from "../../../../api";
 
 export function RequestDemo() {

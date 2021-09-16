@@ -10,7 +10,7 @@ import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { userPool } from "../../../../classes/UserPool";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
-import { useEmailControl } from "../../../../hooks/useEmailControl";
+import { useEmailControl } from "../hooks/useEmailControl";
 
 export function ResetPassword() {
     const history = useHistory();
