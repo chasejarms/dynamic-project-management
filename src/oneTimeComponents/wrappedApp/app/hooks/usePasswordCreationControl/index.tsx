@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
-import { StringValidator } from "../../classes/StringValidator";
-import { useControl } from "../useControl";
+import { StringValidator } from "../../../../../classes/StringValidator";
+import { useControl } from "../../../../../hooks/useControl";
 
 export function usePasswordCreationControl() {
     const passwordCreationControl = useControl({

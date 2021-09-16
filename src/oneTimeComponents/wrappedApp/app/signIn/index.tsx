@@ -20,7 +20,7 @@ import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
 import { useEmailControl } from "../../../../hooks/useEmailControl";
-import { usePasswordCreationControl } from "../../../../hooks/usePasswordCreationControl";
+import { usePasswordCreationControl } from "../hooks/usePasswordCreationControl";
 
 const useStyles = makeStyles({
     resetPasswordText: (theme: Theme) => ({

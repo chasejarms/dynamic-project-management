@@ -12,7 +12,7 @@ import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { useEmailControl } from "../../../../hooks/useEmailControl";
 import { useNameControl } from "../../../../hooks/useNameControl";
-import { usePasswordCreationControl } from "../../../../hooks/usePasswordCreationControl";
+import { usePasswordCreationControl } from "../hooks/usePasswordCreationControl";
 
 export function SignUp() {
     const history = useHistory();
