@@ -2,16 +2,16 @@
 import { jsx, css } from "@emotion/react";
 import { CardContent, Card, CardActions } from "@material-ui/core";
 import { DragIndicator } from "@material-ui/icons";
-import { IColumn } from "../../models/column";
-import { composeCSS } from "../../styles/composeCSS";
-import { useControl } from "../../hooks/useControl";
+import { IColumn } from "../../../../../../../../../../models/column";
+import { composeCSS } from "../../../../../../../../../../styles/composeCSS";
+import { useControl } from "../../../../../../../../../../hooks/useControl";
 import { ChangeEvent, useEffect } from "react";
-import { StringValidator } from "../../classes/StringValidator";
-import { WrappedTextField } from "../../oneTimeComponents/wrappedApp/app/components/wrappedTextField";
-import { useDebounce } from "../../oneTimeComponents/hooks/useDebounce";
+import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
+import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
+import { useDebounce } from "../../../../../../../../../hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
-import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
-import { doneColumnReservedId } from "../../constants/reservedColumnIds";
+import { WrappedButton } from "../../../../../../../components/wrappedButton";
+import { doneColumnReservedId } from "../../../../../../../../../../constants/reservedColumnIds";
 
 export interface IEditableColumnCardProps {
     column: IColumn;
