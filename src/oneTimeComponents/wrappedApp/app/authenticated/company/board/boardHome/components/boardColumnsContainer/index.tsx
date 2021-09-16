@@ -28,7 +28,7 @@ const createClasses = () => {
         overflow-x: auto;
         display: flex;
         flex-grow: 1;
-        padding: 24px;
+        padding: 16px 24px 24px 24px;
     `;
 
     return {
