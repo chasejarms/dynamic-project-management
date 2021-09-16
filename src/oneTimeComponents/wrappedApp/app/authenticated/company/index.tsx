@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
-import { useIsCheckingForCompanyAccess } from "../../../../../hooks/useIsCheckingForCompanyAccess";
+import { useIsCheckingForCompanyAccess } from "./hooks/useIsCheckingForCompanyAccess";
 import { AddCompany } from "./addCompany";
 import { Boards } from "./boards";
 import { CompanyUsers } from "./companyUsers";
