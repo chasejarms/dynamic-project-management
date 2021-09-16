@@ -8,7 +8,7 @@ import { PrioritizationIsToughSvg } from "./components/landingPageSvgs/prioritiz
 import { TeamVelocitySuffers } from "./components/landingPageSvgs/teamVelocitySuffers";
 import { ExistingSolutionsAreLimiting } from "./components/landingPageSvgs/existingSolutionsAreLimiting";
 import { RelativePrioritization } from "./components/landingPageSvgs/relativePrioritization";
-import { useBreakpoint } from "../../../../hooks/useBreakpoint";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 export function Home() {
     const history = useHistory();

@@ -6,7 +6,7 @@ import { createTheme } from "@material-ui/core/styles";
 import { App } from "./app";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "../../redux/store";
-import { BreakpointProvider } from "../../hooks/useBreakpoint";
+import { BreakpointProvider } from "./app/hooks/useBreakpoint";
 
 const theme = createTheme({});
 

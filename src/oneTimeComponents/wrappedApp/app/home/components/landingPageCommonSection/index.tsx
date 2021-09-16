@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { Theme, Typography, useTheme } from "@material-ui/core";
 import React from "react";
-import { useBreakpoint } from "../../../../../../hooks/useBreakpoint";
+import { useBreakpoint } from "../../../hooks/useBreakpoint";
 import { composeCSS } from "../../../../../../styles/composeCSS";
 import {
     IWrappedButtonProps,
