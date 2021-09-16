@@ -19,7 +19,7 @@ import {
 } from "../../../../../../../../../../models/tagColor";
 import { composeCSS } from "../../../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
-import { mapColorToMaterialThemeColorMain } from "../../../../../../../../../../utils/mapColorToMaterialThemeColorMain";
+import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 
