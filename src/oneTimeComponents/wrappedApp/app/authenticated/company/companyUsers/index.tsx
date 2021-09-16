@@ -27,7 +27,7 @@ import { WrappedTextField } from "../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../../../hooks/useControl";
 import { useEmailControl } from "../../../../../../hooks/useEmailControl";
-import { useNameControl } from "../../../../../../hooks/useNameControl";
+import { useNameControl } from "../../../hooks/useNameControl";
 import { IUser } from "../../../../../../models/user";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { Delete } from "@material-ui/icons";

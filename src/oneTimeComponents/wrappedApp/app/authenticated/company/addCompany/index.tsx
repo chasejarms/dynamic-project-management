@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../components/bottomPageToolbar";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useEmailControl } from "../../../../../../hooks/useEmailControl";
-import { useNameControl } from "../../../../../../hooks/useNameControl";
+import { useNameControl } from "../../../hooks/useNameControl";
 
 export function AddCompany() {
     const classes = createClasses();

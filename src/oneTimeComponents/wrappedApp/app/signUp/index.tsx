@@ -11,7 +11,7 @@ import { useControl } from "../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { useEmailControl } from "../../../../hooks/useEmailControl";
-import { useNameControl } from "../../../../hooks/useNameControl";
+import { useNameControl } from "../hooks/useNameControl";
 import { usePasswordCreationControl } from "../hooks/usePasswordCreationControl";
 
 export function SignUp() {
