@@ -15,7 +15,7 @@ import { useControl } from "../../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../../../../models/tag";
 import { tagColors } from "../../../../../../../../../../models/tagColor";
 import { composeCSS } from "../../../../../../../../../../styles/composeCSS";
-import { mapColorToMaterialThemeColorLight } from "../../../../../../../../../../utils/mapColorToMaterialThemeColorLight";
+import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../../../../../../../../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
