@@ -5,7 +5,7 @@ import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterPa
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
-} from "../../../../../../../../components/authenticatedPageContainer";
+} from "../authenticatedPageContainer";
 import { useSelector, useDispatch } from "react-redux";
 import { IStoreState } from "../../../../../../../../redux/storeState";
 import { addBoardAction } from "../../../../../../../../redux/boards";

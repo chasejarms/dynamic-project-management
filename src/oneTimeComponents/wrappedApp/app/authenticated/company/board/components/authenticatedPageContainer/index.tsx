@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { AuthenticatedPageAppBar } from "../authenticatedPageAppBar";
-import { AuthenticatedPageTopBar } from "../authenticatedPageTopBar";
+import { AuthenticatedPageAppBar } from "./authenticatedPageAppBar";
+import { AuthenticatedPageTopBar } from "./authenticatedPageTopBar";
 
 export interface IAuthenticatedNavItem {
     text: string;

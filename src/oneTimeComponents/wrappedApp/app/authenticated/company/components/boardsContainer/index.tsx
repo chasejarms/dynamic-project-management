@@ -6,7 +6,7 @@ import { useCompanyUser } from "../../../../../../../hooks/useCompanyUser";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
-} from "../../../../../../../components/authenticatedPageContainer";
+} from "../../board/components/authenticatedPageContainer";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;

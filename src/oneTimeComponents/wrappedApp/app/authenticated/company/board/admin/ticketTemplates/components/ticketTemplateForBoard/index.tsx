@@ -16,7 +16,7 @@ import { useAppRouterParams } from "../../../../../../../../../../hooks/useAppRo
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../../../../../../../../../../components/quickActionsPopoverContent";
+} from "../../../../components/quickActionsPopoverContent";
 import { ITicketTemplate } from "../../../../../../../../../../models/ticketTemplate";
 
 export interface ITicketTemplateForBoardProps {

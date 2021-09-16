@@ -21,7 +21,7 @@ import { ConfirmDialog } from "../../../../../components/confirmDialog";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../../../../../../../../../../components/quickActionsPopoverContent";
+} from "../../../../components/quickActionsPopoverContent";
 
 export interface ITicketImageContainerProps {
     file: IFileForTicket;

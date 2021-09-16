@@ -4,7 +4,7 @@ import React from "react";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
-} from "../../../../../../../components/authenticatedPageContainer";
+} from "../../../company/board/components/authenticatedPageContainer";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;

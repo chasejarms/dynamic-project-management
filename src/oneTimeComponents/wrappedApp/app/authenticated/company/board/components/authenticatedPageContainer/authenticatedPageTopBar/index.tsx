@@ -11,21 +11,21 @@ import {
 import { useHistory, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import { ArrowForwardIos, AccountCircle } from "@material-ui/icons";
-import { composeCSS } from "../../styles/composeCSS";
-import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
-import { useAppRouterParams } from "../../hooks/useAppRouterParams";
-import { cognitoUserSingleton } from "../../classes/CognitoUserSingleton";
+import { composeCSS } from "../../../../../../../../../styles/composeCSS";
+import { WrappedButton } from "../../../../../../components/wrappedButton";
+import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { cognitoUserSingleton } from "../../../../../../../../../classes/CognitoUserSingleton";
 import { useDispatch, useSelector } from "react-redux";
-import { resetAppBootstrapInformation } from "../../redux/appBootstrapInformation";
-import { resetBoardAction } from "../../redux/boards";
-import { IStoreState } from "../../redux/storeState";
-import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
+import { resetAppBootstrapInformation } from "../../../../../../../../../redux/appBootstrapInformation";
+import { resetBoardAction } from "../../../../../../../../../redux/boards";
+import { IStoreState } from "../../../../../../../../../redux/storeState";
+import { createCompanyBoardKey } from "../../../../../../../../../utils/createCompanyBoardKey";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../quickActionsPopoverContent";
-import { CompanyLogoIcon } from "../companyLogoIcon";
-import { BoardPriorityType } from "../../models/boardPriorityType";
+} from "../../quickActionsPopoverContent";
+import { CompanyLogoIcon } from "../../../../../../../../../components/companyLogoIcon";
+import { BoardPriorityType } from "../../../../../../../../../models/boardPriorityType";
 
 export interface IAuthenticatedPageTopBarProps {}
 

@@ -20,7 +20,7 @@ import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterPa
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../../../../../../../../components/quickActionsPopoverContent";
+} from "../../../board/components/quickActionsPopoverContent";
 
 export interface IBoardForCompanyProps {
     board: IBoard;

@@ -5,7 +5,7 @@ import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRoute
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
-} from "../../../../../../../../../components/authenticatedPageContainer";
+} from "../../../components/authenticatedPageContainer";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;

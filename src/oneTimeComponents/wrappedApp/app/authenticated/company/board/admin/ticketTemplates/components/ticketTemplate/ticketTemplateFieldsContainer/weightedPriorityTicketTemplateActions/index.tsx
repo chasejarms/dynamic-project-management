@@ -6,7 +6,7 @@ import { Add, DeleteForever } from "@material-ui/icons";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../../../../../../../../../../../../components/quickActionsPopoverContent";
+} from "../../../../../../components/quickActionsPopoverContent";
 
 export interface IWeightedPriorityTicketTemplateActions {
     onClickAddAfter: (type: string) => void;

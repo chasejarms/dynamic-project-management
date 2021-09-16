@@ -27,7 +27,7 @@ import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterPa
 import {
     IIndentedAction,
     QuickActionsPopoverContent,
-} from "../../../../../../../../components/quickActionsPopoverContent";
+} from "../quickActionsPopoverContent";
 import { IUser } from "../../../../../../../../models/user";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 
