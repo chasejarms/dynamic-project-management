@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Api } from "../../api";
-import { IStoreState } from "../../redux/storeState";
+import { Api } from "../../../../../../../../../../../api";
+import { IStoreState } from "../../../../../../../../../../../redux/storeState";
 import {
     createTicketTemplateId,
     resetWeightedTicketTemplateCreationState,
-} from "../../redux/ticketTemplates";
-import { useAppRouterParams } from "../useAppRouterParams";
+} from "../../../../../../../../../../../redux/ticketTemplates";
+import { useAppRouterParams } from "../../../../../../../../../../../hooks/useAppRouterParams";
 
 export function useCreateTicketTemplateCall() {
     const { boardId, companyId } = useAppRouterParams();

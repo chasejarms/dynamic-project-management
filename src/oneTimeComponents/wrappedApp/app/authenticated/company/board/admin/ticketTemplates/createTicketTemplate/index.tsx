@@ -6,7 +6,7 @@ import { BoardAdminContainer } from "../../components/boardAdminContainer";
 import { TicketTemplate } from "../components/ticketTemplate";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
-import { useCreateTicketTemplateCall } from "../../../../../../../../../hooks/useCreateTicketTemplateCall";
+import { useCreateTicketTemplateCall } from "./hooks/useCreateTicketTemplateCall";
 import { createTicketTemplateId } from "../../../../../../../../../redux/ticketTemplates";
 
 export function CreateTicketTemplate() {
