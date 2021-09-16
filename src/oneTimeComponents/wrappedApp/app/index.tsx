@@ -2,7 +2,7 @@ import React from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import { SignIn } from "./signIn";
-import { useAxiosInterceptor } from "../../../hooks/useAxiosInterceptor";
+import { useAxiosInterceptor } from "./hooks/useAxiosInterceptor";
 import { Authenticated } from "./authenticated";
 import { useRouterDebug } from "./hooks/useRouterDebug";
 import { Home } from "./home";

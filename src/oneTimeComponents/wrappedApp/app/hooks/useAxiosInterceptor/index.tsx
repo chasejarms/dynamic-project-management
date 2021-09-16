@@ -1,10 +1,8 @@
 import { useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { HttpStatusCode } from "../../models/httpStatusCode";
+import { HttpStatusCode } from "../../../../../models/httpStatusCode";
 import Axios from "axios";
-import { environmentVariables } from "../../environmentVariables";
-import { cognitoUserSingleton } from "../../classes/CognitoUserSingleton";
-import { CognitoUserSession } from "amazon-cognito-identity-js";
+import { environmentVariables } from "../../../../../environmentVariables";
 
 export const useAxiosInterceptor = () => {
     const history = useHistory();
