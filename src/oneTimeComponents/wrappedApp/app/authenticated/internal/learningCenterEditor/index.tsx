@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { InternalUserContainer } from "../../../../../../components/internalUserContainer";
+import { InternalUserContainer } from "../components/internalUserContainer";
 
 export function LearningCenterEditor() {
     return (

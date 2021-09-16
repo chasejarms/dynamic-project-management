@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../../api";
 import { BoardAdminContainer } from "../../components/boardAdminContainer";
 import { CenterLoadingSpinner } from "../../../../../components/centerLoadingSpinner";
-import { ConfirmDialog } from "../../../../../../../../../components/confirmDialog";
+import { ConfirmDialog } from "../../../../components/confirmDialog";
 import { NoDataWithActionButton } from "../../../../../../../../../components/noDataWithActionButton";
 import { TicketTemplateForBoard } from "../components/ticketTemplateForBoard";
 import {

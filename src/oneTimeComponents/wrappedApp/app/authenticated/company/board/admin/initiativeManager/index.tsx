@@ -26,8 +26,8 @@ import { NewTagDialog } from "../../../../../../../../components/newTagDialog";
 import { sortBy } from "lodash";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../../../../../../../utils/mapColorToMaterialThemeColorLight";
-import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
-import { EditTagDialog } from "../../../../../../../../components/editTagDialog";
+import { ConfirmDialog } from "../../../components/confirmDialog";
+import { EditTagDialog } from "./components/editTagDialog";
 
 const useStyles = makeStyles({
     toolbar: {

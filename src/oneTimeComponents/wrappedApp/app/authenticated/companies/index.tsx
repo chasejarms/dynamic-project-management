@@ -13,7 +13,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../redux/storeState";
-import { CompaniesContainer } from "../../../../../components/companiesContainer";
+import { CompaniesContainer } from "./components/companiesContainer";
 
 export function Companies() {
     const theme = useTheme();

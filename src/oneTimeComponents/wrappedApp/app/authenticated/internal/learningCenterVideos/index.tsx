@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../api";
-import { InternalUserContainer } from "../../../../../../components/internalUserContainer";
+import { InternalUserContainer } from "../components/internalUserContainer";
 import { WrappedButton } from "../../../components/wrappedButton";
 import Axios, { AxiosResponse } from "axios";
 

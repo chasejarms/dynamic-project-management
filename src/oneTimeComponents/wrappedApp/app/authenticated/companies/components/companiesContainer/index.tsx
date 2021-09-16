@@ -4,24 +4,19 @@ import React from "react";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
-} from "../authenticatedPageContainer";
+} from "../../../../../../../components/authenticatedPageContainer";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;
 }
 
-export function InternalUserContainer(props: IBoardContainerProps) {
+export function CompaniesContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
-            text: "Learning Center Editor",
-            route: `/app/internal/learning-center-editor`,
-        },
-        {
-            text: "Learning Center Videos",
-            route: `/app/internal/learning-center-videos`,
+            text: "Companies",
+            route: `/app/companies`,
         },
     ];
-
     return (
         <AuthenticatedPageContainer navItems={navItems}>
             {props.children}

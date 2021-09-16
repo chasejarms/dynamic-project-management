@@ -2,12 +2,12 @@
 import { jsx, css } from "@emotion/react";
 import { Theme, Typography, useTheme } from "@material-ui/core";
 import React from "react";
-import { useBreakpoint } from "../../hooks/useBreakpoint";
-import { composeCSS } from "../../styles/composeCSS";
+import { useBreakpoint } from "../../../../../../hooks/useBreakpoint";
+import { composeCSS } from "../../../../../../styles/composeCSS";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
+} from "../../../components/wrappedButton";
 
 export interface ILandingPageCommonSectionProps {
     title: string;

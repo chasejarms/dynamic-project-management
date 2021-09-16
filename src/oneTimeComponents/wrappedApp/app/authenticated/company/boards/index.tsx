@@ -13,7 +13,7 @@ import { IBoard } from "../../../../../../models/board";
 import { BoardsContainer } from "../components/boardsContainer";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { BoardForCompany } from "./components/boardForCompany";
-import { ConfirmDialog } from "../../../../../../components/confirmDialog";
+import { ConfirmDialog } from "../components/confirmDialog";
 import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
 
 export function Boards() {
