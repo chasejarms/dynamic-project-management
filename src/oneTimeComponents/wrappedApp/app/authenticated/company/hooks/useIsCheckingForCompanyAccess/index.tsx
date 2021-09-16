@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useCompanyUser } from "../../../../../../../hooks/useCompanyUser";
+import { useCompanyUser } from "../useCompanyUser";
 
 export function useIsCheckingForCompanyAccess() {
     const user = useCompanyUser();

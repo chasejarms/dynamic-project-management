@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
-import { useCompanyUser } from "../../../../../../../hooks/useCompanyUser";
+import { useCompanyUser } from "../../hooks/useCompanyUser";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,

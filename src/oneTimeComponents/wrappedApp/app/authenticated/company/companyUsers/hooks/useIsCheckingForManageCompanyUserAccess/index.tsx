@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useCompanyUser } from "../../../../../../../../hooks/useCompanyUser";
+import { useCompanyUser } from "../../../hooks/useCompanyUser";
 import { useHistory } from "react-router-dom";
 
 export function useIsCheckingForManageCompanyUserAccess() {

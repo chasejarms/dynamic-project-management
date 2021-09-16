@@ -17,7 +17,7 @@ import { IUser } from "../../../../../../../../models/user";
 import { cloneDeep } from "lodash";
 import { BoardRightsAction } from "../../../../../../../../models/boardRightsAction";
 import { BoardAdminContainer } from "../components/boardAdminContainer";
-import { useCompanyUser } from "../../../../../../../../hooks/useCompanyUser";
+import { useCompanyUser } from "../../../hooks/useCompanyUser";
 
 export function BoardUsers() {
     const { companyId, boardId } = useAppRouterParams();

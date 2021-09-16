@@ -14,7 +14,7 @@ import { BoardsContainer } from "../components/boardsContainer";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { BoardForCompany } from "./components/boardForCompany";
 import { ConfirmDialog } from "../components/confirmDialog";
-import { useCompanyUser } from "../../../../../../hooks/useCompanyUser";
+import { useCompanyUser } from "../hooks/useCompanyUser";
 
 export function Boards() {
     const theme = useTheme();
