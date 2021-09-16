@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useInternalUser } from "../../../../../../../hooks/useInternalUser";
+import { useInternalUser } from "./useInternalUser";
 
 export function useIsCheckingForInternalUser() {
     const internalUser = useInternalUser();

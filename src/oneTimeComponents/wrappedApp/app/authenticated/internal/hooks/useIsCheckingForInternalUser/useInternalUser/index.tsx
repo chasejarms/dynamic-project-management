@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
+import { IStoreState } from "../../../../../../../../redux/storeState";
 
 export function useInternalUser() {
     const internalUser = useSelector((state: IStoreState) => {
