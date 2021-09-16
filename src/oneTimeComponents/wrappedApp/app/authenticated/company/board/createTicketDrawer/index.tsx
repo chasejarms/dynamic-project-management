@@ -7,7 +7,7 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { useEffect, ChangeEvent, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Api } from "../../../../../../../api";
-import { useIsBoardAdmin } from "../../../../../../../hooks/useIsBoardAdmin";
+import { useIsBoardAdmin } from "../hooks/useIsBoardAdmin";
 import { IColumn } from "../../../../../../../models/column";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";

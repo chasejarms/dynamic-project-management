@@ -1,5 +1,5 @@
-import { useAppRouterParams } from "../useAppRouterParams";
-import { useCompanyUser } from "../useCompanyUser";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useCompanyUser } from "../../../../../../../../hooks/useCompanyUser";
 
 export function useIsBoardAdmin() {
     const { boardId } = useAppRouterParams();

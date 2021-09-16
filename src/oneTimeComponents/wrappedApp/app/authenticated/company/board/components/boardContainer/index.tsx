@@ -13,7 +13,7 @@ import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { createCompanyBoardKey } from "../../../../../../../../utils/createCompanyBoardKey";
 import { Typography } from "@material-ui/core";
-import { useIsBoardAdmin } from "../../../../../../../../hooks/useIsBoardAdmin";
+import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
 
 export interface IBoardContainer {
     children: React.ReactNode;
