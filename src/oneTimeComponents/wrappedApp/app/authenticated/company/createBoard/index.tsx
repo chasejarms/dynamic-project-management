@@ -9,7 +9,7 @@ import { WrappedTextField } from "../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
-import { BottomPageToolbar } from "../../../../../../components/bottomPageToolbar";
+import { BottomPageToolbar } from "../components/bottomPageToolbar";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { setUserAsBoardAdmin } from "../../../../../../redux/appBootstrapInformation";
 import { useDispatch } from "react-redux";

@@ -6,7 +6,7 @@ import {
     ITicketTemplateTextSectionControlState,
     ITicketTemplateNumberSectionControlState,
 } from "../../../../../../../../../../../redux/ticketTemplates";
-import { BottomPageToolbar } from "../../../../../../../../../../../components/bottomPageToolbar";
+import { BottomPageToolbar } from "../../../../../../components/bottomPageToolbar";
 import { IWrappedButtonProps } from "../../../../../../../../../../components/wrappedButton";
 
 export interface ITicketTemplateBottomToolbarProps {
