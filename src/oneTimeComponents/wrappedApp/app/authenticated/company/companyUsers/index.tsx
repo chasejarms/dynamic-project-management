@@ -25,7 +25,7 @@ import { CenterLoadingSpinner } from "../../components/centerLoadingSpinner";
 import { WrappedButton } from "../../../components/wrappedButton";
 import { WrappedTextField } from "../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
-import { useControl } from "../../../../../../hooks/useControl";
+import { useControl } from "../../../hooks/useControl";
 import { useEmailControl } from "../../../hooks/useEmailControl";
 import { useNameControl } from "../../../hooks/useNameControl";
 import { IUser } from "../../../../../../models/user";

@@ -19,7 +19,7 @@ import {
     WrappedButton,
 } from "../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
-import { useControl } from "../../../../../../../../hooks/useControl";
+import { useControl } from "../../../../../hooks/useControl";
 import { IColumn } from "../../../../../../../../models/column";
 import { generateUniqueId } from "../../../../../../../../utils/generateUniqueId";
 import { EditableColumnCard } from "./components/editableColumnCard";

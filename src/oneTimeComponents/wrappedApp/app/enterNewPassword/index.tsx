@@ -6,7 +6,7 @@ import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../components/wrappedButton";
 import { WrappedTextField } from "../components/wrappedTextField";
-import { useControl } from "../../../../hooks/useControl";
+import { useControl } from "../hooks/useControl";
 import { controlsAreValid } from "../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";

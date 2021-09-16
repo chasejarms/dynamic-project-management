@@ -1,5 +1,5 @@
 import { controlsAreValid } from "./index";
-import { useControl } from "../../hooks/useControl";
+import { useControl } from "../../oneTimeComponents/wrappedApp/app/hooks/useControl";
 
 describe("controlsAreValid", () => {
     it("should only return true if all controls are valid", () => {

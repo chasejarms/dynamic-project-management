@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { StringValidator } from "../../../../../classes/StringValidator";
-import { useControl } from "../../../../../hooks/useControl";
+import { useControl } from "../useControl";
 
 export function useNameControl() {
     const nameControl = useControl({

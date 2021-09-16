@@ -4,7 +4,7 @@ import { CardContent, Card, CardActions } from "@material-ui/core";
 import { DragIndicator } from "@material-ui/icons";
 import { IColumn } from "../../../../../../../../../../models/column";
 import { composeCSS } from "../../../../../../../../../../styles/composeCSS";
-import { useControl } from "../../../../../../../../../../hooks/useControl";
+import { useControl } from "../../../../../../../hooks/useControl";
 import { ChangeEvent, useEffect } from "react";
 import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
