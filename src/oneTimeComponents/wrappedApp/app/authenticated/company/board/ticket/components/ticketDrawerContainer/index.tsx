@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import { useAppRouterParams } from "../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
 import { Tabs, Tab } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
-import { TicketType } from "../../models/ticket/ticketType";
-import { DrawerContainer } from "../../oneTimeComponents/components/drawerContainer";
+import { TicketType } from "../../../../../../../../../models/ticket/ticketType";
+import { DrawerContainer } from "../../../../../../../../components/drawerContainer";
 
 export interface TicketDrawerContainerProps {
     children: React.ReactNode;

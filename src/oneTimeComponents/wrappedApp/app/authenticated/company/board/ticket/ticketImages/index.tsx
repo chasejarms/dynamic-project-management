@@ -11,7 +11,7 @@ import { signedUrlReplace } from "../../../../../../../../utils/signedUrlReplace
 import { TicketImageContainer } from "./components/ticketImageContainer";
 import { sortBy } from "lodash";
 import { NoDataWithActionButton } from "../../../../../../../../components/noDataWithActionButton";
-import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
+import { TicketDrawerContainer } from "../components/ticketDrawerContainer";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 
 export interface ITicketImagesProps {

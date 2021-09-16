@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
-import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
+import { TicketDrawerContainer } from "../components/ticketDrawerContainer";
 import { TicketFields } from "../../components/ticketFields";
 import { IWrappedButtonProps } from "../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
