@@ -12,7 +12,7 @@ import { TicketTemplateForBoard } from "../components/ticketTemplateForBoard";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../../../../components/wrappedButton";
+} from "../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 

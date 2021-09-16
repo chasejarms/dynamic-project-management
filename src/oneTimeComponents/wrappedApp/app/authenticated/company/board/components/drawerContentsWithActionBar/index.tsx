@@ -4,7 +4,7 @@ import { Typography } from "@material-ui/core";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../../../components/wrappedButton";
+} from "../../../../../components/wrappedButton";
 
 export interface IDrawerContentsWithActionBarProps {
     leftWrappedButtonProps?: IWrappedButtonProps[];

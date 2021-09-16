@@ -4,7 +4,7 @@ import { makeStyles, Typography } from "@material-ui/core";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../oneTimeComponents/components/wrappedButton";
+} from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
 
 export interface INoDataWithActionButtonProps {
     text: string;

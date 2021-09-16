@@ -7,7 +7,7 @@ import { composeCSS } from "../../styles/composeCSS";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../oneTimeComponents/components/wrappedButton";
+} from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
 
 export interface ILandingPageCommonSectionProps {
     title: string;

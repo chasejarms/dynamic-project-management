@@ -12,7 +12,7 @@ import {
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { useNonArchivedBoardLogic } from "../hooks/useNonArchivedBoardLogic";
 import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
-import { WrappedButton } from "../../../../../../components/wrappedButton";
+import { WrappedButton } from "../../../../components/wrappedButton";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 

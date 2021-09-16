@@ -12,7 +12,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import { ArrowForwardIos, AccountCircle } from "@material-ui/icons";
 import { composeCSS } from "../../styles/composeCSS";
-import { WrappedButton } from "../../oneTimeComponents/components/wrappedButton";
+import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
 import { useAppRouterParams } from "../../hooks/useAppRouterParams";
 import { cognitoUserSingleton } from "../../classes/CognitoUserSingleton";
 import { useDispatch, useSelector } from "react-redux";

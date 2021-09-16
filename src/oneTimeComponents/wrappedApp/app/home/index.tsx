@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
 import { LandingPageCommonSection } from "../../../../components/landingPageCommonSection";
-import { IWrappedButtonProps } from "../../../components/wrappedButton";
+import { IWrappedButtonProps } from "../components/wrappedButton";
 import { useHistory } from "react-router-dom";
 import { PrioritizationIsToughSvg } from "../../../../components/landingPageSvgs/prioritizationIsTough";
 import { TeamVelocitySuffers } from "../../../../components/landingPageSvgs/teamVelocitySuffers";

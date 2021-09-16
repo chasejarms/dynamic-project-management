@@ -4,7 +4,7 @@ import { Paper } from "@material-ui/core";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../oneTimeComponents/components/wrappedButton";
+} from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
 import React from "react";
 
 export interface IOverflowContentAndActionBarProps {

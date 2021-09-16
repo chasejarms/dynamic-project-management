@@ -17,7 +17,7 @@ import { StringValidator } from "../../../../../../../../classes/StringValidator
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../../../components/wrappedButton";
+} from "../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../../../hooks/useControl";
 import { IColumn } from "../../../../../../../../models/column";

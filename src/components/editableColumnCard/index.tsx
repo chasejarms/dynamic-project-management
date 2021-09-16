@@ -10,7 +10,7 @@ import { StringValidator } from "../../classes/StringValidator";
 import { WrappedTextField } from "../../oneTimeComponents/components/wrappedTextField";
 import { useDebounce } from "../../oneTimeComponents/hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
-import { WrappedButton } from "../../oneTimeComponents/components/wrappedButton";
+import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
 import { doneColumnReservedId } from "../../constants/reservedColumnIds";
 
 export interface IEditableColumnCardProps {

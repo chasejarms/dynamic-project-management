@@ -8,7 +8,7 @@ import {
     DialogActions,
     Typography,
 } from "@material-ui/core";
-import { WrappedButton } from "../../oneTimeComponents/components/wrappedButton";
+import { WrappedButton } from "../../oneTimeComponents/wrappedApp/app/components/wrappedButton";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
 
 export interface IConfirmDialogProps {

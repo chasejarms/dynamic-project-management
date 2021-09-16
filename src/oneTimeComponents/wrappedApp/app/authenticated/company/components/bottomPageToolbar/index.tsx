@@ -5,7 +5,7 @@ import { Paper } from "@material-ui/core";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../../components/wrappedButton";
+} from "../../../../components/wrappedButton";
 
 export interface IBottomPageToolbarProps {
     wrappedButtonProps: IWrappedButtonProps[];

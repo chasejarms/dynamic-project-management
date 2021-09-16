@@ -4,7 +4,7 @@ import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../../../api";
 import { StringValidator } from "../../../../../../classes/StringValidator";
 import { BoardsContainer } from "../components/boardsContainer";
-import { IWrappedButtonProps } from "../../../../../components/wrappedButton";
+import { IWrappedButtonProps } from "../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../hooks/useControl";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
