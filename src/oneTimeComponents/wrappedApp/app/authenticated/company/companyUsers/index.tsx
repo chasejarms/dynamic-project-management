@@ -29,7 +29,7 @@ import { useControl } from "../../../hooks/useControl";
 import { useEmailControl } from "../../../hooks/useEmailControl";
 import { useNameControl } from "../../../hooks/useNameControl";
 import { IUser } from "../../../../../../models/user";
-import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
+import { controlsAreValid } from "../../../utils/controlsAreValid";
 import { Delete } from "@material-ui/icons";
 import { ConfirmDialog } from "../components/confirmDialog";
 import { sortBy } from "lodash";
