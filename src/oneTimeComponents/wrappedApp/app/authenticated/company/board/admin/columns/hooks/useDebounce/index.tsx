@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSkipNEffects } from "../useSkipNEffects";
 
 export function useDebounce(value: any, delay: number, n?: number) {
