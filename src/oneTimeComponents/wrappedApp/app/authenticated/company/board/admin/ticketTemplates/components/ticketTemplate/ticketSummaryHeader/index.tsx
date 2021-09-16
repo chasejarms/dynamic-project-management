@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Theme, Typography, useTheme } from "@material-ui/core";
-import { TicketPriorityScore } from "../../../../../../../../../../../components/ticketPriorityScore";
+import { TicketPriorityScore } from "./ticketPriorityScore";
 
 export interface ITicketSummaryHeaderProps {
     ticketId: string;

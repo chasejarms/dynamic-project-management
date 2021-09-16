@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar } from "@material-ui/core";
 import { ChangeEvent, useEffect, useState } from "react";
 import { StringValidator } from "../../../../classes/StringValidator";
-import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
+import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../components/wrappedButton";
 import { WrappedTextField } from "../components/wrappedTextField";
 import { useControl } from "../../../../hooks/useControl";

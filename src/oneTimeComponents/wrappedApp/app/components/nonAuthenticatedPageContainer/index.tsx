@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Theme, useTheme } from "@material-ui/core";
-import NonAuthenticatedNavBar from "../nonAuthenticatedNavBar";
-import { composeCSS } from "../../styles/composeCSS";
+import NonAuthenticatedNavBar from "./nonAuthenticatedNavBar";
+import { composeCSS } from "../../../../../styles/composeCSS";
 
 interface INonAuthenticatedPageContainerProps {
     children: React.ReactNode;

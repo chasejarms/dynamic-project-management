@@ -12,7 +12,7 @@ import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
 import { StringValidator } from "../../../../classes/StringValidator";
 import { userPool } from "../../../../classes/UserPool";
-import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
+import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";
 import { WrappedButton } from "../components/wrappedButton";
 import { WrappedTextField } from "../components/wrappedTextField";
 import { useControl } from "../../../../hooks/useControl";

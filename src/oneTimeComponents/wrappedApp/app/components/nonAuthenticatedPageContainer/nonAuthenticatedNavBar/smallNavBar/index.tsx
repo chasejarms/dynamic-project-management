@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React, { useState } from "react";
-import { INavBarItem } from "../../navBar";
+import { INavBarItem } from "../../../../../../../components/navBar";
 import { makeStyles, Theme, Typography, useTheme } from "@material-ui/core";
 import { Close, Menu } from "@material-ui/icons";
-import { composeCSS } from "../../../styles/composeCSS";
+import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useLocation, useHistory } from "react-router-dom";
-import { CompanyLogo } from "../../companyLogo";
+import { CompanyLogo } from "../../../../../../../components/companyLogo";
 
 interface ISmallNavBarProps {
     navItems: INavBarItem[];

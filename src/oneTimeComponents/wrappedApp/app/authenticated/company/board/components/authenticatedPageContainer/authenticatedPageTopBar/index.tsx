@@ -24,7 +24,7 @@ import {
     IIndentedAction,
     QuickActionsPopoverContent,
 } from "../../quickActionsPopoverContent";
-import { CompanyLogoIcon } from "../../../../../../../../../components/companyLogoIcon";
+import { CompanyLogoIcon } from "../companyLogoIcon";
 import { BoardPriorityType } from "../../../../../../../../../models/boardPriorityType";
 
 export interface IAuthenticatedPageTopBarProps {}

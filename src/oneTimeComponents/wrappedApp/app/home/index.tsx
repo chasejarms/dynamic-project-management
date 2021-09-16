@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { NonAuthenticatedPageContainer } from "../../../../components/nonAuthenticatedPageContainer";
+import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";
 import { LandingPageCommonSection } from "./components/landingPageCommonSection";
 import { IWrappedButtonProps } from "../components/wrappedButton";
 import { useHistory } from "react-router-dom";

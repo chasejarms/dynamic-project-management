@@ -3,40 +3,12 @@ import { jsx, css } from "@emotion/react";
 import { Typography } from "@material-ui/core";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { IStoreState } from "../../redux/storeState";
+import { IStoreState } from "../../../../../../../../../../../../redux/storeState";
 import mathEvaluator from "math-expression-evaluator";
-import { ITicket } from "../../models/ticket";
-import { ITicketTemplate } from "../../models/ticketTemplate";
 
 export interface ITicketPriorityScore {
     ticketTemplateId: string;
     ticketId: string;
-}
-
-export function createTicketPriorityScore(
-    ticketTemplate: ITicketTemplate,
-    ticket: ITicket
-) {
-    if (!ticketTemplate.priorityWeightingCalculation.trim()) {
-        return -20000000;
-    }
-
-    let priorityWeightingCalculation =
-        ticketTemplate.priorityWeightingCalculation;
-    ticketTemplate.sections.forEach((section, index) => {
-        if (section.type === "number") {
-            if (!!section.alias) {
-                const sectionValue = ticket.sections[index];
-                priorityWeightingCalculation = priorityWeightingCalculation.replaceAll(
-                    section.alias,
-                    sectionValue.toString()
-                );
-            }
-        }
-    });
-
-    const priority = mathEvaluator.eval(priorityWeightingCalculation);
-    return Math.round(Number(priority));
 }
 
 export function TicketPriorityScore(props: ITicketPriorityScore) {
