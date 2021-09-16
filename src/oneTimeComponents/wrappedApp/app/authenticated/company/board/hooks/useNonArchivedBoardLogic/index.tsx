@@ -12,8 +12,7 @@ import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 import { IUser } from "../../../../../../../../models/user";
-import { sortTickets } from "../../../../../../../../utils/sortTickets";
-import { ticketsToAugmentedUITickets } from "../../../../../../../../utils/ticketsToAugmentedUITickets";
+import { ticketsToAugmentedUITickets } from "../../utils/ticketsToAugmentedUITickets";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 
@@ -385,4 +384,14 @@ function createColumnsMapping(
     });
 
     return columnsMapping;
+}
+
+function sortTickets(tickets: IAugmentedUITicket[]) {
+    return sortBy(
+        tickets,
+        "pointValueFromTags",
+        (ticket: IAugmentedUITicket) => {
+            return -Number(ticket.createdTimestamp);
+        }
+    ).reverse();
 }

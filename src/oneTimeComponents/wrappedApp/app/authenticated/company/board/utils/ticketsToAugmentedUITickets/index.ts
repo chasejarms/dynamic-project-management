@@ -1,6 +1,6 @@
-import { ITicket } from "../../models/ticket";
-import { ITicketTemplate } from "../../models/ticketTemplate";
-import { IAugmentedUITicket } from "../../models/augmentedUITicket";
+import { ITicket } from "../../../../../../../../models/ticket";
+import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
+import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 import mathEvaluator from "math-expression-evaluator";
 
 export function ticketsToAugmentedUITickets(
