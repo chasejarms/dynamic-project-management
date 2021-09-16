@@ -23,8 +23,8 @@ import { IWrappedButtonProps } from "../../../../../../components/wrappedButton"
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import { CenterLoadingSpinner } from "../../../../../../../components/centerLoadingSpinner";
 import { NoDataWithActionButton } from "../../../../../../../components/noDataWithActionButton";
-import { TicketBottomToolbar } from "../../../../../../../components/ticketBottomToolbar";
 import { TicketFields } from "../components/ticketFields";
+import { DrawerContentsWithActionBar } from "../components/drawerContentsWithActionBar";
 
 export interface ICreateTicketDrawerProps {
     ticketType: TicketType;
@@ -156,6 +156,7 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
         ticketCreateRequest,
         setTicketCreateRequest,
     ] = useState<null | ITicketCreateRequest>(null);
+    const isCreatingTicket = !!ticketCreateRequest;
 
     const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
     function onCloseSnackbar() {
@@ -187,10 +188,6 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
             didCancel = true;
         };
     }, [ticketCreateRequest]);
-
-    function navigateToBoard() {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
-    }
 
     const ticket = useSelector(
         (store: IStoreState) => {
@@ -231,19 +228,46 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
           }
         : undefined;
 
+    const allControlsAreValid = useSelector((store: IStoreState) => {
+        const ticket = store.ticket[ticketPreviewId].ticket;
+
+        const titleIsValid = !ticket.title.error;
+        const summaryIsValid = !ticket.summary.error;
+        const sectionsAreValid = ticket.sections.every((section) => {
+            return !section.error;
+        });
+
+        return titleIsValid && summaryIsValid && sectionsAreValid;
+    });
+
+    const rightWrappedButtonProps: IWrappedButtonProps[] = [
+        {
+            variant: "contained",
+            onClick: onClickCreate,
+            color: "primary",
+            disabled:
+                isCreatingTicket || !allControlsAreValid || !ticketTemplate,
+            showSpinner: isCreatingTicket,
+            children: "Create Ticket",
+        },
+    ];
+
     return (
         <DrawerContainer darkOpacityOnClick={closeDrawer}>
-            {isLoadingTicketTemplates ? (
-                <CenterLoadingSpinner size="large" />
-            ) : ticketTemplates.length === 0 ? (
-                <NoDataWithActionButton
-                    text={
-                        "No ticket templates have been created for this board"
-                    }
-                    wrappedButtonProps={createTicketTemplateButtonProps}
-                />
-            ) : (
-                <div css={classes.container}>
+            <DrawerContentsWithActionBar
+                title="Create Ticket"
+                rightWrappedButtonProps={rightWrappedButtonProps}
+            >
+                {isLoadingTicketTemplates ? (
+                    <CenterLoadingSpinner size="large" />
+                ) : ticketTemplates.length === 0 ? (
+                    <NoDataWithActionButton
+                        text={
+                            "No ticket templates have been created for this board"
+                        }
+                        wrappedButtonProps={createTicketTemplateButtonProps}
+                    />
+                ) : (
                     <div css={classes.ticketContentContainer}>
                         <div css={classes.nonTagTicketInformationContainer}>
                             <FormControl fullWidth>
@@ -320,32 +344,18 @@ export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
                             )}
                         </div>
                     </div>
-                    <TicketBottomToolbar
-                        ticketTemplateId={ticketTemplate?.shortenedItemId}
-                        ticketId={ticketPreviewId}
-                        actionButtonText="Create Ticket"
-                        onClickActionButton={onClickCreate}
-                        showActionButtonSpinner={!!ticketCreateRequest}
-                    />
-                </div>
-            )}
+                )}
+            </DrawerContentsWithActionBar>
         </DrawerContainer>
     );
 }
 
 const createClasses = () => {
-    const container = css`
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-    `;
-
     const ticketContentContainer = css`
         flex-grow: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 32px;
     `;
 
     const nonTagTicketInformationContainer = css`
@@ -359,56 +369,9 @@ const createClasses = () => {
         margin-top: 16px;
     `;
 
-    const ticketTagsInnerContainer = css`
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    `;
-
-    const outerTicketTagsContainer = css`
-        display: grid;
-        height: 100%;
-        grid-template-rows: 1fr 1fr;
-    `;
-
-    const outerTagsOptionsContainer = css`
-        display: grid;
-        height: 100%;
-        grid-template-rows: 1fr 1fr;
-    `;
-
-    const allChipsSpacingContainer = css`
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        margin-top: 8px;
-    `;
-
-    const individualChipContainer = css`
-        margin-right: 4px;
-        margin-bottom: 4px;
-    `;
-
-    const centerAllTagsMessageContainer = css`
-        display: flex;
-        flex-grow: 1;
-        justify-content: center;
-        align-items: center;
-        padding: 16px;
-        text-align: center;
-    `;
-
     return {
-        container,
         ticketContentContainer,
         nonTagTicketInformationContainer,
         ticketSectionsContainer,
-        ticketTagsInnerContainer,
-        outerTicketTagsContainer,
-        outerTagsOptionsContainer,
-        allChipsSpacingContainer,
-        individualChipContainer,
-        centerAllTagsMessageContainer,
     };
 };

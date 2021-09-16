@@ -61,11 +61,11 @@ export function BoardContainer(props: IBoardContainer) {
             route: `/app/company/${companyId}/board/${boardId}/tickets`,
         },
         {
-            text: "Backlog Tickets",
+            text: "Backlog",
             route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
         },
         {
-            text: "Archived Tickets",
+            text: "Archive",
             route: `/app/company/${companyId}/board/${boardId}/archived-tickets`,
         },
         isBoardAdmin && {

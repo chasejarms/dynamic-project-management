@@ -7,7 +7,7 @@ import { CenterLoadingSpinner } from "../../../../../../../../components/centerL
 import { ConfirmDialog } from "../../../../../../../../components/confirmDialog";
 import { TicketDrawerContainer } from "../../../../../../../../components/ticketDrawerContainer";
 import { TicketFields } from "../../components/ticketFields";
-import { WrappedButton } from "../../../../../../../components/wrappedButton";
+import { IWrappedButtonProps } from "../../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
@@ -15,6 +15,7 @@ import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdat
 import { IStoreState } from "../../../../../../../../redux/storeState";
 import { setInitialTicketData } from "../../../../../../../../redux/ticket";
 import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
+import { DrawerContentsWithActionBar } from "../../components/drawerContentsWithActionBar";
 
 export interface ITicketHomeProps {
     onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
@@ -197,6 +198,27 @@ export function TicketHome(props: ITicketHomeProps) {
 
     const classes = createClasses();
     const ticketUpdateInProgress = !!ticketUpdateRequest;
+    const leftWrappedButtonProps: IWrappedButtonProps[] = [
+        {
+            variant: "text",
+            onClick: onClickDeleteTicketButton,
+            color: "secondary",
+            disabled: ticketUpdateInProgress || isDeletingTicket,
+            showSpinner: isDeletingTicket,
+            children: "Delete",
+        },
+    ];
+
+    const rightWrappedButtonProps: IWrappedButtonProps[] = [
+        {
+            variant: "contained",
+            onClick: onClickUpdate,
+            color: "primary",
+            disabled: ticketUpdateInProgress || isDeletingTicket,
+            showSpinner: ticketUpdateInProgress,
+            children: "Update",
+        },
+    ];
 
     return (
         <TicketDrawerContainer
@@ -208,43 +230,20 @@ export function TicketHome(props: ITicketHomeProps) {
                     <CenterLoadingSpinner size="large" />
                 </div>
             ) : (
-                <div css={classes.drawerContentContainerLoaded}>
-                    <div css={classes.drawerInnerContentContainer}>
-                        <TicketFields
-                            ticketTemplateId={
-                                ticketState.ticketTemplate.shortenedItemId
-                            }
-                            ticketId={ticketId}
-                            isTicketPreview={false}
-                            disabled={
-                                ticketUpdateInProgress || isDeletingTicket
-                            }
-                            removePadding
-                        />
-                    </div>
-                    <div css={classes.drawerActionButtonContainer}>
-                        <WrappedButton
-                            variant="text"
-                            onClick={onClickDeleteTicketButton}
-                            color="secondary"
-                            disabled={
-                                ticketUpdateInProgress || isDeletingTicket
-                            }
-                            showSpinner={isDeletingTicket}
-                            children={"Delete"}
-                        />
-                        <WrappedButton
-                            variant="contained"
-                            onClick={onClickUpdate}
-                            color="primary"
-                            disabled={
-                                ticketUpdateInProgress || isDeletingTicket
-                            }
-                            showSpinner={ticketUpdateInProgress}
-                            children={"Update"}
-                        />
-                    </div>
-                </div>
+                <DrawerContentsWithActionBar
+                    leftWrappedButtonProps={leftWrappedButtonProps}
+                    rightWrappedButtonProps={rightWrappedButtonProps}
+                >
+                    <TicketFields
+                        ticketTemplateId={
+                            ticketState.ticketTemplate.shortenedItemId
+                        }
+                        ticketId={ticketId}
+                        isTicketPreview={false}
+                        disabled={ticketUpdateInProgress || isDeletingTicket}
+                        removePadding
+                    />
+                </DrawerContentsWithActionBar>
             )}
             {showConfirmDeleteTicketDialog && (
                 <ConfirmDialog
@@ -262,12 +261,6 @@ export function TicketHome(props: ITicketHomeProps) {
 }
 
 const createClasses = () => {
-    const drawerContentContainerLoaded = css`
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    `;
-
     const drawerContentContainerLoading = css`
         height: 100%;
         width: 100%;
@@ -276,27 +269,7 @@ const createClasses = () => {
         align-items: center;
     `;
 
-    const drawerInnerContentContainer = css`
-        padding: 16px;
-        flex-grow: 1;
-        overflow-y: auto;
-        height: 0px;
-    `;
-
-    const drawerActionButtonContainer = css`
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        flex: 0 0 60px;
-        overflow: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 16px;
-    `;
-
     return {
-        drawerInnerContentContainer,
-        drawerActionButtonContainer,
-        drawerContentContainerLoaded,
         drawerContentContainerLoading,
     };
 };
