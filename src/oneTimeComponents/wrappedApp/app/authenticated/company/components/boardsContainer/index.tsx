@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 import { useCompanyUser } from "../../hooks/useCompanyUser";
 import {
     AuthenticatedPageContainer,

@@ -23,7 +23,7 @@ import {
 } from "../../../../../../../../constants/reservedColumnIds";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,

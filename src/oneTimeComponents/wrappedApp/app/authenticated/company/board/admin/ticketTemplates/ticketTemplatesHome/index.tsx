@@ -13,7 +13,7 @@ import {
     IWrappedButtonProps,
     WrappedButton,
 } from "../../../../../../components/wrappedButton";
-import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 
 export function TicketTemplatesHome() {

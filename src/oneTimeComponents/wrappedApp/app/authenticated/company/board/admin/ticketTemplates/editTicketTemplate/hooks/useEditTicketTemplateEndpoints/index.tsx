@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Api } from "../../../../../../../../../../../api";
 import { IStoreState } from "../../../../../../../../../../../redux/storeState";
 import { setWeightedTicketTemplate } from "../../../../../../../../../../../redux/ticketTemplates";
-import { useAppRouterParams } from "../../../../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 
 export function useEditTicketTemplateEndpoints() {
     const { boardId, companyId, ticketTemplateId } = useAppRouterParams();

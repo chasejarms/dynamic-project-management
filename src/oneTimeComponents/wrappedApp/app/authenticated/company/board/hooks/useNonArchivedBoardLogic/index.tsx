@@ -12,7 +12,7 @@ import { IUser } from "../../../../../../../../models/user";
 import { createColumnsMapping } from "../../../../../../../../utils/createColumnsMapping";
 import { sortTickets } from "../../../../../../../../utils/sortTickets";
 import { ticketsToAugmentedUITickets } from "../../../../../../../../utils/ticketsToAugmentedUITickets";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 
 export function useNonArchivedBoardLogic(

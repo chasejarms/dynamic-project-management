@@ -11,7 +11,7 @@ import {
 import { Add } from "@material-ui/icons";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { isEqual, cloneDeep } from "lodash";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { Api } from "../../../../../../../../api";
 import { StringValidator } from "../../../../../../../../classes/StringValidator";
 import {

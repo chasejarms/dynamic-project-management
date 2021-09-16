@@ -15,7 +15,7 @@ import {
 import { MoreHoriz } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
-import { useAppRouterParams } from "../../../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { IFileForTicket } from "../../../../../../../../../../models/fileForTicket";
 import { ConfirmDialog } from "../../../../../components/confirmDialog";
 import {

@@ -10,7 +10,7 @@ import { useControl } from "../../../hooks/useControl";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../components/bottomPageToolbar";
-import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../hooks/useAppRouterParams";
 import { setUserAsBoardAdmin } from "../../../../../../redux/appBootstrapInformation";
 import { useDispatch } from "react-redux";
 import { BoardPriorityType } from "../../../../../../models/boardPriorityType";

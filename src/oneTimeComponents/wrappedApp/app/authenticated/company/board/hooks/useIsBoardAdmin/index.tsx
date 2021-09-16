@@ -1,4 +1,4 @@
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { useCompanyUser } from "../../../hooks/useCompanyUser";
 
 export function useIsBoardAdmin() {

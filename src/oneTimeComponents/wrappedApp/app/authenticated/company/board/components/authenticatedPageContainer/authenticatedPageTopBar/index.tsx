@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { ArrowForwardIos, AccountCircle } from "@material-ui/icons";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
-import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { cognitoUserSingleton } from "../../../../../../../../../classes/CognitoUserSingleton";
 import { useDispatch, useSelector } from "react-redux";
 import { resetAppBootstrapInformation } from "../../../../../../../../../redux/appBootstrapInformation";

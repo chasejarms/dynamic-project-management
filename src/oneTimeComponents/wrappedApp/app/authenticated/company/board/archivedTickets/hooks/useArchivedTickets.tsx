@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../api";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IColumn } from "../../../../../../../../models/column";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";

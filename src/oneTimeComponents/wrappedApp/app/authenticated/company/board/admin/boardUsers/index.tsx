@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
-import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IUser } from "../../../../../../../../models/user";
 import { cloneDeep } from "lodash";
 import { BoardRightsAction } from "../../../../../../../../models/boardRightsAction";

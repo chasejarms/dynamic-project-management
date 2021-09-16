@@ -10,7 +10,7 @@ import { useControl } from "../../../hooks/useControl";
 import { controlsAreValid } from "../../../../../../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../components/bottomPageToolbar";
-import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../hooks/useAppRouterParams";
 import { useEmailControl } from "../../../hooks/useEmailControl";
 import { useNameControl } from "../../../hooks/useNameControl";
 

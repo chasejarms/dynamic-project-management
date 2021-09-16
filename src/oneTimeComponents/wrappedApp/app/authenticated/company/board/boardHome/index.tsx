@@ -14,7 +14,7 @@ import { useNonArchivedBoardLogic } from "../hooks/useNonArchivedBoardLogic";
 import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { useHistory } from "react-router-dom";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 
 export function BoardHome() {
     const classes = createClasses();

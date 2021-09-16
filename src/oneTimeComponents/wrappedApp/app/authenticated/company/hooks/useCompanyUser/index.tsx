@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../redux/storeState";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 
 export function useCompanyUser() {
     const { companyId } = useAppRouterParams();

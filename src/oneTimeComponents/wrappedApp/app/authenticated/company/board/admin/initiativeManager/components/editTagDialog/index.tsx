@@ -10,7 +10,7 @@ import {
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
 import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
-import { useAppRouterParams } from "../../../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../../../../models/tag";
 import {

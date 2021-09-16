@@ -6,7 +6,7 @@ import {
     createTicketTemplateId,
     resetWeightedTicketTemplateCreationState,
 } from "../../../../../../../../../../../redux/ticketTemplates";
-import { useAppRouterParams } from "../../../../../../../../../../../hooks/useAppRouterParams";
+import { useAppRouterParams } from "../../../../../../../../hooks/useAppRouterParams";
 
 export function useCreateTicketTemplateCall() {
     const { boardId, companyId } = useAppRouterParams();
