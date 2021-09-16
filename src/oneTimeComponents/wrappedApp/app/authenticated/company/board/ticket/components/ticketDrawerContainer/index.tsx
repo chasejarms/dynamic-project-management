@@ -5,7 +5,7 @@ import { useAppRouterParams } from "../../../../../../../../../hooks/useAppRoute
 import { Tabs, Tab } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
 import { TicketType } from "../../../../../../../../../models/ticket/ticketType";
-import { DrawerContainer } from "../../../../../../../../components/drawerContainer";
+import { DrawerContainer } from "../../../components/drawerContainer";
 
 export interface TicketDrawerContainerProps {
     children: React.ReactNode;

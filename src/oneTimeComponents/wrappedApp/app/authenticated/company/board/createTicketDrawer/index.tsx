@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
-import { DrawerContainer } from "../../../../../../components/drawerContainer";
+import { DrawerContainer } from "../components/drawerContainer";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 import { useEffect, ChangeEvent, useState } from "react";
