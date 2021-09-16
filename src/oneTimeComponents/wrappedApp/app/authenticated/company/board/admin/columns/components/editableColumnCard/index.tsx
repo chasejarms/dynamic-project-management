@@ -8,10 +8,10 @@ import { useControl } from "../../../../../../../../../../hooks/useControl";
 import { ChangeEvent, useEffect } from "react";
 import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
 import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
-import { useDebounce } from "../../../../../../../../../hooks/useDebounce";
 import { Draggable } from "react-beautiful-dnd";
 import { WrappedButton } from "../../../../../../../components/wrappedButton";
 import { doneColumnReservedId } from "../../../../../../../../../../constants/reservedColumnIds";
+import { useDebounce } from "../../hooks/useDebounce";
 
 export interface IEditableColumnCardProps {
     column: IColumn;
