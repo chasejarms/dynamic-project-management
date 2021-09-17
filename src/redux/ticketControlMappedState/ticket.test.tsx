@@ -4,6 +4,7 @@ import ticketControlMappedStateReducer, {
     setInitialTicketData,
     ticketPreviewId,
     ticketSummaryAndTitleRequiredError,
+    updateTicketSummary,
     updateTicketTitle,
 } from ".";
 
@@ -95,6 +96,64 @@ describe("Ticket", () => {
             );
             expect(
                 ticketControlMappedState[ticketPreviewId].ticket.title.error
+            ).toBe("");
+        });
+    });
+
+    describe("updateTicketSummary action", () => {
+        it("should update the ticket summary", () => {
+            const updateTicketSummaryAction = updateTicketSummary({
+                value: "hello",
+                ticketId: ticketPreviewId,
+            });
+            const ticketControlMappedState = ticketControlMappedStateReducer(
+                undefined,
+                updateTicketSummaryAction
+            );
+            expect(
+                ticketControlMappedState[ticketPreviewId].ticket.summary.value
+            ).toBe("hello");
+        });
+
+        it("should set touched to true", () => {
+            const updateTicketSummaryAction = updateTicketSummary({
+                value: "hello",
+                ticketId: ticketPreviewId,
+            });
+            const ticketControlMappedState = ticketControlMappedStateReducer(
+                undefined,
+                updateTicketSummaryAction
+            );
+            expect(
+                ticketControlMappedState[ticketPreviewId].ticket.summary.touched
+            ).toBe(true);
+        });
+
+        it("should return the default error if a summary is not provided", () => {
+            const updateTicketSummaryAction = updateTicketSummary({
+                value: "",
+                ticketId: ticketPreviewId,
+            });
+            const ticketControlMappedState = ticketControlMappedStateReducer(
+                undefined,
+                updateTicketSummaryAction
+            );
+            expect(
+                ticketControlMappedState[ticketPreviewId].ticket.summary.error
+            ).toBe(ticketSummaryAndTitleRequiredError);
+        });
+
+        it("should return an empty string for the error if the summary is provided", () => {
+            const updateTicketSummaryAction = updateTicketSummary({
+                value: "A",
+                ticketId: ticketPreviewId,
+            });
+            const ticketControlMappedState = ticketControlMappedStateReducer(
+                undefined,
+                updateTicketSummaryAction
+            );
+            expect(
+                ticketControlMappedState[ticketPreviewId].ticket.summary.error
             ).toBe("");
         });
     });
