@@ -9,6 +9,8 @@ import ticketControlMappedStateReducer, {
     ITicketControlMappedState,
     updateSectionValue,
     ticketTitleError,
+    ticketSummaryError,
+    textSectionError,
 } from ".";
 import {
     numberValidatorIntegerError,
@@ -820,6 +822,56 @@ describe("ticketTitleError", () => {
         it("should return an empty string for the error", () => {
             const error = ticketTitleError("A");
             expect(error).toBe("");
+        });
+    });
+});
+
+describe("ticketSummaryError", () => {
+    describe("the summary is an empty string", () => {
+        it("should return the default required error", () => {
+            const error = ticketSummaryError("");
+            expect(error).toBe(ticketControlMappedStateRequiredError);
+        });
+    });
+
+    describe("the summary IS NOT an empty string", () => {
+        it("should return an empty string for the error", () => {
+            const error = ticketSummaryError("A");
+            expect(error).toBe("");
+        });
+    });
+});
+
+describe("textSectionError", () => {
+    describe("the section is required", () => {
+        describe("the value is an empty string", () => {
+            it("should return the default required error", () => {
+                const error = textSectionError("", true);
+                expect(error).toBe(ticketControlMappedStateRequiredError);
+            });
+        });
+
+        describe("the value IS NOT an empty string", () => {
+            it("should return an empty string for the error", () => {
+                const error = textSectionError("A", true);
+                expect(error).toBe("");
+            });
+        });
+    });
+
+    describe("the section IS NOT required", () => {
+        describe("the value is an empty string", () => {
+            it("should return an empty string for the error", () => {
+                const error = textSectionError("", false);
+                expect(error).toBe("");
+            });
+        });
+
+        describe("the value IS NOT an empty string", () => {
+            it("should return an empty string for the error", () => {
+                const error = textSectionError("", false);
+                expect(error).toBe("");
+            });
         });
     });
 });
