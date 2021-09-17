@@ -1,9 +1,11 @@
 import { cloneDeep, isEqual } from "lodash";
 import ticketCreationReducer, {
     initialTicketCreationState,
+    ITicketCreationState,
     resetTicketCreation,
     ticketCreationDefaultRequiredError,
     updateTicketSummary,
+    updateTicketTemplate,
     updateTicketTitle,
 } from "./";
 
@@ -111,6 +113,57 @@ describe("Ticket Creation", () => {
                 updateTicketSummaryAction
             );
             expect(ticketCreationState.summary.touched).toBe(true);
+        });
+    });
+
+    describe("Update Ticket Template", () => {
+        describe("The action payload is null", () => {
+            it("should return null for the ticket template and an empty array for the sections", () => {
+                const clonedInitialState: ITicketCreationState = cloneDeep({
+                    ...initialTicketCreationState,
+                    sections: [
+                        {
+                            value: "hello",
+                        },
+                    ],
+                    ticketTemplate: {
+                        sections: [],
+                    } as any,
+                });
+                const updateTicketTemplateAction = updateTicketTemplate(null);
+                const ticketCreationState = ticketCreationReducer(
+                    clonedInitialState,
+                    updateTicketTemplateAction
+                );
+                expect(ticketCreationState.ticketTemplate).toBeNull();
+                expect(ticketCreationState.sections.length).toBe(0);
+            });
+        });
+
+        describe("The action payload is a ticket template", () => {
+            it("should return the ticket template and an empty string for each ticket template section", () => {
+                const clonedInitialState: ITicketCreationState = cloneDeep(
+                    initialTicketCreationState
+                );
+                const updateTicketTemplateAction = updateTicketTemplate({
+                    sections: [
+                        {
+                            type: "text",
+                            label: "label",
+                            multiline: false,
+                            required: true,
+                        },
+                    ],
+                } as any);
+                const ticketCreationState = ticketCreationReducer(
+                    clonedInitialState,
+                    updateTicketTemplateAction
+                );
+                expect(
+                    ticketCreationState.ticketTemplate?.sections[0].label
+                ).toBe("label");
+                expect(ticketCreationState.sections.length).toBe(1);
+            });
         });
     });
 });
