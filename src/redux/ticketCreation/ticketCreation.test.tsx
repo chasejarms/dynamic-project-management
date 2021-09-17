@@ -4,6 +4,8 @@ import ticketCreationReducer, {
     ITicketCreationState,
     resetTicketCreation,
     ticketCreationDefaultRequiredError,
+    updateSection,
+    updateStartingColumn,
     updateTicketSummary,
     updateTicketTemplate,
     updateTicketTitle,
@@ -164,6 +166,43 @@ describe("Ticket Creation", () => {
                 ).toBe("label");
                 expect(ticketCreationState.sections.length).toBe(1);
             });
+        });
+    });
+
+    describe("Update Section", () => {
+        it("should override the existing section value with the updated section value", () => {
+            const clonedInitialState = cloneDeep({
+                ...initialTicketCreationState,
+                sections: [
+                    {
+                        value: "hello",
+                    },
+                ],
+            });
+            const updateSectionAction = updateSection({
+                value: "goodbye",
+                index: 0,
+            });
+            const ticketCreationState = ticketCreationReducer(
+                clonedInitialState,
+                updateSectionAction
+            );
+            expect(ticketCreationState.sections[0].value).toBe("goodbye");
+        });
+    });
+
+    describe("Update Starting Column", () => {
+        it("should update the starting column value", () => {
+            const clonedInitialState = cloneDeep({
+                ...initialTicketCreationState,
+                startingColumn: "abc",
+            });
+            const updateStartingColumnAction = updateStartingColumn("123");
+            const ticketCreationState = ticketCreationReducer(
+                clonedInitialState,
+                updateStartingColumnAction
+            );
+            expect(ticketCreationState.startingColumn).toBe("123");
         });
     });
 });
