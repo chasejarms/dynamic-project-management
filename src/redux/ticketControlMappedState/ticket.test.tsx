@@ -933,4 +933,117 @@ describe("numberSectionError", () => {
             });
         });
     });
+
+    describe("The number must be an integer", () => {
+        describe("The value is an integer", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: true,
+                    alias: "",
+                });
+                expect(error).toBe("");
+            });
+        });
+
+        describe("The value IS NOT an integer", () => {
+            it("should return the default integer error", () => {
+                const error = numberSectionError(5.1, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: true,
+                    alias: "",
+                });
+                expect(error).toBe(numberValidatorIntegerError);
+            });
+        });
+    });
+
+    describe("An integer is not required", () => {
+        describe("The value is an integer", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                });
+                expect(error).toBe("");
+            });
+        });
+
+        describe("The value IS NOT an integer", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5.1, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                });
+                expect(error).toBe("");
+            });
+        });
+    });
+
+    describe("The max value is 5", () => {
+        describe("The value is greater than 5", () => {
+            it("should return the default max value error", () => {
+                const error = numberSectionError(6, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                    maxValue: 5,
+                });
+                expect(error).toBe(numberValidatorMaxError);
+            });
+        });
+
+        describe("The value is 5", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                    maxValue: 5,
+                });
+                expect(error).toBe("");
+            });
+        });
+
+        describe("The value is less than 5", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(4, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                    maxValue: 5,
+                });
+                expect(error).toBe("");
+            });
+        });
+    });
+
+    describe("There is no max value", () => {
+        it("should return an empty string for the error", () => {
+            const error = numberSectionError(100000000, {
+                type: "number",
+                label: "Label",
+                required: false,
+                allowOnlyIntegers: false,
+                alias: "",
+            });
+            expect(error).toBe("");
+        });
+    });
 });
