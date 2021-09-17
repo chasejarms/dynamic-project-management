@@ -16,6 +16,8 @@ import { IStoreState } from "../../../../../../../../redux/storeState";
 import { setInitialTicketData } from "../../../../../../../../redux/ticketControlMappedState";
 import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
 import { DrawerContentsWithActionBar } from "../../components/drawerContentsWithActionBar";
+import { Typography } from "@material-ui/core";
+import { TicketTemplateDropdown } from "../../components/ticketTemplateDropdown";
 
 export interface ITicketHomeProps {
     onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
@@ -230,6 +232,14 @@ export function TicketHome(props: ITicketHomeProps) {
                     leftWrappedButtonProps={leftWrappedButtonProps}
                     rightWrappedButtonProps={rightWrappedButtonProps}
                 >
+                    <div css={classes.ticketTemplateDropdownContainer}>
+                        <TicketTemplateDropdown
+                            ticketTemplates={[ticketState.ticketTemplate]}
+                            ticketTemplate={ticketState.ticketTemplate}
+                            disabled={true}
+                            onChangeTicketTemplate={() => null}
+                        />
+                    </div>
                     <TicketFields
                         ticketTemplateId={
                             ticketState.ticketTemplate.shortenedItemId
@@ -265,7 +275,12 @@ const createClasses = () => {
         align-items: center;
     `;
 
+    const ticketTemplateDropdownContainer = css`
+        margin-bottom: 16px;
+    `;
+
     return {
         drawerContentContainerLoading,
+        ticketTemplateDropdownContainer,
     };
 };

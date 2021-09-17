@@ -26,6 +26,7 @@ import { NoDataWithActionButton } from "../components/noDataWithActionButton";
 import { TicketFields } from "../components/ticketFields";
 import { DrawerContentsWithActionBar } from "../components/drawerContentsWithActionBar";
 import { ITicket } from "../../../../../../../models/ticket";
+import { TicketTemplateDropdown } from "../components/ticketTemplateDropdown";
 
 export interface ICreateTicketProps {
     ticketType: TicketType;
@@ -281,35 +282,12 @@ export function CreateTicket(props: ICreateTicketProps) {
                 ) : (
                     <div css={classes.ticketContentContainer}>
                         <div css={classes.nonTagTicketInformationContainer}>
-                            <FormControl fullWidth>
-                                <InputLabel>Ticket Template</InputLabel>
-                                <Select
-                                    value={
-                                        ticketTemplate?.shortenedItemId || ""
-                                    }
-                                    onChange={onChangeTicketTemplate}
-                                    disabled={!!ticketCreateRequest}
-                                >
-                                    {ticketTemplates.map(
-                                        (ticketTemplateFromDatabase) => {
-                                            return (
-                                                <MenuItem
-                                                    value={
-                                                        ticketTemplateFromDatabase.shortenedItemId
-                                                    }
-                                                    key={
-                                                        ticketTemplateFromDatabase.shortenedItemId
-                                                    }
-                                                >
-                                                    {
-                                                        ticketTemplateFromDatabase.name
-                                                    }
-                                                </MenuItem>
-                                            );
-                                        }
-                                    )}
-                                </Select>
-                            </FormControl>
+                            <TicketTemplateDropdown
+                                onChangeTicketTemplate={onChangeTicketTemplate}
+                                disabled={!!ticketCreateRequest}
+                                ticketTemplate={ticketTemplate}
+                                ticketTemplates={ticketTemplates}
+                            />
                             {!!ticketTemplate && (
                                 <div css={classes.ticketSectionsContainer}>
                                     <TicketFields
