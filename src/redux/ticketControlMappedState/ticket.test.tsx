@@ -1046,4 +1046,61 @@ describe("numberSectionError", () => {
             expect(error).toBe("");
         });
     });
+
+    describe("The min value is 5", () => {
+        describe("The value is less than 5", () => {
+            it("should return the default min value error", () => {
+                const error = numberSectionError(4, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                    minValue: 5,
+                });
+                expect(error).toBe(numberValidatorMinError);
+            });
+        });
+
+        describe("The value is 5", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                    minValue: 5,
+                });
+                expect(error).toBe("");
+            });
+        });
+
+        describe("The value is greater than 5", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(6, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                    minValue: 5,
+                });
+                expect(error).toBe("");
+            });
+        });
+    });
+
+    describe("There is no min value", () => {
+        it("should return an empty string for the error", () => {
+            const error = numberSectionError(-100000000, {
+                type: "number",
+                label: "Label",
+                required: false,
+                allowOnlyIntegers: false,
+                alias: "",
+            });
+            expect(error).toBe("");
+        });
+    });
 });
