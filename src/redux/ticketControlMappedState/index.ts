@@ -247,7 +247,7 @@ export function numberSectionError(
             ? Number(value)
             : value;
     const error = new NumberValidator()
-        .required(section.required)
+        .required(section.required, ticketControlMappedStateRequiredError)
         .integer(section.allowOnlyIntegers)
         .max(section.maxValue !== undefined, section.maxValue!)
         .min(section.minValue !== undefined, section.minValue!)

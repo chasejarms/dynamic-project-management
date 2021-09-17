@@ -32,6 +32,10 @@ export interface ICustomRule {
     errorMessage: string;
 }
 
+export const numberValidatorIntegerError = "The number must be an integer";
+export const numberValidatorMaxError = "The number is larger than the max";
+export const numberValidatorMinError = "The number is smaller than the min";
+
 export class NumberValidator {
     public validatorRules: INumberValidatorRule[] = [];
 
@@ -40,8 +44,7 @@ export class NumberValidator {
             this.validatorRules.push({
                 type: "min",
                 min,
-                errorMessage:
-                    errorMessage || "The number is smaller than the min",
+                errorMessage: errorMessage || numberValidatorMinError,
             });
         }
 
@@ -53,8 +56,7 @@ export class NumberValidator {
             this.validatorRules.push({
                 type: "max",
                 max,
-                errorMessage:
-                    errorMessage || "The number is larger than the min",
+                errorMessage: errorMessage || numberValidatorMaxError,
             });
         }
 
@@ -65,7 +67,7 @@ export class NumberValidator {
         if (!!applyValidator) {
             this.validatorRules.push({
                 type: "integer",
-                errorMessage: errorMessage || "The number must be an integer",
+                errorMessage: errorMessage || numberValidatorIntegerError,
             });
         }
 

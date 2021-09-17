@@ -9,6 +9,11 @@ import ticketControlMappedStateReducer, {
     ITicketControlMappedState,
     updateSectionValue,
 } from ".";
+import {
+    numberValidatorIntegerError,
+    numberValidatorMaxError,
+    numberValidatorMinError,
+} from "../../classes/NumberValidator";
 
 describe("Ticket", () => {
     it("should have ticket control state for the ticket preview id by default", () => {
@@ -189,7 +194,7 @@ describe("Ticket", () => {
                 ];
             });
 
-            it("should mark the value as touched", () => {
+            it("should mark the control as touched", () => {
                 const updateSectionValueAction = updateSectionValue({
                     index: 0,
                     value: "hello",
@@ -324,6 +329,480 @@ describe("Ticket", () => {
             });
         });
 
-        describe("number section update", () => {});
+        describe("number section update", () => {
+            let beforeTicketControlMappedState: ITicketControlMappedState;
+
+            beforeEach(() => {
+                beforeTicketControlMappedState = cloneDeep(
+                    initialTicketControlMappedState
+                );
+                const {
+                    ticket,
+                    ticketTemplate,
+                } = beforeTicketControlMappedState[ticketPreviewId];
+                ticket.sections = [
+                    {
+                        value: "",
+                        touched: false,
+                        error: "",
+                    },
+                ];
+                ticketTemplate.sections = [
+                    {
+                        type: "number",
+                        label: "Label",
+                        required: false,
+                        allowOnlyIntegers: false,
+                        alias: "",
+                    },
+                ];
+            });
+
+            it("should mark the control as touched", () => {
+                const updateSectionValueAction = updateSectionValue({
+                    index: 0,
+                    value: 2,
+                    ticketId: ticketPreviewId,
+                });
+                const ticketControlMappedState = ticketControlMappedStateReducer(
+                    beforeTicketControlMappedState,
+                    updateSectionValueAction
+                );
+                expect(
+                    ticketControlMappedState[ticketPreviewId].ticket.sections[0]
+                        .touched
+                ).toBe(true);
+            });
+
+            it("should replace the existing value with the incoming value", () => {
+                const updateSectionValueAction = updateSectionValue({
+                    index: 0,
+                    value: 2,
+                    ticketId: ticketPreviewId,
+                });
+                const ticketControlMappedState = ticketControlMappedStateReducer(
+                    beforeTicketControlMappedState,
+                    updateSectionValueAction
+                );
+                expect(
+                    ticketControlMappedState[ticketPreviewId].ticket.sections[0]
+                        .value
+                ).toBe(2);
+            });
+
+            describe("The ticket template requires a section value", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: true,
+                            allowOnlyIntegers: false,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                describe("A value is provided", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 2,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+
+                describe("A value IS NOT provided", () => {
+                    it("should return the required error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: "",
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe(ticketControlMappedStateRequiredError);
+                    });
+                });
+            });
+
+            describe("The ticket template DOES NOT required a section value", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: false,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                describe("A value is provided", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 2,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+
+                describe("A value IS NOT provided", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: "",
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+            });
+
+            describe("The ticket template expects an integer", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: true,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                describe("The value is an integer", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 1,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+
+                describe("The value IS NOT an integer", () => {
+                    it("should return the default integer error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 1.1,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe(numberValidatorIntegerError);
+                    });
+                });
+            });
+
+            describe("The ticket template DOES NOT expect an integer", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: false,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                describe("The value is an integer", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 1,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+
+                describe("The value IS NOT an integer", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 1.1,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+            });
+
+            describe("The ticket template has a max value", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: false,
+                            maxValue: 5,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                describe("The value is greater than the max value", () => {
+                    it("should return the default max value error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 6,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe(numberValidatorMaxError);
+                    });
+                });
+
+                describe("The value is less than the max value", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 4,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+
+                describe("The value is equal to the max value", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 5,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+            });
+
+            describe("The ticket template DOES NOT have a max value", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: false,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                it("should return an empty string for the error", () => {
+                    const updateSectionValueAction = updateSectionValue({
+                        index: 0,
+                        value: 10000000,
+                        ticketId: ticketPreviewId,
+                    });
+                    const ticketControlMappedState = ticketControlMappedStateReducer(
+                        beforeTicketControlMappedState,
+                        updateSectionValueAction
+                    );
+                    expect(
+                        ticketControlMappedState[ticketPreviewId].ticket
+                            .sections[0].error
+                    ).toBe("");
+                });
+            });
+
+            describe("The ticket template has a min value", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: false,
+                            minValue: 5,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                describe("The value is greater than the min value", () => {
+                    it("should return an empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 6,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+
+                describe("The value is less than the min value", () => {
+                    it("should return the default min value error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 4,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe(numberValidatorMinError);
+                    });
+                });
+
+                describe("The value is equal to the min value", () => {
+                    it("should return am empty string for the error", () => {
+                        const updateSectionValueAction = updateSectionValue({
+                            index: 0,
+                            value: 5,
+                            ticketId: ticketPreviewId,
+                        });
+                        const ticketControlMappedState = ticketControlMappedStateReducer(
+                            beforeTicketControlMappedState,
+                            updateSectionValueAction
+                        );
+                        expect(
+                            ticketControlMappedState[ticketPreviewId].ticket
+                                .sections[0].error
+                        ).toBe("");
+                    });
+                });
+            });
+
+            describe("The ticket template DOES NOT have a min value", () => {
+                beforeEach(() => {
+                    beforeTicketControlMappedState[
+                        ticketPreviewId
+                    ].ticketTemplate.sections = [
+                        {
+                            type: "number",
+                            label: "Label",
+                            required: false,
+                            allowOnlyIntegers: false,
+                            alias: "",
+                        },
+                    ];
+                });
+
+                it("should return am empty string for the error", () => {
+                    const updateSectionValueAction = updateSectionValue({
+                        index: 0,
+                        value: -1000000,
+                        ticketId: ticketPreviewId,
+                    });
+                    const ticketControlMappedState = ticketControlMappedStateReducer(
+                        beforeTicketControlMappedState,
+                        updateSectionValueAction
+                    );
+                    expect(
+                        ticketControlMappedState[ticketPreviewId].ticket
+                            .sections[0].error
+                    ).toBe("");
+                });
+            });
+        });
     });
 });
