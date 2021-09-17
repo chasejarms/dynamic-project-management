@@ -8,6 +8,7 @@ import ticketControlMappedStateReducer, {
     updateTicketTitle,
     ITicketControlMappedState,
     updateSectionValue,
+    ticketTitleError,
 } from ".";
 import {
     numberValidatorIntegerError,
@@ -15,7 +16,7 @@ import {
     numberValidatorMinError,
 } from "../../classes/NumberValidator";
 
-describe("Ticket", () => {
+describe("Ticket Control Mapped State", () => {
     it("should have ticket control state for the ticket preview id by default", () => {
         const ticketControlMappedState = ticketControlMappedStateReducer(
             undefined,
@@ -803,6 +804,22 @@ describe("Ticket", () => {
                     ).toBe("");
                 });
             });
+        });
+    });
+});
+
+describe("ticketTitleError", () => {
+    describe("the title is an empty string", () => {
+        it("should return the default required error", () => {
+            const error = ticketTitleError("");
+            expect(error).toBe(ticketControlMappedStateRequiredError);
+        });
+    });
+
+    describe("the title IS NOT an empty string", () => {
+        it("should return an empty string for the error", () => {
+            const error = ticketTitleError("A");
+            expect(error).toBe("");
         });
     });
 });
