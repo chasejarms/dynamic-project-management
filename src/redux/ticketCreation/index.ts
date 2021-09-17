@@ -105,8 +105,9 @@ export const ticketCreationSlice = createSlice({
             }>
         ) => {
             const clonedSections = cloneDeep(state.sections);
-            const existingSection = clonedSections[action.payload.index];
-            existingSection.value = action.payload.value;
+            const { index, value } = action.payload;
+            const existingSection = clonedSections[index];
+            existingSection.value = value;
             return {
                 ...state,
                 sections: clonedSections,
