@@ -27,12 +27,12 @@ import { TicketFields } from "../components/ticketFields";
 import { DrawerContentsWithActionBar } from "../components/drawerContentsWithActionBar";
 import { ITicket } from "../../../../../../../models/ticket";
 
-export interface ICreateTicketDrawerProps {
+export interface ICreateTicketProps {
     ticketType: TicketType;
     onCreateTicket?: (newlyCreatedTicket: ITicket) => void;
 }
 
-export function CreateTicketDrawer(props: ICreateTicketDrawerProps) {
+export function CreateTicket(props: ICreateTicketProps) {
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
 

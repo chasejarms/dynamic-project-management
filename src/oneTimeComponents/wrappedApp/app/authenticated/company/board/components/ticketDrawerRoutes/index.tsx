@@ -4,7 +4,7 @@ import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
-import { CreateTicketDrawer } from "../../createTicketDrawer";
+import { CreateTicket } from "../../createTicket";
 import { TicketHome } from "../../ticket/ticketHome";
 import { TicketImages } from "../../ticket/ticketImages";
 
@@ -21,7 +21,7 @@ export function TicketDrawerRoutes(props: ITicketDrawerRoutesProps) {
     return (
         <Switch>
             <Route path={`${url}/create-ticket`} exact>
-                <CreateTicketDrawer
+                <CreateTicket
                     ticketType={props.ticketType}
                     onCreateTicket={props.onCreateTicket}
                 />
