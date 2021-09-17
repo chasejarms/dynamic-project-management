@@ -34,19 +34,19 @@ export interface ITicketControlMappedState {
     };
 }
 
-export const ticketSummaryAndTitleRequiredError = "This field is required";
+export const ticketControlMappedStateRequiredError = "This field is required";
 export const initialTicketControlMappedState: ITicketControlMappedState = {
-    TICKET_PREVIEW: {
+    [ticketPreviewId]: {
         ticket: {
             title: {
                 value: "",
                 touched: false,
-                error: ticketSummaryAndTitleRequiredError,
+                error: ticketControlMappedStateRequiredError,
             },
             summary: {
                 value: "",
                 touched: false,
-                error: ticketSummaryAndTitleRequiredError,
+                error: ticketControlMappedStateRequiredError,
             },
             sections: [],
         },
@@ -214,7 +214,7 @@ export const {
 
 export function ticketSummaryError(summary: string) {
     const error = new StringValidator()
-        .required(ticketSummaryAndTitleRequiredError)
+        .required(ticketControlMappedStateRequiredError)
         .validate(summary);
 
     return error;
@@ -222,7 +222,7 @@ export function ticketSummaryError(summary: string) {
 
 export function ticketTitleError(title: string) {
     const error = new StringValidator()
-        .required(ticketSummaryAndTitleRequiredError)
+        .required(ticketControlMappedStateRequiredError)
         .validate(title);
 
     return error;
@@ -230,7 +230,9 @@ export function ticketTitleError(title: string) {
 
 export function textSectionError(value: string, required: boolean) {
     if (required) {
-        return new StringValidator().required().validate(value);
+        return new StringValidator()
+            .required(ticketControlMappedStateRequiredError)
+            .validate(value);
     }
 
     return "";
