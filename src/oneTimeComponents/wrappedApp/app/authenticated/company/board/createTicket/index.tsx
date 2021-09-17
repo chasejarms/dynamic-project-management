@@ -287,6 +287,7 @@ export function CreateTicket(props: ICreateTicketProps) {
                                 disabled={!!ticketCreateRequest}
                                 ticketTemplate={ticketTemplate}
                                 ticketTemplates={ticketTemplates}
+                                showOpenIcon={isBoardAdmin}
                             />
                             {!!ticketTemplate && (
                                 <div css={classes.ticketSectionsContainer}>

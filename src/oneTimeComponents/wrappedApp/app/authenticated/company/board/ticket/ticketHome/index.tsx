@@ -16,8 +16,8 @@ import { IStoreState } from "../../../../../../../../redux/storeState";
 import { setInitialTicketData } from "../../../../../../../../redux/ticketControlMappedState";
 import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
 import { DrawerContentsWithActionBar } from "../../components/drawerContentsWithActionBar";
-import { Typography } from "@material-ui/core";
 import { TicketTemplateDropdown } from "../../components/ticketTemplateDropdown";
+import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
 
 export interface ITicketHomeProps {
     onUpdateTicket: (ticketUpdateRequest: ITicketUpdateRequest) => void;
@@ -27,6 +27,7 @@ export interface ITicketHomeProps {
 
 export function TicketHome(props: ITicketHomeProps) {
     const { boardId, companyId, ticketId } = useAppRouterParams();
+    const isBoardAdmin = useIsBoardAdmin();
 
     const [
         isLoadingTicketInformation,
@@ -238,6 +239,7 @@ export function TicketHome(props: ITicketHomeProps) {
                             ticketTemplate={ticketState.ticketTemplate}
                             disabled={true}
                             onChangeTicketTemplate={() => null}
+                            showOpenIcon={isBoardAdmin}
                         />
                     </div>
                     <TicketFields

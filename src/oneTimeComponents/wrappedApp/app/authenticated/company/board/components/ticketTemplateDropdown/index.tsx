@@ -9,8 +9,8 @@ import {
 } from "@material-ui/core";
 import { OpenInNew } from "@material-ui/icons";
 import { ChangeEvent, ReactNode } from "react";
-import { useHistory } from "react-router-dom";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
+import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 
 export interface ITicketTemplateDropdownProps {
     ticketTemplate: null | ITicketTemplate;
@@ -35,9 +35,15 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
         showOpenIcon,
     } = props;
 
-    const history = useHistory();
+    const { companyId, boardId } = useAppRouterParams();
+
     function openTicketTemplateInNewTab() {
-        history.push(`/`);
+        window.open(
+            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/${
+                ticketTemplate?.shortenedItemId || ""
+            }`,
+            "_blank"
+        );
     }
 
     const classes = createClasses(!!showOpenIcon);
@@ -70,9 +76,14 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
             </div>
             <div>
                 {!!showOpenIcon && (
-                    <IconButton onClick={openTicketTemplateInNewTab}>
-                        <OpenInNew />
-                    </IconButton>
+                    <div css={classes.iconContainer}>
+                        <IconButton
+                            onClick={openTicketTemplateInNewTab}
+                            disabled={ticketTemplate === null}
+                        >
+                            <OpenInNew />
+                        </IconButton>
+                    </div>
                 )}
             </div>
         </div>
@@ -83,10 +94,16 @@ const createClasses = (showOpenIcon: boolean) => {
     const container = css`
         display: grid;
         grid-template-columns: ${showOpenIcon ? "1fr auto" : "1fr"};
-        grid-gap: 16px;
+        grid-gap: 8px;
+    `;
+
+    const iconContainer = css`
+        position: relative;
+        top: 8px;
     `;
 
     return {
         container,
+        iconContainer,
     };
 };
