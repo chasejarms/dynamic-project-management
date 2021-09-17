@@ -11,6 +11,7 @@ import ticketControlMappedStateReducer, {
     ticketTitleError,
     ticketSummaryError,
     textSectionError,
+    numberSectionError,
 } from ".";
 import {
     numberValidatorIntegerError,
@@ -870,6 +871,64 @@ describe("textSectionError", () => {
         describe("the value IS NOT an empty string", () => {
             it("should return an empty string for the error", () => {
                 const error = textSectionError("", false);
+                expect(error).toBe("");
+            });
+        });
+    });
+});
+
+describe("numberSectionError", () => {
+    describe("the number section is required", () => {
+        describe("the value is an empty string", () => {
+            it("should return the default required error", () => {
+                const error = numberSectionError("", {
+                    type: "number",
+                    label: "Label",
+                    required: true,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                });
+                expect(error).toBe(ticketControlMappedStateRequiredError);
+            });
+        });
+
+        describe("the value IS NOT an empty string", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5, {
+                    type: "number",
+                    label: "Label",
+                    required: true,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                });
+                expect(error).toBe("");
+            });
+        });
+    });
+
+    describe("the number section IS NOT required", () => {
+        describe("the value is an empty string", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError("", {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                });
+                expect(error).toBe("");
+            });
+        });
+
+        describe("the value IS NOT an empty string", () => {
+            it("should return an empty string for the error", () => {
+                const error = numberSectionError(5, {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                });
                 expect(error).toBe("");
             });
         });
