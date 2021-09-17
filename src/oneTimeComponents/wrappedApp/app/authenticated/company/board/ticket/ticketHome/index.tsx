@@ -13,7 +13,7 @@ import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
 import { IStoreState } from "../../../../../../../../redux/storeState";
-import { setInitialTicketData } from "../../../../../../../../redux/ticket";
+import { setInitialTicketData } from "../../../../../../../../redux/ticketControlMappedState";
 import { setWeightedTicketTemplate } from "../../../../../../../../redux/ticketTemplates";
 import { DrawerContentsWithActionBar } from "../../components/drawerContentsWithActionBar";
 
@@ -32,7 +32,7 @@ export function TicketHome(props: ITicketHomeProps) {
     ] = useState(true);
 
     const ticketState = useSelector((store: IStoreState) => {
-        return store.ticket[ticketId];
+        return store.ticketControlMappedState[ticketId];
     });
     const [loadedTicket, setLoadedTicket] = useState<null | ITicket>();
 
@@ -78,10 +78,6 @@ export function TicketHome(props: ITicketHomeProps) {
                         }),
                     },
                     ticketTemplate,
-                    priorityWeightingFunction: {
-                        value: ticketTemplate.priorityWeightingCalculation,
-                        error: "",
-                    },
                     ticketId: ticket.shortenedItemId,
                 });
                 dispatch(action);
@@ -134,7 +130,7 @@ export function TicketHome(props: ITicketHomeProps) {
 
     const ticket = useSelector(
         (store: IStoreState) => {
-            return store.ticket[ticketId]?.ticket;
+            return store.ticketControlMappedState[ticketId]?.ticket;
         },
         () => {
             return !!ticketUpdateRequest;

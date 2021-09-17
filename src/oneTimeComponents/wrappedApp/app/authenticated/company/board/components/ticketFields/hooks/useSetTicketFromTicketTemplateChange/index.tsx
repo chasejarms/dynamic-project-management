@@ -9,7 +9,7 @@ import {
     ticketPreviewId,
     ticketSummaryError,
     ticketTitleError,
-} from "../../../../../../../../../../redux/ticket";
+} from "../../../../../../../../../../redux/ticketControlMappedState";
 
 export function useSetTicketFromTicketTemplateChange(
     runEffect: boolean,
@@ -67,10 +67,6 @@ export function useSetTicketFromTicketTemplateChange(
                         error,
                     };
                 }),
-            },
-            priorityWeightingFunction: {
-                value: "",
-                error: "",
             },
         });
         dispatch(action);

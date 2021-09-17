@@ -7,7 +7,7 @@ import {
     updateTicketTitle,
     updateTicketSummary,
     updateSectionValue,
-} from "../../../../../../../../redux/ticket";
+} from "../../../../../../../../redux/ticketControlMappedState";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
 
@@ -28,7 +28,7 @@ export function TicketFields(props: ITicketProps) {
     );
 
     const ticketState = useSelector((store: IStoreState) => {
-        return store.ticket[props.ticketId];
+        return store.ticketControlMappedState[props.ticketId];
     });
 
     if (!ticketState) {

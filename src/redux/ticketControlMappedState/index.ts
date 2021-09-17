@@ -13,7 +13,7 @@ export interface ISectionFormData {
     error: string;
 }
 
-export interface ITicket {
+export interface ITicketControlState {
     title: {
         value: string;
         touched: boolean;
@@ -27,26 +27,26 @@ export interface ITicket {
     sections: ISectionFormData[];
 }
 
-export interface ITicketMappingState {
+export interface ITicketControlMappedState {
     [ticketId: string]: {
-        ticket: ITicket;
+        ticket: ITicketControlState;
         ticketTemplate: ITicketTemplate;
     };
 }
 
-const defaultRequiredError = "This field is required";
-const initialState: ITicketMappingState = {
+export const ticketSummaryAndTitleRequiredError = "This field is required";
+export const initialTicketControlMappedState: ITicketControlMappedState = {
     TICKET_PREVIEW: {
         ticket: {
             title: {
                 value: "",
                 touched: false,
-                error: defaultRequiredError,
+                error: ticketSummaryAndTitleRequiredError,
             },
             summary: {
                 value: "",
                 touched: false,
-                error: defaultRequiredError,
+                error: ticketSummaryAndTitleRequiredError,
             },
             sections: [],
         },
@@ -68,31 +68,28 @@ const initialState: ITicketMappingState = {
     },
 };
 
-export const ticketMappingSlice = createSlice({
-    name: "ticketMapping",
-    initialState,
+export const ticketControlMappedStateSlice = createSlice({
+    name: "ticketControlMappedState",
+    initialState: initialTicketControlMappedState,
     reducers: {
         setInitialTicketData: (
-            state: ITicketMappingState,
+            state: ITicketControlMappedState,
             action: PayloadAction<{
-                ticket: ITicket;
+                ticket: ITicketControlState;
                 ticketTemplate: ITicketTemplate;
-                priorityWeightingFunction: {
-                    value: string;
-                    error: string;
-                };
                 ticketId: string;
             }>
         ) => {
             const clonedState = cloneDeep(state);
-            clonedState[action.payload.ticketId] = {
-                ticket: action.payload.ticket,
-                ticketTemplate: action.payload.ticketTemplate,
+            const { ticketId, ticket, ticketTemplate } = action.payload;
+            clonedState[ticketId] = {
+                ticket,
+                ticketTemplate,
             };
             return clonedState;
         },
         updateTicketTitle: (
-            state: ITicketMappingState,
+            state: ITicketControlMappedState,
             action: PayloadAction<{
                 value: string;
                 ticketId: string;
@@ -118,7 +115,7 @@ export const ticketMappingSlice = createSlice({
             };
         },
         updateTicketSummary: (
-            state: ITicketMappingState,
+            state: ITicketControlMappedState,
             action: PayloadAction<{
                 value: string;
                 ticketId: string;
@@ -144,7 +141,7 @@ export const ticketMappingSlice = createSlice({
             };
         },
         updateSectionValue: (
-            state: ITicketMappingState,
+            state: ITicketControlMappedState,
             action: PayloadAction<{
                 index: number;
                 value: string | number;
@@ -213,11 +210,11 @@ export const {
     updateTicketTitle,
     updateTicketSummary,
     updateSectionValue,
-} = ticketMappingSlice.actions;
+} = ticketControlMappedStateSlice.actions;
 
 export function ticketSummaryError(summary: string) {
     const error = new StringValidator()
-        .required(defaultRequiredError)
+        .required(ticketSummaryAndTitleRequiredError)
         .validate(summary);
 
     return error;
@@ -225,7 +222,7 @@ export function ticketSummaryError(summary: string) {
 
 export function ticketTitleError(title: string) {
     const error = new StringValidator()
-        .required(defaultRequiredError)
+        .required(ticketSummaryAndTitleRequiredError)
         .validate(title);
 
     return error;
@@ -257,4 +254,4 @@ export function numberSectionError(
     return error;
 }
 
-export default ticketMappingSlice.reducer;
+export default ticketControlMappedStateSlice.reducer;

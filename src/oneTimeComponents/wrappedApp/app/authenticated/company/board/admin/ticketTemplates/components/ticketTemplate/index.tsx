@@ -3,7 +3,7 @@ import { jsx, css, Theme, useTheme } from "@emotion/react";
 import { makeStyles, Paper } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { ticketPreviewId } from "../../../../../../../../../../redux/ticket";
+import { ticketPreviewId } from "../../../../../../../../../../redux/ticketControlMappedState";
 import { resetWeightedTicketTemplateCreationState } from "../../../../../../../../../../redux/ticketTemplates";
 import { PriorityWeightingFunction } from "./priorityWeightingFunction";
 import { TicketFields } from "../../../../components/ticketFields";

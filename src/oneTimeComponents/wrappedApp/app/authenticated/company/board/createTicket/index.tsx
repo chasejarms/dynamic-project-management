@@ -12,7 +12,7 @@ import { IColumn } from "../../../../../../../models/column";
 import { ITicketCreateRequest } from "../../../../../../../models/ticket/ticketCreateRequest";
 import { ITicketTemplate } from "../../../../../../../models/ticketTemplate";
 import { IStoreState } from "../../../../../../../redux/storeState";
-import { ticketPreviewId } from "../../../../../../../redux/ticket";
+import { ticketPreviewId } from "../../../../../../../redux/ticketControlMappedState";
 import {
     resetTicketCreation,
     updateTicketTemplate,
@@ -200,7 +200,7 @@ export function CreateTicket(props: ICreateTicketProps) {
 
     const ticket = useSelector(
         (store: IStoreState) => {
-            return store.ticket[ticketPreviewId].ticket;
+            return store.ticketControlMappedState[ticketPreviewId].ticket;
         },
         () => {
             return !!ticketCreateRequest;
@@ -238,7 +238,7 @@ export function CreateTicket(props: ICreateTicketProps) {
         : undefined;
 
     const allControlsAreValid = useSelector((store: IStoreState) => {
-        const ticket = store.ticket[ticketPreviewId].ticket;
+        const ticket = store.ticketControlMappedState[ticketPreviewId].ticket;
 
         const titleIsValid = !ticket.title.error;
         const summaryIsValid = !ticket.summary.error;

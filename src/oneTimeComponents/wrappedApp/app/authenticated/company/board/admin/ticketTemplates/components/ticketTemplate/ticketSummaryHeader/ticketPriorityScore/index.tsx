@@ -25,7 +25,8 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
 
         return {
             priorityWeightingCalculation,
-            ticketAndTicketTemplate: store.ticket[props.ticketId],
+            ticketAndTicketTemplate:
+                store.ticketControlMappedState[props.ticketId],
         };
     });
     const priorityScore = useMemo(() => {
