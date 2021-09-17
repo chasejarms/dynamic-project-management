@@ -21,18 +21,18 @@ export interface ITicketCreationState {
     startingColumn: string;
 }
 
-const defaultRequiredError = "This field is required";
-const initialState: ITicketCreationState = {
+export const ticketCreationDefaultRequiredError = "This field is required";
+export const initialTicketCreationState: ITicketCreationState = {
     ticketTemplate: null,
     title: {
         value: "",
         touched: false,
-        error: defaultRequiredError,
+        error: ticketCreationDefaultRequiredError,
     },
     summary: {
         value: "",
         touched: false,
-        error: defaultRequiredError,
+        error: ticketCreationDefaultRequiredError,
     },
     sections: [],
     startingColumn: "BACKLOG",
@@ -40,17 +40,17 @@ const initialState: ITicketCreationState = {
 
 export const ticketCreationSlice = createSlice({
     name: "ticketCreation",
-    initialState,
+    initialState: initialTicketCreationState,
     reducers: {
-        resetTicketCreation: (state: ITicketCreationState) => {
-            return initialState;
+        resetTicketCreation: () => {
+            return initialTicketCreationState;
         },
         updateTicketTitle: (
             state: ITicketCreationState,
             action: PayloadAction<string>
         ) => {
             const error = new StringValidator()
-                .required(defaultRequiredError)
+                .required(ticketCreationDefaultRequiredError)
                 .validate(action.payload);
             return {
                 ...state,
@@ -66,7 +66,7 @@ export const ticketCreationSlice = createSlice({
             action: PayloadAction<string>
         ) => {
             const error = new StringValidator()
-                .required(defaultRequiredError)
+                .required(ticketCreationDefaultRequiredError)
                 .validate(action.payload);
             return {
                 ...state,
