@@ -8,7 +8,6 @@ import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IWrappedDropdownOption, WrappedDropdown } from "../wrappedDropdown";
 import { ticketTemplateDropdownTestsIds } from "./ticketTemplateDropdown.testIds";
 import { RouteCreator } from "../../../../../utils/routeCreator";
-import { useRouteMatch } from "react-router-dom";
 
 export interface ITicketTemplateDropdownProps {
     ticketTemplate: null | ITicketTemplate;
@@ -33,7 +32,6 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
         showOpenIcon,
     } = props;
 
-    const { url } = useRouteMatch();
     const { companyId, boardId } = useAppRouterParams();
 
     function openTicketTemplateInNewTab() {

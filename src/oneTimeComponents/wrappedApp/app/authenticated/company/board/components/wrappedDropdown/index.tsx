@@ -41,7 +41,7 @@ export function WrappedDropdown(props: IWrappedDropdownProps) {
                         <MenuItem
                             value={value}
                             key={key || index}
-                            data-testId={testId}
+                            data-testid={testId}
                         >
                             {label}
                         </MenuItem>
