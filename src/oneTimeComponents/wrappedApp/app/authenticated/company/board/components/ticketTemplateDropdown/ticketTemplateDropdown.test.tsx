@@ -3,6 +3,8 @@ import { ITicketTemplateDropdownProps, TicketTemplateDropdown } from ".";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { ticketTemplateDropdownTestsIds } from "./ticketTemplateDropdown.testIds";
+import userEvent from "@testing-library/user-event";
 
 describe("TicketTemplateDropdown", () => {
     let ticketTemplates: ITicketTemplate[];
@@ -41,21 +43,77 @@ describe("TicketTemplateDropdown", () => {
                 </Router>
             );
 
-            const select = screen.getByTestId("testing-this-thing");
+            const select = screen.getByTestId(
+                ticketTemplateDropdownTestsIds.select
+            );
             expect(select).toHaveClass("Mui-disabled");
         });
     });
 
     describe("the disabled prop is false", () => {
-        it("should enable the dropdown", () => {});
+        it("should enable the dropdown", () => {
+            ticketTemplateDropdownProps.disabled = false;
+
+            const history = createMemoryHistory();
+            history.push(`/app/company/123/board/456/`);
+            render(
+                <Router history={history}>
+                    <TicketTemplateDropdown {...ticketTemplateDropdownProps} />
+                </Router>
+            );
+
+            const select = screen.getByTestId(
+                ticketTemplateDropdownTestsIds.select
+            );
+            expect(select).not.toHaveClass("Mui-disabled");
+        });
     });
 
     describe("the showOpenIcon prop is true", () => {
+        beforeEach(() => {
+            ticketTemplateDropdownProps.showOpenIcon = true;
+        });
+
         describe("the ticket template is NOT null", () => {
-            it("should show the open icon", () => {});
+            beforeEach(() => {
+                ticketTemplateDropdownProps.ticketTemplate = ticketTemplates[0];
+            });
+
+            it("should show the open icon", () => {
+                const history = createMemoryHistory();
+                history.push(`/app/company/123/board/456/`);
+                render(
+                    <Router history={history}>
+                        <TicketTemplateDropdown
+                            {...ticketTemplateDropdownProps}
+                        />
+                    </Router>
+                );
+
+                screen.getByTestId(ticketTemplateDropdownTestsIds.openIcon);
+            });
 
             describe("the user clicks the open icon", () => {
-                it("should navigate to the correct page in a new tab", () => {});
+                it("should navigate to the correct page in a new tab", () => {
+                    const history = createMemoryHistory();
+                    history.push(`/app/company/123/board/456/`);
+                    render(
+                        <Router history={history}>
+                            <TicketTemplateDropdown
+                                {...ticketTemplateDropdownProps}
+                            />
+                        </Router>
+                    );
+
+                    const openIcon = screen.getByTestId(
+                        ticketTemplateDropdownTestsIds.openIcon
+                    );
+                    const windowSpy = jest
+                        .spyOn(window, "open")
+                        .mockImplementation(() => null);
+                    userEvent.click(openIcon);
+                    expect(windowSpy.mock.calls[0][1]).toBe("_blank");
+                });
             });
 
             it("should show the open icon", () => {});

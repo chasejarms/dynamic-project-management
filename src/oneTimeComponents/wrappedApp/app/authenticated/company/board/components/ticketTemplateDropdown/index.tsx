@@ -1,16 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import {
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    IconButton,
-} from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { OpenInNew } from "@material-ui/icons";
 import { ChangeEvent, ReactNode } from "react";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
+import { IWrappedDropdownOption, WrappedDropdown } from "../wrappedDropdown";
+import { ticketTemplateDropdownTestsIds } from "./ticketTemplateDropdown.testIds";
 
 export interface ITicketTemplateDropdownProps {
     ticketTemplate: null | ITicketTemplate;
@@ -47,33 +43,33 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
     }
 
     const classes = createClasses(!!showOpenIcon);
+    const options: IWrappedDropdownOption[] = ticketTemplates.map(
+        (ticketTemplateFromDatabase) => {
+            return {
+                value: ticketTemplateFromDatabase.shortenedItemId,
+                label: ticketTemplateFromDatabase.name,
+                key: ticketTemplateFromDatabase.shortenedItemId,
+                testId: ticketTemplateDropdownTestsIds.createMenuItemTestId(
+                    ticketTemplateFromDatabase.shortenedItemId
+                ),
+            };
+        }
+    );
+
     return (
         <div css={classes.container}>
             <div>
-                <FormControl fullWidth>
-                    <InputLabel>Ticket Template</InputLabel>
-                    <Select
-                        value={ticketTemplate?.shortenedItemId || ""}
-                        onChange={onChangeTicketTemplate}
-                        disabled={disabled}
-                        data-testid="testing-this-thing"
-                    >
-                        {ticketTemplates.map((ticketTemplateFromDatabase) => {
-                            return (
-                                <MenuItem
-                                    value={
-                                        ticketTemplateFromDatabase.shortenedItemId
-                                    }
-                                    key={
-                                        ticketTemplateFromDatabase.shortenedItemId
-                                    }
-                                >
-                                    {ticketTemplateFromDatabase.name}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                </FormControl>
+                <WrappedDropdown
+                    value={ticketTemplate?.shortenedItemId || ""}
+                    onChange={onChangeTicketTemplate}
+                    label="Ticket Template"
+                    disabled={disabled}
+                    testIds={{
+                        root: ticketTemplateDropdownTestsIds.root,
+                        select: ticketTemplateDropdownTestsIds.select,
+                    }}
+                    options={options}
+                />
             </div>
             <div>
                 {!!showOpenIcon && (
@@ -81,6 +77,9 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
                         <IconButton
                             onClick={openTicketTemplateInNewTab}
                             disabled={ticketTemplate === null}
+                            data-testid={
+                                ticketTemplateDropdownTestsIds.openIcon
+                            }
                         >
                             <OpenInNew />
                         </IconButton>
