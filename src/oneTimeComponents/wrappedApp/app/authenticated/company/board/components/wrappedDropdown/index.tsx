@@ -8,7 +8,7 @@ export interface IWrappedDropdownOption {
     key?: string;
 }
 
-interface IWrappedDropdownProps {
+export interface IWrappedDropdownProps {
     value: any;
     onChange: (
         event: ChangeEvent<{
