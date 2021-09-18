@@ -56,6 +56,7 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
                         value={ticketTemplate?.shortenedItemId || ""}
                         onChange={onChangeTicketTemplate}
                         disabled={disabled}
+                        data-testid="testing-this-thing"
                     >
                         {ticketTemplates.map((ticketTemplateFromDatabase) => {
                             return (
