@@ -18,6 +18,7 @@ import {
     QuickActionsPopoverContent,
 } from "../../../../components/quickActionsPopoverContent";
 import { ITicketTemplate } from "../../../../../../../../../../models/ticketTemplate";
+import { RouteCreator } from "../../../../../../../utils/routeCreator";
 
 export interface ITicketTemplateForBoardProps {
     ticketTemplate: ITicketTemplate;
@@ -32,9 +33,12 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
     const { companyId, boardId } = useAppRouterParams();
 
     function openTicketTemplate() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/${ticketTemplate.shortenedItemId}`
+        const editTicketTemplateRoute = RouteCreator.ticketTemplateEdit(
+            companyId,
+            boardId,
+            ticketTemplate.shortenedItemId
         );
+        history.push(editTicketTemplateRoute);
     }
 
     const theme = useTheme();

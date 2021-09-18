@@ -5,6 +5,7 @@ import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { ticketTemplateDropdownTestsIds } from "./ticketTemplateDropdown.testIds";
 import userEvent from "@testing-library/user-event";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 describe("TicketTemplateDropdown", () => {
     let ticketTemplates: ITicketTemplate[];
@@ -112,6 +113,14 @@ describe("TicketTemplateDropdown", () => {
                         .spyOn(window, "open")
                         .mockImplementation(() => null);
                     userEvent.click(openIcon);
+                    const ticketTemplateEditRoute = RouteCreator.ticketTemplateEdit(
+                        "123",
+                        "456",
+                        ticketTemplates[0].shortenedItemId
+                    );
+                    expect(windowSpy.mock.calls[0][0]).toBe(
+                        ticketTemplateEditRoute
+                    );
                     expect(windowSpy.mock.calls[0][1]).toBe("_blank");
                 });
             });
