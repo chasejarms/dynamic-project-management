@@ -15,7 +15,7 @@ export function useBoardColumnEditState() {
     const isInErrorState = localColumnControls.some(({ labelError }) => {
         return !!labelError;
     });
-    const hasChanged =
+    const columnDataHasChanged =
         localColumnControls.length !== databaseColumns.length ||
         localColumnControls.some((databaseColumnControl, index) => {
             const { labelError, ...compareLocalColumn } = databaseColumnControl;
@@ -27,7 +27,7 @@ export function useBoardColumnEditState() {
 
     return {
         isInErrorState,
-        hasChanged,
+        columnDataHasChanged,
         localColumnControls,
     };
 }

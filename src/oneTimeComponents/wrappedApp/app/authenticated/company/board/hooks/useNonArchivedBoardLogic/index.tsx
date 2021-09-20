@@ -15,11 +15,14 @@ import { IUser } from "../../../../../../../../models/user";
 import { ticketsToAugmentedUITickets } from "../../utils/ticketsToAugmentedUITickets";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
+import { setInitialBoardColumnState } from "../../../../../../../../redux/boardColumnEditMappedState";
+import { useDispatch } from "react-redux";
 
 export function useNonArchivedBoardLogic(
     ticketType: TicketType.Backlog | TicketType.InProgress
 ) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
+    const dispatch = useDispatch();
 
     const [columns, setColumns] = useState<IColumn[]>([]);
     const [sortedAndMappedTickets, setSortedAndMappedTickets] = useState<{
@@ -92,6 +95,13 @@ export function useNonArchivedBoardLogic(
                         ticketType === TicketType.Backlog
                     );
 
+                    const setInitialBoardColumnStateAction = setInitialBoardColumnState(
+                        {
+                            boardId,
+                            columns: columnsFromDatabase,
+                        }
+                    );
+                    dispatch(setInitialBoardColumnStateAction);
                     setSortedAndMappedTickets(columnsMapping);
                     setColumns(columnsFromDatabase);
                 }

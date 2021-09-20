@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
-import { isEqual, cloneDeep } from "lodash";
+import { cloneDeep } from "lodash";
 import { Api } from "../../../../../../../api";
 import { StringValidator } from "../../../../../../../classes/StringValidator";
 import { IColumn } from "../../../../../../../models/column";
@@ -23,11 +23,18 @@ import { generateUniqueId } from "./hooks/utils/generateUniqueId";
 import { BoardContainer } from "../components/boardContainer";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
 import { useHistory } from "react-router-dom";
+import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
 
 export function BoardEdit() {
     const classes = createClasses();
 
     const { boardId, companyId } = useAppRouterParams();
+
+    const {
+        isInErrorState,
+        columnDataHasChanged,
+        localColumnControls,
+    } = useBoardColumnEditState();
 
     const [{ databaseColumns, localColumns }, setColumnData] = useState<{
         databaseColumns: IColumn[];
@@ -36,7 +43,6 @@ export function BoardEdit() {
         databaseColumns: [],
         localColumns: [],
     });
-    const columnDataHasChanged = !isEqual(databaseColumns, localColumns);
 
     function setLocalAndDatabaseColumns(columns: IColumn[]) {
         setColumnData(() => {
