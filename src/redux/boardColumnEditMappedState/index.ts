@@ -8,8 +8,8 @@ export interface IColumnControl extends IColumn {
 
 export interface IBoardColumnEditMappedState {
     [boardId: string]: {
-        databaseColumnControls: IColumnControl[];
-        localColumns: IColumn[];
+        localColumnControls: IColumnControl[];
+        databaseColumns: IColumn[];
     };
 }
 
@@ -29,13 +29,13 @@ export const boardColumnEditMappedSlice = createSlice({
             const clonedState = cloneDeep(state);
             const { boardId, columns } = action.payload;
             clonedState[boardId] = {
-                databaseColumnControls: columns.map((column) => {
+                localColumnControls: columns.map((column) => {
                     return {
                         ...column,
                         labelError: "",
                     };
                 }),
-                localColumns: columns,
+                databaseColumns: columns,
             };
             return clonedState;
         },
