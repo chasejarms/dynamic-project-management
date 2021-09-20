@@ -102,7 +102,7 @@ export function useBoardColumnEditState() {
             return isSavingColumns;
         }
     );
-    const hideDeleteButton = localColumnControls.length <= 2;
+    const disableDeleteButton = localColumnControls.length <= 2;
 
     const isInErrorState = localColumnControls.some(({ labelError }) => {
         return !!labelError;
@@ -146,7 +146,7 @@ export function useBoardColumnEditState() {
         columnDataHasChanged,
         localColumnControls,
         navigateBackToBoard,
-        hideDeleteButton,
+        disableDeleteButton,
         onDragEnd,
         isLoadingColumns,
         resetChanges,

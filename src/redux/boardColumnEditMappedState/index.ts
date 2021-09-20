@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IColumn } from "../../models/column";
 import { cloneDeep } from "lodash";
-import { generateUniqueId } from "../../oneTimeComponents/wrappedApp/app/authenticated/company/board/boardEdit/hooks/utils/generateUniqueId";
+import { generateUniqueId } from "../../oneTimeComponents/wrappedApp/app/authenticated/company/board/boardEdit/utils/generateUniqueId";
 import { StringValidator } from "../../classes/StringValidator";
 
 export interface IColumnControl extends IColumn {

@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { CircularProgress } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { EditableColumnCard } from "./components/editableColumnCard";
@@ -17,7 +16,7 @@ export function BoardEdit() {
         columnDataHasChanged,
         localColumnControls,
         navigateBackToBoard,
-        hideDeleteButton,
+        disableDeleteButton,
         onDragEnd,
         isLoadingColumns,
         resetChanges,
@@ -101,8 +100,8 @@ export function BoardEdit() {
                                                             disabled={
                                                                 isSavingColumns
                                                             }
-                                                            hideDeleteButton={
-                                                                hideDeleteButton
+                                                            disableDeleteButton={
+                                                                disableDeleteButton
                                                             }
                                                             isLastColumn={
                                                                 isLastColumn
@@ -145,18 +144,6 @@ function createClasses() {
         height: 100%;
     `;
 
-    const columnContainer = css`
-        margin-right: 16px;
-        width: 300px;
-        min-width: 300px;
-    `;
-
-    const columnActionContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    `;
-
     const columnsContainer = css`
         width: 100%;
         display: flex;
@@ -165,23 +152,9 @@ function createClasses() {
         padding-top: 0;
     `;
 
-    const secondComponentColumnsContainer = css`
-        overflow: auto;
-    `;
-
     const columnAndHeaderContainer = css`
         width: 100%;
         height: 100%;
-    `;
-
-    const columnCreationHeaderContainer = css`
-        display: flex;
-        justify-content: flex-start;
-        padding: 16px 32px 0 32px;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
     `;
 
     const mainContentContainer = css`
@@ -205,13 +178,8 @@ function createClasses() {
     return {
         innerContentContainer,
         spinnerContainer,
-        columnContainer,
-        columnActionContainer,
         columnsContainer,
         columnAndHeaderContainer,
-        columnCreationHeaderContainer,
-        columnInputContainer,
-        secondComponentColumnsContainer,
         mainContentContainer,
         toolbarContainer,
         actionButtonContainer,

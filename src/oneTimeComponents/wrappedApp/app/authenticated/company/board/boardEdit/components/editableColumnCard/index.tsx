@@ -10,12 +10,9 @@ import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoar
 import React from "react";
 
 export interface IEditableColumnCardProps {
-    // need
     index: number;
-
-    // might need
     disabled?: boolean;
-    hideDeleteButton: boolean;
+    disableDeleteButton: boolean;
     isLastColumn?: boolean;
 }
 
@@ -78,7 +75,10 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                             onClick={onDeleteColumn(
                                                 props.index
                                             )}
-                                            disabled={props.disabled}
+                                            disabled={
+                                                props.disabled ||
+                                                !!props.disableDeleteButton
+                                            }
                                         >
                                             <Delete />
                                         </IconButton>
@@ -115,22 +115,6 @@ function createClasses() {
         margin-right: 0;
     `;
 
-    const columnActionContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    `;
-
-    const hiddenDeleteButtonContainer = css`
-        visibility: hidden;
-    `;
-
-    const dragHandleContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    `;
-
     const hiddenDragHandle = css`
         visibility: hidden;
     `;
@@ -148,9 +132,6 @@ function createClasses() {
     return {
         columnContainerNoMargin,
         columnContainer,
-        columnActionContainer,
-        hiddenDeleteButtonContainer,
-        dragHandleContainer,
         hiddenDragHandle,
         content,
         actionButtonContainer,
