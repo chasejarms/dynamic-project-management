@@ -13,3 +13,12 @@ export interface IStoreState {
     ticketControlMappedState: ITicketControlMappedState;
     boardColumnEditMappedState: IBoardColumnEditMappedState;
 }
+
+export interface IStoreStatePartial {
+    boards?: IBoardsState;
+    appBootstrapInformation?: IAppBootstrapInformationState;
+    ticketCreation?: ITicketCreationState;
+    weightedTicketTemplateCreation?: ITicketTemplateControlStateMapping;
+    ticketControlMappedState?: ITicketControlMappedState;
+    boardColumnEditMappedState?: IBoardColumnEditMappedState;
+}
