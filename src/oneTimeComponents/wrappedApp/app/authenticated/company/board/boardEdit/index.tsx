@@ -23,9 +23,6 @@ export function BoardEdit() {
         resetChanges,
         saveColumns,
         isSavingColumns,
-        onDeleteColumn,
-        onAddColumnAfter,
-        updateColumn,
     } = useBoardColumnEditState();
 
     const toolbarContent = (
@@ -100,19 +97,7 @@ export function BoardEdit() {
                                                     return (
                                                         <EditableColumnCard
                                                             key={column.id}
-                                                            columnControl={
-                                                                column
-                                                            }
                                                             index={index}
-                                                            onDeleteColumn={
-                                                                onDeleteColumn
-                                                            }
-                                                            onUpdateColumn={updateColumn(
-                                                                index
-                                                            )}
-                                                            onClickAddAfter={
-                                                                onAddColumnAfter
-                                                            }
                                                             disabled={
                                                                 isSavingColumns
                                                             }

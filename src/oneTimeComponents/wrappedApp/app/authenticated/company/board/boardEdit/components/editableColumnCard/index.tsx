@@ -2,22 +2,17 @@
 import { jsx, css } from "@emotion/react";
 import { Delete, DragIndicator, Add } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
-import { ChangeEvent } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { IColumnControl } from "../../../../../../../../../redux/boardColumnEditMappedState";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
-import { WrappedButton } from "../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 import { TicketContainer } from "../../../components/ticketContainer";
+import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoardColumnEditState";
 
 export interface IEditableColumnCardProps {
-    columnControl: IColumnControl;
+    // need
     index: number;
-    onDeleteColumn: (index: number) => void;
-    onUpdateColumn: (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void;
-    onClickAddAfter: (index: number) => () => void;
+
+    // might need
     disabled?: boolean;
     hideDeleteButton: boolean;
     isLastColumn?: boolean;
@@ -26,11 +21,15 @@ export interface IEditableColumnCardProps {
 export function EditableColumnCard(props: IEditableColumnCardProps) {
     const classes = createClasses();
 
-    function onDeleteColumnInternal() {
-        props.onDeleteColumn(props.index);
-    }
-
-    const { name, canBeModified, id, labelError } = props.columnControl;
+    const {
+        name,
+        canBeModified,
+        id,
+        labelError,
+        onDeleteColumn,
+        onUpdateColumn,
+        onClickAddAfter,
+    } = useIndividualBoardColumnEditState(props.index);
 
     return (
         <Draggable draggableId={id} index={props.index}>
@@ -65,7 +64,7 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                                     <WrappedTextField
                                         value={name}
                                         label="Column Name"
-                                        onChange={props.onUpdateColumn}
+                                        onChange={onUpdateColumn(props.index)}
                                         error={labelError}
                                         disabled={
                                             !canBeModified || props.disabled
@@ -75,13 +74,15 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                                 <div css={classes.actionButtonContainer}>
                                     <div>
                                         <IconButton
-                                            onClick={onDeleteColumnInternal}
+                                            onClick={onDeleteColumn(
+                                                props.index
+                                            )}
                                             disabled={props.disabled}
                                         >
                                             <Delete />
                                         </IconButton>
                                         <IconButton
-                                            onClick={props.onClickAddAfter(
+                                            onClick={onClickAddAfter(
                                                 props.index
                                             )}
                                             disabled={props.disabled}
