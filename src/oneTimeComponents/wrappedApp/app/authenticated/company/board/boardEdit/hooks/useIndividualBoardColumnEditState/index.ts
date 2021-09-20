@@ -11,10 +11,10 @@ import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 export function useIndividualBoardColumnEditState(index: number) {
     const { boardId } = useAppRouterParams();
 
-    const labelError = useSelector((store: IStoreState) => {
+    const nameError = useSelector((store: IStoreState) => {
         return store.boardColumnEditMappedState[boardId].localColumnControls[
             index
-        ].labelError;
+        ].nameError;
     });
 
     const id = useSelector((store: IStoreState) => {
@@ -69,7 +69,7 @@ export function useIndividualBoardColumnEditState(index: number) {
     }
 
     return {
-        labelError,
+        nameError,
         id,
         name,
         canBeModified,

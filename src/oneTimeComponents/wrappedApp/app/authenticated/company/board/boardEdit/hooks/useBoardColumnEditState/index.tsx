@@ -56,7 +56,7 @@ export function useBoardColumnEditState() {
         let didCancel = false;
 
         const localColumns = localColumnControls.map(
-            ({ labelError, ...localColumn }) => {
+            ({ nameError, ...localColumn }) => {
                 return localColumn;
             }
         );
@@ -104,13 +104,13 @@ export function useBoardColumnEditState() {
     );
     const disableDeleteButton = localColumnControls.length <= 2;
 
-    const isInErrorState = localColumnControls.some(({ labelError }) => {
-        return !!labelError;
+    const isInErrorState = localColumnControls.some(({ nameError }) => {
+        return !!nameError;
     });
     const columnDataHasChanged =
         localColumnControls.length !== databaseColumns.length ||
         localColumnControls.some((databaseColumnControl, index) => {
-            const { labelError, ...compareLocalColumn } = databaseColumnControl;
+            const { nameError, ...compareLocalColumn } = databaseColumnControl;
 
             const compareDatabaseColumn = databaseColumns[index];
 

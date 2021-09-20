@@ -5,7 +5,7 @@ import { generateUniqueId } from "../../oneTimeComponents/wrappedApp/app/authent
 import { StringValidator } from "../../classes/StringValidator";
 
 export interface IColumnControl extends IColumn {
-    labelError: string;
+    nameError: string;
 }
 
 export interface IBoardColumnEditMappedState {
@@ -34,7 +34,7 @@ export const boardColumnEditMappedSlice = createSlice({
                 localColumnControls: columns.map((column) => {
                     return {
                         ...column,
-                        labelError: "",
+                        nameError: "",
                     };
                 }),
                 databaseColumns: columns,
@@ -92,7 +92,7 @@ export const boardColumnEditMappedSlice = createSlice({
             const updatedLocalColumnControls = databaseColumns.map((column) => {
                 return {
                     ...column,
-                    labelError: "",
+                    nameError: "",
                 };
             });
 
@@ -149,7 +149,7 @@ export const boardColumnEditMappedSlice = createSlice({
                         id: generateUniqueId(),
                         name: "Default (Newly Added)",
                         canBeModified: true,
-                        labelError: "",
+                        nameError: "",
                     },
                 ])
                 .concat(columnsAfterInsertedColumn);
@@ -174,7 +174,7 @@ export const boardColumnEditMappedSlice = createSlice({
             columnsBeforeUpdate[index] = {
                 ...columnsBeforeUpdate[index],
                 name: updatedValue,
-                labelError: new StringValidator()
+                nameError: new StringValidator()
                     .required("This field is required")
                     .validate(updatedValue),
             };

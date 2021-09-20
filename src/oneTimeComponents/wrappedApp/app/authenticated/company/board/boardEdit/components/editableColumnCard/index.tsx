@@ -24,7 +24,7 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
         name,
         canBeModified,
         id,
-        labelError,
+        nameError,
         onDeleteColumn,
         onUpdateColumn,
         onClickAddAfter,
@@ -65,7 +65,7 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                         value={name}
                                         label="Column Name"
                                         onChange={onUpdateColumn(props.index)}
-                                        error={labelError}
+                                        error={nameError}
                                         disabled={
                                             !canBeModified || props.disabled
                                         }
