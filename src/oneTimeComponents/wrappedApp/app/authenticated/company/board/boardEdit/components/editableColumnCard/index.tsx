@@ -11,6 +11,7 @@ import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 import { useControl } from "../../../../../../hooks/useControl";
+import { TicketContainer } from "../../../components/ticketContainer";
 import { useDebounce } from "../../hooks/useDebounce";
 
 export interface IEditableColumnCardProps {
@@ -71,19 +72,22 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                     >
-                        <Card>
-                            <CardContent>
-                                <div css={classes.dragHandleContainer}>
-                                    <div
-                                        {...provided.dragHandleProps}
-                                        css={composeCSS(
-                                            !props.column.canBeModified &&
-                                                classes.hiddenDragHandle
-                                        )}
-                                    >
-                                        <DragIndicator />
-                                    </div>
+                        <TicketContainer
+                            title={columnNameControl.value}
+                            bottomBarContent={true}
+                            topRightIcon={
+                                <div
+                                    {...provided.dragHandleProps}
+                                    css={composeCSS(
+                                        !props.column.canBeModified &&
+                                            classes.hiddenDragHandle
+                                    )}
+                                >
+                                    <DragIndicator />
                                 </div>
+                            }
+                        >
+                            <div css={classes.content}>
                                 <WrappedTextField
                                     value={columnNameControl.value}
                                     label="Column Name"
@@ -98,6 +102,14 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                                         props.disabled
                                     }
                                 />
+                            </div>
+                        </TicketContainer>
+                        {/* <Card>
+                            <CardContent>
+                                <div css={classes.dragHandleContainer}>
+                                    
+                                </div>
+                               
                             </CardContent>
                             <CardActions>
                                 <div css={classes.columnActionContainer}>
@@ -118,7 +130,7 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                                     </div>
                                 </div>
                             </CardActions>
-                        </Card>
+                        </Card> */}
                     </div>
                 );
             }}
@@ -129,8 +141,8 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
 function createClasses() {
     const columnContainer = css`
         margin-right: 16px;
-        width: 300px;
-        min-width: 300px;
+        width: 360px;
+        min-width: 360px;
         padding: 2px;
     `;
 
@@ -158,6 +170,10 @@ function createClasses() {
         visibility: hidden;
     `;
 
+    const content = css`
+        padding: 16px 0px;
+    `;
+
     return {
         columnContainerNoMargin,
         columnContainer,
@@ -165,5 +181,6 @@ function createClasses() {
         hiddenDeleteButtonContainer,
         dragHandleContainer,
         hiddenDragHandle,
+        content,
     };
 }

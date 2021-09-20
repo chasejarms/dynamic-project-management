@@ -18,6 +18,8 @@ export interface ITicketContainerProps {
         showSpinner: boolean;
         onReachBottomOfList: () => void;
     };
+    bottomBarContent?: React.ReactNode;
+    topRightIcon?: React.ReactNode;
 }
 
 const useStyles = makeStyles({
@@ -47,29 +49,43 @@ export function TicketContainer(props: ITicketContainerProps) {
         <div css={classes.columnContainer}>
             <Card className={materialClasses.card}>
                 <CardContent className={materialClasses.cardContentRoot}>
-                    <div css={classes.cardContentContainer}>
-                        <div css={classes.columnTitleContainer}>
-                            <Typography variant="h6">{props.title}</Typography>
-                        </div>
-                        <Divider />
-                        {!!props.showCenterSpinner ? (
-                            <CenterLoadingSpinner size="small" />
-                        ) : (
-                            <div css={classes.ticketsContainer}>
-                                {props.children}
-                                {!!props.bottomLoadingSpinnerProps && (
-                                    <ReactVisibilitySensor
-                                        onChange={internalVisibilityOnChange}
-                                    >
-                                        <div
-                                            css={
-                                                classes.moreTicketsLoadingSpinner
+                    <div css={classes.outerCardContentContainer}>
+                        <div css={classes.innerCardContentContainer}>
+                            <div css={classes.columnTitleContainer}>
+                                <div>
+                                    <Typography variant="h6">
+                                        {props.title}
+                                    </Typography>
+                                </div>
+                                <div>{props.topRightIcon}</div>
+                            </div>
+                            <Divider />
+                            {!!props.showCenterSpinner ? (
+                                <CenterLoadingSpinner size="small" />
+                            ) : (
+                                <div css={classes.ticketsContainer}>
+                                    {props.children}
+                                    {!!props.bottomLoadingSpinnerProps && (
+                                        <ReactVisibilitySensor
+                                            onChange={
+                                                internalVisibilityOnChange
                                             }
                                         >
-                                            <CenterLoadingSpinner size="small" />
-                                        </div>
-                                    </ReactVisibilitySensor>
-                                )}
+                                            <div
+                                                css={
+                                                    classes.moreTicketsLoadingSpinner
+                                                }
+                                            >
+                                                <CenterLoadingSpinner size="small" />
+                                            </div>
+                                        </ReactVisibilitySensor>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        {!!props.bottomBarContent && (
+                            <div css={classes.bottomToolbarContainer}>
+                                {props.bottomBarContent}
                             </div>
                         )}
                     </div>
@@ -96,13 +112,24 @@ const createClasses = () => {
     const columnTitleContainer = css`
         padding: 16px;
         padding-bottom: 8px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         flex: 0 0 auto;
     `;
 
-    const cardContentContainer = css`
+    const outerCardContentContainer = css`
         display: flex;
         flex-direction: column;
         height: 100%;
+    `;
+
+    const bottomToolbarContainer = css`
+        flex: 0 0 auto;
+    `;
+
+    const innerCardContentContainer = css`
+        flex-grow: 1;
     `;
 
     const moreTicketsLoadingSpinner = css`
@@ -114,7 +141,9 @@ const createClasses = () => {
         columnContainer,
         ticketsContainer,
         columnTitleContainer,
-        cardContentContainer,
+        outerCardContentContainer,
         moreTicketsLoadingSpinner,
+        bottomToolbarContainer,
+        innerCardContentContainer,
     };
 };

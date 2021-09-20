@@ -484,7 +484,7 @@ function createClasses() {
         display: flex;
         overflow: auto;
         padding: 32px;
-        padding-top: 16px;
+        padding-top: 0;
     `;
 
     const secondComponentColumnsContainer = css`
