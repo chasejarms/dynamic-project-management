@@ -5,7 +5,6 @@ import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
 import { DropResult } from "react-beautiful-dnd";
 import {
-    addColumnAfter,
     resetLocalColumnControlChanges,
     setInitialBoardColumnState,
     updateBoardColumnPosition,
