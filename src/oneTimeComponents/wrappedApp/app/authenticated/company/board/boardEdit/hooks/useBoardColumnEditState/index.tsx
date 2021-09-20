@@ -20,6 +20,7 @@ export function useBoardColumnEditState() {
         return !store.boardColumnEditMappedState[boardId];
     });
 
+    const [failedToLoadColumnData, setFailedToLoadColumnData] = useState(false);
     useEffect(() => {
         if (!isLoadingColumns) return;
         let didCancel = false;
@@ -38,7 +39,7 @@ export function useBoardColumnEditState() {
             })
             .catch(() => {
                 if (didCancel) return;
-                // maybe do some sort of error logic
+                setFailedToLoadColumnData(true);
             })
             .finally(() => {
                 if (didCancel) return;
@@ -152,5 +153,6 @@ export function useBoardColumnEditState() {
         resetChanges,
         saveColumns,
         isSavingColumns,
+        failedToLoadColumnData,
     };
 }

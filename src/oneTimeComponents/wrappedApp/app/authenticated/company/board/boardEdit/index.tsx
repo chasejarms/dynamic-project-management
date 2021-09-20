@@ -7,6 +7,7 @@ import { EditableColumnCard } from "./components/editableColumnCard";
 import { BoardContainer } from "../components/boardContainer";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
 import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
+import { CenterErrorMessage } from "./components/centerErrorMessage";
 
 export function BoardEdit() {
     const classes = createClasses();
@@ -22,6 +23,7 @@ export function BoardEdit() {
         resetChanges,
         saveColumns,
         isSavingColumns,
+        failedToLoadColumnData,
     } = useBoardColumnEditState();
 
     const toolbarContent = (
@@ -124,10 +126,14 @@ export function BoardEdit() {
 
     return (
         <BoardContainer>
-            <ContentWithDynamicToolbar
-                toolbarContent={toolbarContent}
-                mainContent={mainContent}
-            />
+            {failedToLoadColumnData ? (
+                <CenterErrorMessage message="Error loading column data" />
+            ) : (
+                <ContentWithDynamicToolbar
+                    toolbarContent={toolbarContent}
+                    mainContent={mainContent}
+                />
+            )}
         </BoardContainer>
     );
 }
@@ -175,6 +181,13 @@ function createClasses() {
         grid-template-columns: 1fr 1fr;
     `;
 
+    const centerErrorMessage = css`
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `;
+
     return {
         innerContentContainer,
         spinnerContainer,
@@ -183,5 +196,6 @@ function createClasses() {
         mainContentContainer,
         toolbarContainer,
         actionButtonContainer,
+        centerErrorMessage,
     };
 }
