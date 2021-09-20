@@ -13,7 +13,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { useNonArchivedBoardLogic } from "../hooks/useNonArchivedBoardLogic";
 import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 import { WrappedButton } from "../../../../components/wrappedButton";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 
 export function BoardHome() {
@@ -30,12 +30,19 @@ export function BoardHome() {
         allCompanyUsers,
         onCreateTicket,
     } = useNonArchivedBoardLogic(TicketType.InProgress);
+    const { url } = useRouteMatch();
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
     function navigateToTicketCreationPage() {
         history.push(
             `/app/company/${companyId}/board/${boardId}/tickets/create-ticket`
+        );
+    }
+
+    function navigateToEditBoardPage() {
+        history.push(
+            `/app/company/${companyId}/board/${boardId}/tickets/edit-board`
         );
     }
 
@@ -59,6 +66,15 @@ export function BoardHome() {
                                 color="primary"
                             >
                                 Create Ticket
+                            </WrappedButton>
+                        </div>
+                        <div>
+                            <WrappedButton
+                                variant="text"
+                                onClick={navigateToEditBoardPage}
+                                color="primary"
+                            >
+                                Edit Board
                             </WrappedButton>
                         </div>
                     </div>
@@ -141,6 +157,8 @@ const createClasses = () => {
     const actionButtonContainer = css`
         flex: 0 0 auto;
         padding: 16px 24px 0 24px;
+        display: flex;
+        justify-content: space-between;
     `;
 
     const columnsContainer = css`

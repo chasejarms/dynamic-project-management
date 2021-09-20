@@ -11,22 +11,22 @@ import {
 import { Add } from "@material-ui/icons";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { isEqual, cloneDeep } from "lodash";
-import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
-import { Api } from "../../../../../../../../api";
-import { StringValidator } from "../../../../../../../../classes/StringValidator";
+import { Api } from "../../../../../../../api";
+import { StringValidator } from "../../../../../../../classes/StringValidator";
+import { IColumn } from "../../../../../../../models/column";
 import {
     IWrappedButtonProps,
     WrappedButton,
-} from "../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../components/wrappedTextField";
-import { useControl } from "../../../../../hooks/useControl";
-import { IColumn } from "../../../../../../../../models/column";
-import { generateUniqueId } from "./utils/generateUniqueId";
+} from "../../../../components/wrappedButton";
+import { WrappedTextField } from "../../../../components/wrappedTextField";
+import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
+import { useControl } from "../../../../hooks/useControl";
+import { BottomPageToolbar } from "../../components/bottomPageToolbar";
+import { BoardAdminContainer } from "../admin/components/boardAdminContainer";
 import { EditableColumnCard } from "./components/editableColumnCard";
-import { BottomPageToolbar } from "../../../components/bottomPageToolbar";
-import { BoardAdminContainer } from "../components/boardAdminContainer";
+import { generateUniqueId } from "./hooks/utils/generateUniqueId";
 
-export function Columns() {
+export function BoardEdit() {
     const classes = createClasses();
 
     const { boardId, companyId } = useAppRouterParams();

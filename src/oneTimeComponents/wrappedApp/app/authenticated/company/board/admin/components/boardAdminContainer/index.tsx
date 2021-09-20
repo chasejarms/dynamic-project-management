@@ -20,10 +20,6 @@ export function BoardAdminContainer(props: IBoardContainerProps) {
             route: `/app/company/${companyId}/board/${boardId}/admin/board-admins`,
         },
         {
-            text: "Columns",
-            route: `/app/company/${companyId}/board/${boardId}/admin/columns`,
-        },
-        {
             text: "Ticket Templates",
             route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
         },
