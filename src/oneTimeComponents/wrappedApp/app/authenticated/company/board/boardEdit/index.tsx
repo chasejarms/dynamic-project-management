@@ -14,17 +14,15 @@ import { isEqual, cloneDeep } from "lodash";
 import { Api } from "../../../../../../../api";
 import { StringValidator } from "../../../../../../../classes/StringValidator";
 import { IColumn } from "../../../../../../../models/column";
-import {
-    IWrappedButtonProps,
-    WrappedButton,
-} from "../../../../components/wrappedButton";
+import { WrappedButton } from "../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../hooks/useControl";
-import { BottomPageToolbar } from "../../components/bottomPageToolbar";
-import { BoardAdminContainer } from "../admin/components/boardAdminContainer";
 import { EditableColumnCard } from "./components/editableColumnCard";
 import { generateUniqueId } from "./hooks/utils/generateUniqueId";
+import { BoardContainer } from "../components/boardContainer";
+import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
+import { useHistory } from "react-router-dom";
 
 export function BoardEdit() {
     const classes = createClasses();
@@ -268,100 +266,106 @@ export function BoardEdit() {
     }
 
     const hideDeleteButton = localColumns.length <= 3;
-    const wrappedButtonProps: IWrappedButtonProps[] = [
-        {
-            onClick: resetChanges,
-            disabled: !columnDataHasChanged || isSavingColumns,
-            children: "Reset Changes",
-        },
-        {
-            disabled: !columnDataHasChanged || isSavingColumns,
-            showSpinner: isSavingColumns,
-            onClick: saveColumns,
-            variant: "contained",
-            color: "primary",
-            children: "Save Changes",
-        },
-    ];
+
+    const history = useHistory();
+    function navigateBackToBoard() {
+        history.push(`/app/company/${companyId}/board/${boardId}/tickets/`);
+    }
 
     return (
-        <BoardAdminContainer>
-            <div css={classes.container}>
-                <div css={classes.contentContainer}>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Dialog
-                            open={columnCreationDialogIsOpen}
-                            onClose={closeColumnCreationDialog}
-                        >
-                            <DialogTitle>Create Column</DialogTitle>
-                            <DialogContent>
-                                <div css={classes.columnInputContainer}>
-                                    <WrappedTextField
-                                        value={columnNameControl.value}
-                                        label="Column Name"
-                                        onChange={columnNameControl.onChange}
-                                        error={
-                                            showColumnNameControl
-                                                ? columnNameControl.errorMessage
-                                                : ""
-                                        }
-                                    />
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                <WrappedButton
-                                    onClick={closeColumnCreationDialog}
-                                >
-                                    Close
-                                </WrappedButton>
-                                <WrappedButton
-                                    variant="contained"
-                                    onClick={createColumn}
-                                    color="primary"
-                                    disabled={!columnNameControl.isValid}
-                                >
-                                    Create
-                                </WrappedButton>
-                            </DialogActions>
-                        </Dialog>
-                        <div css={classes.innerContentContainer}>
-                            {isLoadingColumns ? (
-                                <div css={classes.spinnerContainer}>
-                                    <CircularProgress
-                                        color="primary"
-                                        size={24}
-                                        thickness={4}
-                                    />
-                                </div>
-                            ) : (
-                                <div css={classes.columnAndHeaderContainer}>
-                                    <div
-                                        css={
-                                            classes.columnCreationHeaderContainer
-                                        }
-                                    >
-                                        <WrappedButton
-                                            onClick={openColumnCreationDialog}
-                                            startIcon={<Add />}
-                                            color="primary"
-                                        >
-                                            Add Column
-                                        </WrappedButton>
-                                    </div>
-                                    {showComponentOne ? (
-                                        <DroppableColumns
-                                            columns={localColumns}
-                                            onDeleteColumn={onDeleteColumn}
-                                            onUpdateColumn={onUpdateColumn}
-                                            isSavingColumns={isSavingColumns}
-                                            hideDeleteButton={hideDeleteButton}
-                                        />
-                                    ) : (
-                                        <div
-                                            css={
-                                                classes.secondComponentColumnsContainer
+        <BoardContainer>
+            <ContentWithDynamicToolbar
+                toolbarContent={
+                    <div css={classes.toolbarContainer}>
+                        <div>
+                            <WrappedButton
+                                disabled={
+                                    columnDataHasChanged || isSavingColumns
+                                }
+                                onClick={navigateBackToBoard}
+                                variant="text"
+                                color="primary"
+                            >
+                                Back To Board
+                            </WrappedButton>
+                        </div>
+                        <div css={classes.actionButtonContainer}>
+                            <WrappedButton
+                                disabled={
+                                    !columnDataHasChanged || isSavingColumns
+                                }
+                                onClick={resetChanges}
+                                variant="text"
+                                color="secondary"
+                            >
+                                Reset Changes
+                            </WrappedButton>
+                            <WrappedButton
+                                disabled={
+                                    !columnDataHasChanged || isSavingColumns
+                                }
+                                showSpinner={isSavingColumns}
+                                onClick={saveColumns}
+                                variant="contained"
+                                color="primary"
+                            >
+                                Save Changes
+                            </WrappedButton>
+                        </div>
+                    </div>
+                }
+                mainContent={
+                    <div css={classes.mainContentContainer}>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Dialog
+                                open={columnCreationDialogIsOpen}
+                                onClose={closeColumnCreationDialog}
+                            >
+                                <DialogTitle>Create Column</DialogTitle>
+                                <DialogContent>
+                                    <div css={classes.columnInputContainer}>
+                                        <WrappedTextField
+                                            value={columnNameControl.value}
+                                            label="Column Name"
+                                            onChange={
+                                                columnNameControl.onChange
                                             }
-                                        >
+                                            error={
+                                                showColumnNameControl
+                                                    ? columnNameControl.errorMessage
+                                                    : ""
+                                            }
+                                        />
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <WrappedButton
+                                        onClick={closeColumnCreationDialog}
+                                    >
+                                        Close
+                                    </WrappedButton>
+                                    <WrappedButton
+                                        variant="contained"
+                                        onClick={createColumn}
+                                        color="primary"
+                                        disabled={!columnNameControl.isValid}
+                                    >
+                                        Create
+                                    </WrappedButton>
+                                </DialogActions>
+                            </Dialog>
+                            <div css={classes.innerContentContainer}>
+                                {isLoadingColumns ? (
+                                    <div css={classes.spinnerContainer}>
+                                        <CircularProgress
+                                            color="primary"
+                                            size={24}
+                                            thickness={4}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div css={classes.columnAndHeaderContainer}>
+                                        {showComponentOne ? (
                                             <DroppableColumns
                                                 columns={localColumns}
                                                 onDeleteColumn={onDeleteColumn}
@@ -373,20 +377,37 @@ export function BoardEdit() {
                                                     hideDeleteButton
                                                 }
                                             />
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </DragDropContext>
-                </div>
-                <div css={classes.bottomPageToolbarContainer}>
-                    <BottomPageToolbar
-                        wrappedButtonProps={wrappedButtonProps}
-                    />
-                </div>
-            </div>
-        </BoardAdminContainer>
+                                        ) : (
+                                            <div
+                                                css={
+                                                    classes.secondComponentColumnsContainer
+                                                }
+                                            >
+                                                <DroppableColumns
+                                                    columns={localColumns}
+                                                    onDeleteColumn={
+                                                        onDeleteColumn
+                                                    }
+                                                    onUpdateColumn={
+                                                        onUpdateColumn
+                                                    }
+                                                    isSavingColumns={
+                                                        isSavingColumns
+                                                    }
+                                                    hideDeleteButton={
+                                                        hideDeleteButton
+                                                    }
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </DragDropContext>
+                    </div>
+                }
+            />
+        </BoardContainer>
     );
 }
 
@@ -472,8 +493,6 @@ function createClasses() {
 
     const columnAndHeaderContainer = css`
         width: 100%;
-        display: grid;
-        grid-template-rows: auto 1fr;
         height: 100%;
     `;
 
@@ -487,18 +506,22 @@ function createClasses() {
         width: 300px;
     `;
 
-    const bottomPageToolbarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const contentContainer = css`
+    const mainContentContainer = css`
         flex-grow: 1;
     `;
 
-    const container = css`
+    const toolbarContainer = css`
+        padding: 0px 24px 0 24px;
         flex-grow: 1;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    `;
+
+    const actionButtonContainer = css`
+        display: grid;
+        grid-gap: 8px;
+        grid-template-columns: 1fr 1fr;
     `;
 
     return {
@@ -511,8 +534,8 @@ function createClasses() {
         columnCreationHeaderContainer,
         columnInputContainer,
         secondComponentColumnsContainer,
-        contentContainer,
-        bottomPageToolbarContainer,
-        container,
+        mainContentContainer,
+        toolbarContainer,
+        actionButtonContainer,
     };
 }

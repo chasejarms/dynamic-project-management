@@ -15,6 +15,7 @@ import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
+import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
 
 export function BoardHome() {
     const classes = createClasses();
@@ -41,9 +42,7 @@ export function BoardHome() {
     }
 
     function navigateToEditBoardPage() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/tickets/edit-board`
-        );
+        history.push(`/app/company/${companyId}/board/${boardId}/edit-board`);
     }
 
     return (
@@ -51,95 +50,114 @@ export function BoardHome() {
             {isLoadingData ? (
                 <CenterLoadingSpinner size="large" />
             ) : (
-                <div css={classes.contentContainer}>
-                    <TicketDrawerRoutes
-                        onUpdateTicket={onUpdateTicket}
-                        onDeleteTicket={onDeleteTicket}
-                        onCreateTicket={onCreateTicket}
-                        ticketType={TicketType.InProgress}
-                    />
-                    <div css={classes.actionButtonContainer}>
-                        <div>
-                            <WrappedButton
-                                variant="outlined"
-                                onClick={navigateToTicketCreationPage}
-                                color="primary"
-                            >
-                                Create Ticket
-                            </WrappedButton>
+                <ContentWithDynamicToolbar
+                    toolbarContent={
+                        <div css={classes.actionButtonContainer}>
+                            <div>
+                                <WrappedButton
+                                    variant="outlined"
+                                    onClick={navigateToTicketCreationPage}
+                                    color="primary"
+                                >
+                                    Create Ticket
+                                </WrappedButton>
+                            </div>
+                            <div>
+                                <WrappedButton
+                                    variant="text"
+                                    onClick={navigateToEditBoardPage}
+                                    color="primary"
+                                >
+                                    Edit Board
+                                </WrappedButton>
+                            </div>
                         </div>
-                        <div>
-                            <WrappedButton
-                                variant="text"
-                                onClick={navigateToEditBoardPage}
-                                color="primary"
-                            >
-                                Edit Board
-                            </WrappedButton>
-                        </div>
-                    </div>
-                    <div css={classes.columnsContainer}>
-                        <BoardColumnsContainer>
-                            {columns.map((column) => {
-                                const isDoneColumn =
-                                    column.id === doneColumnReservedId;
-                                const isUncategorizedSection =
-                                    column.id === uncategorizedColumnReservedId;
-                                const hasNoTickets =
-                                    sortedAndMappedTickets[column.id].tickets
-                                        .length === 0;
-                                if (
-                                    isDoneColumn ||
-                                    (isUncategorizedSection && hasNoTickets)
-                                ) {
-                                    return null;
-                                }
+                    }
+                    mainContent={
+                        <div css={classes.contentContainer}>
+                            <div css={classes.columnsContainer}>
+                                <BoardColumnsContainer removeTopPadding>
+                                    {columns.map((column) => {
+                                        const isDoneColumn =
+                                            column.id === doneColumnReservedId;
+                                        const isUncategorizedSection =
+                                            column.id ===
+                                            uncategorizedColumnReservedId;
+                                        const hasNoTickets =
+                                            sortedAndMappedTickets[column.id]
+                                                .tickets.length === 0;
+                                        if (
+                                            isDoneColumn ||
+                                            (isUncategorizedSection &&
+                                                hasNoTickets)
+                                        ) {
+                                            return null;
+                                        }
 
-                                return (
-                                    <TicketContainer
-                                        key={column.id}
-                                        title={column.name}
-                                    >
-                                        {sortedAndMappedTickets[
-                                            column.id
-                                        ].tickets.map((ticket, index) => {
-                                            const isFirstCard = index === 0;
-                                            return (
-                                                <TicketForBoard
-                                                    key={ticket.itemId}
-                                                    ticket={ticket}
-                                                    isFirstTicket={isFirstCard}
-                                                    columnOptions={columns}
-                                                    onUpdateTicketColumn={
-                                                        onUpdateInProgressTicketColumn
+                                        return (
+                                            <TicketContainer
+                                                key={column.id}
+                                                title={column.name}
+                                            >
+                                                {sortedAndMappedTickets[
+                                                    column.id
+                                                ].tickets.map(
+                                                    (ticket, index) => {
+                                                        const isFirstCard =
+                                                            index === 0;
+                                                        return (
+                                                            <TicketForBoard
+                                                                key={
+                                                                    ticket.itemId
+                                                                }
+                                                                ticket={ticket}
+                                                                isFirstTicket={
+                                                                    isFirstCard
+                                                                }
+                                                                columnOptions={
+                                                                    columns
+                                                                }
+                                                                onUpdateTicketColumn={
+                                                                    onUpdateInProgressTicketColumn
+                                                                }
+                                                                onMarkTicketAsDone={
+                                                                    onRemoveTicketFromCurrentUI
+                                                                }
+                                                                onDeleteTicket={
+                                                                    onDeleteTicket
+                                                                }
+                                                                ticketType={
+                                                                    TicketType.InProgress
+                                                                }
+                                                                onMoveTicketToBacklog={
+                                                                    onRemoveTicketFromCurrentUI
+                                                                }
+                                                                onChangeAssignTo={
+                                                                    onChangeAssignTo
+                                                                }
+                                                                usersForBoard={
+                                                                    allCompanyUsers
+                                                                }
+                                                            />
+                                                        );
                                                     }
-                                                    onMarkTicketAsDone={
-                                                        onRemoveTicketFromCurrentUI
-                                                    }
-                                                    onDeleteTicket={
-                                                        onDeleteTicket
-                                                    }
-                                                    ticketType={
-                                                        TicketType.InProgress
-                                                    }
-                                                    onMoveTicketToBacklog={
-                                                        onRemoveTicketFromCurrentUI
-                                                    }
-                                                    onChangeAssignTo={
-                                                        onChangeAssignTo
-                                                    }
-                                                    usersForBoard={
-                                                        allCompanyUsers
-                                                    }
-                                                />
-                                            );
-                                        })}
-                                    </TicketContainer>
-                                );
-                            })}
-                        </BoardColumnsContainer>
-                    </div>
-                </div>
+                                                )}
+                                            </TicketContainer>
+                                        );
+                                    })}
+                                </BoardColumnsContainer>
+                            </div>
+                        </div>
+                    }
+                    ticketDrawerRoutes={
+                        <TicketDrawerRoutes
+                            onUpdateTicket={onUpdateTicket}
+                            onDeleteTicket={onDeleteTicket}
+                            onCreateTicket={onCreateTicket}
+                            ticketType={TicketType.InProgress}
+                        />
+                    }
+                />
             )}
         </BoardContainer>
     );
@@ -155,9 +173,10 @@ const createClasses = () => {
     `;
 
     const actionButtonContainer = css`
-        flex: 0 0 auto;
-        padding: 16px 24px 0 24px;
+        padding: 0px 24px 0 24px;
+        flex-grow: 1;
         display: flex;
+        align-items: center;
         justify-content: space-between;
     `;
 
