@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IColumn } from "../../models/column";
 import { cloneDeep } from "lodash";
+import { generateUniqueId } from "../../oneTimeComponents/wrappedApp/app/authenticated/company/board/boardEdit/hooks/utils/generateUniqueId";
+import { StringValidator } from "../../classes/StringValidator";
 
 export interface IColumnControl extends IColumn {
     labelError: string;
@@ -122,6 +124,63 @@ export const boardColumnEditMappedSlice = createSlice({
             ].localColumnControls = updatedLocalColumnControls;
             return clonedState;
         },
+        addColumnAfter(
+            state: IBoardColumnEditMappedState,
+            action: PayloadAction<{
+                boardId: string;
+                index: number;
+            }>
+        ) {
+            const clonedState = cloneDeep(state);
+            const { boardId, index } = action.payload;
+            const columnsBeforeUpdate =
+                clonedState[boardId].localColumnControls;
+
+            const columnsBeforeInsertedColumn = columnsBeforeUpdate.slice(
+                0,
+                index + 1
+            );
+            const columnsAfterInsertedColumn = columnsBeforeUpdate.slice(
+                index + 1
+            );
+            const updatedLocalColumnControls = columnsBeforeInsertedColumn
+                .concat([
+                    {
+                        id: generateUniqueId(),
+                        name: "Default (Newly Added)",
+                        canBeModified: true,
+                        labelError: "",
+                    },
+                ])
+                .concat(columnsAfterInsertedColumn);
+
+            clonedState[
+                boardId
+            ].localColumnControls = updatedLocalColumnControls;
+            return clonedState;
+        },
+        updateLocalColumnControl: (
+            state: IBoardColumnEditMappedState,
+            action: PayloadAction<{
+                boardId: string;
+                index: number;
+                updatedValue: string;
+            }>
+        ) => {
+            const clonedState = cloneDeep(state);
+            const { boardId, index, updatedValue } = action.payload;
+            const columnsBeforeUpdate =
+                clonedState[boardId].localColumnControls;
+            columnsBeforeUpdate[index] = {
+                ...columnsBeforeUpdate[index],
+                name: updatedValue,
+                labelError: new StringValidator()
+                    .required("This field is required")
+                    .validate(updatedValue),
+            };
+
+            return clonedState;
+        },
     },
 });
 
@@ -130,6 +189,8 @@ export const {
     updateBoardColumnPosition,
     resetLocalColumnControlChanges,
     deleteColumn,
+    addColumnAfter,
+    updateLocalColumnControl,
 } = boardColumnEditMappedSlice.actions;
 
 export default boardColumnEditMappedSlice.reducer;

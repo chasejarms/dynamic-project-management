@@ -18,7 +18,10 @@ export interface IEditableColumnCardProps {
     column: IColumn;
     index: number;
     onDeleteColumn: (index: number) => void;
-    onUpdateColumn: (index: number, column: IColumn) => void;
+    onUpdateColumn: (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+    onClickAddAfter: (index: number) => () => void;
     disabled?: boolean;
     hideDeleteButton: boolean;
     isLastColumn?: boolean;
@@ -53,10 +56,11 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
     useEffect(() => {
         if (!columnNameControl.isValid) return;
 
-        props.onUpdateColumn(props.index, {
-            ...props.column,
-            name: columnNameControl.value,
-        });
+        props.onUpdateColumn({
+            target: {
+                value: columnNameControl.value,
+            },
+        } as any);
     }, [debouncedColumn]);
 
     return (
@@ -116,7 +120,9 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                                     </div>
                                     <div>
                                         <WrappedButton
-                                            onClick={() => null}
+                                            onClick={props.onClickAddAfter(
+                                                props.index
+                                            )}
                                             color="primary"
                                             disabled={props.disabled}
                                         >

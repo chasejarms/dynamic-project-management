@@ -30,89 +30,9 @@ export function BoardEdit() {
         saveColumns,
         isSavingColumns,
         onDeleteColumn,
+        onAddColumnAfter,
+        updateColumn,
     } = useBoardColumnEditState();
-
-    const [{ databaseColumns, localColumns }, setColumnData] = useState<{
-        databaseColumns: IColumn[];
-        localColumns: IColumn[];
-    }>({
-        databaseColumns: [],
-        localColumns: [],
-    });
-
-    function onUpdateColumn(index: number, column: IColumn) {
-        setColumnData((previousDatabaseAndLocalColumns) => {
-            const cloneOfLocalColumns = cloneDeep(
-                previousDatabaseAndLocalColumns.localColumns
-            );
-            cloneOfLocalColumns[index] = column;
-
-            return {
-                databaseColumns:
-                    previousDatabaseAndLocalColumns.databaseColumns,
-                localColumns: cloneOfLocalColumns,
-            };
-        });
-    }
-
-    function createColumn() {
-        setColumnData((previousDatabaseAndLocalColumns) => {
-            const existingIds = previousDatabaseAndLocalColumns.databaseColumns.reduce<{
-                [id: string]: boolean;
-            }>((columnIdMapping, column) => {
-                columnIdMapping[column.id] = true;
-                return columnIdMapping;
-            }, {});
-
-            let id: string = "";
-            while (id === "") {
-                const uniqueColumnId = generateUniqueId(1);
-                if (existingIds[uniqueColumnId] === undefined) {
-                    id = uniqueColumnId;
-                }
-            }
-
-            const newColumn: IColumn = {
-                name: columnNameControl.value,
-                id,
-                canBeModified: true,
-            };
-
-            const previousFirstLocalColumns = previousDatabaseAndLocalColumns.localColumns.slice(
-                0,
-                1
-            );
-            const previousAfterFirstLocalColumns = previousDatabaseAndLocalColumns.localColumns.slice(
-                1
-            );
-            const updatedLocalColumns = previousFirstLocalColumns
-                .concat([newColumn])
-                .concat(previousAfterFirstLocalColumns);
-
-            return {
-                databaseColumns:
-                    previousDatabaseAndLocalColumns.databaseColumns,
-                localColumns: updatedLocalColumns,
-            };
-        });
-    }
-
-    const columnNameControl = useControl({
-        value: "",
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            const updatedName = event.target.value;
-            return updatedName;
-        },
-        validatorError: (email: string) => {
-            return new StringValidator()
-                .required("This field is required")
-                .validate(email);
-        },
-    });
-    const showColumnNameControl =
-        columnNameControl.isTouched && !columnNameControl.isValid;
 
     const toolbarContent = (
         <div css={classes.toolbarContainer}>
@@ -136,7 +56,11 @@ export function BoardEdit() {
                     Reset Changes
                 </WrappedButton>
                 <WrappedButton
-                    disabled={!columnDataHasChanged || isSavingColumns}
+                    disabled={
+                        !columnDataHasChanged ||
+                        isSavingColumns ||
+                        isInErrorState
+                    }
                     showSpinner={isSavingColumns}
                     onClick={saveColumns}
                     variant="contained"
@@ -187,8 +111,11 @@ export function BoardEdit() {
                                                             onDeleteColumn={
                                                                 onDeleteColumn
                                                             }
-                                                            onUpdateColumn={
-                                                                onUpdateColumn
+                                                            onUpdateColumn={updateColumn(
+                                                                index
+                                                            )}
+                                                            onClickAddAfter={
+                                                                onAddColumnAfter
                                                             }
                                                             disabled={
                                                                 isSavingColumns

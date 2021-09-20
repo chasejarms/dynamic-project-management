@@ -5,12 +5,14 @@ import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
 import { DropResult } from "react-beautiful-dnd";
 import {
+    addColumnAfter,
     deleteColumn,
     resetLocalColumnControlChanges,
     setInitialBoardColumnState,
     updateBoardColumnPosition,
+    updateLocalColumnControl,
 } from "../../../../../../../../../redux/boardColumnEditMappedState";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { Api } from "../../../../../../../../../api";
 
 export function useBoardColumnEditState() {
@@ -147,6 +149,28 @@ export function useBoardColumnEditState() {
         dispatch(deleteColumnAction);
     }
 
+    function onAddColumnAfter(index: number) {
+        return () => {
+            const addColumnAfterAction = addColumnAfter({
+                boardId,
+                index,
+            });
+            dispatch(addColumnAfterAction);
+        };
+    }
+
+    function updateColumn(index: number) {
+        return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const updatedValue = event.target.value;
+            const updateColumnAction = updateLocalColumnControl({
+                boardId,
+                updatedValue,
+                index,
+            });
+            dispatch(updateColumnAction);
+        };
+    }
+
     return {
         isInErrorState,
         columnDataHasChanged,
@@ -159,5 +183,7 @@ export function useBoardColumnEditState() {
         saveColumns,
         isSavingColumns,
         onDeleteColumn,
+        onAddColumnAfter,
+        updateColumn,
     };
 }
