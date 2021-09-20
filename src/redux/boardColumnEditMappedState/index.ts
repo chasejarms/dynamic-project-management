@@ -18,6 +18,7 @@ export interface IBoardColumnEditMappedState {
 const initialState: IBoardColumnEditMappedState = {};
 
 export const defaultNewColumnName = "Default (Newly Added)";
+export const boardColumnEditNameRequiredError = "This field is required";
 export const boardColumnEditMappedSlice = createSlice({
     name: "boardColumnEdit",
     initialState,
@@ -176,7 +177,7 @@ export const boardColumnEditMappedSlice = createSlice({
                 ...columnsBeforeUpdate[index],
                 name: updatedValue,
                 nameError: new StringValidator()
-                    .required("This field is required")
+                    .required(boardColumnEditNameRequiredError)
                     .validate(updatedValue),
             };
 

@@ -1,12 +1,14 @@
 import { isEqual } from "lodash";
 import boardColumnEditMappedStateReducer, {
     addColumnAfter,
+    boardColumnEditNameRequiredError,
     defaultNewColumnName,
     deleteColumn,
     IBoardColumnEditMappedState,
     resetLocalColumnControlChanges,
     setInitialBoardColumnState,
     updateBoardColumnPosition,
+    updateLocalColumnControl,
 } from ".";
 import { IColumn } from "../../models/column";
 
@@ -172,6 +174,61 @@ describe("boardColumnEditMappedState", () => {
             expect(updatedLocalColumnControls[1].name).toBe(
                 defaultNewColumnName
             );
+        });
+    });
+
+    describe("addColumnAfter", () => {
+        it("should add a new column at the correct index", () => {
+            const addColumnAfterAction = addColumnAfter({
+                boardId: "1",
+                index: 0,
+            });
+            const state = boardColumnEditMappedStateReducer(
+                boardColumnEditMappedState,
+                addColumnAfterAction
+            );
+            const updatedLocalColumnControls =
+                state[boardId].localColumnControls;
+            expect(updatedLocalColumnControls.length).toBe(3);
+
+            expect(updatedLocalColumnControls[1].name).toBe(
+                defaultNewColumnName
+            );
+        });
+    });
+
+    describe("updateLocalColumnControl", () => {
+        it("should update the column name value", () => {
+            const updateLocalColumnControlAction = updateLocalColumnControl({
+                boardId,
+                index: 0,
+                updatedValue: "hello",
+            });
+            const state = boardColumnEditMappedStateReducer(
+                boardColumnEditMappedState,
+                updateLocalColumnControlAction
+            );
+            const { nameError, name } = state[boardId].localColumnControls[0];
+            expect(nameError).toBe("");
+            expect(name).toBe("hello");
+        });
+
+        describe("the update value is an empty string", () => {
+            it("should return a name error", () => {
+                const updateLocalColumnControlAction = updateLocalColumnControl(
+                    {
+                        boardId,
+                        index: 0,
+                        updatedValue: "",
+                    }
+                );
+                const state = boardColumnEditMappedStateReducer(
+                    boardColumnEditMappedState,
+                    updateLocalColumnControlAction
+                );
+                const { nameError } = state[boardId].localColumnControls[0];
+                expect(nameError).toBe(boardColumnEditNameRequiredError);
+            });
         });
     });
 });
