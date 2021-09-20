@@ -1,5 +1,6 @@
 import { isEqual } from "lodash";
 import boardColumnEditMappedStateReducer, {
+    deleteColumn,
     IBoardColumnEditMappedState,
     resetLocalColumnControlChanges,
     setInitialBoardColumnState,
@@ -69,13 +70,13 @@ describe("boardColumnEditMappedState", () => {
             );
             const { localColumnControls, databaseColumns } = state[boardId];
             columns.forEach((column, index) => {
-                expect(isEqual(databaseColumns[index], column));
+                expect(isEqual(databaseColumns[index], column)).toBe(true);
                 expect(
                     isEqual(localColumnControls[index], {
                         ...column,
                         nameError: "",
                     })
-                );
+                ).toBe(true);
             });
         });
     });
@@ -93,8 +94,8 @@ describe("boardColumnEditMappedState", () => {
             );
             const { nameError, ...columnAtIndexOne } = state[
                 boardId
-            ].localColumnControls[0];
-            expect(isEqual(columnAtIndexOne, columns[0]));
+            ].localColumnControls[1];
+            expect(isEqual(columnAtIndexOne, columns[0])).toBe(true);
         });
     });
 
@@ -123,10 +124,29 @@ describe("boardColumnEditMappedState", () => {
                 { nameError: firstColumnNameError, ...firstColumnCompare },
                 { nameError: secondColumnNameError, ...secondColumnCompare },
             ] = updatedLocalColumnControls;
-            expect(isEqual(firstColumnCompare, columns[0]));
+            expect(isEqual(firstColumnCompare, columns[0])).toBe(true);
             expect(firstColumnNameError).toBe("");
-            expect(isEqual(secondColumnCompare, columns[1]));
+            expect(isEqual(secondColumnCompare, columns[1])).toBe(true);
             expect(secondColumnNameError).toBe("");
         });
     });
+
+    // describe("deleteColumn", () => {
+    //     const deleteColumnAction = deleteColumn({
+    //         boardId: "1",
+    //         index: 0,
+    //     });
+    //     const state = boardColumnEditMappedStateReducer(
+    //         boardColumnEditMappedState,
+    //         deleteColumnAction
+    //     );
+    //     const updatedLocalColumnControls = state[boardId].localColumnControls;
+    //     expect(updatedLocalColumnControls.length).toBe(1);
+
+    //     const {
+    //         nameError,
+    //         ...compareFirstControl
+    //     } = updatedLocalColumnControls[0];
+    //     expect(isEqual(compareFirstControl, columns[1])).toBe(true);
+    // });
 });
