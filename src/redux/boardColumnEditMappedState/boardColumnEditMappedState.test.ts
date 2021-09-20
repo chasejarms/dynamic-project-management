@@ -131,22 +131,25 @@ describe("boardColumnEditMappedState", () => {
         });
     });
 
-    // describe("deleteColumn", () => {
-    //     const deleteColumnAction = deleteColumn({
-    //         boardId: "1",
-    //         index: 0,
-    //     });
-    //     const state = boardColumnEditMappedStateReducer(
-    //         boardColumnEditMappedState,
-    //         deleteColumnAction
-    //     );
-    //     const updatedLocalColumnControls = state[boardId].localColumnControls;
-    //     expect(updatedLocalColumnControls.length).toBe(1);
+    describe("deleteColumn", () => {
+        it("should remove the column from the localColumnControls", () => {
+            const deleteColumnAction = deleteColumn({
+                boardId: "1",
+                index: 0,
+            });
+            const state = boardColumnEditMappedStateReducer(
+                boardColumnEditMappedState,
+                deleteColumnAction
+            );
+            const updatedLocalColumnControls =
+                state[boardId].localColumnControls;
+            expect(updatedLocalColumnControls.length).toBe(1);
 
-    //     const {
-    //         nameError,
-    //         ...compareFirstControl
-    //     } = updatedLocalColumnControls[0];
-    //     expect(isEqual(compareFirstControl, columns[1])).toBe(true);
-    // });
+            const {
+                nameError,
+                ...compareFirstControl
+            } = updatedLocalColumnControls[0];
+            expect(isEqual(compareFirstControl, columns[1])).toBe(true);
+        });
+    });
 });
