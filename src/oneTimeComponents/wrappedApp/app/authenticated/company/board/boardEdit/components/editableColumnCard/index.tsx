@@ -8,6 +8,7 @@ import { WrappedTextField } from "../../../../../../components/wrappedTextField"
 import { TicketContainer } from "../../../components/ticketContainer";
 import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoardColumnEditState";
 import React from "react";
+import { uncategorizedColumnReservedId } from "../../../../../../../../../constants/reservedColumnIds";
 
 export interface IEditableColumnCardProps {
     index: number;
@@ -29,6 +30,7 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
         onClickAddAfter,
     } = useIndividualBoardColumnEditState(props.index);
 
+    const showDeleteButton = id !== uncategorizedColumnReservedId;
     return (
         <Draggable draggableId={id} index={props.index}>
             {(provided) => {
@@ -71,17 +73,19 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                 </div>
                                 <div css={classes.actionButtonContainer}>
                                     <div>
-                                        <IconButton
-                                            onClick={onDeleteColumn(
-                                                props.index
-                                            )}
-                                            disabled={
-                                                props.disabled ||
-                                                !!props.disableDeleteButton
-                                            }
-                                        >
-                                            <Delete />
-                                        </IconButton>
+                                        {showDeleteButton && (
+                                            <IconButton
+                                                onClick={onDeleteColumn(
+                                                    props.index
+                                                )}
+                                                disabled={
+                                                    props.disabled ||
+                                                    !!props.disableDeleteButton
+                                                }
+                                            >
+                                                <Delete />
+                                            </IconButton>
+                                        )}
                                         <IconButton
                                             onClick={onClickAddAfter(
                                                 props.index
