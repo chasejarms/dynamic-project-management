@@ -5,6 +5,8 @@ import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useHistory } from "react-router-dom";
 import { DropResult } from "react-beautiful-dnd";
 import {
+    deleteColumn,
+    resetLocalColumnControlChanges,
     setInitialBoardColumnState,
     updateBoardColumnPosition,
 } from "../../../../../../../../../redux/boardColumnEditMappedState";
@@ -48,6 +50,46 @@ export function useBoardColumnEditState() {
         };
     }, [companyId, boardId]);
 
+    const [isSavingColumns, setIsSavingColumns] = useState(false);
+    useEffect(() => {
+        if (!isSavingColumns) return;
+
+        let didCancel = false;
+
+        const localColumns = localColumnControls.map(
+            ({ labelError, ...localColumn }) => {
+                return localColumn;
+            }
+        );
+        Api.columns
+            .updateColumns(companyId, boardId, localColumns)
+            .then((updatedColumns) => {
+                if (didCancel) return;
+                const setInitialBoardColumnStateAction = setInitialBoardColumnState(
+                    {
+                        boardId,
+                        columns: updatedColumns,
+                    }
+                );
+                dispatch(setInitialBoardColumnStateAction);
+            })
+            .catch((error) => {
+                if (didCancel) return;
+            })
+            .finally(() => {
+                if (didCancel) return;
+                setIsSavingColumns(false);
+            });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [isSavingColumns]);
+
+    function saveColumns() {
+        setIsSavingColumns(true);
+    }
+
     const { databaseColumns, localColumnControls } = useSelector(
         (store: IStoreState) => {
             return (
@@ -90,6 +132,21 @@ export function useBoardColumnEditState() {
         dispatch(updateBoardColumnPositionAction);
     }
 
+    function resetChanges() {
+        const resetChangesAction = resetLocalColumnControlChanges({
+            boardId,
+        });
+        dispatch(resetChangesAction);
+    }
+
+    function onDeleteColumn(index: number) {
+        const deleteColumnAction = deleteColumn({
+            boardId,
+            index,
+        });
+        dispatch(deleteColumnAction);
+    }
+
     return {
         isInErrorState,
         columnDataHasChanged,
@@ -98,5 +155,9 @@ export function useBoardColumnEditState() {
         hideDeleteButton,
         onDragEnd,
         isLoadingColumns,
+        resetChanges,
+        saveColumns,
+        isSavingColumns,
+        onDeleteColumn,
     };
 }

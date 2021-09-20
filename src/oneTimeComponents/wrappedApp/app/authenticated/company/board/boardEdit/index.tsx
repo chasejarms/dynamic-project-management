@@ -1,15 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { CircularProgress } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { cloneDeep } from "lodash";
-import { Api } from "../../../../../../../api";
 import { StringValidator } from "../../../../../../../classes/StringValidator";
 import { IColumn } from "../../../../../../../models/column";
 import { WrappedButton } from "../../../../components/wrappedButton";
-import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../hooks/useControl";
 import { EditableColumnCard } from "./components/editableColumnCard";
 import { generateUniqueId } from "./hooks/utils/generateUniqueId";
@@ -20,8 +18,6 @@ import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
 export function BoardEdit() {
     const classes = createClasses();
 
-    const { boardId, companyId } = useAppRouterParams();
-
     const {
         isInErrorState,
         columnDataHasChanged,
@@ -30,6 +26,10 @@ export function BoardEdit() {
         hideDeleteButton,
         onDragEnd,
         isLoadingColumns,
+        resetChanges,
+        saveColumns,
+        isSavingColumns,
+        onDeleteColumn,
     } = useBoardColumnEditState();
 
     const [{ databaseColumns, localColumns }, setColumnData] = useState<{
@@ -39,76 +39,6 @@ export function BoardEdit() {
         databaseColumns: [],
         localColumns: [],
     });
-
-    function setLocalAndDatabaseColumns(columns: IColumn[]) {
-        setColumnData(() => {
-            return {
-                databaseColumns: columns,
-                localColumns: columns,
-            };
-        });
-    }
-
-    function resetChanges() {
-        setColumnData((previousDatabaseAndLocalColumns) => {
-            return {
-                databaseColumns:
-                    previousDatabaseAndLocalColumns.databaseColumns,
-                localColumns: previousDatabaseAndLocalColumns.databaseColumns,
-            };
-        });
-    }
-
-    const [isSavingColumns, setIsSavingColumns] = useState(false);
-    useEffect(() => {
-        if (!isSavingColumns) return;
-
-        let didCancel = false;
-
-        // maybe consider adding a snackbar or something like that?
-        Api.columns
-            .updateColumns(companyId, boardId, localColumns)
-            .then((updatedColumns) => {
-                if (didCancel) return;
-                setLocalAndDatabaseColumns(updatedColumns);
-            })
-            .catch((error) => {
-                if (didCancel) return;
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsSavingColumns(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, [isSavingColumns]);
-
-    function saveColumns() {
-        setIsSavingColumns(true);
-    }
-
-    function onDeleteColumn(index: number) {
-        setColumnData((previousDatabaseAndLocalColumns) => {
-            const columnsBeforeIndex = previousDatabaseAndLocalColumns.localColumns.slice(
-                0,
-                index
-            );
-            const columnsAfterIndex = previousDatabaseAndLocalColumns.localColumns.slice(
-                index + 1
-            );
-            const updatedLocalColumns = columnsBeforeIndex.concat(
-                columnsAfterIndex
-            );
-
-            return {
-                databaseColumns:
-                    previousDatabaseAndLocalColumns.databaseColumns,
-                localColumns: updatedLocalColumns,
-            };
-        });
-    }
 
     function onUpdateColumn(index: number, column: IColumn) {
         setColumnData((previousDatabaseAndLocalColumns) => {

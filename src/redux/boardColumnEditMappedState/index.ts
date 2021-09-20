@@ -68,11 +68,58 @@ export const boardColumnEditMappedSlice = createSlice({
             const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
                 updatedDestinationIndex
             );
-            const updatedLocalColumns = arrayBeforeInsertedIndex
+            const updatedLocalColumnControls = arrayBeforeInsertedIndex
                 .concat([columnToMove])
                 .concat(arrayAfterInsertedIndex);
 
-            clonedState[boardId].localColumnControls = updatedLocalColumns;
+            clonedState[
+                boardId
+            ].localColumnControls = updatedLocalColumnControls;
+            return clonedState;
+        },
+        resetLocalColumnControlChanges: (
+            state: IBoardColumnEditMappedState,
+            action: PayloadAction<{
+                boardId: string;
+            }>
+        ) => {
+            const clonedState = cloneDeep(state);
+            const { boardId } = action.payload;
+            const databaseColumns = clonedState[boardId].databaseColumns;
+
+            const updatedLocalColumnControls = databaseColumns.map((column) => {
+                return {
+                    ...column,
+                    labelError: "",
+                };
+            });
+
+            clonedState[
+                boardId
+            ].localColumnControls = updatedLocalColumnControls;
+            return clonedState;
+        },
+        deleteColumn: (
+            state: IBoardColumnEditMappedState,
+            action: PayloadAction<{
+                boardId: string;
+                index: number;
+            }>
+        ) => {
+            const clonedState = cloneDeep(state);
+            const { boardId, index } = action.payload;
+            const columnsBeforeUpdate =
+                clonedState[boardId].localColumnControls;
+
+            const updatedLocalColumnControls = columnsBeforeUpdate.filter(
+                (unused, compareIndex) => {
+                    return compareIndex !== index;
+                }
+            );
+
+            clonedState[
+                boardId
+            ].localColumnControls = updatedLocalColumnControls;
             return clonedState;
         },
     },
@@ -81,6 +128,8 @@ export const boardColumnEditMappedSlice = createSlice({
 export const {
     setInitialBoardColumnState,
     updateBoardColumnPosition,
+    resetLocalColumnControlChanges,
+    deleteColumn,
 } = boardColumnEditMappedSlice.actions;
 
 export default boardColumnEditMappedSlice.reducer;
