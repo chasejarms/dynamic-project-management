@@ -348,20 +348,25 @@ export function TicketForBoard(props: ITicketForBoardProps) {
         }
     }
 
-    const columnsWithBacklogColumn: IColumn[] = [
+    const columnsWithBacklogAndDoneColumn: IColumn[] = [
         {
             name: "Backlog",
             id: backlogColumnReservedId,
             canBeModified: false,
         },
         ...props.columnOptions,
+        {
+            name: "Done",
+            id: doneColumnReservedId,
+            canBeModified: false,
+        },
     ];
     const isDemoMode = !!props.onClickDemoTicket;
     const indentedActions: IIndentedAction[] = [
         {
             header: "Move To",
             informationForMenuItems:
-                columnsWithBacklogColumn
+                columnsWithBacklogAndDoneColumn
                     .filter((column) => {
                         const isUncategorizedColumn =
                             column.id === uncategorizedColumnReservedId;
