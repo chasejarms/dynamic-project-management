@@ -1,28 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useState, useEffect, ChangeEvent } from "react";
-import {
-    CircularProgress,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-} from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { cloneDeep } from "lodash";
 import { Api } from "../../../../../../../api";
 import { StringValidator } from "../../../../../../../classes/StringValidator";
 import { IColumn } from "../../../../../../../models/column";
 import { WrappedButton } from "../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../components/wrappedTextField";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../hooks/useControl";
 import { EditableColumnCard } from "./components/editableColumnCard";
 import { generateUniqueId } from "./hooks/utils/generateUniqueId";
 import { BoardContainer } from "../components/boardContainer";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
-import { useHistory } from "react-router-dom";
 import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
 
 export function BoardEdit() {
@@ -34,6 +26,10 @@ export function BoardEdit() {
         isInErrorState,
         columnDataHasChanged,
         localColumnControls,
+        navigateBackToBoard,
+        hideDeleteButton,
+        onDragEnd,
+        isLoadingColumns,
     } = useBoardColumnEditState();
 
     const [{ databaseColumns, localColumns }, setColumnData] = useState<{
@@ -53,10 +49,6 @@ export function BoardEdit() {
         });
     }
 
-    const [showComponentOne, setShowComponentOne] = useState(true);
-    function resetEditableColumnState() {
-        setShowComponentOne((previous) => !previous);
-    }
     function resetChanges() {
         setColumnData((previousDatabaseAndLocalColumns) => {
             return {
@@ -65,33 +57,7 @@ export function BoardEdit() {
                 localColumns: previousDatabaseAndLocalColumns.databaseColumns,
             };
         });
-        resetEditableColumnState();
     }
-
-    const [isLoadingColumns, setIsLoadingColumns] = useState(true);
-    useEffect(() => {
-        if (!boardId || !companyId) return;
-        let didCancel = false;
-
-        Api.columns
-            .getColumns(companyId, boardId)
-            .then((columnsFromApi) => {
-                if (didCancel) return;
-                setLocalAndDatabaseColumns([...columnsFromApi]);
-            })
-            .catch(() => {
-                if (didCancel) return;
-                // maybe do some sort of error logic
-            })
-            .finally(() => {
-                if (didCancel) return;
-                setIsLoadingColumns(false);
-            });
-
-        return () => {
-            didCancel = true;
-        };
-    }, [companyId, boardId]);
 
     const [isSavingColumns, setIsSavingColumns] = useState(false);
     useEffect(() => {
@@ -105,7 +71,6 @@ export function BoardEdit() {
             .then((updatedColumns) => {
                 if (didCancel) return;
                 setLocalAndDatabaseColumns(updatedColumns);
-                resetEditableColumnState();
             })
             .catch((error) => {
                 if (didCancel) return;
@@ -200,18 +165,6 @@ export function BoardEdit() {
                 localColumns: updatedLocalColumns,
             };
         });
-        setColumnCreationDialogIsOpen(false);
-    }
-
-    const [
-        columnCreationDialogIsOpen,
-        setColumnCreationDialogIsOpen,
-    ] = useState(false);
-    function openColumnCreationDialog() {
-        setColumnCreationDialogIsOpen(true);
-    }
-    function closeColumnCreationDialog() {
-        setColumnCreationDialogIsOpen(false);
     }
 
     const columnNameControl = useControl({
@@ -231,233 +184,114 @@ export function BoardEdit() {
     const showColumnNameControl =
         columnNameControl.isTouched && !columnNameControl.isValid;
 
-    function onDragEnd(result: DropResult) {
-        const { destination, source } = result;
-        if (!destination) return;
+    const toolbarContent = (
+        <div css={classes.toolbarContainer}>
+            <div>
+                <WrappedButton
+                    disabled={columnDataHasChanged || isSavingColumns}
+                    onClick={navigateBackToBoard}
+                    variant="text"
+                    color="primary"
+                >
+                    Back To Board
+                </WrappedButton>
+            </div>
+            <div css={classes.actionButtonContainer}>
+                <WrappedButton
+                    disabled={!columnDataHasChanged || isSavingColumns}
+                    onClick={resetChanges}
+                    variant="text"
+                    color="secondary"
+                >
+                    Reset Changes
+                </WrappedButton>
+                <WrappedButton
+                    disabled={!columnDataHasChanged || isSavingColumns}
+                    showSpinner={isSavingColumns}
+                    onClick={saveColumns}
+                    variant="contained"
+                    color="primary"
+                >
+                    Save Changes
+                </WrappedButton>
+            </div>
+        </div>
+    );
 
-        setColumnData((previousLocalAndDatabaseColumns) => {
-            const previousLocalColumns =
-                previousLocalAndDatabaseColumns.localColumns;
-
-            const columnToMove = previousLocalColumns[source.index];
-
-            const arrayBeforeItem = previousLocalColumns.slice(0, source.index);
-            const arrayAfterItem = previousLocalColumns.slice(source.index + 1);
-            const arrayWithItemRemoved = arrayBeforeItem.concat(arrayAfterItem);
-
-            const updatedDestinationIndex =
-                destination.index === 0
-                    ? 1
-                    : destination.index === previousLocalColumns.length - 1
-                    ? previousLocalColumns.length - 2
-                    : destination.index;
-
-            const arrayBeforeInsertedIndex = arrayWithItemRemoved.slice(
-                0,
-                updatedDestinationIndex
-            );
-            const arrayAfterInsertedIndex = arrayWithItemRemoved.slice(
-                updatedDestinationIndex
-            );
-            const updatedLocalColumns = arrayBeforeInsertedIndex
-                .concat([columnToMove])
-                .concat(arrayAfterInsertedIndex);
-
-            return {
-                databaseColumns:
-                    previousLocalAndDatabaseColumns.databaseColumns,
-                localColumns: updatedLocalColumns,
-            };
-        });
-    }
-
-    const hideDeleteButton = localColumns.length <= 3;
-
-    const history = useHistory();
-    function navigateBackToBoard() {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets/`);
-    }
+    const mainContent = (
+        <div css={classes.mainContentContainer}>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <div css={classes.innerContentContainer}>
+                    {isLoadingColumns ? (
+                        <div css={classes.spinnerContainer}>
+                            <CircularProgress
+                                color="primary"
+                                size={24}
+                                thickness={4}
+                            />
+                        </div>
+                    ) : (
+                        <div css={classes.columnAndHeaderContainer}>
+                            <Droppable
+                                droppableId="board-columns"
+                                direction="horizontal"
+                            >
+                                {(provided) => {
+                                    return (
+                                        <div
+                                            css={classes.columnsContainer}
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                        >
+                                            {localColumnControls.map(
+                                                (column, index) => {
+                                                    const isLastColumn =
+                                                        localColumnControls.length -
+                                                            1 ===
+                                                        index;
+                                                    return (
+                                                        <EditableColumnCard
+                                                            key={column.id}
+                                                            column={column}
+                                                            index={index}
+                                                            onDeleteColumn={
+                                                                onDeleteColumn
+                                                            }
+                                                            onUpdateColumn={
+                                                                onUpdateColumn
+                                                            }
+                                                            disabled={
+                                                                isSavingColumns
+                                                            }
+                                                            hideDeleteButton={
+                                                                hideDeleteButton
+                                                            }
+                                                            isLastColumn={
+                                                                isLastColumn
+                                                            }
+                                                        />
+                                                    );
+                                                }
+                                            )}
+                                            {provided.placeholder}
+                                        </div>
+                                    );
+                                }}
+                            </Droppable>
+                        </div>
+                    )}
+                </div>
+            </DragDropContext>
+        </div>
+    );
 
     return (
         <BoardContainer>
             <ContentWithDynamicToolbar
-                toolbarContent={
-                    <div css={classes.toolbarContainer}>
-                        <div>
-                            <WrappedButton
-                                disabled={
-                                    columnDataHasChanged || isSavingColumns
-                                }
-                                onClick={navigateBackToBoard}
-                                variant="text"
-                                color="primary"
-                            >
-                                Back To Board
-                            </WrappedButton>
-                        </div>
-                        <div css={classes.actionButtonContainer}>
-                            <WrappedButton
-                                disabled={
-                                    !columnDataHasChanged || isSavingColumns
-                                }
-                                onClick={resetChanges}
-                                variant="text"
-                                color="secondary"
-                            >
-                                Reset Changes
-                            </WrappedButton>
-                            <WrappedButton
-                                disabled={
-                                    !columnDataHasChanged || isSavingColumns
-                                }
-                                showSpinner={isSavingColumns}
-                                onClick={saveColumns}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Save Changes
-                            </WrappedButton>
-                        </div>
-                    </div>
-                }
-                mainContent={
-                    <div css={classes.mainContentContainer}>
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <Dialog
-                                open={columnCreationDialogIsOpen}
-                                onClose={closeColumnCreationDialog}
-                            >
-                                <DialogTitle>Create Column</DialogTitle>
-                                <DialogContent>
-                                    <div css={classes.columnInputContainer}>
-                                        <WrappedTextField
-                                            value={columnNameControl.value}
-                                            label="Column Name"
-                                            onChange={
-                                                columnNameControl.onChange
-                                            }
-                                            error={
-                                                showColumnNameControl
-                                                    ? columnNameControl.errorMessage
-                                                    : ""
-                                            }
-                                        />
-                                    </div>
-                                </DialogContent>
-                                <DialogActions>
-                                    <WrappedButton
-                                        onClick={closeColumnCreationDialog}
-                                    >
-                                        Close
-                                    </WrappedButton>
-                                    <WrappedButton
-                                        variant="contained"
-                                        onClick={createColumn}
-                                        color="primary"
-                                        disabled={!columnNameControl.isValid}
-                                    >
-                                        Create
-                                    </WrappedButton>
-                                </DialogActions>
-                            </Dialog>
-                            <div css={classes.innerContentContainer}>
-                                {isLoadingColumns ? (
-                                    <div css={classes.spinnerContainer}>
-                                        <CircularProgress
-                                            color="primary"
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div css={classes.columnAndHeaderContainer}>
-                                        {showComponentOne ? (
-                                            <DroppableColumns
-                                                columns={localColumns}
-                                                onDeleteColumn={onDeleteColumn}
-                                                onUpdateColumn={onUpdateColumn}
-                                                isSavingColumns={
-                                                    isSavingColumns
-                                                }
-                                                hideDeleteButton={
-                                                    hideDeleteButton
-                                                }
-                                            />
-                                        ) : (
-                                            <div
-                                                css={
-                                                    classes.secondComponentColumnsContainer
-                                                }
-                                            >
-                                                <DroppableColumns
-                                                    columns={localColumns}
-                                                    onDeleteColumn={
-                                                        onDeleteColumn
-                                                    }
-                                                    onUpdateColumn={
-                                                        onUpdateColumn
-                                                    }
-                                                    isSavingColumns={
-                                                        isSavingColumns
-                                                    }
-                                                    hideDeleteButton={
-                                                        hideDeleteButton
-                                                    }
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        </DragDropContext>
-                    </div>
-                }
+                toolbarContent={toolbarContent}
+                mainContent={mainContent}
             />
         </BoardContainer>
-    );
-}
-
-interface IDroppableColumnsProps {
-    columns: IColumn[];
-    onDeleteColumn: (index: number) => void;
-    onUpdateColumn: (index: number, column: IColumn) => void;
-    isSavingColumns: boolean;
-    hideDeleteButton: boolean;
-}
-
-function DroppableColumns(props: IDroppableColumnsProps) {
-    const classes = createClasses();
-
-    return (
-        <Droppable droppableId="board-columns" direction="horizontal">
-            {(provided) => {
-                return (
-                    <div
-                        css={classes.columnsContainer}
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                    >
-                        {props.columns.map((column, index) => {
-                            const isLastColumn =
-                                props.columns.length - 1 === index;
-                            return (
-                                <EditableColumnCard
-                                    key={column.id}
-                                    column={column}
-                                    index={index}
-                                    onDeleteColumn={props.onDeleteColumn}
-                                    onUpdateColumn={props.onUpdateColumn}
-                                    disabled={props.isSavingColumns}
-                                    hideDeleteButton={props.hideDeleteButton}
-                                    isLastColumn={isLastColumn}
-                                />
-                            );
-                        })}
-                        {provided.placeholder}
-                    </div>
-                );
-            }}
-        </Droppable>
     );
 }
 
