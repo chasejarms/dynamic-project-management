@@ -3,6 +3,7 @@ import { IBoardsState } from "./boards";
 import { ITicketCreationState } from "./ticketCreation";
 import { ITicketTemplateControlStateMapping } from "./ticketTemplates";
 import { ITicketControlMappedState } from "./ticketControlMappedState";
+import { IBoardColumnEditMappedState } from "./boardColumnEditMappedState";
 
 export interface IStoreState {
     boards: IBoardsState;
@@ -10,4 +11,5 @@ export interface IStoreState {
     ticketCreation: ITicketCreationState;
     weightedTicketTemplateCreation: ITicketTemplateControlStateMapping;
     ticketControlMappedState: ITicketControlMappedState;
+    boardColumnEditMappedState: IBoardColumnEditMappedState;
 }
