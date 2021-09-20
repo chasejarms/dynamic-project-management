@@ -97,6 +97,9 @@ export function useBoardColumnEditState() {
                     localColumnControls: [],
                 }
             );
+        },
+        () => {
+            return isSavingColumns;
         }
     );
     const hideDeleteButton = localColumnControls.length <= 2;

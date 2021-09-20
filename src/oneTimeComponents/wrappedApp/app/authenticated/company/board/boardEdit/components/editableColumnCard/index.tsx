@@ -7,6 +7,7 @@ import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 import { TicketContainer } from "../../../components/ticketContainer";
 import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoardColumnEditState";
+import React from "react";
 
 export interface IEditableColumnCardProps {
     // need
@@ -18,7 +19,7 @@ export interface IEditableColumnCardProps {
     isLastColumn?: boolean;
 }
 
-export function EditableColumnCard(props: IEditableColumnCardProps) {
+function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
     const classes = createClasses();
 
     const {
@@ -99,6 +100,8 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
         </Draggable>
     );
 }
+
+export const EditableColumnCard = React.memo(NonMemoizedEditableColumnCard);
 
 function createClasses() {
     const columnContainer = css`
