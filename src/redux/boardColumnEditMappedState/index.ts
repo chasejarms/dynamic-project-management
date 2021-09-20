@@ -17,6 +17,7 @@ export interface IBoardColumnEditMappedState {
 
 const initialState: IBoardColumnEditMappedState = {};
 
+export const defaultNewColumnName = "Default (Newly Added)";
 export const boardColumnEditMappedSlice = createSlice({
     name: "boardColumnEdit",
     initialState,
@@ -147,7 +148,7 @@ export const boardColumnEditMappedSlice = createSlice({
                 .concat([
                     {
                         id: generateUniqueId(),
-                        name: "Default (Newly Added)",
+                        name: defaultNewColumnName,
                         canBeModified: true,
                         nameError: "",
                     },

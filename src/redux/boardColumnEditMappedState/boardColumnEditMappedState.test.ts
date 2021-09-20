@@ -1,5 +1,7 @@
 import { isEqual } from "lodash";
 import boardColumnEditMappedStateReducer, {
+    addColumnAfter,
+    defaultNewColumnName,
     deleteColumn,
     IBoardColumnEditMappedState,
     resetLocalColumnControlChanges,
@@ -150,6 +152,26 @@ describe("boardColumnEditMappedState", () => {
                 ...compareFirstControl
             } = updatedLocalColumnControls[0];
             expect(isEqual(compareFirstControl, columns[1])).toBe(true);
+        });
+    });
+
+    describe("addColumnAfter", () => {
+        it("should add a new column at the correct index", () => {
+            const addColumnAfterAction = addColumnAfter({
+                boardId: "1",
+                index: 0,
+            });
+            const state = boardColumnEditMappedStateReducer(
+                boardColumnEditMappedState,
+                addColumnAfterAction
+            );
+            const updatedLocalColumnControls =
+                state[boardId].localColumnControls;
+            expect(updatedLocalColumnControls.length).toBe(3);
+
+            expect(updatedLocalColumnControls[1].name).toBe(
+                defaultNewColumnName
+            );
         });
     });
 });
