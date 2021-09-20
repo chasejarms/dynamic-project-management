@@ -1,16 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useState, ChangeEvent } from "react";
 import { CircularProgress } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { cloneDeep } from "lodash";
-import { StringValidator } from "../../../../../../../classes/StringValidator";
-import { IColumn } from "../../../../../../../models/column";
 import { WrappedButton } from "../../../../components/wrappedButton";
-import { useControl } from "../../../../hooks/useControl";
 import { EditableColumnCard } from "./components/editableColumnCard";
-import { generateUniqueId } from "./hooks/utils/generateUniqueId";
 import { BoardContainer } from "../components/boardContainer";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
 import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
@@ -106,7 +100,9 @@ export function BoardEdit() {
                                                     return (
                                                         <EditableColumnCard
                                                             key={column.id}
-                                                            column={column}
+                                                            columnControl={
+                                                                column
+                                                            }
                                                             index={index}
                                                             onDeleteColumn={
                                                                 onDeleteColumn

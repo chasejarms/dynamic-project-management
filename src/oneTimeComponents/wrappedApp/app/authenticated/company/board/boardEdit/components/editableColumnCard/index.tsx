@@ -1,21 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { CardContent, Card, CardActions } from "@material-ui/core";
-import { DragIndicator } from "@material-ui/icons";
-import { ChangeEvent, useEffect } from "react";
+import { Delete, DragIndicator, Add } from "@material-ui/icons";
+import { IconButton } from "@material-ui/core";
+import { ChangeEvent } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { StringValidator } from "../../../../../../../../../classes/StringValidator";
-import { doneColumnReservedId } from "../../../../../../../../../constants/reservedColumnIds";
-import { IColumn } from "../../../../../../../../../models/column";
+import { IColumnControl } from "../../../../../../../../../redux/boardColumnEditMappedState";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
-import { useControl } from "../../../../../../hooks/useControl";
 import { TicketContainer } from "../../../components/ticketContainer";
-import { useDebounce } from "../../hooks/useDebounce";
 
 export interface IEditableColumnCardProps {
-    column: IColumn;
+    columnControl: IColumnControl;
     index: number;
     onDeleteColumn: (index: number) => void;
     onUpdateColumn: (
@@ -34,37 +30,10 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
         props.onDeleteColumn(props.index);
     }
 
-    const isDoneColumn = props.column.id === doneColumnReservedId;
-    const columnNameControl = useControl({
-        value: isDoneColumn ? "Archive" : props.column.name,
-        onChange: (
-            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-            const updatedName = event.target.value;
-            return updatedName;
-        },
-        validatorError: (email: string) => {
-            return new StringValidator()
-                .required("This field is required")
-                .validate(email);
-        },
-    });
-    const shouldShowNameError =
-        columnNameControl.isTouched && !columnNameControl.isValid;
-
-    const debouncedColumn = useDebounce(columnNameControl.value, 300, 1);
-    useEffect(() => {
-        if (!columnNameControl.isValid) return;
-
-        props.onUpdateColumn({
-            target: {
-                value: columnNameControl.value,
-            },
-        } as any);
-    }, [debouncedColumn]);
+    const { name, canBeModified, id, labelError } = props.columnControl;
 
     return (
-        <Draggable draggableId={props.column.id} index={props.index}>
+        <Draggable draggableId={id} index={props.index}>
             {(provided) => {
                 return (
                     <div
@@ -77,13 +46,13 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                         ref={provided.innerRef}
                     >
                         <TicketContainer
-                            title={columnNameControl.value}
+                            title={name}
                             bottomBarContent={true}
                             topRightIcon={
                                 <div
                                     {...provided.dragHandleProps}
                                     css={composeCSS(
-                                        !props.column.canBeModified &&
+                                        !canBeModified &&
                                             classes.hiddenDragHandle
                                     )}
                                 >
@@ -94,40 +63,31 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                             <div css={classes.content}>
                                 <div>
                                     <WrappedTextField
-                                        value={columnNameControl.value}
+                                        value={name}
                                         label="Column Name"
-                                        onChange={columnNameControl.onChange}
-                                        error={
-                                            shouldShowNameError
-                                                ? columnNameControl.errorMessage
-                                                : ""
-                                        }
+                                        onChange={props.onUpdateColumn}
+                                        error={labelError}
                                         disabled={
-                                            !props.column.canBeModified ||
-                                            props.disabled
+                                            !canBeModified || props.disabled
                                         }
                                     />
                                 </div>
                                 <div css={classes.actionButtonContainer}>
                                     <div>
-                                        <WrappedButton
+                                        <IconButton
                                             onClick={onDeleteColumnInternal}
-                                            color="primary"
                                             disabled={props.disabled}
                                         >
-                                            Delete Column
-                                        </WrappedButton>
-                                    </div>
-                                    <div>
-                                        <WrappedButton
+                                            <Delete />
+                                        </IconButton>
+                                        <IconButton
                                             onClick={props.onClickAddAfter(
                                                 props.index
                                             )}
-                                            color="primary"
                                             disabled={props.disabled}
                                         >
-                                            Add Column After
-                                        </WrappedButton>
+                                            <Add />
+                                        </IconButton>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +137,7 @@ function createClasses() {
 
     const actionButtonContainer = css`
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         flex-direction: row;
     `;
 
