@@ -53,9 +53,17 @@ export function TicketContainer(props: ITicketContainerProps) {
                         <div css={classes.innerCardContentContainer}>
                             <div css={classes.columnTitleContainer}>
                                 <div>
-                                    <Typography variant="h6">
-                                        {props.title}
-                                    </Typography>
+                                    {props.title ? (
+                                        <Typography variant="h6">
+                                            {props.title}
+                                        </Typography>
+                                    ) : (
+                                        <div css={classes.hiddenTitle}>
+                                            <Typography variant="h6">
+                                                Hidden
+                                            </Typography>
+                                        </div>
+                                    )}
                                 </div>
                                 <div>{props.topRightIcon}</div>
                             </div>
@@ -137,6 +145,10 @@ const createClasses = () => {
         display: flex;
     `;
 
+    const hiddenTitle = css`
+        visibility: hidden;
+    `;
+
     return {
         columnContainer,
         ticketsContainer,
@@ -145,5 +157,6 @@ const createClasses = () => {
         moreTicketsLoadingSpinner,
         bottomToolbarContainer,
         innerCardContentContainer,
+        hiddenTitle,
     };
 };

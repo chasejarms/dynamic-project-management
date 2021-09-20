@@ -88,38 +88,24 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                             }
                         >
                             <div css={classes.content}>
-                                <WrappedTextField
-                                    value={columnNameControl.value}
-                                    label="Column Name"
-                                    onChange={columnNameControl.onChange}
-                                    error={
-                                        shouldShowNameError
-                                            ? columnNameControl.errorMessage
-                                            : ""
-                                    }
-                                    disabled={
-                                        !props.column.canBeModified ||
-                                        props.disabled
-                                    }
-                                />
-                            </div>
-                        </TicketContainer>
-                        {/* <Card>
-                            <CardContent>
-                                <div css={classes.dragHandleContainer}>
-                                    
+                                <div>
+                                    <WrappedTextField
+                                        value={columnNameControl.value}
+                                        label="Column Name"
+                                        onChange={columnNameControl.onChange}
+                                        error={
+                                            shouldShowNameError
+                                                ? columnNameControl.errorMessage
+                                                : ""
+                                        }
+                                        disabled={
+                                            !props.column.canBeModified ||
+                                            props.disabled
+                                        }
+                                    />
                                 </div>
-                               
-                            </CardContent>
-                            <CardActions>
-                                <div css={classes.columnActionContainer}>
-                                    <div
-                                        css={composeCSS(
-                                            (!props.column.canBeModified ||
-                                                props.hideDeleteButton) &&
-                                                classes.hiddenDeleteButtonContainer
-                                        )}
-                                    >
+                                <div css={classes.actionButtonContainer}>
+                                    <div>
                                         <WrappedButton
                                             onClick={onDeleteColumnInternal}
                                             color="primary"
@@ -128,9 +114,18 @@ export function EditableColumnCard(props: IEditableColumnCardProps) {
                                             Delete Column
                                         </WrappedButton>
                                     </div>
+                                    <div>
+                                        <WrappedButton
+                                            onClick={() => null}
+                                            color="primary"
+                                            disabled={props.disabled}
+                                        >
+                                            Add Column After
+                                        </WrappedButton>
+                                    </div>
                                 </div>
-                            </CardActions>
-                        </Card> */}
+                            </div>
+                        </TicketContainer>
                     </div>
                 );
             }}
@@ -174,6 +169,12 @@ function createClasses() {
         padding: 16px 0px;
     `;
 
+    const actionButtonContainer = css`
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+    `;
+
     return {
         columnContainerNoMargin,
         columnContainer,
@@ -182,5 +183,6 @@ function createClasses() {
         dragHandleContainer,
         hiddenDragHandle,
         content,
+        actionButtonContainer,
     };
 }
