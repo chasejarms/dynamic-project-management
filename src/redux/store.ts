@@ -4,6 +4,7 @@ import appBootstrapInformation from "./appBootstrapInformation";
 import ticketCreation from "./ticketCreation";
 import weightedTicketTemplateCreation from "./ticketTemplates";
 import ticketControlMappedState from "./ticketControlMappedState";
+import boardColumnEditMappedState from "./boardColumnEditMappedState";
 
 export const store = configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
         ticketCreation,
         weightedTicketTemplateCreation,
         ticketControlMappedState,
+        boardColumnEditMappedState,
     },
 });
