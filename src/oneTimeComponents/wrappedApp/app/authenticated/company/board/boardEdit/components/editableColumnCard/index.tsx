@@ -9,7 +9,7 @@ import { TicketContainer } from "../../../components/ticketContainer";
 import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoardColumnEditState";
 import React from "react";
 import { uncategorizedColumnReservedId } from "../../../../../../../../../constants/reservedColumnIds";
-import { editableColumnCardTestsIds } from "./editableColumnCard.testIds";
+import { editableColumnCardTestIds } from "./editableColumnCard.testIds";
 
 export interface IEditableColumnCardProps {
     index: number;
@@ -70,7 +70,7 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                             !canBeModified || props.disabled
                                         }
                                         testIds={
-                                            editableColumnCardTestsIds.nameTextField
+                                            editableColumnCardTestIds.nameTextField
                                         }
                                     />
                                 </div>
@@ -85,6 +85,9 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                                     props.disabled ||
                                                     !!props.disableDeleteButton
                                                 }
+                                                data-testid={
+                                                    editableColumnCardTestIds.deleteButton
+                                                }
                                             >
                                                 <Delete />
                                             </IconButton>
@@ -94,6 +97,9 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                                 props.index
                                             )}
                                             disabled={props.disabled}
+                                            data-testid={
+                                                editableColumnCardTestIds.addButton
+                                            }
                                         >
                                             <Add />
                                         </IconButton>
