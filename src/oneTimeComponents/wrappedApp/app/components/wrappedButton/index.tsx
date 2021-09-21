@@ -5,6 +5,10 @@ import { ButtonProps, Button, CircularProgress } from "@material-ui/core";
 export interface IWrappedButtonProps extends ButtonProps {
     showSpinner?: boolean;
     component?: string;
+    testIds?: {
+        button?: string;
+        spinner?: string;
+    };
 }
 
 export function WrappedButton(props: IWrappedButtonProps) {
@@ -15,11 +19,14 @@ export function WrappedButton(props: IWrappedButtonProps) {
     return (
         <div css={buttonContainer}>
             {props.showSpinner && (
-                <div css={spinnerContainer}>
+                <div
+                    css={spinnerContainer}
+                    data-testid={props.testIds?.spinner}
+                >
                     <CircularProgress color="primary" size={24} thickness={4} />
                 </div>
             )}
-            <Button {...rest} />
+            <Button {...rest} data-testid={props.testIds?.button} />
         </div>
     );
 }

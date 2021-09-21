@@ -8,6 +8,7 @@ import { uncategorizedColumnReservedId } from "../../../../../../../constants/re
 import { IColumn } from "../../../../../../../models/column";
 import { RouteCreator } from "../../../../utils/routeCreator";
 import { MemoryRouter } from "react-router-dom";
+import { boardEditTestIds } from "./boardEdit.testIds";
 
 describe("Board Edit", () => {
     let useIndividualBoardColumnEditStateReturnType: useIndividualBoardColumnEditStateModule.IUseIndividualBoardColumnEditStateReturnType;
@@ -240,6 +241,25 @@ describe("Board Edit", () => {
             )[0];
             userEvent.click(addButton);
             expect(onClickAddAfterWasCalled).toBe(true);
+        });
+    });
+
+    describe("the isInErrorState returns true", () => {
+        it("should disable the save changes button", () => {
+            useBoardColumnEditStateReturnType.isInErrorState = true;
+
+            render(
+                <MemoryRouter
+                    initialEntries={[RouteCreator.editBoard("123", "456")]}
+                >
+                    <BoardEditInnerContent />
+                </MemoryRouter>
+            );
+
+            const saveButton = screen.getByTestId(
+                boardEditTestIds.saveButton.button
+            );
+            expect(saveButton).toHaveClass("Mui-disabled");
         });
     });
 });

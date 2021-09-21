@@ -8,6 +8,7 @@ import { BoardContainer } from "../components/boardContainer";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
 import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
 import { CenterErrorMessage } from "./components/centerErrorMessage";
+import { boardEditTestIds } from "./boardEdit.testIds";
 
 export function BoardEdit() {
     return (
@@ -65,6 +66,7 @@ export function BoardEditInnerContent() {
                     onClick={saveColumns}
                     variant="contained"
                     color="primary"
+                    testIds={boardEditTestIds.saveButton}
                 >
                     Save Changes
                 </WrappedButton>
