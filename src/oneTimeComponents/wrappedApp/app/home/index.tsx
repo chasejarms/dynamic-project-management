@@ -9,13 +9,15 @@ import { TeamVelocitySuffers } from "./components/landingPageSvgs/teamVelocitySu
 import { ExistingSolutionsAreLimiting } from "./components/landingPageSvgs/existingSolutionsAreLimiting";
 import { RelativePrioritization } from "./components/landingPageSvgs/relativePrioritization";
 import { useBreakpoint } from "../hooks/useBreakpoint";
+import { RouteCreator } from "../utils/routeCreator";
 
 export function Home() {
     const history = useHistory();
     const wrappedButtonProps: IWrappedButtonProps[] = [
         {
             onClick: () => {
-                history.push("/contact");
+                const route = RouteCreator.contact();
+                history.push(route);
             },
             children: "Schedule A Demo",
             color: "primary",

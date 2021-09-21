@@ -205,7 +205,8 @@ export function SignIn() {
     }
 
     function navigateToResetPasswordPage() {
-        history.push("/reset-password");
+        const route = RouteCreator.resetPassword();
+        history.push(route);
     }
 
     const showNewPasswordInput = !!sessionUserAttributes;

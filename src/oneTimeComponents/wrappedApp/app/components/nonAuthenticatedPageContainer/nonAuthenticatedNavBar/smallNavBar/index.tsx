@@ -5,8 +5,9 @@ import { INavBarItem } from "../navBar";
 import { makeStyles, Theme, Typography, useTheme } from "@material-ui/core";
 import { Close, Menu } from "@material-ui/icons";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
-import { useLocation, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { CompanyLogo } from "../companyLogo";
+import { RouteCreator } from "../../../../utils/routeCreator";
 
 interface ISmallNavBarProps {
     navItems: INavBarItem[];
@@ -25,11 +26,10 @@ export function SmallNavBar(props: ISmallNavBarProps) {
     const classes = createClasses(theme);
     const materialClasses = useStyles();
     const [open, setOpen] = useState(false);
-    const location = useLocation();
     const internalNavItems = [...props.navItems].concat([
         {
             label: "Sign In",
-            route: "/sign-in",
+            route: RouteCreator.signIn(),
         },
     ]);
 

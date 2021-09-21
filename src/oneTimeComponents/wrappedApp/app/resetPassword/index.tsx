@@ -11,6 +11,7 @@ import { userPool } from "../../../../classes/UserPool";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
 import { useEmailControl } from "../hooks/useEmailControl";
+import { RouteCreator } from "../utils/routeCreator";
 
 export function ResetPassword() {
     const history = useHistory();
@@ -39,7 +40,8 @@ export function ResetPassword() {
         );
         cognitoUserSingleton.cognitoUser.forgotPassword({
             onSuccess: (data) => {
-                history.push("/enter-new-password");
+                const route = RouteCreator.enterNewPassword();
+                history.push(route);
             },
             onFailure: (error) => {
                 console.log("error: ", error);

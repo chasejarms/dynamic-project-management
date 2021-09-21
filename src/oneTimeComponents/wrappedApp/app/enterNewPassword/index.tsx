@@ -10,12 +10,14 @@ import { useControl } from "../hooks/useControl";
 import { controlsAreValid } from "../utils/controlsAreValid";
 import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
+import { RouteCreator } from "../utils/routeCreator";
 
 export function EnterNewPassword() {
     const history = useHistory();
     useEffect(() => {
         if (cognitoUserSingleton.cognitoUser.getUsername() === "") {
-            history.push("/reset-password");
+            const route = RouteCreator.resetPassword();
+            history.push(route);
         }
     }, []);
 
@@ -82,7 +84,8 @@ export function EnterNewPassword() {
                 onSuccess: () => {
                     if (didCancel) return;
                     setIsConfirmingNewPassword(false);
-                    history.push("/sign-in");
+                    const route = RouteCreator.signIn();
+                    history.push(route);
                 },
                 onFailure: (error) => {
                     if (didCancel) return;

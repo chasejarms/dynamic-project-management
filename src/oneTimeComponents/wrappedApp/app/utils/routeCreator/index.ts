@@ -114,4 +114,32 @@ export class RouteCreator {
     public static learningCenterVideos() {
         return "/app/internal/learning-center-videos";
     }
+
+    public static contact() {
+        return "/contact";
+    }
+
+    public static signIn() {
+        return "/sign-in";
+    }
+
+    public static signUp() {
+        return "/sign-up";
+    }
+
+    public static resetPassword() {
+        return "/reset-password";
+    }
+
+    public static enterNewPassword() {
+        return "/enter-new-password";
+    }
+
+    public static app() {
+        return "/app";
+    }
+
+    public static home() {
+        return "/";
+    }
 }

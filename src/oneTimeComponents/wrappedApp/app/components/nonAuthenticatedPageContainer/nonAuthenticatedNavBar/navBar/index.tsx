@@ -4,6 +4,7 @@ import { Typography, Button, Theme, useTheme } from "@material-ui/core";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useHistory, useLocation } from "react-router-dom";
 import { CompanyLogo } from "../companyLogo";
+import { RouteCreator } from "../../../../utils/routeCreator";
 
 export interface INavBarItem {
     label: string;
@@ -25,8 +26,8 @@ export default function NavBar(props: INavBarProps) {
     const location = useLocation();
 
     function signOut() {
-        // sign the user out
-        history.push("/sign-in");
+        const route = RouteCreator.signIn();
+        history.push(route);
     }
 
     function navigateToRoute(route: string) {
@@ -69,20 +70,20 @@ export default function NavBar(props: INavBarProps) {
                 })}
             </div>
             <div css={classes.actionButtonContainer}>
-                {props.actionButtonType === "sign-in" && (
+                {props.actionButtonType === RouteCreator.signIn() && (
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={navigateToRoute("/sign-in")}
+                        onClick={navigateToRoute(RouteCreator.signIn())}
                     >
                         Sign In
                     </Button>
                 )}
-                {props.actionButtonType === "sign-up" && (
+                {props.actionButtonType === RouteCreator.signUp() && (
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={navigateToRoute("/sign-up")}
+                        onClick={navigateToRoute(RouteCreator.signUp())}
                     >
                         Sign Up
                     </Button>

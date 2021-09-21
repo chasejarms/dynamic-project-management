@@ -10,6 +10,7 @@ import { RequestDemo } from "./requestDemo";
 // import { SignUp } from "./signUp";
 import { ResetPassword } from "./resetPassword";
 import { EnterNewPassword } from "./enterNewPassword";
+import { RouteCreator } from "./utils/routeCreator";
 
 export function App() {
     useAxiosInterceptor();
@@ -17,25 +18,25 @@ export function App() {
 
     return (
         <Switch>
-            <Route path="/" exact>
+            <Route path={RouteCreator.home()} exact>
                 <Home />
             </Route>
-            <Route path="/contact" exact>
+            <Route path={RouteCreator.contact()} exact>
                 <RequestDemo />
             </Route>
-            <Route path="/sign-in" exact>
+            <Route path={RouteCreator.signIn()} exact>
                 <SignIn />
             </Route>
             {/* <Route path="/sign-up" exact>
                 <SignUp />
             </Route> */}
-            <Route path="/reset-password" exact>
+            <Route path={RouteCreator.resetPassword()} exact>
                 <ResetPassword />
             </Route>
-            <Route path="/enter-new-password" exact>
+            <Route path={RouteCreator.enterNewPassword()} exact>
                 <EnterNewPassword />
             </Route>
-            <Route path="/app">
+            <Route path={RouteCreator.app()}>
                 <Authenticated />
             </Route>
             <Route
@@ -43,7 +44,7 @@ export function App() {
                     return (
                         <Redirect
                             to={{
-                                pathname: "/sign-in",
+                                pathname: RouteCreator.signIn(),
                             }}
                         ></Redirect>
                     );

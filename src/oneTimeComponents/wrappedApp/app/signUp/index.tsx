@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { useEmailControl } from "../hooks/useEmailControl";
 import { useNameControl } from "../hooks/useNameControl";
 import { usePasswordCreationControl } from "../hooks/usePasswordCreationControl";
+import { RouteCreator } from "../utils/routeCreator";
 
 export function SignUp() {
     const history = useHistory();
@@ -53,7 +54,8 @@ export function SignUp() {
     }
 
     function navigateToSignInPage() {
-        history.push("/sign-in");
+        const route = RouteCreator.signIn();
+        history.push(route);
     }
 
     useEffect(() => {
