@@ -601,4 +601,56 @@ describe("useBoardColumnEditState", () => {
             });
         });
     });
+
+    describe("the resetChanges function is invoked", () => {
+        it("should correct reset the changes", () => {
+            const updatedName = "Updated Name";
+            const renderHookResult = renderHook(
+                () => {
+                    return useBoardColumnEditState();
+                },
+                {
+                    wrapper: ({ children }) => {
+                        const boardId = "456";
+                        const store = createStore({
+                            boardColumnEditMappedState: {
+                                [boardId]: {
+                                    databaseColumns: columns,
+                                    localColumnControls: columns.map(
+                                        (column) => {
+                                            return {
+                                                ...column,
+                                                name: updatedName,
+                                                nameError: "",
+                                            };
+                                        }
+                                    ),
+                                },
+                            },
+                        });
+                        return (
+                            <MemoryRouter
+                                initialEntries={[
+                                    RouteCreator.editBoard("123", "456"),
+                                ]}
+                            >
+                                <ReduxProvider store={store}>
+                                    {children}
+                                </ReduxProvider>
+                            </MemoryRouter>
+                        );
+                    },
+                }
+            );
+
+            act(() => {
+                renderHookResult.result.current.resetChanges();
+            });
+            renderHookResult.result.current.localColumnControls.forEach(
+                ({ name }) => {
+                    expect(name).not.toBe(updatedName);
+                }
+            );
+        });
+    });
 });
