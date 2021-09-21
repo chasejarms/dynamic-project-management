@@ -78,3 +78,7 @@ export function useIndividualBoardColumnEditState(index: number) {
         onClickAddAfter,
     };
 }
+
+export type IUseIndividualBoardColumnEditStateReturnType = ReturnType<
+    typeof useIndividualBoardColumnEditState
+>;

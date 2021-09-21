@@ -10,6 +10,14 @@ import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
 import { CenterErrorMessage } from "./components/centerErrorMessage";
 
 export function BoardEdit() {
+    return (
+        <BoardContainer>
+            <BoardEditInnerContent />
+        </BoardContainer>
+    );
+}
+
+export function BoardEditInnerContent() {
     const classes = createClasses();
 
     const {
@@ -125,7 +133,7 @@ export function BoardEdit() {
     );
 
     return (
-        <BoardContainer>
+        <>
             {failedToLoadColumnData ? (
                 <CenterErrorMessage message="Error loading column data" />
             ) : (
@@ -134,7 +142,7 @@ export function BoardEdit() {
                     mainContent={mainContent}
                 />
             )}
-        </BoardContainer>
+        </>
     );
 }
 

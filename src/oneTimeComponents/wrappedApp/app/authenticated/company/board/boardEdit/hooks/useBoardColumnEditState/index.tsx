@@ -158,3 +158,7 @@ export function useBoardColumnEditState() {
         failedToLoadColumnData,
     };
 }
+
+export type IUseBoardColumnEditStateReturnType = ReturnType<
+    typeof useBoardColumnEditState
+>;

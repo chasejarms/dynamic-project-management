@@ -9,6 +9,7 @@ import { TicketContainer } from "../../../components/ticketContainer";
 import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoardColumnEditState";
 import React from "react";
 import { uncategorizedColumnReservedId } from "../../../../../../../../../constants/reservedColumnIds";
+import { editableColumnCardTestsIds } from "./editableColumnCard.testIds";
 
 export interface IEditableColumnCardProps {
     index: number;
@@ -67,6 +68,9 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                         error={nameError}
                                         disabled={
                                             !canBeModified || props.disabled
+                                        }
+                                        testIds={
+                                            editableColumnCardTestsIds.nameTextField
                                         }
                                     />
                                 </div>
