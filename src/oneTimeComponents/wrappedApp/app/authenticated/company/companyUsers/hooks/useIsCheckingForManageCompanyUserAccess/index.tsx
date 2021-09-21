@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCompanyUser } from "../../../hooks/useCompanyUser";
 import { useHistory } from "react-router-dom";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 export function useIsCheckingForManageCompanyUserAccess() {
     const user = useCompanyUser();
@@ -13,7 +14,8 @@ export function useIsCheckingForManageCompanyUserAccess() {
     ] = useState(true);
     useEffect(() => {
         if (!canManageCompanyUsers) {
-            history.push(`/app/companies`);
+            const route = RouteCreator.companies();
+            history.push(route);
         } else {
             setIsCheckingForManageCompanyUserAccess(false);
         }

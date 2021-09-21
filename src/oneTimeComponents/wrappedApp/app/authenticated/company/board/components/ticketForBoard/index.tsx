@@ -30,6 +30,7 @@ import {
 } from "../quickActionsPopoverContent";
 import { IUser } from "../../../../../../../../models/user";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -333,18 +334,28 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     }
 
     function navigateToTicketPage() {
+        const ticketId = props.ticket.shortenedItemId;
         if (props.ticketType === TicketType.InProgress) {
-            history.push(
-                `/app/company/${companyId}/board/${boardId}/tickets/${props.ticket.shortenedItemId}/data`
+            const route = RouteCreator.inProgressTicketData(
+                companyId,
+                boardId,
+                ticketId
             );
+            history.push(route);
         } else if (props.ticketType === TicketType.Backlog) {
-            history.push(
-                `/app/company/${companyId}/board/${boardId}/backlog-tickets/${props.ticket.shortenedItemId}/data`
+            const route = RouteCreator.backlogTicketData(
+                companyId,
+                boardId,
+                ticketId
             );
+            history.push(route);
         } else {
-            history.push(
-                `/app/company/${companyId}/board/${boardId}/archived-tickets/${props.ticket.shortenedItemId}/data`
+            const route = RouteCreator.archivedTicketData(
+                companyId,
+                boardId,
+                ticketId
             );
+            history.push(route);
         }
     }
 

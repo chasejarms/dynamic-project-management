@@ -11,6 +11,7 @@ import {
 } from "../../../../../../../../../redux/boardColumnEditMappedState";
 import { useState, useEffect } from "react";
 import { Api } from "../../../../../../../../../api";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 
 export function useBoardColumnEditState() {
     const { boardId, companyId } = useAppRouterParams();
@@ -120,7 +121,8 @@ export function useBoardColumnEditState() {
 
     const history = useHistory();
     function navigateBackToBoard() {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets/`);
+        const route = RouteCreator.inProgressTickets(companyId, boardId);
+        history.push(route);
     }
 
     function onDragEnd(result: DropResult) {

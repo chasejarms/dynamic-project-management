@@ -14,6 +14,7 @@ import { useAppRouterParams } from "../../../hooks/useAppRouterParams";
 import { setUserAsBoardAdmin } from "../../../../../../redux/appBootstrapInformation";
 import { useDispatch } from "react-redux";
 import { BoardPriorityType } from "../../../../../../models/boardPriorityType";
+import { RouteCreator } from "../../../utils/routeCreator";
 
 export function CreateBoard() {
     const classes = createClasses();
@@ -65,7 +66,8 @@ export function CreateBoard() {
     }
 
     function openBoard(boardId: string) {
-        history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+        const route = RouteCreator.inProgressTickets(companyId, boardId);
+        history.push(route);
     }
 
     const dispatch = useDispatch();

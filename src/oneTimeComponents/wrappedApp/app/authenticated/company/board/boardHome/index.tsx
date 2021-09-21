@@ -13,9 +13,10 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { useNonArchivedBoardLogic } from "../hooks/useNonArchivedBoardLogic";
 import { TicketDrawerRoutes } from "../components/ticketDrawerRoutes";
 import { WrappedButton } from "../../../../components/wrappedButton";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
+import { RouteCreator } from "../../../../utils/routeCreator";
 
 export function BoardHome() {
     const classes = createClasses();
@@ -31,18 +32,17 @@ export function BoardHome() {
         allCompanyUsers,
         onCreateTicket,
     } = useNonArchivedBoardLogic(TicketType.InProgress);
-    const { url } = useRouteMatch();
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
     function navigateToTicketCreationPage() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/tickets/create-ticket`
-        );
+        const route = RouteCreator.createTicket(companyId, boardId);
+        history.push(route);
     }
 
     function navigateToEditBoardPage() {
-        history.push(`/app/company/${companyId}/board/${boardId}/edit-board`);
+        const route = RouteCreator.editBoard(companyId, boardId);
+        history.push(route);
     }
 
     return (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { RouteCreator } from "../../../../utils/routeCreator";
 import { useCompanyUser } from "../useCompanyUser";
 
 export function useIsCheckingForCompanyAccess() {
@@ -13,7 +14,8 @@ export function useIsCheckingForCompanyAccess() {
     ] = useState(true);
     useEffect(() => {
         if (!isCompanyUser) {
-            history.push("/app/companies");
+            const route = RouteCreator.companies();
+            history.push(route);
         } else {
             setIsCheckingForCompanyAccess(false);
         }

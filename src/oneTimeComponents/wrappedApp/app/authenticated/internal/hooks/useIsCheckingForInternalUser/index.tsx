@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { RouteCreator } from "../../../../utils/routeCreator";
 import { useInternalUser } from "./useInternalUser";
 
 export function useIsCheckingForInternalUser() {
@@ -11,7 +12,8 @@ export function useIsCheckingForInternalUser() {
     );
     useEffect(() => {
         if (!internalUser) {
-            history.push("/app/companies");
+            const route = RouteCreator.companies();
+            history.push(route);
         } else {
             setIsCheckingForInternalUser(false);
         }

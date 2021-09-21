@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../redux/storeState";
 import { CompaniesContainer } from "./components/companiesContainer";
+import { RouteCreator } from "../../utils/routeCreator";
 
 export function Companies() {
     const theme = useTheme();
@@ -31,7 +32,8 @@ export function Companies() {
 
     function openBoards(companyId: string) {
         return () => {
-            history.push(`/app/company/${companyId}/boards`);
+            const route = RouteCreator.boards(companyId);
+            history.push(route);
         };
     }
 

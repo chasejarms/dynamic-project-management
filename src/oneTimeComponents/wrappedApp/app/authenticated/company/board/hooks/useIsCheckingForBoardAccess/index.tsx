@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 import { useCompanyUser } from "../../../hooks/useCompanyUser";
 
 export function useIsCheckingForBoardAccess() {
@@ -12,7 +13,8 @@ export function useIsCheckingForBoardAccess() {
     );
     useEffect(() => {
         if (!isCompanyUser) {
-            history.push(`/app/companies`);
+            const route = RouteCreator.companies();
+            history.push(route);
         } else {
             setIsCheckingForBoardAccess(false);
         }

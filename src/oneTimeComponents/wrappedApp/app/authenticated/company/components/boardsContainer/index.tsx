@@ -7,6 +7,7 @@ import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
 } from "../../board/components/authenticatedPageContainer";
+import { RouteCreator } from "../../../../utils/routeCreator";
 
 export interface IBoardContainerProps {
     children: React.ReactNode;
@@ -21,19 +22,19 @@ export function BoardsContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Boards",
-            route: `/app/company/${companyId}/boards`,
+            route: RouteCreator.boards(companyId),
         },
         {
             text: "Create Board",
-            route: `/app/company/${companyId}/boards/create-board`,
+            route: RouteCreator.createBoard(companyId),
         },
         canManageCompanyUsers && {
             text: "Users",
-            route: `/app/company/${companyId}/company-users`,
+            route: RouteCreator.companyUsers(companyId),
         },
         isChase && {
             text: "Add Company",
-            route: `/app/company/${companyId}/add-company`,
+            route: RouteCreator.addCompany(companyId),
         },
     ].filter((value) => !!value) as IAuthenticatedNavItem[];
     return (

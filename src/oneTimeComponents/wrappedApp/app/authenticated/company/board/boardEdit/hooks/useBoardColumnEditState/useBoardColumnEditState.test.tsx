@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { useBoardColumnEditState } from ".";
 import { Provider as ReduxProvider } from "react-redux";
 import { createStore } from "../../../../../../../../../redux/store";
+import { MemoryRouter } from "react-router-dom";
 
 describe("useBoardColumnEditState", () => {
     describe("the column data is not yet in redux", () => {
@@ -14,9 +15,13 @@ describe("useBoardColumnEditState", () => {
                     wrapper: ({ children }) => {
                         const store = createStore();
                         return (
-                            <ReduxProvider store={store}>
-                                {children}
-                            </ReduxProvider>
+                            <MemoryRouter
+                                initialEntries={["/my/initial/route"]}
+                            >
+                                <ReduxProvider store={store}>
+                                    {children}
+                                </ReduxProvider>
+                            </MemoryRouter>
                         );
                     },
                 }

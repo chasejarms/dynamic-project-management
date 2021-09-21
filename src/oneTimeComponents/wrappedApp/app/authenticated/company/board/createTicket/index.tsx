@@ -27,6 +27,7 @@ import { TicketFields } from "../components/ticketFields";
 import { DrawerContentsWithActionBar } from "../components/drawerContentsWithActionBar";
 import { ITicket } from "../../../../../../../models/ticket";
 import { TicketTemplateDropdown } from "../components/ticketTemplateDropdown";
+import { RouteCreator } from "../../../../utils/routeCreator";
 
 export interface ICreateTicketProps {
     ticketType: TicketType;
@@ -39,15 +40,14 @@ export function CreateTicket(props: ICreateTicketProps) {
 
     function closeDrawer() {
         if (props.ticketType === TicketType.InProgress) {
-            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+            const route = RouteCreator.inProgressTickets(companyId, boardId);
+            history.push(route);
         } else if (props.ticketType === TicketType.Backlog) {
-            history.push(
-                `/app/company/${companyId}/board/${boardId}/backlog-tickets`
-            );
+            const route = RouteCreator.backlogTickets(companyId, boardId);
+            history.push(route);
         } else {
-            history.push(
-                `/app/company/${companyId}/board/${boardId}/archived-tickets`
-            );
+            const route = RouteCreator.archivedTickets(companyId, boardId);
+            history.push(route);
         }
     }
 
@@ -223,9 +223,8 @@ export function CreateTicket(props: ICreateTicketProps) {
     }
 
     function navigateToCreateTicketTemplatePage() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/create-ticket-template`
-        );
+        const route = RouteCreator.createTicketTemplate(companyId, boardId);
+        history.push(route);
     }
 
     const createTicketTemplateButtonProps:

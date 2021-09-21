@@ -21,6 +21,7 @@ import {
     IIndentedAction,
     QuickActionsPopoverContent,
 } from "../../../board/components/quickActionsPopoverContent";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 export interface IBoardForCompanyProps {
     board: IBoard;
@@ -44,7 +45,8 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
 
     function openBoard(boardId: string) {
         return () => {
-            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+            const route = RouteCreator.inProgressTickets(companyId, boardId);
+            history.push(route);
         };
     }
 

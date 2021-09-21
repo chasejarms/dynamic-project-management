@@ -14,6 +14,7 @@ import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinne
 import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
 import { Typography } from "@material-ui/core";
 import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 export interface IBoardContainer {
     children: React.ReactNode;
@@ -58,19 +59,19 @@ export function BoardContainer(props: IBoardContainer) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Board",
-            route: `/app/company/${companyId}/board/${boardId}/tickets`,
+            route: RouteCreator.inProgressTickets(companyId, boardId),
         },
         {
             text: "Backlog",
-            route: `/app/company/${companyId}/board/${boardId}/backlog-tickets`,
+            route: RouteCreator.backlogTickets(companyId, boardId),
         },
         {
             text: "Archive",
-            route: `/app/company/${companyId}/board/${boardId}/archived-tickets`,
+            route: RouteCreator.archivedTickets(companyId, boardId),
         },
         isBoardAdmin && {
             text: "Admin",
-            route: `/app/company/${companyId}/board/${boardId}/admin/board-admins`,
+            route: RouteCreator.boardAdmins(companyId, boardId),
         },
     ].filter((tabValue) => !!tabValue) as IAuthenticatedNavItem[];
 

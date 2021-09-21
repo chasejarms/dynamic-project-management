@@ -26,6 +26,7 @@ import {
 } from "../../quickActionsPopoverContent";
 import { CompanyLogoIcon } from "../companyLogoIcon";
 import { BoardPriorityType } from "../../../../../../../../../models/boardPriorityType";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 
 export interface IAuthenticatedPageTopBarProps {}
 
@@ -105,7 +106,7 @@ function NonMemoizedAuthenticatedPageTopBar(
             if (userIsOnMultipleCompanies) {
                 breadcrumbs.push({
                     text: "Companies",
-                    route: `/app/companies`,
+                    route: RouteCreator.companies(),
                 });
             }
 
@@ -116,7 +117,7 @@ function NonMemoizedAuthenticatedPageTopBar(
                         : "Boards";
                 breadcrumbs.push({
                     text: companyText,
-                    route: `/app/company/${companyId}/boards`,
+                    route: RouteCreator.boards(companyId),
                 });
             }
 
@@ -126,21 +127,21 @@ function NonMemoizedAuthenticatedPageTopBar(
                     : "Board";
                 breadcrumbs.push({
                     text: boardText,
-                    route: `/app/company/${companyId}/board/${boardId}/tickets`,
+                    route: RouteCreator.inProgressTickets(companyId, boardId),
                 });
             }
 
             if (!!boardId && location.pathname.includes("/admin/")) {
                 breadcrumbs.push({
                     text: "Admin",
-                    route: `/app/company/${companyId}/board/${boardId}/admin/board-admins`,
+                    route: RouteCreator.boardAdmins(companyId, boardId),
                 });
             }
 
             if (!!ticketTemplateId) {
                 breadcrumbs.push({
                     text: "Ticket Templates",
-                    route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
+                    route: RouteCreator.ticketTemplates(companyId, boardId),
                 });
             }
         }
@@ -159,11 +160,12 @@ function NonMemoizedAuthenticatedPageTopBar(
     }
 
     function navigateToLearningCenterEditor() {
-        history.push("/app/internal/learning-center-editor");
+        const route = RouteCreator.learningCenterEditor();
+        history.push(route);
     }
 
     function navigateBackToApp() {
-        history.push("/app/companies");
+        history.push(RouteCreator.companies());
     }
 
     const indentedActions: IIndentedAction[] = [

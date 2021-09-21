@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 import { useCompanyUser } from "../../../../hooks/useCompanyUser";
 
 export function useIsCheckingForBoardAdminAccess() {
@@ -16,7 +17,8 @@ export function useIsCheckingForBoardAdminAccess() {
     ] = useState(true);
     useEffect(() => {
         if (!isBoardAdmin) {
-            history.push(`/app/companies`);
+            const route = RouteCreator.companies();
+            history.push(route);
         } else {
             setIsCheckingForBoardAdminAccess(false);
         }

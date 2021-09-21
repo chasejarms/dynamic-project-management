@@ -6,6 +6,7 @@ import { Tabs, Tab } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
 import { TicketType } from "../../../../../../../../../models/ticket/ticketType";
 import { DrawerContainer } from "../../../components/drawerContainer";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 
 export interface TicketDrawerContainerProps {
     children: React.ReactNode;
@@ -18,21 +19,41 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
 
     function ticketDataRoute() {
         if (props.ticketType === TicketType.InProgress) {
-            return `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/data`;
+            return RouteCreator.inProgressTicketData(
+                companyId,
+                boardId,
+                ticketId
+            );
         } else if (props.ticketType === TicketType.Backlog) {
-            return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/data`;
+            return RouteCreator.backlogTicketData(companyId, boardId, ticketId);
         } else {
-            return `/app/company/${companyId}/board/${boardId}/archived-tickets/${ticketId}/data`;
+            return RouteCreator.archivedTicketData(
+                companyId,
+                boardId,
+                ticketId
+            );
         }
     }
 
     function ticketImagesRoute() {
         if (props.ticketType === TicketType.InProgress) {
-            return `/app/company/${companyId}/board/${boardId}/tickets/${ticketId}/images`;
+            return RouteCreator.inProgressTicketImages(
+                companyId,
+                boardId,
+                ticketId
+            );
         } else if (props.ticketType === TicketType.Backlog) {
-            return `/app/company/${companyId}/board/${boardId}/backlog-tickets/${ticketId}/images`;
+            return RouteCreator.backlogTicketImages(
+                companyId,
+                boardId,
+                ticketId
+            );
         } else {
-            return `/app/company/${companyId}/board/${boardId}/archived-tickets/${ticketId}/images`;
+            return RouteCreator.archivedTicketImages(
+                companyId,
+                boardId,
+                ticketId
+            );
         }
     }
 
@@ -68,17 +89,17 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
     function closeDrawer() {
         if (!props.disallowPageNavigation) {
             if (props.ticketType === TicketType.InProgress) {
-                history.push(
-                    `/app/company/${companyId}/board/${boardId}/tickets`
+                const route = RouteCreator.inProgressTickets(
+                    companyId,
+                    boardId
                 );
+                history.push(route);
             } else if (props.ticketType === TicketType.Backlog) {
-                history.push(
-                    `/app/company/${companyId}/board/${boardId}/backlog-tickets`
-                );
+                const route = RouteCreator.backlogTickets(companyId, boardId);
+                history.push(route);
             } else {
-                history.push(
-                    `/app/company/${companyId}/board/${boardId}/archived-tickets`
-                );
+                const route = RouteCreator.archivedTickets(companyId, boardId);
+                history.push(route);
             }
         }
     }

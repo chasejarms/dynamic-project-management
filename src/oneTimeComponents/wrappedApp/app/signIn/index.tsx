@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
 import { useEmailControl } from "../hooks/useEmailControl";
 import { usePasswordCreationControl } from "../hooks/usePasswordCreationControl";
+import { RouteCreator } from "../utils/routeCreator";
 
 const useStyles = makeStyles({
     resetPasswordText: (theme: Theme) => ({
@@ -98,7 +99,8 @@ export function SignIn() {
 
                     localStorage.setItem("token", token);
                     localStorage.setItem("userEmail", emailControl.value);
-                    history.push("/app/companies");
+                    const route = RouteCreator.companies();
+                    history.push(route);
                 },
                 onFailure: function (err) {
                     if (didCancel) return;
@@ -151,7 +153,8 @@ export function SignIn() {
 
                     localStorage.setItem("token", token);
                     localStorage.setItem("userEmail", emailControl.value);
-                    history.push("/app/companies");
+                    const route = RouteCreator.companies();
+                    history.push(route);
                 },
                 onFailure: function (err) {
                     if (didCancel) return;

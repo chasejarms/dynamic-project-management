@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
+import { RouteCreator } from "../../../../utils/routeCreator";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
@@ -14,11 +15,11 @@ export function InternalUserContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Learning Center Editor",
-            route: `/app/internal/learning-center-editor`,
+            route: RouteCreator.learningCenterEditor(),
         },
         {
             text: "Learning Center Videos",
-            route: `/app/internal/learning-center-videos`,
+            route: RouteCreator.learningCenterVideos(),
         },
     ];
 

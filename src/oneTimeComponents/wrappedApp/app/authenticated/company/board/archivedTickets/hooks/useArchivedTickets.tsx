@@ -5,6 +5,7 @@ import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IColumn } from "../../../../../../../../models/column";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { ITicketUpdateRequest } from "../../../../../../../../models/ticketUpdateRequest";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 export function useArchivedTickets() {
     const { boardId, companyId, ticketId } = useAppRouterParams();
@@ -81,9 +82,8 @@ export function useArchivedTickets() {
 
     const history = useHistory();
     function closeDrawer() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/archived-tickets`
-        );
+        const route = RouteCreator.archivedTickets(companyId, boardId);
+        history.push(route);
     }
 
     function onDeleteTicket(columnId: string, itemId: string) {

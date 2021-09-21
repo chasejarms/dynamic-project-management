@@ -8,6 +8,7 @@ import { WrappedButton } from "../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useCreateTicketTemplateCall } from "./hooks/useCreateTicketTemplateCall";
 import { createTicketTemplateId } from "../../../../../../../../../redux/ticketTemplates";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 
 export function CreateTicketTemplate() {
     const { boardId, companyId } = useAppRouterParams();
@@ -20,10 +21,9 @@ export function CreateTicketTemplate() {
     } = useCreateTicketTemplateCall();
 
     const history = useHistory();
-    function navigateToTicketTemplate() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`
-        );
+    function navigateToTicketTemplates() {
+        const route = RouteCreator.ticketTemplates(companyId, boardId);
+        history.push(route);
     }
 
     return (
@@ -42,7 +42,7 @@ export function CreateTicketTemplate() {
                 action={
                     <WrappedButton
                         color="secondary"
-                        onClick={navigateToTicketTemplate}
+                        onClick={navigateToTicketTemplates}
                     >
                         Back to Ticket Templates
                     </WrappedButton>

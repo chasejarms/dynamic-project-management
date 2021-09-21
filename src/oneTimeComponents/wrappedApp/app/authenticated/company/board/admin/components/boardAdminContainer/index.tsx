@@ -2,6 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
@@ -17,11 +18,11 @@ export function BoardAdminContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Board Admins",
-            route: `/app/company/${companyId}/board/${boardId}/admin/board-admins`,
+            route: RouteCreator.boardAdmins(companyId, boardId),
         },
         {
             text: "Ticket Templates",
-            route: `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`,
+            route: RouteCreator.ticketTemplates(companyId, boardId),
         },
     ];
 

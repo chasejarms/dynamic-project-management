@@ -38,7 +38,8 @@ describe("TicketTemplateDropdown", () => {
             ticketTemplateDropdownProps.disabled = true;
 
             const history = createMemoryHistory();
-            history.push(`/app/company/123/board/456/`);
+            const route = RouteCreator.createTicket("123", "456");
+            history.push(route);
             render(
                 <Router history={history}>
                     <TicketTemplateDropdown {...ticketTemplateDropdownProps} />
@@ -57,7 +58,8 @@ describe("TicketTemplateDropdown", () => {
             ticketTemplateDropdownProps.disabled = false;
 
             const history = createMemoryHistory();
-            history.push(`/app/company/123/board/456/`);
+            const route = RouteCreator.createTicket("123", "456");
+            history.push(route);
             render(
                 <Router history={history}>
                     <TicketTemplateDropdown {...ticketTemplateDropdownProps} />
@@ -83,7 +85,8 @@ describe("TicketTemplateDropdown", () => {
 
             it("should show the open icon", () => {
                 const history = createMemoryHistory();
-                history.push(`/app/company/123/board/456/`);
+                const route = RouteCreator.createTicket("123", "456");
+                history.push(route);
                 render(
                     <Router history={history}>
                         <TicketTemplateDropdown
@@ -98,7 +101,8 @@ describe("TicketTemplateDropdown", () => {
             describe("the user clicks the open icon", () => {
                 it("should navigate to the correct page in a new tab", () => {
                     const history = createMemoryHistory();
-                    history.push(`/app/company/123/board/456/`);
+                    const route = RouteCreator.createTicket("123", "456");
+                    history.push(route);
                     render(
                         <Router history={history}>
                             <TicketTemplateDropdown
@@ -134,7 +138,8 @@ describe("TicketTemplateDropdown", () => {
 
             it("should show the open icon", () => {
                 const history = createMemoryHistory();
-                history.push(`/app/company/123/board/456/`);
+                const route = RouteCreator.createTicket("123", "456");
+                history.push(route);
                 render(
                     <Router history={history}>
                         <TicketTemplateDropdown
@@ -148,7 +153,8 @@ describe("TicketTemplateDropdown", () => {
 
             it("should disable the open icon", () => {
                 const history = createMemoryHistory();
-                history.push(`/app/company/123/board/456/`);
+                const route = RouteCreator.createTicket("123", "456");
+                history.push(route);
                 render(
                     <Router history={history}>
                         <TicketTemplateDropdown
@@ -170,7 +176,8 @@ describe("TicketTemplateDropdown", () => {
             ticketTemplateDropdownProps.showOpenIcon = false;
 
             const history = createMemoryHistory();
-            history.push(`/app/company/123/board/456/`);
+            const route = RouteCreator.createTicket("123", "456");
+            history.push(route);
             render(
                 <Router history={history}>
                     <TicketTemplateDropdown {...ticketTemplateDropdownProps} />
@@ -189,7 +196,8 @@ describe("TicketTemplateDropdown", () => {
             ticketTemplateDropdownProps.ticketTemplate = ticketTemplates[0];
 
             const history = createMemoryHistory();
-            history.push(`/app/company/123/board/456/`);
+            const route = RouteCreator.createTicket("123", "456");
+            history.push(route);
             render(
                 <Router history={history}>
                     <TicketTemplateDropdown {...ticketTemplateDropdownProps} />
@@ -205,7 +213,8 @@ describe("TicketTemplateDropdown", () => {
             ticketTemplateDropdownProps.ticketTemplate = ticketTemplates[0];
 
             const history = createMemoryHistory();
-            history.push(`/app/company/123/board/456/`);
+            const route = RouteCreator.createTicket("123", "456");
+            history.push(route);
             render(
                 <Router history={history}>
                     <TicketTemplateDropdown {...ticketTemplateDropdownProps} />

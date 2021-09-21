@@ -15,6 +15,7 @@ import {
 } from "../../../../../../components/wrappedButton";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
+import { RouteCreator } from "../../../../../../utils/routeCreator";
 
 export function TicketTemplatesHome() {
     const history = useHistory();
@@ -140,9 +141,8 @@ export function TicketTemplatesHome() {
     }, [deletingTicketTemplateData, companyId, boardId]);
 
     function navigateToCreateTicketTemplatePage() {
-        history.push(
-            `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/create-ticket-template`
-        );
+        const route = RouteCreator.createTicketTemplate(companyId, boardId);
+        history.push(route);
     }
 
     const createTicketTemplateButtonProps: IWrappedButtonProps = {

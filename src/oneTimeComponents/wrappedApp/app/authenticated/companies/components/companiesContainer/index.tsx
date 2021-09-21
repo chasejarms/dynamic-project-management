@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
+import { RouteCreator } from "../../../../utils/routeCreator";
 import {
     AuthenticatedPageContainer,
     IAuthenticatedNavItem,
@@ -14,7 +15,7 @@ export function CompaniesContainer(props: IBoardContainerProps) {
     const navItems: IAuthenticatedNavItem[] = [
         {
             text: "Companies",
-            route: `/app/companies`,
+            route: RouteCreator.companies(),
         },
     ];
     return (

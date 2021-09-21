@@ -17,6 +17,7 @@ import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 import { setInitialBoardColumnState } from "../../../../../../../../redux/boardColumnEditMappedState";
 import { useDispatch } from "react-redux";
+import { RouteCreator } from "../../../../../utils/routeCreator";
 
 export function useNonArchivedBoardLogic(
     ticketType: TicketType.Backlog | TicketType.InProgress
@@ -230,11 +231,11 @@ export function useNonArchivedBoardLogic(
     const history = useHistory();
     function closeDrawer() {
         if (ticketType === TicketType.InProgress) {
-            history.push(`/app/company/${companyId}/board/${boardId}/tickets`);
+            const route = RouteCreator.inProgressTickets(companyId, boardId);
+            history.push(route);
         } else {
-            history.push(
-                `/app/company/${companyId}/board/${boardId}/backlog-tickets`
-            );
+            const route = RouteCreator.backlogTickets(companyId, boardId);
+            history.push(route);
         }
     }
 
