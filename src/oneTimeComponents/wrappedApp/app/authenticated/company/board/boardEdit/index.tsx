@@ -181,13 +181,6 @@ function createClasses() {
         grid-template-columns: 1fr 1fr;
     `;
 
-    const centerErrorMessage = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
     return {
         innerContentContainer,
         spinnerContainer,
@@ -196,6 +189,5 @@ function createClasses() {
         mainContentContainer,
         toolbarContainer,
         actionButtonContainer,
-        centerErrorMessage,
     };
 }
