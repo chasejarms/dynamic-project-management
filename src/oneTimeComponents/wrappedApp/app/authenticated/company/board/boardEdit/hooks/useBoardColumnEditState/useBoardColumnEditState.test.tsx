@@ -12,7 +12,6 @@ import * as boardColumnEditMappedStateModule from "../../../../../../../../../re
 describe("useBoardColumnEditState", () => {
     let columns: IColumn[] = [];
     beforeEach(() => {
-        jest.restoreAllMocks();
         columns = [
             {
                 id: uncategorizedColumnReservedId,
