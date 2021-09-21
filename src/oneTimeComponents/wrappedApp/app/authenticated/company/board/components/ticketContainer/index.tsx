@@ -49,51 +49,42 @@ export function TicketContainer(props: ITicketContainerProps) {
         <div css={classes.columnContainer}>
             <Card className={materialClasses.card}>
                 <CardContent className={materialClasses.cardContentRoot}>
-                    <div css={classes.outerCardContentContainer}>
-                        <div css={classes.innerCardContentContainer}>
-                            <div css={classes.columnTitleContainer}>
-                                <div>
-                                    {props.title ? (
+                    <div css={classes.innerCardContentContainer}>
+                        <div css={classes.columnTitleContainer}>
+                            <div>
+                                {props.title ? (
+                                    <Typography variant="h6">
+                                        {props.title}
+                                    </Typography>
+                                ) : (
+                                    <div css={classes.hiddenTitle}>
                                         <Typography variant="h6">
-                                            {props.title}
+                                            Hidden
                                         </Typography>
-                                    ) : (
-                                        <div css={classes.hiddenTitle}>
-                                            <Typography variant="h6">
-                                                Hidden
-                                            </Typography>
-                                        </div>
-                                    )}
-                                </div>
-                                <div>{props.topRightIcon}</div>
+                                    </div>
+                                )}
                             </div>
-                            <Divider />
-                            {!!props.showCenterSpinner ? (
-                                <CenterLoadingSpinner size="small" />
-                            ) : (
-                                <div css={classes.ticketsContainer}>
-                                    {props.children}
-                                    {!!props.bottomLoadingSpinnerProps && (
-                                        <ReactVisibilitySensor
-                                            onChange={
-                                                internalVisibilityOnChange
+                            <div>{props.topRightIcon}</div>
+                        </div>
+                        <Divider />
+                        {!!props.showCenterSpinner ? (
+                            <CenterLoadingSpinner size="small" />
+                        ) : (
+                            <div css={classes.ticketsContainer}>
+                                {props.children}
+                                {!!props.bottomLoadingSpinnerProps && (
+                                    <ReactVisibilitySensor
+                                        onChange={internalVisibilityOnChange}
+                                    >
+                                        <div
+                                            css={
+                                                classes.moreTicketsLoadingSpinner
                                             }
                                         >
-                                            <div
-                                                css={
-                                                    classes.moreTicketsLoadingSpinner
-                                                }
-                                            >
-                                                <CenterLoadingSpinner size="small" />
-                                            </div>
-                                        </ReactVisibilitySensor>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                        {!!props.bottomBarContent && (
-                            <div css={classes.bottomToolbarContainer}>
-                                {props.bottomBarContent}
+                                            <CenterLoadingSpinner size="small" />
+                                        </div>
+                                    </ReactVisibilitySensor>
+                                )}
                             </div>
                         )}
                     </div>
@@ -115,6 +106,7 @@ const createClasses = () => {
         flex-grow: 1;
         overflow-y: auto;
         padding: 1px 16px;
+        min-height: 0px;
     `;
 
     const columnTitleContainer = css`
@@ -137,7 +129,10 @@ const createClasses = () => {
     `;
 
     const innerCardContentContainer = css`
-        flex-grow: 1;
+        label: inner-card-content-container;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     `;
 
     const moreTicketsLoadingSpinner = css`

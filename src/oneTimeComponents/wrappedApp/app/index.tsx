@@ -7,7 +7,7 @@ import { Authenticated } from "./authenticated";
 import { useRouterDebug } from "./hooks/useRouterDebug";
 import { Home } from "./home";
 import { RequestDemo } from "./requestDemo";
-import { SignUp } from "./signUp";
+// import { SignUp } from "./signUp";
 import { ResetPassword } from "./resetPassword";
 import { EnterNewPassword } from "./enterNewPassword";
 

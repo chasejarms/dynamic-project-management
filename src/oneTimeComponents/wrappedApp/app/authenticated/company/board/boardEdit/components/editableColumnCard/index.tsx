@@ -46,7 +46,6 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                     >
                         <TicketContainer
                             title={name}
-                            bottomBarContent={true}
                             topRightIcon={
                                 <div
                                     {...provided.dragHandleProps}
