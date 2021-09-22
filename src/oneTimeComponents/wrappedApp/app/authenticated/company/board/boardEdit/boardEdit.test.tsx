@@ -533,4 +533,20 @@ describe("Board Edit", () => {
             });
         });
     });
+
+    describe("failedToLoadColumnData is true", () => {
+        it("should show the error message", () => {
+            useBoardColumnEditStateReturnType.failedToLoadColumnData = true;
+
+            render(
+                <MemoryRouter
+                    initialEntries={[RouteCreator.editBoard("123", "456")]}
+                >
+                    <BoardEditInnerContent />
+                </MemoryRouter>
+            );
+
+            screen.getByText("Error loading column data");
+        });
+    });
 });
