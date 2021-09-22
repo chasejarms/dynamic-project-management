@@ -43,6 +43,7 @@ export function BoardEditInnerContent() {
                     onClick={navigateBackToBoard}
                     variant="text"
                     color="primary"
+                    testIds={boardEditTestIds.backToBoardButton}
                 >
                     Back To Board
                 </WrappedButton>
@@ -53,6 +54,7 @@ export function BoardEditInnerContent() {
                     onClick={resetChanges}
                     variant="text"
                     color="secondary"
+                    testIds={boardEditTestIds.resetChangesButton}
                 >
                     Reset Changes
                 </WrappedButton>

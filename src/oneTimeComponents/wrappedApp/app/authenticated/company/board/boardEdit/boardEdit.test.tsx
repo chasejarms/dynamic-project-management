@@ -244,22 +244,293 @@ describe("Board Edit", () => {
         });
     });
 
-    describe("the isInErrorState returns true", () => {
-        it("should disable the save changes button", () => {
-            useBoardColumnEditStateReturnType.isInErrorState = true;
+    describe("Save Button", () => {
+        describe("isInErrorState is true, isSavingColumns is false, and column data changed", () => {
+            it("should disable the save changes button", () => {
+                useBoardColumnEditStateReturnType.isInErrorState = true;
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
 
-            render(
-                <MemoryRouter
-                    initialEntries={[RouteCreator.editBoard("123", "456")]}
-                >
-                    <BoardEditInnerContent />
-                </MemoryRouter>
-            );
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
 
-            const saveButton = screen.getByTestId(
-                boardEditTestIds.saveButton.button
-            );
-            expect(saveButton).toHaveClass("Mui-disabled");
+                const saveButton = screen.getByTestId(
+                    boardEditTestIds.saveButton.button
+                );
+                expect(saveButton).toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("isInErrorState is false, isSavingColumns is true, and column data changed", () => {
+            beforeEach(() => {
+                useBoardColumnEditStateReturnType.isInErrorState = false;
+                useBoardColumnEditStateReturnType.isSavingColumns = true;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
+            });
+
+            it("should disable the save changes button", () => {
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const saveButton = screen.getByTestId(
+                    boardEditTestIds.saveButton.button
+                );
+                expect(saveButton).toHaveClass("Mui-disabled");
+            });
+
+            it("should show the spinner on the button", () => {
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                screen.getByTestId(boardEditTestIds.saveButton.spinner);
+            });
+        });
+
+        describe("isInErrorState is false, isSavingColumns is false, and column data HAS NOT changed", () => {
+            it("should disable the save changes button", () => {
+                useBoardColumnEditStateReturnType.isInErrorState = false;
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = false;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const saveButton = screen.getByTestId(
+                    boardEditTestIds.saveButton.button
+                );
+                expect(saveButton).toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("isInErrorState is false, isSavingColumns is false, and column data has changed", () => {
+            beforeEach(() => {
+                useBoardColumnEditStateReturnType.isInErrorState = false;
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
+            });
+
+            it("should enable the save changes button", () => {
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const saveButton = screen.getByTestId(
+                    boardEditTestIds.saveButton.button
+                );
+                expect(saveButton).not.toHaveClass("Mui-disabled");
+            });
+
+            describe("the user clicks the save button", () => {
+                it("should invoke the saveChanges function", () => {
+                    let saveWasClicked = false;
+                    useBoardColumnEditStateReturnType.saveColumns = () => {
+                        saveWasClicked = true;
+                    };
+                    render(
+                        <MemoryRouter
+                            initialEntries={[
+                                RouteCreator.editBoard("123", "456"),
+                            ]}
+                        >
+                            <BoardEditInnerContent />
+                        </MemoryRouter>
+                    );
+
+                    const saveButton = screen.getByTestId(
+                        boardEditTestIds.saveButton.button
+                    );
+                    userEvent.click(saveButton);
+                    expect(saveWasClicked).toBe(true);
+                });
+            });
+        });
+    });
+
+    describe("Reset Changes Button", () => {
+        describe("columnDataHasChanged is false and isSavingColumns is false", () => {
+            it("should disable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = false;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const resetChangesButton = screen.getByTestId(
+                    boardEditTestIds.resetChangesButton.button
+                );
+                expect(resetChangesButton).toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("columnDataHasChanged is true and isSavingColumns is false", () => {
+            it("should enable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const resetChangesButton = screen.getByTestId(
+                    boardEditTestIds.resetChangesButton.button
+                );
+                expect(resetChangesButton).not.toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("columnDataHasChanged is false and isSavingColumns is true", () => {
+            it("should disable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = true;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = false;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const resetChangesButton = screen.getByTestId(
+                    boardEditTestIds.resetChangesButton.button
+                );
+                expect(resetChangesButton).toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("columnDataHasChanged is true and isSavingColumns is true", () => {
+            it("should disable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = true;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const resetChangesButton = screen.getByTestId(
+                    boardEditTestIds.resetChangesButton.button
+                );
+                expect(resetChangesButton).toHaveClass("Mui-disabled");
+            });
+        });
+    });
+
+    describe("Back To Board Button", () => {
+        describe("columnDataHasChanged is false and isSavingColumns is false", () => {
+            it("should enable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = false;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const backToBoardButton = screen.getByTestId(
+                    boardEditTestIds.backToBoardButton.button
+                );
+                expect(backToBoardButton).not.toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("columnDataHasChanged is true and isSavingColumns is false", () => {
+            it("should disable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = false;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const backToBoardButton = screen.getByTestId(
+                    boardEditTestIds.backToBoardButton.button
+                );
+                expect(backToBoardButton).toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("columnDataHasChanged is false and isSavingColumns is true", () => {
+            it("should disable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = true;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = false;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const backToBoardButton = screen.getByTestId(
+                    boardEditTestIds.backToBoardButton.button
+                );
+                expect(backToBoardButton).toHaveClass("Mui-disabled");
+            });
+        });
+
+        describe("columnDataHasChanged is true and isSavingColumns is true", () => {
+            it("should disable the button", () => {
+                useBoardColumnEditStateReturnType.isSavingColumns = true;
+                useBoardColumnEditStateReturnType.columnDataHasChanged = true;
+
+                render(
+                    <MemoryRouter
+                        initialEntries={[RouteCreator.editBoard("123", "456")]}
+                    >
+                        <BoardEditInnerContent />
+                    </MemoryRouter>
+                );
+
+                const backToBoardButton = screen.getByTestId(
+                    boardEditTestIds.backToBoardButton.button
+                );
+                expect(backToBoardButton).toHaveClass("Mui-disabled");
+            });
         });
     });
 });
