@@ -1,6 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import {
+    Box,
     IconButton,
     makeStyles,
     Paper,
@@ -12,7 +11,6 @@ import {
     TableRow,
     Toolbar,
     Typography,
-    useTheme,
 } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import { useEffect, useState } from "react";
@@ -24,7 +22,6 @@ import { ITag } from "../../../../../../../../models/tag";
 import { WrappedButton } from "../../../../../components/wrappedButton";
 import { NewTagDialog } from "./components/newTagDialog";
 import { sortBy } from "lodash";
-import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "./utils/mapColorToMaterialThemeColorLight";
 import { ConfirmDialog } from "../../../components/confirmDialog";
 import { EditTagDialog } from "./components/editTagDialog";
@@ -192,17 +189,27 @@ export function InitiativeManager() {
         };
     }, [isDeletingTag]);
 
-    const classes = createClasses();
     const materialClasses = useStyles();
-    const theme = useTheme();
 
     return (
         <BoardAdminContainer>
             {!isLoadingTags ? (
-                <div css={classes.tablePaperContainer}>
+                <Box
+                    sx={{
+                        padding: 32,
+                        width: "100%",
+                        height: "100%",
+                    }}
+                >
                     <Paper>
                         <Toolbar className={materialClasses.toolbar}>
-                            <div css={classes.toolbarContainer}>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
                                 <Typography variant="h6">Tags</Typography>
                                 <div>
                                     <WrappedButton
@@ -212,7 +219,7 @@ export function InitiativeManager() {
                                         Add Tag
                                     </WrappedButton>
                                 </div>
-                            </div>
+                            </Box>
                         </Toolbar>
                         <TableContainer
                             className={materialClasses.tableContainer}
@@ -243,13 +250,9 @@ export function InitiativeManager() {
                                 </TableHead>
                                 <TableBody>
                                     {allTagsForBoard.map((tag) => {
-                                        const hexColorMain = mapColorToMaterialThemeColorLight(
-                                            theme,
+                                        const bgcolor = mapColorToMaterialThemeColorLight(
                                             tag.color
                                         );
-                                        const individualColorOuterContainer = css`
-                                            background-color: ${hexColorMain};
-                                        `;
 
                                         return (
                                             <TableRow key={tag.name}>
@@ -257,23 +260,34 @@ export function InitiativeManager() {
                                                     {tag.name}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div
-                                                        css={composeCSS(
-                                                            classes.colorContainer,
-                                                            individualColorOuterContainer
-                                                        )}
+                                                    <Box
+                                                        sx={{
+                                                            width: 16,
+                                                            height: 16,
+                                                            borderRadius: "50%",
+                                                            bgcolor,
+                                                        }}
                                                     />
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div
-                                                        css={
-                                                            classes.relativePositionedTableCell
-                                                        }
+                                                    <Box
+                                                        sx={{
+                                                            position:
+                                                                "relative",
+                                                            width: "100px",
+                                                            height: "100%",
+                                                        }}
                                                     >
-                                                        <div
-                                                            css={
-                                                                classes.absolutePositionedTableCell
-                                                            }
+                                                        <Box
+                                                            sx={{
+                                                                position:
+                                                                    "absolute",
+                                                                left: -11,
+                                                                height: "100%",
+                                                                display: "flex",
+                                                                alignItems:
+                                                                    "center",
+                                                            }}
                                                         >
                                                             <IconButton
                                                                 onClick={onClickDeleteTag(
@@ -289,8 +303,8 @@ export function InitiativeManager() {
                                                             >
                                                                 <Edit />
                                                             </IconButton>
-                                                        </div>
-                                                    </div>
+                                                        </Box>
+                                                    </Box>
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -319,52 +333,10 @@ export function InitiativeManager() {
                         content={`Are you sure want to delete tag ${tagToDelete?.name}? Deleting the tag will remove it from the priorities and from ticket creation. However, it will continue to exist on previously created tickets.`}
                         confirmButtonText="Yes"
                     />
-                </div>
+                </Box>
             ) : (
                 <CenterLoadingSpinner size="large" />
             )}
         </BoardAdminContainer>
     );
 }
-
-const createClasses = () => {
-    const tablePaperContainer = css`
-        padding: 32px;
-        width: 100%;
-        height: 100%;
-    `;
-
-    const relativePositionedTableCell = css`
-        position: relative;
-        width: 100px;
-        height: 100%;
-    `;
-
-    const absolutePositionedTableCell = css`
-        position: absolute;
-        left: -11px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    `;
-
-    const toolbarContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    `;
-
-    const colorContainer = css`
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-    `;
-
-    return {
-        tablePaperContainer,
-        relativePositionedTableCell,
-        absolutePositionedTableCell,
-        toolbarContainer,
-        colorContainer,
-    };
-};

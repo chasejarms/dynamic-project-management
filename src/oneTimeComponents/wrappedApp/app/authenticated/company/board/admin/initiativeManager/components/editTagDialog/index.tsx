@@ -125,7 +125,6 @@ export function EditTagDialog(props: IEditTagDialogProps) {
                 <div css={classes.colorContainer}>
                     {tagColors.map((color) => {
                         const hexColor = mapColorToMaterialThemeColorLight(
-                            theme,
                             color
                         );
                         const individualColorContainer = css`

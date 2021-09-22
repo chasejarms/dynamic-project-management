@@ -1,15 +1,13 @@
-import { Theme } from "@material-ui/core";
-
-export function mapColorToMaterialThemeColorLight(theme: Theme, color: string) {
+export function mapColorToMaterialThemeColorLight(color: string) {
     if (color === "red") {
-        return theme.palette.error.light;
+        return "error.light";
     } else if (color === "green") {
-        return theme.palette.success.light;
+        return "success.light";
     } else if (color === "blue") {
-        return theme.palette.info.light;
+        return "info.light";
     } else if (color === "yellow") {
-        return theme.palette.warning.light;
+        return "warning.light";
     } else {
-        return theme.palette.grey["300"];
+        return "grey.300";
     }
 }

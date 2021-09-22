@@ -112,7 +112,6 @@ export function NewTagDialog(props: INewTagDialogProps) {
                 <div css={classes.colorContainer}>
                     {tagColors.map((color) => {
                         const hexColor = mapColorToMaterialThemeColorLight(
-                            theme,
                             color
                         );
                         const individualColorContainer = css`
