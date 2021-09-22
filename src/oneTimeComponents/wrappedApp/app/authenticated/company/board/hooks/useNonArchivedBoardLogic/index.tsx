@@ -154,8 +154,11 @@ export function useNonArchivedBoardLogic(
 
     function onDeleteTicket(columnId: string, itemId: string) {
         setSortedAndMappedTickets((previousSortedAndMappedTickets) => {
+            const isBacklogTicket = ticketType === TicketType.Backlog;
             const columnIdExists = !!previousSortedAndMappedTickets[columnId];
-            const trueColumnId = columnIdExists
+            const trueColumnId = isBacklogTicket
+                ? backlogColumnReservedId
+                : columnIdExists
                 ? columnId
                 : uncategorizedColumnReservedId;
             const columnOfTicket = previousSortedAndMappedTickets[trueColumnId];
