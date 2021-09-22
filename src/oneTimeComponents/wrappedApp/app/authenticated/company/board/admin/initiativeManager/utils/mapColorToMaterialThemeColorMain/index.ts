@@ -1,15 +1,13 @@
-import { Theme } from "@material-ui/core";
-
-export function mapColorToMaterialThemeColorMain(theme: Theme, color: string) {
+export function mapColorToMaterialThemeColorMain(color: string) {
     if (color === "red") {
-        return theme.palette.error.dark;
+        return "error.dark";
     } else if (color === "green") {
-        return theme.palette.success.dark;
+        return "success.dark";
     } else if (color === "blue") {
-        return theme.palette.info.dark;
+        return "info.dark";
     } else if (color === "yellow") {
-        return theme.palette.warning.dark;
+        return "warning.dark";
     } else {
-        return theme.palette.grey["600"];
+        return "grey.600";
     }
 }
