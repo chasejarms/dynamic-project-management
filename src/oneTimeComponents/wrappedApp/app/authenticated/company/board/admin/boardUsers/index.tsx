@@ -1,6 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import {
+    Box,
     Checkbox,
     Paper,
     Table,
@@ -85,11 +84,16 @@ export function BoardUsers() {
         };
     }
 
-    const classes = createClasses();
     return (
         <BoardAdminContainer>
             {!isLoadingUsers ? (
-                <div css={classes.tablePaperContainer}>
+                <Box
+                    sx={{
+                        padding: 32,
+                        width: "100%",
+                        height: "100%",
+                    }}
+                >
                     <Paper>
                         <Table>
                             <TableHead>
@@ -113,15 +117,22 @@ export function BoardUsers() {
                                         <TableRow key={user.itemId}>
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>
-                                                <div
-                                                    css={
-                                                        classes.relativePositionedTableCell
-                                                    }
+                                                <Box
+                                                    sx={{
+                                                        position: "relative",
+                                                        height: "100%",
+                                                    }}
                                                 >
-                                                    <div
-                                                        css={
-                                                            classes.absolutePositionedTableCell
-                                                        }
+                                                    <Box
+                                                        sx={{
+                                                            position:
+                                                                "absolute",
+                                                            left: -11,
+                                                            height: "100%",
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                        }}
                                                     >
                                                         <Checkbox
                                                             checked={
@@ -135,8 +146,8 @@ export function BoardUsers() {
                                                                 user
                                                             )}
                                                         />
-                                                    </div>
-                                                </div>
+                                                    </Box>
+                                                </Box>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -144,37 +155,10 @@ export function BoardUsers() {
                             </TableBody>
                         </Table>
                     </Paper>
-                </div>
+                </Box>
             ) : (
                 <CenterLoadingSpinner size="large" />
             )}
         </BoardAdminContainer>
     );
 }
-
-const createClasses = () => {
-    const tablePaperContainer = css`
-        padding: 32px;
-        width: 100%;
-        height: 100%;
-    `;
-
-    const relativePositionedTableCell = css`
-        position: relative;
-        height: 100%;
-    `;
-
-    const absolutePositionedTableCell = css`
-        position: absolute;
-        left: -11px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    `;
-
-    return {
-        tablePaperContainer,
-        relativePositionedTableCell,
-        absolutePositionedTableCell,
-    };
-};
