@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../../../api";
 import { StringValidator } from "../../../../../../classes/StringValidator";
@@ -8,18 +6,12 @@ import { IWrappedButtonProps } from "../../../components/wrappedButton";
 import { WrappedTextField } from "../../../components/wrappedTextField";
 import { useControl } from "../../../hooks/useControl";
 import { controlsAreValid } from "../../../utils/controlsAreValid";
-import { useHistory } from "react-router-dom";
 import { BottomPageToolbar } from "../components/bottomPageToolbar";
-import { useAppRouterParams } from "../../../hooks/useAppRouterParams";
 import { useEmailControl } from "../../../hooks/useEmailControl";
 import { useNameControl } from "../../../hooks/useNameControl";
+import { Box } from "@material-ui/core";
 
 export function AddCompany() {
-    const classes = createClasses();
-
-    const history = useHistory();
-    const { companyId, boardId } = useAppRouterParams();
-
     const { emailControl, showEmailError } = useEmailControl();
 
     const { nameControl, showNameError } = useNameControl();
@@ -112,97 +104,69 @@ export function AddCompany() {
 
     return (
         <BoardsContainer>
-            <div css={classes.container}>
-                <div css={classes.controlsContainer}>
-                    <div>
-                        <div css={classes.columnInputContainer}>
-                            <WrappedTextField
-                                value={nameControl.value}
-                                label="Name"
-                                onChange={nameControl.onChange}
-                                error={
-                                    showNameError
-                                        ? nameControl.errorMessage
-                                        : ""
-                                }
-                                disabled={isCreatingNewCompany}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <WrappedTextField
-                                value={companyNameControl.value}
-                                label="Company Name"
-                                onChange={companyNameControl.onChange}
-                                error={
-                                    showCompanyNameError
-                                        ? companyNameControl.errorMessage
-                                        : ""
-                                }
-                                disabled={isCreatingNewCompany}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <WrappedTextField
-                                value={emailControl.value}
-                                label="Email"
-                                onChange={emailControl.onChange}
-                                error={
-                                    showEmailError
-                                        ? emailControl.errorMessage
-                                        : ""
-                                }
-                                disabled={isCreatingNewCompany}
-                            />
-                        </div>
-                        <div css={classes.columnInputContainer}>
-                            <WrappedTextField
-                                value={secretKeyControl.value}
-                                label="Key"
-                                onChange={secretKeyControl.onChange}
-                                error={
-                                    showSecretKeyError
-                                        ? secretKeyControl.errorMessage
-                                        : ""
-                                }
-                                disabled={isCreatingNewCompany}
-                            />
-                        </div>
-                    </div>
-                </div>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateRows: "1fr auto",
+                    height: "100%",
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "300px",
+                        }}
+                    >
+                        <WrappedTextField
+                            value={nameControl.value}
+                            label="Name"
+                            onChange={nameControl.onChange}
+                            error={
+                                showNameError ? nameControl.errorMessage : ""
+                            }
+                            disabled={isCreatingNewCompany}
+                        />
+                        <WrappedTextField
+                            value={companyNameControl.value}
+                            label="Company Name"
+                            onChange={companyNameControl.onChange}
+                            error={
+                                showCompanyNameError
+                                    ? companyNameControl.errorMessage
+                                    : ""
+                            }
+                            disabled={isCreatingNewCompany}
+                        />
+                        <WrappedTextField
+                            value={emailControl.value}
+                            label="Email"
+                            onChange={emailControl.onChange}
+                            error={
+                                showEmailError ? emailControl.errorMessage : ""
+                            }
+                            disabled={isCreatingNewCompany}
+                        />
+                        <WrappedTextField
+                            value={secretKeyControl.value}
+                            label="Key"
+                            onChange={secretKeyControl.onChange}
+                            error={
+                                showSecretKeyError
+                                    ? secretKeyControl.errorMessage
+                                    : ""
+                            }
+                            disabled={isCreatingNewCompany}
+                        />
+                    </Box>
+                </Box>
                 <BottomPageToolbar wrappedButtonProps={wrappedButtonProps} />
-            </div>
+            </Box>
         </BoardsContainer>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-        width: 100%;
-    `;
-
-    const controlsContainer = css`
-        flex-grow: 1;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
-    `;
-
-    const bottomToolbarContainer = css`
-        width: 100%;
-    `;
-
-    return {
-        container,
-        columnInputContainer,
-        controlsContainer,
-        bottomToolbarContainer,
-    };
-};

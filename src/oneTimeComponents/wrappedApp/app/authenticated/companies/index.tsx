@@ -1,14 +1,11 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
-    useTheme,
     Card,
     CardContent,
     Typography,
     CardActions,
     Button,
-    Theme,
+    Box,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -17,8 +14,6 @@ import { CompaniesContainer } from "./components/companiesContainer";
 import { RouteCreator } from "../../utils/routeCreator";
 
 export function Companies() {
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const history = useHistory();
     const companies = useSelector((state: IStoreState) => {
         return state.appBootstrapInformation.companies;
@@ -39,19 +34,37 @@ export function Companies() {
 
     return (
         <CompaniesContainer>
-            <div css={classes.cardsContainer}>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr",
+                    gridAutoRows: "min-content",
+                    padding: 32,
+                    gridGap: 16,
+                }}
+            >
                 {companies?.map((company) => {
                     return (
                         <Card key={company.shortenedItemId}>
                             <CardContent>
-                                <div css={classes.titleContainer}>
+                                <Box
+                                    sx={{
+                                        marginBottom: 16,
+                                    }}
+                                >
                                     <Typography variant="h5">
                                         {company.name}
                                     </Typography>
-                                </div>
+                                </Box>
                             </CardContent>
                             <CardActions>
-                                <div css={classes.actionButtonContainer}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                        width: "100%",
+                                    }}
+                                >
                                     <Button
                                         onClick={openBoards(
                                             company.shortenedItemId
@@ -60,38 +73,12 @@ export function Companies() {
                                     >
                                         Go To Boards
                                     </Button>
-                                </div>
+                                </Box>
                             </CardActions>
                         </Card>
                     );
                 })}
-            </div>
+            </Box>
         </CompaniesContainer>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const cardsContainer = css`
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-auto-rows: min-content;
-        grid-gap: ${theme.spacing() * 2}px;
-        padding: ${theme.spacing() * 4}px;
-    `;
-
-    const actionButtonContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    `;
-
-    const titleContainer = css`
-        margin-bottom: ${theme.spacing() * 2}px;
-    `;
-
-    return {
-        cardsContainer,
-        actionButtonContainer,
-        titleContainer,
-    };
-};

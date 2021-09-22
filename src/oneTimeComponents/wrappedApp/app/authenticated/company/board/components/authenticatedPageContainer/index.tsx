@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
+import { Box } from "@material-ui/core";
 import { AuthenticatedPageAppBar } from "./authenticatedPageAppBar";
 import { AuthenticatedPageTopBar } from "./authenticatedPageTopBar";
 
@@ -16,36 +15,24 @@ export interface IAuthenticatedPageContainerProps {
 export function AuthenticatedPageContainer(
     props: IAuthenticatedPageContainerProps
 ) {
-    const classes = createClasses();
-
     return (
-        <div css={classes.container}>
+        <Box
+            sx={{
+                width: "100vw",
+                height: "100vh",
+                display: "grid",
+                gridTemplateRows: "auto auto 1fr",
+            }}
+        >
             <AuthenticatedPageTopBar />
-            <div>
-                <AuthenticatedPageAppBar navItems={props.navItems} />
-            </div>
-            <div css={classes.contentContainer}>{props.children}</div>
-        </div>
+            <AuthenticatedPageAppBar navItems={props.navItems} />
+            <Box
+                sx={{
+                    overflow: "auto",
+                }}
+            >
+                {props.children}
+            </Box>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        overflow: auto;
-    `;
-
-    const contentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        overflow-y: auto;
-    `;
-
-    return {
-        container,
-        contentContainer,
-    };
-};

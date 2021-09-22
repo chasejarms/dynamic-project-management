@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css, Theme, useTheme } from "@emotion/react";
-import { makeStyles, Paper } from "@material-ui/core";
+import { Box, Paper } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ticketPreviewId } from "../../../../../../../../../../redux/ticketControlMappedState";
@@ -11,12 +9,6 @@ import { TicketSummaryHeader } from "./ticketSummaryHeader";
 import { TicketTemplateBottomToolbar } from "./ticketTemplateBottomToolbar";
 import { TicketTemplateFieldsContainer } from "./ticketTemplateFieldsContainer";
 
-const useStyles = makeStyles({
-    previewPaper: {
-        height: "100%",
-    },
-});
-
 export interface ITicketTemplateProps {
     ticketTemplateId: string;
     fieldsAreDisabled: boolean;
@@ -26,10 +18,6 @@ export interface ITicketTemplateProps {
 }
 
 export function TicketTemplate(props: ITicketTemplateProps) {
-    const theme = useTheme();
-    const classes = createClasses(theme);
-    const materialClasses = useStyles();
-
     const dispatch = useDispatch();
     useEffect(() => {
         return () => {
@@ -39,111 +27,69 @@ export function TicketTemplate(props: ITicketTemplateProps) {
     }, []);
 
     return (
-        <div css={classes.container}>
-            <div css={classes.flexContentContainer}>
-                <div css={classes.gridContentContainer}>
-                    <TicketTemplateFieldsContainer
-                        disabled={
-                            props.actionInProgress || props.fieldsAreDisabled
-                        }
-                        ticketTemplateId={props.ticketTemplateId}
-                    />
-                    <div css={classes.priorityWeightAndPreviewContainer}>
+        <Box
+            sx={{
+                height: "100%",
+                display: "grid",
+                gridTemplateRows: "1fr auto",
+            }}
+        >
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    overflow: "auto",
+                }}
+            >
+                <TicketTemplateFieldsContainer
+                    disabled={props.actionInProgress || props.fieldsAreDisabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
+                <Box
+                    sx={{
+                        padding: 32,
+                        paddingLeft: 16,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            paddingBottom: 16,
+                        }}
+                    >
                         <PriorityWeightingFunction
                             ticketId={ticketPreviewId}
                             disabled={props.actionInProgress}
                             ticketTemplateId={props.ticketTemplateId}
                         />
-                        <div>
-                            <Paper className={materialClasses.previewPaper}>
-                                <div css={classes.ticketPreviewContainer}>
-                                    <TicketSummaryHeader
-                                        ticketId={ticketPreviewId}
-                                        ticketTemplateId={
-                                            props.ticketTemplateId
-                                        }
-                                    />
-                                    <TicketFields
-                                        ticketId={ticketPreviewId}
-                                        isTicketPreview={true}
-                                        disabled={props.actionInProgress}
-                                        ticketTemplateId={
-                                            props.ticketTemplateId
-                                        }
-                                    />
-                                </div>
-                            </Paper>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div css={classes.bottomToolbarContainer}>
-                <TicketTemplateBottomToolbar
-                    onClickActionButton={props.onClickActionButton}
-                    showActionButtonSpinner={props.actionInProgress}
-                    actionButtonText={props.actionButtonText}
-                    ticketTemplateId={props.ticketTemplateId}
-                />
-            </div>
-        </div>
+                    </Box>
+                    <Paper>
+                        <TicketSummaryHeader
+                            ticketId={ticketPreviewId}
+                            ticketTemplateId={props.ticketTemplateId}
+                        />
+                        <Box
+                            sx={{
+                                height: "300px",
+                                overflow: "auto",
+                            }}
+                        >
+                            <TicketFields
+                                ticketId={ticketPreviewId}
+                                isTicketPreview={true}
+                                disabled={props.actionInProgress}
+                                ticketTemplateId={props.ticketTemplateId}
+                            />
+                        </Box>
+                    </Paper>
+                    <div />
+                </Box>
+            </Box>
+            <TicketTemplateBottomToolbar
+                onClickActionButton={props.onClickActionButton}
+                showActionButtonSpinner={props.actionInProgress}
+                actionButtonText={props.actionButtonText}
+                ticketTemplateId={props.ticketTemplateId}
+            />
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const container = css`
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    `;
-
-    const gridContentContainer = css`
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        flex-grow: 1;
-    `;
-
-    const flexContentContainer = css`
-        display: flex;
-        flex-grow: 1;
-        overflow-y: auto;
-    `;
-
-    const bottomToolbarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const priorityWeightAndPreviewContainer = css`
-        flex-grow: 1;
-        display: grid;
-        grid-template-rows: auto 1fr;
-        grid-gap: 16px;
-        padding: 32px;
-        padding-left: 16px;
-    `;
-
-    const individualChipContainer = css`
-        margin-right: 4px;
-        margin-bottom: 4px;
-        display: inline-flex;
-    `;
-
-    const validAliasContainer = css`
-        padding-bottom: 8px;
-    `;
-
-    const ticketPreviewContainer = css`
-        display: grid;
-        grid-template-rows: auto 1fr;
-    `;
-
-    return {
-        ticketPreviewContainer,
-        container,
-        gridContentContainer,
-        bottomToolbarContainer,
-        flexContentContainer,
-        priorityWeightAndPreviewContainer,
-        individualChipContainer,
-        validAliasContainer,
-    };
-};

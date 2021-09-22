@@ -11,6 +11,7 @@ import { IStoreState } from "../../../../redux/storeState";
 import { Internal } from "./internal";
 import { Companies } from "./companies";
 import { Company } from "./company";
+import { Box } from "@material-ui/core";
 
 export function Authenticated() {
     const { url } = useRouteMatch();
@@ -50,11 +51,16 @@ export function Authenticated() {
         };
     }, [isLoading]);
 
-    const classes = createClasses();
     return isLoading ? (
-        <div css={classes.fullPageLoadingSpinnerContainer}>
+        <Box
+            sx={{
+                width: "100vw",
+                height: "100vh",
+                display: "grid",
+            }}
+        >
             <CenterLoadingSpinner size="large" />
-        </div>
+        </Box>
     ) : (
         <Switch>
             <Route path={`${url}/companies`} exact>
@@ -68,16 +74,4 @@ export function Authenticated() {
             </Route>
         </Switch>
     );
-}
-
-function createClasses() {
-    const fullPageLoadingSpinnerContainer = css`
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-    `;
-
-    return {
-        fullPageLoadingSpinnerContainer,
-    };
 }
