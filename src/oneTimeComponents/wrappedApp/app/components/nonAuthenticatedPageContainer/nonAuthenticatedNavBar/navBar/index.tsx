@@ -11,11 +11,16 @@ export interface INavBarItem {
     route: string;
 }
 
-export type NavBarActionButtonType = "sign-in" | "sign-up" | "sign-out" | null;
+export enum NavBarActionButtonTypeEnum {
+    SignIn,
+    SignUp,
+    SignOut,
+    None,
+}
 
 export interface INavBarProps {
     navItems: INavBarItem[];
-    actionButtonType: NavBarActionButtonType;
+    actionButtonType: NavBarActionButtonTypeEnum;
     hideNavItems?: boolean;
 }
 
@@ -70,7 +75,8 @@ export default function NavBar(props: INavBarProps) {
                 })}
             </div>
             <div css={classes.actionButtonContainer}>
-                {props.actionButtonType === RouteCreator.signIn() && (
+                {props.actionButtonType ===
+                    NavBarActionButtonTypeEnum.SignIn && (
                     <Button
                         variant="contained"
                         color="primary"
@@ -79,7 +85,8 @@ export default function NavBar(props: INavBarProps) {
                         Sign In
                     </Button>
                 )}
-                {props.actionButtonType === RouteCreator.signUp() && (
+                {props.actionButtonType ===
+                    NavBarActionButtonTypeEnum.SignUp && (
                     <Button
                         variant="contained"
                         color="primary"
@@ -88,7 +95,8 @@ export default function NavBar(props: INavBarProps) {
                         Sign Up
                     </Button>
                 )}
-                {props.actionButtonType === "sign-out" && (
+                {props.actionButtonType ===
+                    NavBarActionButtonTypeEnum.SignOut && (
                     <Button
                         variant="contained"
                         color="primary"

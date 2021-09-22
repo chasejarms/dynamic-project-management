@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import NavBar, { INavBarItem } from "../navBar";
+import NavBar, { INavBarItem, NavBarActionButtonTypeEnum } from "../navBar";
 import { useTheme, Theme } from "@material-ui/core";
 
 export interface ILargeNavBarProps {
@@ -13,7 +13,10 @@ export function LargeNavBar(props: ILargeNavBarProps) {
     const classes = createClasses(theme);
     return (
         <div css={classes.container}>
-            <NavBar navItems={props.navItems} actionButtonType={"sign-in"} />
+            <NavBar
+                navItems={props.navItems}
+                actionButtonType={NavBarActionButtonTypeEnum.SignIn}
+            />
         </div>
     );
 }
