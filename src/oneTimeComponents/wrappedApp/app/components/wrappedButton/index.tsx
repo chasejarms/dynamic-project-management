@@ -12,21 +12,18 @@ export interface IWrappedButtonProps extends ButtonProps {
 }
 
 export function WrappedButton(props: IWrappedButtonProps) {
-    const { showSpinner, ...rest } = props;
+    const { showSpinner, testIds, ...rest } = props;
 
     const { buttonContainer, spinnerContainer } = createClasses();
 
     return (
         <div css={buttonContainer}>
             {props.showSpinner && (
-                <div
-                    css={spinnerContainer}
-                    data-testid={props.testIds?.spinner}
-                >
+                <div css={spinnerContainer} data-testid={testIds?.spinner}>
                     <CircularProgress color="primary" size={24} thickness={4} />
                 </div>
             )}
-            <Button {...rest} data-testid={props.testIds?.button} />
+            <Button {...rest} data-testid={testIds?.button} />
         </div>
     );
 }
