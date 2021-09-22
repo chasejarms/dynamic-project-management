@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { ButtonProps, Button, CircularProgress } from "@material-ui/core";
+import { ButtonProps, Button, CircularProgress } from "@mui/material";
 
 export interface IWrappedButtonProps extends ButtonProps {
     showSpinner?: boolean;

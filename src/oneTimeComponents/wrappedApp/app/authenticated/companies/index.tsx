@@ -6,7 +6,7 @@ import {
     CardActions,
     Button,
     Box,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../redux/storeState";

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar } from "@material-ui/core";
+import { Typography, Snackbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";

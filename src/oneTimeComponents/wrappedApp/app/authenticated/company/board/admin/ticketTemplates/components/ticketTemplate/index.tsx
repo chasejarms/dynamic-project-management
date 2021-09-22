@@ -1,4 +1,4 @@
-import { Box, Paper } from "@material-ui/core";
+import { Box, Paper } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ticketPreviewId } from "../../../../../../../../../../redux/ticketControlMappedState";

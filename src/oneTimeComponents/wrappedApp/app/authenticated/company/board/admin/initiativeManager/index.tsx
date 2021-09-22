@@ -1,7 +1,6 @@
 import {
     Box,
     IconButton,
-    makeStyles,
     Paper,
     Table,
     TableBody,
@@ -11,8 +10,9 @@ import {
     TableRow,
     Toolbar,
     Typography,
-} from "@material-ui/core";
-import { Delete, Edit } from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { Delete, Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";

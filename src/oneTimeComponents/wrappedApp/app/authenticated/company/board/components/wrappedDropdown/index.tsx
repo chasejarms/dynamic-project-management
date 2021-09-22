@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { ChangeEvent, ReactNode } from "react";
 
 export interface IWrappedDropdownOption {

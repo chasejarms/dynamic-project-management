@@ -1,13 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import {
-    Chip,
-    ChipProps,
-    makeStyles,
-    Theme,
-    useTheme,
-} from "@material-ui/core";
+import { Chip, ChipProps, Theme, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 export interface ITagChipProps extends Omit<ChipProps, "label"> {
     tagName: string;

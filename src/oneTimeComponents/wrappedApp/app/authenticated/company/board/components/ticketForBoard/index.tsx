@@ -7,10 +7,10 @@ import {
     Card,
     Typography,
     Popover,
-    makeStyles,
     IconButton,
-} from "@material-ui/core";
-import { MoreHoriz } from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { MoreHoriz } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { IColumn } from "../../../../../../../../models/column";
 import { Api } from "../../../../../../../../api";

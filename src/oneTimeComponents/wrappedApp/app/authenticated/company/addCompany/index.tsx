@@ -9,7 +9,7 @@ import { controlsAreValid } from "../../../utils/controlsAreValid";
 import { BottomPageToolbar } from "../components/bottomPageToolbar";
 import { useEmailControl } from "../../../hooks/useEmailControl";
 import { useNameControl } from "../../../hooks/useNameControl";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 export function AddCompany() {
     const { emailControl, showEmailError } = useEmailControl();

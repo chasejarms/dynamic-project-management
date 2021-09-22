@@ -8,8 +8,8 @@ import {
     Theme,
     useTheme,
     Popover,
-} from "@material-ui/core";
-import { MoreHoriz } from "@material-ui/icons";
+} from "@mui/material";
+import { MoreHoriz } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";

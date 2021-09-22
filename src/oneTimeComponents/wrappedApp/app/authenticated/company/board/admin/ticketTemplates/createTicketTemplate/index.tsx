@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Snackbar } from "@material-ui/core";
+import { Snackbar } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { BoardAdminContainer } from "../../components/boardAdminContainer";
 import { TicketTemplate } from "../components/ticketTemplate";

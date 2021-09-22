@@ -6,13 +6,13 @@ import {
     CardContent,
     CardMedia,
     IconButton,
-    makeStyles,
     Theme,
     useTheme,
     Typography,
     Popover,
-} from "@material-ui/core";
-import { MoreHoriz } from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { MoreHoriz } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
 import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";

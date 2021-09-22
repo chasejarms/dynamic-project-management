@@ -6,7 +6,7 @@ import {
     DialogActions,
     Dialog,
     useTheme,
-} from "@material-ui/core";
+} from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
 import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
@@ -95,7 +95,11 @@ export function NewTagDialog(props: INewTagDialogProps) {
         <Dialog
             open={props.open}
             onClose={props.onClose}
-            disableBackdropClick={isCreatingTag}
+            onBackdropClick={() => {
+                if (isCreatingTag) return;
+
+                props.onClose();
+            }}
         >
             <DialogTitle>Create Tag</DialogTitle>
             <DialogContent>
@@ -119,7 +123,6 @@ export function NewTagDialog(props: INewTagDialogProps) {
                         `;
 
                         const hexColorMain = mapColorToMaterialThemeColorMain(
-                            theme,
                             color
                         );
                         const individualColorOuterContainer = css`

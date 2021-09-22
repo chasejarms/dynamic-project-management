@@ -1,12 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import {
-    Card,
-    CardContent,
-    Typography,
-    makeStyles,
-    Divider,
-} from "@material-ui/core";
+import { Card, CardContent, Typography, Divider } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import ReactVisibilitySensor from "react-visibility-sensor";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 

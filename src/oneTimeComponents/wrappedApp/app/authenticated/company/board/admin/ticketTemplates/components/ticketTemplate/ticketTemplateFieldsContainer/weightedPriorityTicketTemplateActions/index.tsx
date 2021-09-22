@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { IconButton, Popover } from "@material-ui/core";
+import { IconButton, Popover } from "@mui/material";
 import React, { useState } from "react";
-import { Add, DeleteForever } from "@material-ui/icons";
+import { Add, DeleteForever } from "@mui/icons-material";
 import {
     IIndentedAction,
     QuickActionsPopoverContent,

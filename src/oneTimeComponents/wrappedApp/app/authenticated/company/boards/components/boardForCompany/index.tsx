@@ -10,9 +10,9 @@ import {
     Theme,
     useTheme,
     Popover,
-    makeStyles,
-} from "@material-ui/core";
-import { MoreHoriz } from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { MoreHoriz } from "@mui/icons-material";
 import React, { useState } from "react";
 import { IBoard } from "../../../../../../../../models/board";
 import { useHistory } from "react-router-dom";

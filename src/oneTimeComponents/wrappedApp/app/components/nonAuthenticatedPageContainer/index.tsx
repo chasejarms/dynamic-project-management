@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Theme, useTheme } from "@material-ui/core";
+import { Theme, useTheme } from "@mui/material";
 import NonAuthenticatedNavBar from "./nonAuthenticatedNavBar";
 import { composeCSS } from "../../../../../styles/composeCSS";
 

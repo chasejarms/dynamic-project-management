@@ -20,7 +20,7 @@ import {
 } from "../../../../../../../redux/ticketCreation";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { IWrappedButtonProps } from "../../../../components/wrappedButton";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
 import { NoDataWithActionButton } from "../components/noDataWithActionButton";
 import { TicketFields } from "../components/ticketFields";

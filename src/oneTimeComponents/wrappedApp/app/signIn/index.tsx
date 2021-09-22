@@ -1,12 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import {
-    Typography,
-    Snackbar,
-    makeStyles,
-    Theme,
-    useTheme,
-} from "@material-ui/core";
+import { Typography, Snackbar, Theme, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";

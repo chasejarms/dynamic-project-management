@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { IconButton } from "@material-ui/core";
-import { OpenInNew } from "@material-ui/icons";
+import { IconButton } from "@mui/material";
+import { OpenInNew } from "@mui/icons-material";
 import { ChangeEvent, ReactNode } from "react";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";

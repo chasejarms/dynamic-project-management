@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { EditableColumnCard } from "./components/editableColumnCard";

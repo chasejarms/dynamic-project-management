@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { WrappedTextField } from "../../../../../../../../../../../components/wrappedTextField";
 import React from "react";
-import { Checkbox, FormControlLabel, Theme, useTheme } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Theme, useTheme } from "@mui/material";
 
 export interface IWeightedTicketTemplateNumberControl {
     label: string;

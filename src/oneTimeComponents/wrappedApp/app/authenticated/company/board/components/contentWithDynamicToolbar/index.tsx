@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { useTheme, Theme, Paper } from "@material-ui/core";
+import { useTheme, Theme, Paper } from "@mui/material";
 
 export interface IContentWithDynamicToolbarProps {
     toolbarContent: React.ReactNode;

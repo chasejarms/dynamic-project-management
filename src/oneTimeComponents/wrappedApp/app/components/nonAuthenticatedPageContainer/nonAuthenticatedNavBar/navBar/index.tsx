@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Typography, Button, Theme, useTheme } from "@material-ui/core";
+import { Typography, Button, Theme, useTheme } from "@mui/material";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useHistory, useLocation } from "react-router-dom";
 import { CompanyLogo } from "../companyLogo";

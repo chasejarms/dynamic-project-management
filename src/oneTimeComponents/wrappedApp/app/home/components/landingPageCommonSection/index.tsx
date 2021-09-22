@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Theme, Typography, useTheme } from "@material-ui/core";
+import { Theme, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useBreakpoint } from "../../../hooks/useBreakpoint";
 import { composeCSS } from "../../../../../../styles/composeCSS";

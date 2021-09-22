@@ -4,7 +4,7 @@ import {
     DialogActions,
     Dialog,
     Box,
-} from "@material-ui/core";
+} from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
 import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
@@ -102,7 +102,11 @@ export function EditTagDialog(props: IEditTagDialogProps) {
         <Dialog
             open={props.open}
             onClose={props.onClose}
-            disableBackdropClick={isEditingTag}
+            onBackdropClick={() => {
+                if (isEditingTag) return;
+
+                props.onClose();
+            }}
         >
             <DialogTitle>Create Tag</DialogTitle>
             <DialogContent>

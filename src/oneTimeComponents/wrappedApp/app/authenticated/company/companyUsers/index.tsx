@@ -8,7 +8,6 @@ import {
     DialogTitle,
     FormControlLabel,
     IconButton,
-    makeStyles,
     Paper,
     Table,
     TableBody,
@@ -17,7 +16,8 @@ import {
     TableRow,
     Toolbar,
     Typography,
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../api";
 import { BoardsContainer } from "../components/boardsContainer";
@@ -30,7 +30,7 @@ import { useEmailControl } from "../../../hooks/useEmailControl";
 import { useNameControl } from "../../../hooks/useNameControl";
 import { IUser } from "../../../../../../models/user";
 import { controlsAreValid } from "../../../utils/controlsAreValid";
-import { Delete } from "@material-ui/icons";
+import { Delete } from "@mui/icons-material";
 import { ConfirmDialog } from "../components/confirmDialog";
 import { sortBy } from "lodash";
 import { useIsCheckingForManageCompanyUserAccess } from "./hooks/useIsCheckingForManageCompanyUserAccess";
@@ -354,7 +354,11 @@ export function CompanyUsers() {
                     <Dialog
                         open={addUserDialogIsOpen}
                         onClose={onCloseAddUserDialog}
-                        disableBackdropClick={isAddingUser}
+                        onBackdropClick={() => {
+                            if (isAddingUser) return;
+
+                            onCloseAddUserDialog();
+                        }}
                         TransitionProps={{
                             onExited: onExitedAddUserDialog,
                         }}

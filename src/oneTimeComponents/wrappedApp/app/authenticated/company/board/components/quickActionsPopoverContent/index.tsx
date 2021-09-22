@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { jsx, css } from "@emotion/react";
-import { makeStyles, MenuItem, Paper, Typography } from "@material-ui/core";
+import { MenuItem, Paper, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 export interface IIndentedAction {
     header: string;

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar } from "@material-ui/core";
+import { Typography, Snackbar } from "@mui/material";
 import { ChangeEvent, useState, useEffect } from "react";
 import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";

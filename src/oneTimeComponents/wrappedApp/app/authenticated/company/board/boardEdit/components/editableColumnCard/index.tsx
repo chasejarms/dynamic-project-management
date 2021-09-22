@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Delete, DragIndicator, Add } from "@material-ui/icons";
-import { IconButton } from "@material-ui/core";
+import { Delete, DragIndicator, Add } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
 import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";

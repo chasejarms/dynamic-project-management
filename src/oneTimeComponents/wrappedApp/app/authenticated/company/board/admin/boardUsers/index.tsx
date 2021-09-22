@@ -7,7 +7,7 @@ import {
     TableCell,
     TableHead,
     TableRow,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";

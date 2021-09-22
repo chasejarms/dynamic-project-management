@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { TicketContainer } from "../components/ticketContainer";
 import { TicketForBoard } from "../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";

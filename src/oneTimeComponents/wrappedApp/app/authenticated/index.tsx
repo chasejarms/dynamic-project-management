@@ -11,7 +11,7 @@ import { IStoreState } from "../../../../redux/storeState";
 import { Internal } from "./internal";
 import { Companies } from "./companies";
 import { Company } from "./company";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 export function Authenticated() {
     const { url } = useRouteMatch();

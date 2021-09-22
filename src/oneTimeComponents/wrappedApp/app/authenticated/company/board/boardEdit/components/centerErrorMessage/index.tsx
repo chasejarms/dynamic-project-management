@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { makeStyles, Theme, Typography, useTheme } from "@material-ui/core";
-import { ErrorOutline } from "@material-ui/icons";
+import { Theme, Typography, useTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { ErrorOutline } from "@mui/icons-material";
 
 export interface ICenterErrorMessageProps {
     message: string;

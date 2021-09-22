@@ -12,7 +12,7 @@ import { addBoardAction } from "../../../../../../../../redux/boards";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
 import { RouteCreator } from "../../../../../utils/routeCreator";
 

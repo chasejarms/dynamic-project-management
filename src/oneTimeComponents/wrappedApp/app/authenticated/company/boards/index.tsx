@@ -1,12 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import {
-    CircularProgress,
-    useTheme,
-    Theme,
-    Typography,
-} from "@material-ui/core";
+import { CircularProgress, useTheme, Theme, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { Api } from "../../../../../../api";
 import { IBoard } from "../../../../../../models/board";

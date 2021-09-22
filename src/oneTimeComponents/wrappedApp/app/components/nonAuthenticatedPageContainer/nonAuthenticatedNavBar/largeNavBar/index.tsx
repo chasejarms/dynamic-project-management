@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React from "react";
 import NavBar, { INavBarItem, NavBarActionButtonTypeEnum } from "../navBar";
-import { useTheme, Theme } from "@material-ui/core";
+import { useTheme, Theme } from "@mui/material";
 
 export interface ILargeNavBarProps {
     navItems: INavBarItem[];
