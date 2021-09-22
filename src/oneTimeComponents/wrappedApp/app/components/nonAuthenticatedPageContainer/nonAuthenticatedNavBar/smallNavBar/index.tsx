@@ -3,7 +3,6 @@ import { jsx, css } from "@emotion/react";
 import React, { useState } from "react";
 import { INavBarItem } from "../navBar";
 import { Theme, Typography, useTheme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { Close, Menu } from "@mui/icons-material";
 import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useHistory } from "react-router-dom";
@@ -14,18 +13,10 @@ interface ISmallNavBarProps {
     navItems: INavBarItem[];
 }
 
-const useStyles = makeStyles({
-    typography: {
-        color: "white",
-        zIndex: 2,
-    },
-});
-
 export function SmallNavBar(props: ISmallNavBarProps) {
     const history = useHistory();
     const theme = useTheme();
     const classes = createClasses(theme);
-    const materialClasses = useStyles();
     const [open, setOpen] = useState(false);
     const internalNavItems = [...props.navItems].concat([
         {
@@ -93,9 +84,10 @@ export function SmallNavBar(props: ISmallNavBarProps) {
                                                 <Typography
                                                     variant="h4"
                                                     key={label}
-                                                    className={
-                                                        materialClasses.typography
-                                                    }
+                                                    sx={{
+                                                        color: "white",
+                                                        zIndex: 2,
+                                                    }}
                                                 >
                                                     {label}
                                                 </Typography>

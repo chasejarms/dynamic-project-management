@@ -17,7 +17,6 @@ import {
     Toolbar,
     Typography,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../api";
 import { BoardsContainer } from "../components/boardsContainer";
@@ -35,13 +34,6 @@ import { ConfirmDialog } from "../components/confirmDialog";
 import { sortBy } from "lodash";
 import { useIsCheckingForManageCompanyUserAccess } from "./hooks/useIsCheckingForManageCompanyUserAccess";
 import { useCompanyUser } from "../hooks/useCompanyUser";
-
-const useStyles = makeStyles({
-    toolbar: {
-        paddingLeft: "16px",
-        paddingRight: "16px",
-    },
-});
 
 export function CompanyUsers() {
     const { companyId } = useAppRouterParams();
@@ -258,13 +250,17 @@ export function CompanyUsers() {
     }
 
     const classes = createClasses();
-    const materialClasses = useStyles();
     return (
         <BoardsContainer>
             {!isLoadingUsers ? (
                 <div css={classes.tablePaperContainer}>
                     <Paper>
-                        <Toolbar className={materialClasses.toolbar}>
+                        <Toolbar
+                            sx={{
+                                paddingLeft: 16,
+                                paddingRight: 16,
+                            }}
+                        >
                             <div css={classes.toolbarContainer}>
                                 <Typography variant="h6">
                                     Company Users

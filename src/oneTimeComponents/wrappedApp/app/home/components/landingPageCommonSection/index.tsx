@@ -80,8 +80,8 @@ export function LandingPageCommonSection(
 }
 
 const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
-    const fourTimes = theme.spacing() * 4;
-    const sixTimes = theme.spacing() * 6;
+    const fourTimes = Number(theme.spacing()) * 4;
+    const sixTimes = Number(theme.spacing()) * 6;
 
     const paddingTop = hideTopAndBottomPadding ? 0 : sixTimes;
     const paddingBottom = hideTopAndBottomPadding ? 0 : sixTimes;
@@ -91,7 +91,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
         padding-bottom: ${paddingBottom}px;
         padding-left: ${fourTimes}px;
         display: grid;
-        grid-gap: ${theme.spacing() * 3}px;
+        grid-gap: ${Number(theme.spacing()) * 3}px;
         width: 100vw;
     `;
 
@@ -105,17 +105,17 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
 
     const smallGridTemplateColumns = css`
         grid-template-columns: 1fr;
-        padding-left: ${theme.spacing() * 3}px;
-        padding-right: ${theme.spacing() * 3}px;
+        padding-left: ${Number(theme.spacing()) * 3}px;
+        padding-right: ${Number(theme.spacing()) * 3}px;
         padding-bottom: 0px;
     `;
 
     const bottomMargin24 = css`
-        margin-bottom: ${theme.spacing() * 3}px;
+        margin-bottom: ${Number(theme.spacing()) * 3}px;
     `;
 
     const bottomMargin32 = css`
-        margin-bottom: ${theme.spacing() * 4}px;
+        margin-bottom: ${Number(theme.spacing()) * 4}px;
     `;
 
     const wrappedButtonContainer = css`
@@ -143,7 +143,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
     `;
 
     const svgContainerSmallPadding = css`
-        padding-top: ${theme.spacing() * 3}px;
+        padding-top: ${Number(theme.spacing()) * 3}px;
     `;
 
     return {

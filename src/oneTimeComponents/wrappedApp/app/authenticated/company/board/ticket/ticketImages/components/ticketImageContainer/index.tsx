@@ -6,12 +6,9 @@ import {
     CardContent,
     CardMedia,
     IconButton,
-    Theme,
-    useTheme,
     Typography,
     Popover,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { MoreHoriz } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
@@ -28,27 +25,10 @@ export interface ITicketImageContainerProps {
     onDeleteFile: () => void;
 }
 
-const useStyles = makeStyles({
-    cardMedia: (theme: Theme) => ({
-        height: "200px",
-        objectFit: "contain",
-        backgroundColor: theme.palette.grey["300"],
-    }),
-    cardContent: (theme: Theme) => ({
-        "&:last-child": {
-            paddingBottom: "8px",
-        },
-        paddingTop: "8px",
-        paddingRight: "8px",
-    }),
-});
-
 function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
     const { file } = props;
-    const theme = useTheme();
-    const materialClasses = useStyles(theme);
     const classes = createClasses();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -135,9 +115,21 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
                     component="img"
                     src={file.signedGetUrl}
                     title={file.fileName}
-                    className={materialClasses.cardMedia}
+                    sx={{
+                        height: "200px",
+                        objectFit: "contain",
+                        bgcolor: "grey.300",
+                    }}
                 />
-                <CardContent className={materialClasses.cardContent}>
+                <CardContent
+                    sx={{
+                        "&:last-child": {
+                            paddingBottom: 8,
+                        },
+                        paddingTop: 8,
+                        paddingRight: 8,
+                    }}
+                >
                     <div css={classes.cardContentContainer}>
                         <div css={classes.imageTextContainer}>
                             <Typography>{file.fileName}</Typography>

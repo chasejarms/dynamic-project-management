@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
-import { IconButton } from "@mui/material";
+import { IconButton, SelectChangeEvent } from "@mui/material";
 import { OpenInNew } from "@mui/icons-material";
-import { ChangeEvent, ReactNode } from "react";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import { IWrappedDropdownOption, WrappedDropdown } from "../wrappedDropdown";
@@ -12,13 +11,7 @@ import { RouteCreator } from "../../../../../utils/routeCreator";
 export interface ITicketTemplateDropdownProps {
     ticketTemplate: null | ITicketTemplate;
     ticketTemplates: ITicketTemplate[];
-    onChangeTicketTemplate: (
-        event: ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>,
-        child: ReactNode
-    ) => void;
+    onChangeTicketTemplate: (event: SelectChangeEvent<any>) => void;
     disabled: boolean;
     showOpenIcon?: boolean;
 }

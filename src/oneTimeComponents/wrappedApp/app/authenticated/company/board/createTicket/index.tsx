@@ -20,7 +20,13 @@ import {
 } from "../../../../../../../redux/ticketCreation";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { IWrappedButtonProps } from "../../../../components/wrappedButton";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    SelectChangeEvent,
+} from "@mui/material";
 import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
 import { NoDataWithActionButton } from "../components/noDataWithActionButton";
 import { TicketFields } from "../components/ticketFields";
@@ -65,12 +71,7 @@ export function CreateTicket(props: ICreateTicketProps) {
         dispatch(action);
     }, []);
 
-    function onChangeTicketTemplate(
-        event: React.ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>
-    ) {
+    function onChangeTicketTemplate(event: SelectChangeEvent<any>) {
         const updatedTicketTemplateShortenedItemId = event.target
             .value as string;
         const updatedTicketTemplate =
@@ -84,12 +85,7 @@ export function CreateTicket(props: ICreateTicketProps) {
         dispatch(action);
     }
 
-    function onChangeStartingColumn(
-        event: ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>
-    ) {
+    function onChangeStartingColumn(event: SelectChangeEvent<any>) {
         const updatedStartingColumn = event.target.value as string;
         const action = updateStartingColumn(updatedStartingColumn);
         dispatch(action);

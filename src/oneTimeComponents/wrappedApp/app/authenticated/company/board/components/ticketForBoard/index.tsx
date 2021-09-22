@@ -9,7 +9,6 @@ import {
     Popover,
     IconButton,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { MoreHoriz } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { IColumn } from "../../../../../../../../models/column";
@@ -50,17 +49,8 @@ export interface ITicketForBoardProps {
     onClickDemoTicket?: () => void;
 }
 
-const useStyles = makeStyles({
-    cardContentRoot: {
-        "&:last-child": {
-            paddingBottom: 16,
-        },
-    },
-});
-
 export function TicketForBoard(props: ITicketForBoardProps) {
     const classes = createClasses();
-    const materialClasses = useStyles();
 
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
@@ -463,7 +453,13 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             onClick={navigateToTicketPage}
         >
             <Card elevation={3}>
-                <CardContent className={materialClasses.cardContentRoot}>
+                <CardContent
+                    sx={{
+                        "&:last-child": {
+                            paddingBottom: 16,
+                        },
+                    }}
+                >
                     <div css={classes.spinnerOverlayContainer}>
                         {isPerformingAction && (
                             <div css={classes.spinnerOverlay}>

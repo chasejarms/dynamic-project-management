@@ -11,7 +11,6 @@ import {
     Toolbar,
     Typography,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { Delete, Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
@@ -25,19 +24,6 @@ import { sortBy } from "lodash";
 import { mapColorToMaterialThemeColorLight } from "./utils/mapColorToMaterialThemeColorLight";
 import { ConfirmDialog } from "../../../components/confirmDialog";
 import { EditTagDialog } from "./components/editTagDialog";
-
-const useStyles = makeStyles({
-    toolbar: {
-        paddingLeft: "16px",
-        paddingRight: "16px",
-    },
-    tableContainer: {
-        maxHeight: 400,
-    },
-    tableHeadCell: {
-        backgroundColor: "white",
-    },
-});
 
 export function InitiativeManager() {
     const { companyId, boardId } = useAppRouterParams();
@@ -189,8 +175,6 @@ export function InitiativeManager() {
         };
     }, [isDeletingTag]);
 
-    const materialClasses = useStyles();
-
     return (
         <BoardAdminContainer>
             {!isLoadingTags ? (
@@ -202,7 +186,12 @@ export function InitiativeManager() {
                     }}
                 >
                     <Paper>
-                        <Toolbar className={materialClasses.toolbar}>
+                        <Toolbar
+                            sx={{
+                                paddingLeft: 16,
+                                paddingRight: 16,
+                            }}
+                        >
                             <Box
                                 sx={{
                                     width: "100%",
@@ -222,29 +211,31 @@ export function InitiativeManager() {
                             </Box>
                         </Toolbar>
                         <TableContainer
-                            className={materialClasses.tableContainer}
+                            sx={{
+                                maxHeight: 400,
+                            }}
                         >
                             <Table stickyHeader>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell
-                                            className={
-                                                materialClasses.tableHeadCell
-                                            }
+                                            sx={{
+                                                backgroundColor: "white",
+                                            }}
                                         >
                                             Tag Name
                                         </TableCell>
                                         <TableCell
-                                            className={
-                                                materialClasses.tableHeadCell
-                                            }
+                                            sx={{
+                                                backgroundColor: "white",
+                                            }}
                                         >
                                             Tag Color
                                         </TableCell>
                                         <TableCell
-                                            className={
-                                                materialClasses.tableHeadCell
-                                            }
+                                            sx={{
+                                                backgroundColor: "white",
+                                            }}
                                         />
                                     </TableRow>
                                 </TableHead>

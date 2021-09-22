@@ -227,10 +227,10 @@ const createClasses = (theme: Theme) => {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-auto-rows: min-content;
-        grid-gap: ${theme.spacing() * 2}px;
-        padding: ${theme.spacing() * 4}px;
+        grid-gap: ${Number(theme.spacing()) * 2}px;
+        padding: ${Number(theme.spacing()) * 4}px;
         width: 100%;
-        padding-top: ${theme.spacing() * 2}px;
+        padding-top: ${Number(theme.spacing()) * 2}px;
     `;
 
     const contentContainer = css`

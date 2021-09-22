@@ -2,7 +2,6 @@
 import React from "react";
 import { jsx, css } from "@emotion/react";
 import { MenuItem, Paper, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 
 export interface IIndentedAction {
     header: string;
@@ -17,21 +16,10 @@ export interface IQuickActionsPopoverContentProps {
     onClose: (event: any) => void;
 }
 
-const useStyles = makeStyles({
-    moreOptionsHeaderText: {
-        fontWeight: 500,
-    },
-    menuItemRoot: {
-        paddingLeft: 32,
-        paddingRight: 32,
-    },
-});
-
 export function QuickActionsPopoverContent(
     props: IQuickActionsPopoverContentProps
 ) {
     const classes = createClasses();
-    const materialClasses = useStyles();
 
     function onClickInternal(menuItemInformationOnClick: () => void) {
         return (event: any) => {
@@ -48,9 +36,9 @@ export function QuickActionsPopoverContent(
                         <React.Fragment key={index}>
                             <div css={classes.optionsHeaderContainer}>
                                 <Typography
-                                    className={
-                                        materialClasses.moreOptionsHeaderText
-                                    }
+                                    sx={{
+                                        fontWeight: 500,
+                                    }}
                                 >
                                     {indentedAction.header}
                                 </Typography>
@@ -62,9 +50,10 @@ export function QuickActionsPopoverContent(
                                             onClick={onClickInternal(
                                                 menuItemInformation.onClick
                                             )}
-                                            className={
-                                                materialClasses.menuItemRoot
-                                            }
+                                            sx={{
+                                                paddingLeft: 32,
+                                                paddingRight: 32,
+                                            }}
                                             key={innerIndex}
                                         >
                                             {menuItemInformation.text}

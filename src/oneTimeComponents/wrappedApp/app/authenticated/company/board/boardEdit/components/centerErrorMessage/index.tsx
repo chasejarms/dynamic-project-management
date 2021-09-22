@@ -1,28 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Theme, Typography, useTheme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { ErrorOutline } from "@mui/icons-material";
 
 export interface ICenterErrorMessageProps {
     message: string;
 }
 
-const useStyles = makeStyles({
-    errorOutline: (theme: Theme) => ({
-        color: theme.palette.error.main,
-    }),
-});
-
 export function CenterErrorMessage(props: ICenterErrorMessageProps) {
     const classes = createClasses();
     const theme = useTheme();
-    const materialClasses = useStyles(theme);
     return (
         <div css={classes.centerErrorMessage}>
             <div css={classes.innerContainer}>
                 <ErrorOutline
-                    className={materialClasses.errorOutline}
+                    sx={{
+                        bgcolor: "error.main",
+                    }}
                     fontSize="large"
                 />
                 <div css={classes.messageContainer}>

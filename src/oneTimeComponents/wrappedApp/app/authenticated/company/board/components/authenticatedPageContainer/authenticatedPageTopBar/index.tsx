@@ -7,7 +7,6 @@ import {
     IconButton,
     Popover,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { useHistory, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import { ArrowForwardIos, AccountCircle } from "@mui/icons-material";
@@ -27,22 +26,6 @@ import { CompanyLogoIcon } from "../companyLogoIcon";
 import { RouteCreator } from "../../../../../../utils/routeCreator";
 
 export interface IAuthenticatedPageTopBarProps {}
-
-const useStyles = makeStyles({
-    drawer: {
-        width: 200,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: 200,
-    },
-    breadcrumbText: {
-        "&:hover": {
-            textDecoration: "underline",
-            cursor: "pointer",
-        },
-    },
-});
 
 function NonMemoizedAuthenticatedPageTopBar(
     props: IAuthenticatedPageTopBarProps
@@ -193,7 +176,6 @@ function NonMemoizedAuthenticatedPageTopBar(
     ].filter((action) => !!action) as IIndentedAction[];
 
     const theme = useTheme();
-    const materialStyles = useStyles();
     const classes = createClasses(theme);
     return (
         <div css={classes.topBarContainer}>
@@ -215,7 +197,12 @@ function NonMemoizedAuthenticatedPageTopBar(
                         >
                             <Typography
                                 variant="body2"
-                                className={materialStyles.breadcrumbText}
+                                sx={{
+                                    "&:hover": {
+                                        textDecoration: "underline",
+                                        cursor: "pointer",
+                                    },
+                                }}
                                 onClick={navigateToRoute(breadcrumb.route)}
                             >
                                 {breadcrumb.text}
@@ -266,8 +253,8 @@ const createClasses = (theme: Theme) => {
         flex: 0 0 auto;
         display: flex;
         justify-content: space-between;
-        padding-left: ${theme.spacing() * 2}px;
-        padding-right: ${theme.spacing() * 2}px;
+        padding-left: ${Number(theme.spacing()) * 2}px;
+        padding-right: ${Number(theme.spacing()) * 2}px;
         align-items: center;
     `;
 
@@ -302,11 +289,11 @@ const createClasses = (theme: Theme) => {
     `;
 
     const rightPadding = css`
-        padding-right: ${theme.spacing() * 1.5}px;
+        padding-right: ${Number(theme.spacing()) * 1.5}px;
     `;
 
     const leftPadding = css`
-        padding-left: ${theme.spacing() * 1.5}px;
+        padding-left: ${Number(theme.spacing()) * 1.5}px;
     `;
 
     const breadcrumbAndIconContainer = css`

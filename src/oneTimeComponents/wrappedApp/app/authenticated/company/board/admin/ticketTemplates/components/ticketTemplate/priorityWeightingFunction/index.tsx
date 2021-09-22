@@ -8,6 +8,7 @@ import {
 } from "../../../../../../../../../../../redux/ticketTemplates";
 import { TagChip } from "../../../../../components/tagChip";
 import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
+import { ChangeEventHandler } from "react";
 
 export interface IPriorityWeightingFunctionProps {
     ticketId: string;
@@ -39,19 +40,16 @@ export function PriorityWeightingFunction(
 
     const dispatch = useDispatch();
 
-    function onChange(
-        event: React.ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>
-    ) {
+    const onChange: ChangeEventHandler<
+        HTMLInputElement | HTMLTextAreaElement
+    > = (event) => {
         const updatedPriorityFunction = event.target.value as string;
         const action = updatePriorityWeightingCalculation({
             priorityWeightingCalculation: updatedPriorityFunction,
             ticketTemplateId: props.ticketTemplateId,
         });
         dispatch(action);
-    }
+    };
 
     const classes = createClasses();
     return (

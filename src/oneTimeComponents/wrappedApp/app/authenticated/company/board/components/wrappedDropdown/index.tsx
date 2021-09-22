@@ -1,5 +1,10 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { ChangeEvent, ReactNode } from "react";
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    SelectChangeEvent,
+} from "@mui/material";
 
 export interface IWrappedDropdownOption {
     value: any;
@@ -10,13 +15,7 @@ export interface IWrappedDropdownOption {
 
 export interface IWrappedDropdownProps {
     value: any;
-    onChange: (
-        event: ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>,
-        child: ReactNode
-    ) => void;
+    onChange: (event: SelectChangeEvent<any>) => void;
     disabled?: boolean;
     label: string;
     testIds?: {

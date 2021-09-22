@@ -10,6 +10,8 @@ import {
 } from "../../../../../../../../redux/ticketControlMappedState";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
+import { SelectChangeEvent } from "@mui/material";
+import { ChangeEventHandler } from "react";
 
 export interface ITicketProps {
     ticketTemplateId: string;
@@ -42,33 +44,27 @@ export function TicketFields(props: ITicketProps) {
 
     const classes = createClasses();
 
-    function onChangeTicketTitle(
-        event: React.ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>
-    ) {
+    const onChangeTicketTitle: ChangeEventHandler<
+        HTMLInputElement | HTMLTextAreaElement
+    > = (event) => {
         const value = event.target.value as string;
         const action = updateTicketTitle({
             value,
             ticketId: props.ticketId,
         });
         dispatch(action);
-    }
+    };
 
-    function onChangeTicketSummary(
-        event: React.ChangeEvent<{
-            name?: string | undefined;
-            value: unknown;
-        }>
-    ) {
+    const onChangeTicketSummary: ChangeEventHandler<
+        HTMLInputElement | HTMLTextAreaElement
+    > = (event) => {
         const value = event.target.value as string;
         const action = updateTicketSummary({
             value,
             ticketId: props.ticketId,
         });
         dispatch(action);
-    }
+    };
 
     function onChangeTicketSectionValue(index: number) {
         return (

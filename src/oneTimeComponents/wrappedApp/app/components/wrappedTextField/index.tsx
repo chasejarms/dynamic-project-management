@@ -1,14 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
-import { ChangeEvent } from "react";
+import { ChangeEventHandler } from "react";
 
 export interface IWrapperTextFieldProps {
     autoFocus?: boolean;
     label: string;
-    onChange: (
-        eventType: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void;
+    onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     error?: string;
     hint?: string;
     value: unknown;

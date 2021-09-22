@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import {
     IWrappedButtonProps,
     WrappedButton,
@@ -12,21 +11,16 @@ export interface INoDataWithActionButtonProps {
     wrappedButtonProps?: IWrappedButtonProps;
 }
 
-const useStyles = makeStyles({
-    noImagesText: {
-        textAlign: "center",
-    },
-});
-
 export function NoDataWithActionButton(props: INoDataWithActionButtonProps) {
     const classes = createClasses();
-    const materialClasses = useStyles();
     return (
         <div css={classes.centerContainer}>
             <div css={classes.noTicketsContainer}>
                 <Typography
                     variant="h6"
-                    className={materialClasses.noImagesText}
+                    sx={{
+                        textAlign: "center",
+                    }}
                 >
                     {props.text}
                 </Typography>

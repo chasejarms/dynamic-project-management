@@ -11,7 +11,6 @@ import {
     useTheme,
     Popover,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { MoreHoriz } from "@mui/icons-material";
 import React, { useState } from "react";
 import { IBoard } from "../../../../../../../../models/board";
@@ -29,14 +28,6 @@ export interface IBoardForCompanyProps {
     onClickDeleteBoardAction: () => void;
 }
 
-const useStyles = makeStyles({
-    cardRoot: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-    },
-});
-
 export function BoardForCompany(props: IBoardForCompanyProps) {
     const history = useHistory();
     const { board } = props;
@@ -52,7 +43,6 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
 
     const theme = useTheme();
     const classes = createClasses(theme);
-    const materialClasses = useStyles();
     const [optionsIsOpen, setOptionsIsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     function toggleMoreOptions(event: any) {
@@ -77,7 +67,13 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
     }
 
     return (
-        <Card className={materialClasses.cardRoot}>
+        <Card
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+            }}
+        >
             <CardContent>
                 <div css={classes.titleAndActionIconContainer}>
                     <div css={classes.titleContainer}>
@@ -124,7 +120,7 @@ const createClasses = (theme: Theme) => {
 
     const titleContainer = css`
         flex-grow: 1;
-        margin-bottom: ${theme.spacing() * 2}px;
+        margin-bottom: ${Number(theme.spacing()) * 2}px;
     `;
 
     const actionButtonContainer = css`

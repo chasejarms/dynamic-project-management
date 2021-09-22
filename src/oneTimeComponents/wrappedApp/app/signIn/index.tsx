@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Typography, Snackbar, Theme, useTheme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
@@ -17,15 +16,6 @@ import { cognitoUserSingleton } from "../../../../classes/CognitoUserSingleton";
 import { useEmailControl } from "../hooks/useEmailControl";
 import { usePasswordCreationControl } from "../hooks/usePasswordCreationControl";
 import { RouteCreator } from "../utils/routeCreator";
-
-const useStyles = makeStyles({
-    resetPasswordText: (theme: Theme) => ({
-        color: theme.palette.primary.main,
-        cursor: "pointer",
-        position: "relative",
-        top: "8px",
-    }),
-});
 
 export function SignIn() {
     const history = useHistory();
@@ -53,8 +43,6 @@ export function SignIn() {
         !passwordControl.isValid && passwordControl.isTouched;
 
     const classes = createClasses();
-    const theme = useTheme();
-    const materialClasses = useStyles(theme);
 
     const [isSigningIn, setIsSigningIn] = useState(false);
     function triggerSignIn() {
@@ -237,7 +225,12 @@ export function SignIn() {
                             <Typography
                                 onClick={navigateToResetPasswordPage}
                                 variant="caption"
-                                className={materialClasses.resetPasswordText}
+                                sx={{
+                                    color: "primary.main",
+                                    cursor: "pointer",
+                                    position: "relative",
+                                    top: 8,
+                                }}
                             >
                                 Reset Password
                             </Typography>

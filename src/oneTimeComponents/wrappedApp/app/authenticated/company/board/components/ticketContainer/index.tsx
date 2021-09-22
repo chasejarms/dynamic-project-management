@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { Card, CardContent, Typography, Divider } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import ReactVisibilitySensor from "react-visibility-sensor";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 
@@ -17,21 +16,7 @@ export interface ITicketContainerProps {
     topRightIcon?: React.ReactNode;
 }
 
-const useStyles = makeStyles({
-    card: {
-        height: "100%",
-    },
-    cardContentRoot: {
-        padding: 0,
-        height: "100%",
-        "&:last-child": {
-            paddingBottom: 0,
-        },
-    },
-});
-
 export function TicketContainer(props: ITicketContainerProps) {
-    const materialClasses = useStyles();
     const classes = createClasses();
 
     function internalVisibilityOnChange(isVisible: boolean) {
@@ -42,8 +27,20 @@ export function TicketContainer(props: ITicketContainerProps) {
 
     return (
         <div css={classes.columnContainer}>
-            <Card className={materialClasses.card}>
-                <CardContent className={materialClasses.cardContentRoot}>
+            <Card
+                sx={{
+                    height: "100%",
+                }}
+            >
+                <CardContent
+                    sx={{
+                        padding: 0,
+                        height: "100%",
+                        "&:last-child": {
+                            paddingBottom: 0,
+                        },
+                    }}
+                >
                     <div css={classes.innerCardContentContainer}>
                         <div css={classes.columnTitleContainer}>
                             <div>
