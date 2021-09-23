@@ -1,7 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React from "react";
-import { Paper } from "@mui/material";
+import { Paper, Box } from "@mui/material";
 import {
     IWrappedButtonProps,
     WrappedButton,
@@ -13,60 +11,48 @@ export interface IBottomPageToolbarProps {
 }
 
 export function BottomPageToolbar(props: IBottomPageToolbarProps) {
-    const classes = createClasses();
-
     return (
-        <div css={classes.ticketActionBarContainer}>
+        <Box
+            sx={{
+                flex: "0 0 auto",
+            }}
+        >
             <Paper elevation={10}>
-                <div css={classes.ticketFlexContainer}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        py: 1,
+                        px: 2,
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                    }}
+                >
                     <div>{props.leftContent}</div>
-                    <div css={classes.buttonsContainer}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                        }}
+                    >
                         {props.wrappedButtonProps.map(
                             (wrappedButtonProps, index) => {
                                 return (
-                                    <div
+                                    <Box
                                         key={index}
-                                        css={classes.individualButtonContainer}
+                                        sx={{
+                                            marginLeft: 1,
+                                        }}
                                     >
                                         <WrappedButton
                                             {...wrappedButtonProps}
                                         />
-                                    </div>
+                                    </Box>
                                 );
                             }
                         )}
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </Paper>
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const ticketActionBarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const ticketFlexContainer = css`
-        display: flex;
-        padding: 8px 16px;
-        justify-content: space-between;
-        flex-direction: row;
-    `;
-
-    const individualButtonContainer = css`
-        margin-left: 8px;
-    `;
-
-    const buttonsContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    return {
-        ticketActionBarContainer,
-        ticketFlexContainer,
-        individualButtonContainer,
-        buttonsContainer,
-    };
-};
