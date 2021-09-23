@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { Tab, Tabs, AppBar } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import React from "react";

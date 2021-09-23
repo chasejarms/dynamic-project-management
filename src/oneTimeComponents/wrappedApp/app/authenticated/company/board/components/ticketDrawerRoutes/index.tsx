@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { ITicket } from "../../../../../../../../models/ticket";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";

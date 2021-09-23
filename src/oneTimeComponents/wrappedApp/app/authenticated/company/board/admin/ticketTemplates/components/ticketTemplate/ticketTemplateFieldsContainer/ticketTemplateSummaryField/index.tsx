@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { INumberSection } from "../../../../../../../../../../../../models/ticketTemplate/section/numberSection";

@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { Snackbar } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { BoardAdminContainer } from "../../components/boardAdminContainer";

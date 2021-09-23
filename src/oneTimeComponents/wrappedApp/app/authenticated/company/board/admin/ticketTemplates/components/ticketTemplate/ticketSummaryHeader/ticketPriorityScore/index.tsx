@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
