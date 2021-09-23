@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { DrawerContainer } from "../components/drawerContainer";
 import { useHistory } from "react-router-dom";
@@ -20,7 +18,7 @@ import {
 } from "../../../../../../../redux/ticketCreation";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { IWrappedButtonProps } from "../../../../components/wrappedButton";
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent, Box } from "@mui/material";
 import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
 import { NoDataWithActionButton } from "../components/noDataWithActionButton";
 import { TicketFields } from "../components/ticketFields";
@@ -146,8 +144,6 @@ export function CreateTicket(props: ICreateTicketProps) {
             didCancel = true;
         };
     }, [boardId, companyId]);
-
-    const classes = createClasses();
 
     const [
         ticketCreateRequest,
@@ -291,8 +287,20 @@ export function CreateTicket(props: ICreateTicketProps) {
                         wrappedButtonProps={createTicketTemplateButtonProps}
                     />
                 ) : (
-                    <div css={classes.ticketContentContainer}>
-                        <div css={classes.nonTagTicketInformationContainer}>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                height: "100%",
+                                width: "400px",
+                            }}
+                        >
                             <TicketTemplateDropdown
                                 onChangeTicketTemplate={onChangeTicketTemplate}
                                 disabled={!!ticketCreateRequest}
@@ -301,7 +309,13 @@ export function CreateTicket(props: ICreateTicketProps) {
                                 showOpenIcon={isBoardAdmin}
                             />
                             {!!ticketTemplate && (
-                                <div css={classes.ticketSectionsContainer}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        marginTop: 2,
+                                    }}
+                                >
                                     <TicketFields
                                         ticketTemplateId={
                                             ticketTemplate.shortenedItemId
@@ -318,38 +332,12 @@ export function CreateTicket(props: ICreateTicketProps) {
                                         label="Send Ticket To"
                                         options={options}
                                     />
-                                </div>
+                                </Box>
                             )}
-                        </div>
-                    </div>
+                        </Box>
+                    </Box>
                 )}
             </DrawerContentsWithActionBar>
         </DrawerContainer>
     );
 }
-
-const createClasses = () => {
-    const ticketContentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const nonTagTicketInformationContainer = css`
-        height: 100%;
-        width: 400px;
-    `;
-
-    const ticketSectionsContainer = css`
-        display: flex;
-        flex-direction: column;
-        margin-top: 16px;
-    `;
-
-    return {
-        ticketContentContainer,
-        nonTagTicketInformationContainer,
-        ticketSectionsContainer,
-    };
-};
