@@ -1,9 +1,6 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { Delete, DragIndicator, Add } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { IconButton, Box } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
-import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 import { TicketContainer } from "../../../components/ticketContainer";
 import { useIndividualBoardColumnEditState } from "../../hooks/useIndividualBoardColumnEditState";
@@ -19,8 +16,6 @@ export interface IEditableColumnCardProps {
 }
 
 function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
-    const classes = createClasses();
-
     const {
         name,
         canBeModified,
@@ -36,30 +31,37 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
         <Draggable draggableId={id} index={props.index}>
             {(provided) => {
                 return (
-                    <div
-                        css={composeCSS(
-                            classes.columnContainer,
-                            !!props.isLastColumn &&
-                                classes.columnContainerNoMargin
-                        )}
+                    <Box
+                        sx={{
+                            marginRight: !!props.isLastColumn ? 0 : 2,
+                            width: "360px",
+                            minWidth: "360px",
+                            padding: "2px",
+                        }}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                     >
                         <TicketContainer
                             title={name}
                             topRightIcon={
-                                <div
+                                <Box
                                     {...provided.dragHandleProps}
-                                    css={composeCSS(
-                                        !canBeModified &&
-                                            classes.hiddenDragHandle
-                                    )}
+                                    sx={{
+                                        visibility: canBeModified
+                                            ? "visible"
+                                            : "hidden",
+                                    }}
                                 >
                                     <DragIndicator />
-                                </div>
+                                </Box>
                             }
                         >
-                            <div css={classes.content}>
+                            <Box
+                                sx={{
+                                    py: 2,
+                                    px: 0,
+                                }}
+                            >
                                 <div>
                                     <WrappedTextField
                                         value={name}
@@ -74,7 +76,13 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                         }
                                     />
                                 </div>
-                                <div css={classes.actionButtonContainer}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                        flexDirection: "row",
+                                    }}
+                                >
                                     <div>
                                         {showDeleteButton && (
                                             <IconButton
@@ -104,10 +112,10 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                                             <Add />
                                         </IconButton>
                                     </div>
-                                </div>
-                            </div>
+                                </Box>
+                            </Box>
                         </TicketContainer>
-                    </div>
+                    </Box>
                 );
             }}
         </Draggable>
@@ -115,38 +123,3 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
 }
 
 export const EditableColumnCard = React.memo(NonMemoizedEditableColumnCard);
-
-function createClasses() {
-    const columnContainer = css`
-        margin-right: 16px;
-        width: 360px;
-        min-width: 360px;
-        padding: 2px;
-    `;
-
-    const columnContainerNoMargin = css`
-        margin-right: 0;
-    `;
-
-    const hiddenDragHandle = css`
-        visibility: hidden;
-    `;
-
-    const content = css`
-        padding: 16px 0px;
-    `;
-
-    const actionButtonContainer = css`
-        display: flex;
-        justify-content: flex-end;
-        flex-direction: row;
-    `;
-
-    return {
-        columnContainerNoMargin,
-        columnContainer,
-        hiddenDragHandle,
-        content,
-        actionButtonContainer,
-    };
-}
