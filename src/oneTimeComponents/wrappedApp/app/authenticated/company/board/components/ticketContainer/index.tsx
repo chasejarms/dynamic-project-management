@@ -30,6 +30,7 @@ export function TicketContainer(props: ITicketContainerProps) {
             <Card
                 sx={{
                     height: "100%",
+                    marginTop: "2px",
                 }}
             >
                 <CardContent
