@@ -1,14 +1,11 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { Api } from "../../../../../../api";
 import { InternalUserContainer } from "../components/internalUserContainer";
 import { WrappedButton } from "../../../components/wrappedButton";
 import Axios, { AxiosResponse } from "axios";
+import { Box } from "@mui/material";
 
 export function LearningCenterVideos() {
-    const classes = createClasses();
-
     const [{ file, isUploadingVideo }, setSignedUrlData] = useState<{
         file: File | null;
         isUploadingVideo: boolean;
@@ -129,8 +126,22 @@ export function LearningCenterVideos() {
 
     return (
         <InternalUserContainer>
-            <div css={classes.container}>
-                <div css={classes.actionButtonHeaderContainer}>
+            <Box
+                sx={{
+                    width: "100%",
+                    display: "grid",
+                    gridTemplateRows: "auto 1fr",
+                    height: "100%",
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        py: 2,
+                        px: 4,
+                    }}
+                >
                     <WrappedButton
                         color="primary"
                         component="label"
@@ -146,28 +157,8 @@ export function LearningCenterVideos() {
                             onChange={onChange}
                         />
                     </WrappedButton>
-                </div>
-            </div>
+                </Box>
+            </Box>
         </InternalUserContainer>
     );
-}
-
-function createClasses() {
-    const container = css`
-        width: 100%;
-        display: grid;
-        grid-template-rows: auto 1fr;
-        height: 100%;
-    `;
-
-    const actionButtonHeaderContainer = css`
-        display: flex;
-        justify-content: flex-start;
-        padding: 16px 32px 16px 32px;
-    `;
-
-    return {
-        container,
-        actionButtonHeaderContainer,
-    };
 }
