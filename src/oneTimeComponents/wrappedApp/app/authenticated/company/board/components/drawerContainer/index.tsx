@@ -1,5 +1,4 @@
-import { Box, Backdrop } from "@mui/material";
-import { useRef } from "react";
+import { Box } from "@mui/material";
 
 export interface IDrawerContainerProps {
     children: React.ReactNode;
@@ -7,32 +6,32 @@ export interface IDrawerContainerProps {
 }
 
 export function DrawerContainer(props: IDrawerContainerProps) {
-    const containerRef = useRef(null);
-
     return (
         <Box
             sx={{
                 position: "absolute",
                 right: 0,
-                zIndex: 1,
+                zIndex: (theme) => {
+                    return theme.zIndex.modal;
+                },
                 display: "grid",
                 gridTemplateColumns: "1fr 400px",
                 height: "100%",
                 width: "100%",
             }}
-            ref={containerRef}
         >
-            <Box />
-            <Backdrop open={true} onClick={props.darkOpacityOnClick} />
+            <Box
+                sx={{
+                    bgcolor: "rgba(0, 0, 0, 0.5)",
+                }}
+                onClick={props.darkOpacityOnClick}
+            ></Box>
             <Box
                 sx={{
                     bgcolor: "white",
                     boxShadow: 1,
                     display: "flex",
                     flexDirection: "column",
-                    zIndex: (theme) => {
-                        return theme.zIndex.modal + 1;
-                    },
                 }}
             >
                 {props.children}

@@ -31,6 +31,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
             variant="outlined"
             sx={{
                 width: "100%",
+                marginTop: 1,
             }}
             inputProps={{
                 "data-testid": props.testIds?.input,

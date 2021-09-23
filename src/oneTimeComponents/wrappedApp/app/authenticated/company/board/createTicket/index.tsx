@@ -4,7 +4,7 @@ import { TicketType } from "../../../../../../../models/ticket/ticketType";
 import { DrawerContainer } from "../components/drawerContainer";
 import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
-import { useEffect, ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Api } from "../../../../../../../api";
 import { useIsBoardAdmin } from "../hooks/useIsBoardAdmin";
@@ -20,13 +20,7 @@ import {
 } from "../../../../../../../redux/ticketCreation";
 import { setWeightedTicketTemplates } from "../../../../../../../redux/ticketTemplates";
 import { IWrappedButtonProps } from "../../../../components/wrappedButton";
-import {
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    SelectChangeEvent,
-} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
 import { NoDataWithActionButton } from "../components/noDataWithActionButton";
 import { TicketFields } from "../components/ticketFields";
@@ -34,6 +28,10 @@ import { DrawerContentsWithActionBar } from "../components/drawerContentsWithAct
 import { ITicket } from "../../../../../../../models/ticket";
 import { TicketTemplateDropdown } from "../components/ticketTemplateDropdown";
 import { RouteCreator } from "../../../../utils/routeCreator";
+import {
+    IWrappedDropdownOption,
+    WrappedDropdown,
+} from "../components/wrappedDropdown";
 
 export interface ICreateTicketProps {
     ticketType: TicketType;
@@ -257,6 +255,24 @@ export function CreateTicket(props: ICreateTicketProps) {
         },
     ];
 
+    const options: IWrappedDropdownOption[] = [
+        {
+            value: "BACKLOG",
+            label: "Backlog",
+            testId: "backlog-menu-item",
+            key: "backlog",
+        },
+    ].concat(
+        potentialStartingColumns.map(({ id, name }) => {
+            return {
+                value: id,
+                label: name,
+                testId: id,
+                key: id,
+            };
+        })
+    );
+
     return (
         <DrawerContainer
             darkOpacityOnClick={isCreatingTicket ? undefined : closeDrawer}
@@ -295,36 +311,13 @@ export function CreateTicket(props: ICreateTicketProps) {
                                         disabled={!!ticketCreateRequest}
                                         removePadding
                                     />
-                                    <FormControl fullWidth>
-                                        <InputLabel>Send Ticket To</InputLabel>
-                                        <Select
-                                            value={startingColumn}
-                                            onChange={onChangeStartingColumn}
-                                            disabled={!!ticketCreateRequest}
-                                        >
-                                            <MenuItem value={"BACKLOG"}>
-                                                Backlog
-                                            </MenuItem>
-                                            {potentialStartingColumns.map(
-                                                (potentialStartingColumn) => {
-                                                    return (
-                                                        <MenuItem
-                                                            value={
-                                                                potentialStartingColumn.id
-                                                            }
-                                                            key={
-                                                                potentialStartingColumn.id
-                                                            }
-                                                        >
-                                                            {
-                                                                potentialStartingColumn.name
-                                                            }
-                                                        </MenuItem>
-                                                    );
-                                                }
-                                            )}
-                                        </Select>
-                                    </FormControl>
+                                    <WrappedDropdown
+                                        value={startingColumn}
+                                        onChange={onChangeStartingColumn}
+                                        disabled={!!ticketCreateRequest}
+                                        label="Send Ticket To"
+                                        options={options}
+                                    />
                                 </div>
                             )}
                         </div>

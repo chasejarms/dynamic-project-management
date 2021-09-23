@@ -10,7 +10,6 @@ import {
 } from "../../../../../../../../redux/ticketControlMappedState";
 import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
-import { SelectChangeEvent } from "@mui/material";
 import { ChangeEventHandler } from "react";
 
 export interface ITicketProps {

@@ -5,6 +5,8 @@ import {
     MenuItem,
     SelectChangeEvent,
 } from "@mui/material";
+import { useState } from "react";
+import { generateUniqueId } from "../../boardEdit/utils/generateUniqueId";
 
 export interface IWrappedDropdownOption {
     value: any;
@@ -26,14 +28,19 @@ export interface IWrappedDropdownProps {
 }
 
 export function WrappedDropdown(props: IWrappedDropdownProps) {
+    const [uniqueId] = useState(generateUniqueId());
+
     return (
         <FormControl fullWidth data-testid={props.testIds?.root}>
-            <InputLabel>{props.label}</InputLabel>
+            <InputLabel id={uniqueId}>{props.label}</InputLabel>
             <Select
+                labelId={uniqueId}
+                label={props.label}
                 value={props.value}
                 onChange={props.onChange}
                 disabled={props.disabled}
                 data-testid={props.testIds?.select}
+                variant="outlined"
             >
                 {props.options.map(({ value, label, testId, key }, index) => {
                     return (
