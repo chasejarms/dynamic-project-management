@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../../../../../redux/storeState";
 import {
@@ -9,6 +7,7 @@ import {
 import { TagChip } from "../../../../../components/tagChip";
 import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
 import { ChangeEventHandler } from "react";
+import { Box } from "@mui/material";
 
 export interface IPriorityWeightingFunctionProps {
     ticketId: string;
@@ -51,22 +50,31 @@ export function PriorityWeightingFunction(
         dispatch(action);
     };
 
-    const classes = createClasses();
     return (
         <div>
-            <div css={classes.validAliasContainer}>
+            <Box
+                sx={{
+                    paddingBottom: 1,
+                }}
+            >
                 {validAliasList.map((aliasName) => {
                     return (
-                        <div css={classes.individualChipContainer}>
+                        <Box
+                            sx={{
+                                marginRight: 0.5,
+                                marginBottom: 0.5,
+                                display: "inline-flex",
+                            }}
+                        >
                             <TagChip
                                 size="small"
                                 tagName={aliasName}
                                 tagColor={"gray"}
                             />
-                        </div>
+                        </Box>
                     );
                 })}
-            </div>
+            </Box>
             <WrappedTextField
                 value={priorityWeightingCalculation.value}
                 label="Priority Weighting Calculation"
@@ -77,20 +85,3 @@ export function PriorityWeightingFunction(
         </div>
     );
 }
-
-const createClasses = () => {
-    const validAliasContainer = css`
-        padding-bottom: 8px;
-    `;
-
-    const individualChipContainer = css`
-        margin-right: 4px;
-        margin-bottom: 4px;
-        display: inline-flex;
-    `;
-
-    return {
-        validAliasContainer,
-        individualChipContainer,
-    };
-};

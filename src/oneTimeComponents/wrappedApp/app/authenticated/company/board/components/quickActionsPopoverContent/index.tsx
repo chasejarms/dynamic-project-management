@@ -51,8 +51,8 @@ export function QuickActionsPopoverContent(
                                                 menuItemInformation.onClick
                                             )}
                                             sx={{
-                                                paddingLeft: 32,
-                                                paddingRight: 32,
+                                                paddingLeft: 4,
+                                                paddingRight: 4,
                                             }}
                                             key={innerIndex}
                                         >

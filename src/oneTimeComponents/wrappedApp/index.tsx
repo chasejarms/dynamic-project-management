@@ -10,7 +10,7 @@ import { BreakpointProvider } from "./app/hooks/useBreakpoint";
 
 const theme = createTheme({
     palette: {
-        mode: "dark",
+        // mode: "dark",
         primary: {
             main: "#3f51b5",
         },

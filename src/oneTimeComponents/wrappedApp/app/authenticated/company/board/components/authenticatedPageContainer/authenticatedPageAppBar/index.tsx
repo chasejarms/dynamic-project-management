@@ -36,6 +36,8 @@ function NonMemoizedAuthenticatedPageAppBar(
                 value={matchingTabValue}
                 scrollButtons="auto"
                 variant="scrollable"
+                indicatorColor="primary"
+                textColor="inherit"
             >
                 {props.navItems.map(({ text, route }, index) => {
                     return (
