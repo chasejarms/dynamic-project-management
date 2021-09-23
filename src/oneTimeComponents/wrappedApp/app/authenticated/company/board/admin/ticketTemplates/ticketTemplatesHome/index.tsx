@@ -1,6 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Theme, useTheme } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../../../../../../../../api";
@@ -16,11 +13,10 @@ import {
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { ITicketTemplate } from "../../../../../../../../../models/ticketTemplate";
 import { RouteCreator } from "../../../../../../utils/routeCreator";
+import { Box } from "@mui/material";
 
 export function TicketTemplatesHome() {
     const history = useHistory();
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const [ticketTemplates, setTicketTemplates] = useState<ITicketTemplate[]>(
         []
     );
@@ -154,20 +150,49 @@ export function TicketTemplatesHome() {
     return (
         <BoardAdminContainer>
             {isLoadingTicketTemplates ? (
-                <div css={classes.loadingSpinnerContainer}>
+                <Box
+                    sx={{
+                        height: "100%",
+                        width: "100%",
+                        display: "flex",
+                    }}
+                >
                     <CenterLoadingSpinner size="large" />
-                </div>
+                </Box>
             ) : ticketTemplates.length === 0 ? (
                 <NoDataWithActionButton
                     text="No ticket templates have been created for this board"
                     wrappedButtonProps={createTicketTemplateButtonProps}
                 />
             ) : (
-                <div css={classes.contentContainer}>
-                    <div css={classes.addTicketTemplateButtonContainer}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexGrow: 1,
+                        flexDirection: "column",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            flex: "0 0 auto",
+                            paddingTop: 2,
+                            paddingLeft: 4,
+                        }}
+                    >
                         <WrappedButton {...createTicketTemplateButtonProps} />
-                    </div>
-                    <div css={classes.ticketTemplatesContainer}>
+                    </Box>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr 1fr",
+                            gridAutoRows: "min-content",
+                            gridGap: 2,
+                            padding: 4,
+                            width: "100%",
+                            paddingTop: 2,
+                        }}
+                    >
                         {ticketTemplates.map((ticketTemplate) => {
                             return (
                                 <TicketTemplateForBoard
@@ -182,8 +207,8 @@ export function TicketTemplatesHome() {
                                 />
                             );
                         })}
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             )}
             <ConfirmDialog
                 open={confirmDialogIsOpen}
@@ -199,59 +224,3 @@ export function TicketTemplatesHome() {
         </BoardAdminContainer>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const innerToolbarContainer = css`
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    `;
-
-    const iconButtonsContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const loadingSpinnerContainer = css`
-        height: 100%;
-        width: 100%;
-        display: flex;
-    `;
-
-    const hiddenEditAndDeleteContainer = css`
-        visibility: hidden;
-    `;
-
-    const ticketTemplatesContainer = css`
-        flex-grow: 1;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-auto-rows: min-content;
-        grid-gap: ${theme.spacing(2)};
-        padding: ${theme.spacing(4)};
-        width: 100%;
-        padding-top: ${theme.spacing(2)};
-    `;
-
-    const contentContainer = css`
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-    `;
-
-    const addTicketTemplateButtonContainer = css`
-        flex: 0 0 auto;
-        padding-top: 16px;
-        padding-left: 32px;
-    `;
-
-    return {
-        loadingSpinnerContainer,
-        innerToolbarContainer,
-        iconButtonsContainer,
-        hiddenEditAndDeleteContainer,
-        ticketTemplatesContainer,
-        contentContainer,
-        addTicketTemplateButtonContainer,
-    };
-};
