@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { BoardColumnsContainer } from "./components/boardColumnsContainer";
 import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
 import { BoardContainer } from "../components/boardContainer";
@@ -17,9 +15,9 @@ import { useHistory } from "react-router-dom";
 import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
 import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolbar";
 import { RouteCreator } from "../../../../utils/routeCreator";
+import { Box } from "@mui/material";
 
 export function BoardHome() {
-    const classes = createClasses();
     const {
         isLoadingData,
         onUpdateTicket,
@@ -52,7 +50,16 @@ export function BoardHome() {
             ) : (
                 <ContentWithDynamicToolbar
                     toolbarContent={
-                        <div css={classes.actionButtonContainer}>
+                        <Box
+                            sx={{
+                                py: 0,
+                                px: 3,
+                                flexGrow: 1,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
                             <div>
                                 <WrappedButton
                                     variant="outlined"
@@ -71,11 +78,24 @@ export function BoardHome() {
                                     Edit Board
                                 </WrappedButton>
                             </div>
-                        </div>
+                        </Box>
                     }
                     mainContent={
-                        <div css={classes.contentContainer}>
-                            <div css={classes.columnsContainer}>
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                display: "flex",
+                                overflow: "auto",
+                                position: "relative",
+                                flexDirection: "column",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                    display: "flex",
+                                }}
+                            >
                                 <BoardColumnsContainer removeTopPadding>
                                     {columns.map((column) => {
                                         const isDoneColumn =
@@ -146,8 +166,8 @@ export function BoardHome() {
                                         );
                                     })}
                                 </BoardColumnsContainer>
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
                     }
                     ticketDrawerRoutes={
                         <TicketDrawerRoutes
@@ -162,32 +182,3 @@ export function BoardHome() {
         </BoardContainer>
     );
 }
-
-const createClasses = () => {
-    const contentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        overflow-y: auto;
-        position: relative;
-        flex-direction: column;
-    `;
-
-    const actionButtonContainer = css`
-        padding: 0px 24px 0 24px;
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    `;
-
-    const columnsContainer = css`
-        flex-grow: 1;
-        display: flex;
-    `;
-
-    return {
-        contentContainer,
-        actionButtonContainer,
-        columnsContainer,
-    };
-};
