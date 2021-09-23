@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Api } from "../../../../../../../../api";
+import { Box } from "@mui/material";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { ConfirmDialog } from "../../../components/confirmDialog";
 import { TicketDrawerContainer } from "../components/ticketDrawerContainer";
@@ -195,7 +194,6 @@ export function TicketHome(props: ITicketHomeProps) {
         });
     }
 
-    const classes = createClasses();
     const ticketUpdateInProgress = !!ticketUpdateRequest;
     const leftWrappedButtonProps: IWrappedButtonProps[] = [
         {
@@ -225,15 +223,17 @@ export function TicketHome(props: ITicketHomeProps) {
             ticketType={props.ticketType}
         >
             {isLoadingTicketInformation || !ticketState ? (
-                <div css={classes.drawerContentContainerLoading}>
-                    <CenterLoadingSpinner size="large" />
-                </div>
+                <CenterLoadingSpinner size="large" />
             ) : (
                 <DrawerContentsWithActionBar
                     leftWrappedButtonProps={leftWrappedButtonProps}
                     rightWrappedButtonProps={rightWrappedButtonProps}
                 >
-                    <div css={classes.ticketTemplateDropdownContainer}>
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                        }}
+                    >
                         <TicketTemplateDropdown
                             ticketTemplates={[ticketState.ticketTemplate]}
                             ticketTemplate={ticketState.ticketTemplate}
@@ -241,7 +241,7 @@ export function TicketHome(props: ITicketHomeProps) {
                             onChangeTicketTemplate={() => null}
                             showOpenIcon={isBoardAdmin}
                         />
-                    </div>
+                    </Box>
                     <TicketFields
                         ticketTemplateId={
                             ticketState.ticketTemplate.shortenedItemId
@@ -267,22 +267,3 @@ export function TicketHome(props: ITicketHomeProps) {
         </TicketDrawerContainer>
     );
 }
-
-const createClasses = () => {
-    const drawerContentContainerLoading = css`
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const ticketTemplateDropdownContainer = css`
-        margin-bottom: 16px;
-    `;
-
-    return {
-        drawerContentContainerLoading,
-        ticketTemplateDropdownContainer,
-    };
-};
