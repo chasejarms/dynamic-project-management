@@ -49,7 +49,7 @@ export function Companies() {
                             <CardContent>
                                 <Box
                                     sx={{
-                                        marginBottom: 16,
+                                        marginBottom: 2,
                                     }}
                                 >
                                     <Typography variant="h5">
