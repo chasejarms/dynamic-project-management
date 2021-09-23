@@ -1,7 +1,5 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
-import { jsx, css } from "@emotion/react";
-import { MenuItem, Paper, Typography } from "@mui/material";
+import { MenuItem, Paper, Typography, Box } from "@mui/material";
 
 export interface IIndentedAction {
     header: string;
@@ -19,8 +17,6 @@ export interface IQuickActionsPopoverContentProps {
 export function QuickActionsPopoverContent(
     props: IQuickActionsPopoverContentProps
 ) {
-    const classes = createClasses();
-
     function onClickInternal(menuItemInformationOnClick: () => void) {
         return (event: any) => {
             menuItemInformationOnClick();
@@ -30,11 +26,20 @@ export function QuickActionsPopoverContent(
 
     return (
         <Paper elevation={4}>
-            <div css={classes.optionsContentContainer}>
+            <Box
+                sx={{
+                    width: "200px",
+                }}
+            >
                 {props.indentedActions.map((indentedAction, index) => {
                     return (
                         <React.Fragment key={index}>
-                            <div css={classes.optionsHeaderContainer}>
+                            <Box
+                                sx={{
+                                    py: 1,
+                                    px: 2,
+                                }}
+                            >
                                 <Typography
                                     sx={{
                                         fontWeight: 500,
@@ -42,7 +47,7 @@ export function QuickActionsPopoverContent(
                                 >
                                     {indentedAction.header}
                                 </Typography>
-                            </div>
+                            </Box>
                             {indentedAction.informationForMenuItems.map(
                                 (menuItemInformation, innerIndex) => {
                                     return (
@@ -64,22 +69,7 @@ export function QuickActionsPopoverContent(
                         </React.Fragment>
                     );
                 })}
-            </div>
+            </Box>
         </Paper>
     );
 }
-
-const createClasses = () => {
-    const optionsContentContainer = css`
-        width: 200px;
-    `;
-
-    const optionsHeaderContainer = css`
-        padding: 8px 16px;
-    `;
-
-    return {
-        optionsContentContainer,
-        optionsHeaderContainer,
-    };
-};
