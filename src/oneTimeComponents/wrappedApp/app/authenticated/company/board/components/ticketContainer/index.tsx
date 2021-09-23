@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Card, CardContent, Typography, Divider } from "@mui/material";
+import { Card, CardContent, Typography, Divider, Box } from "@mui/material";
 import ReactVisibilitySensor from "react-visibility-sensor";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 
@@ -17,8 +15,6 @@ export interface ITicketContainerProps {
 }
 
 export function TicketContainer(props: ITicketContainerProps) {
-    const classes = createClasses();
-
     function internalVisibilityOnChange(isVisible: boolean) {
         if (isVisible && !!props.bottomLoadingSpinnerProps) {
             props.bottomLoadingSpinnerProps.onReachBottomOfList();
@@ -26,7 +22,14 @@ export function TicketContainer(props: ITicketContainerProps) {
     }
 
     return (
-        <div css={classes.columnContainer}>
+        <Box
+            sx={{
+                marginRight: 2,
+                width: "360px",
+                minWidth: "360px",
+                height: "100%",
+            }}
+        >
             <Card
                 sx={{
                     height: "100%",
@@ -42,109 +45,75 @@ export function TicketContainer(props: ITicketContainerProps) {
                         },
                     }}
                 >
-                    <div css={classes.innerCardContentContainer}>
-                        <div css={classes.columnTitleContainer}>
+                    <Box
+                        sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                padding: 2,
+                                paddingBottom: 1,
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                flex: "0 0 auto",
+                            }}
+                        >
                             <div>
                                 {props.title ? (
                                     <Typography variant="h6">
                                         {props.title}
                                     </Typography>
                                 ) : (
-                                    <div css={classes.hiddenTitle}>
+                                    <Box
+                                        sx={{
+                                            visibility: "hidden",
+                                        }}
+                                    >
                                         <Typography variant="h6">
                                             Hidden
                                         </Typography>
-                                    </div>
+                                    </Box>
                                 )}
                             </div>
                             <div>{props.topRightIcon}</div>
-                        </div>
+                        </Box>
                         <Divider />
                         {!!props.showCenterSpinner ? (
                             <CenterLoadingSpinner size="small" />
                         ) : (
-                            <div css={classes.ticketsContainer}>
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                    overflow: "auto",
+                                    py: "1px",
+                                    px: 2,
+                                    minHeight: 0,
+                                }}
+                            >
                                 {props.children}
                                 {!!props.bottomLoadingSpinnerProps && (
                                     <ReactVisibilitySensor
                                         onChange={internalVisibilityOnChange}
                                     >
-                                        <div
-                                            css={
-                                                classes.moreTicketsLoadingSpinner
-                                            }
+                                        <Box
+                                            sx={{
+                                                height: "60px",
+                                                display: "flex",
+                                            }}
                                         >
                                             <CenterLoadingSpinner size="small" />
-                                        </div>
+                                        </Box>
                                     </ReactVisibilitySensor>
                                 )}
-                            </div>
+                            </Box>
                         )}
-                    </div>
+                    </Box>
                 </CardContent>
             </Card>
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const columnContainer = css`
-        margin-right: 16px;
-        width: 360px;
-        min-width: 360px;
-        height: 100%;
-    `;
-
-    const ticketsContainer = css`
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 1px 16px;
-        min-height: 0px;
-    `;
-
-    const columnTitleContainer = css`
-        padding: 16px;
-        padding-bottom: 8px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        flex: 0 0 auto;
-    `;
-
-    const outerCardContentContainer = css`
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    `;
-
-    const bottomToolbarContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const innerCardContentContainer = css`
-        label: inner-card-content-container;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    `;
-
-    const moreTicketsLoadingSpinner = css`
-        height: 60px;
-        display: flex;
-    `;
-
-    const hiddenTitle = css`
-        visibility: hidden;
-    `;
-
-    return {
-        columnContainer,
-        ticketsContainer,
-        columnTitleContainer,
-        outerCardContentContainer,
-        moreTicketsLoadingSpinner,
-        bottomToolbarContainer,
-        innerCardContentContainer,
-        hiddenTitle,
-    };
-};
