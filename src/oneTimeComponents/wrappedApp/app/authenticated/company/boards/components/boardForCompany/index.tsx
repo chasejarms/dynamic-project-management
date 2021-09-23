@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import {
     CardContent,
     Typography,
@@ -7,9 +5,8 @@ import {
     Card,
     IconButton,
     CardActions,
-    Theme,
-    useTheme,
     Popover,
+    Box,
 } from "@mui/material";
 import { MoreHoriz } from "@mui/icons-material";
 import React, { useState } from "react";
@@ -41,8 +38,6 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
         };
     }
 
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const [optionsIsOpen, setOptionsIsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     function toggleMoreOptions(event: any) {
@@ -75,10 +70,20 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
             }}
         >
             <CardContent>
-                <div css={classes.titleAndActionIconContainer}>
-                    <div css={classes.titleContainer}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            marginBottom: 2,
+                        }}
+                    >
                         <Typography variant="h5">{board.name}</Typography>
-                    </div>
+                    </Box>
                     <div>
                         {props.isBoardAdmin && (
                             <IconButton
@@ -89,18 +94,24 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
                             </IconButton>
                         )}
                     </div>
-                </div>
+                </Box>
                 <Typography>{board.description}</Typography>
             </CardContent>
             <CardActions>
-                <div css={classes.actionButtonContainer}>
+                <Box
+                    sx={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                    }}
+                >
                     <Button
                         onClick={openBoard(board.shortenedItemId)}
                         color="primary"
                     >
                         Open Board
                     </Button>
-                </div>
+                </Box>
             </CardActions>
             <Popover open={optionsIsOpen} anchorEl={anchorEl} onClose={onClose}>
                 <QuickActionsPopoverContent
@@ -111,27 +122,3 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
         </Card>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const titleAndActionIconContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const titleContainer = css`
-        flex-grow: 1;
-        margin-bottom: ${theme.spacing(2)};
-    `;
-
-    const actionButtonContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    `;
-
-    return {
-        titleAndActionIconContainer,
-        titleContainer,
-        actionButtonContainer,
-    };
-};
