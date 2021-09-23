@@ -1,7 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { CircularProgress, useTheme, Theme, Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { AxiosError } from "axios";
 import { Api } from "../../../../../../api";
 import { IBoard } from "../../../../../../models/board";
@@ -10,10 +8,9 @@ import { useAppRouterParams } from "../../../hooks/useAppRouterParams";
 import { BoardForCompany } from "./components/boardForCompany";
 import { ConfirmDialog } from "../components/confirmDialog";
 import { useCompanyUser } from "../hooks/useCompanyUser";
+import { CenterLoadingSpinner } from "../../components/centerLoadingSpinner";
 
 export function Boards() {
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const { companyId } = useAppRouterParams();
 
     const [isLoadingBoards, setIsLoadingBoards] = useState(true);
@@ -92,22 +89,54 @@ export function Boards() {
     return (
         <BoardsContainer>
             {isLoadingBoards ? (
-                <div css={classes.loadingPageContainer}>
-                    <CircularProgress color="primary" size={48} thickness={4} />
-                </div>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100%",
+                    }}
+                >
+                    <CenterLoadingSpinner size="large" />
+                </Box>
             ) : boards.length === 0 ? (
-                <div css={classes.centerContainer}>
-                    <div css={classes.noBoardsTextContainer}>
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        gridAutoRows: "min-content",
+                        gap: 2,
+                        padding: 4,
+                        width: "100%",
+                        height: "100%",
+                        overflow: "auto",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "400px",
+                        }}
+                    >
                         <Typography>
                             It looks like you don't have access to any boards
                             yet. Go ahead and create a board to get started or
                             talk with your company account administrator to get
                             added to an existing company board.
                         </Typography>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             ) : (
-                <div css={classes.contentContainer}>
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        gridAutoRows: "min-content",
+                        gap: 2,
+                        padding: 4,
+                        width: "100%",
+                    }}
+                >
                     {boards!.map((board) => {
                         const isBoardAdmin = !!user?.boardRights[
                             board.shortenedItemId
@@ -123,7 +152,7 @@ export function Boards() {
                             />
                         );
                     })}
-                </div>
+                </Box>
             )}
             <ConfirmDialog
                 open={!!boardToDelete}
@@ -137,39 +166,3 @@ export function Boards() {
         </BoardsContainer>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const loadingPageContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const contentContainer = css`
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-auto-rows: min-content;
-        grid-gap: ${theme.spacing(2)};
-        padding: ${theme.spacing(4)};
-        width: 100%;
-    `;
-
-    const noBoardsTextContainer = css`
-        width: 400px;
-    `;
-
-    const centerContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    return {
-        loadingPageContainer,
-        contentContainer,
-        noBoardsTextContainer,
-        centerContainer,
-    };
-};
