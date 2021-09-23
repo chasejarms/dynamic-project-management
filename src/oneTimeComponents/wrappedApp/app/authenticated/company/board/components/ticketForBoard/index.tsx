@@ -1,13 +1,10 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { ITicket } from "../../../../../../../../models/ticket";
-import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import {
     CardContent,
     Card,
     Typography,
     Popover,
     IconButton,
+    Box,
 } from "@mui/material";
 import { MoreHoriz } from "@mui/icons-material";
 import { useState, useEffect } from "react";
@@ -50,8 +47,6 @@ export interface ITicketForBoardProps {
 }
 
 export function TicketForBoard(props: ITicketForBoardProps) {
-    const classes = createClasses();
-
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
 
@@ -444,12 +439,12 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 
     const hidePointValue = props.ticketType === TicketType.Done;
     return (
-        <div
-            css={composeCSS(
-                props.isFirstTicket && classes.firstCard,
-                classes.bottomCardPadding,
-                classes.container
-            )}
+        <Box
+            sx={{
+                cursor: "pointer",
+                paddingBottom: 2,
+                paddingTop: props.isFirstTicket ? 2 : 0,
+            }}
             onClick={navigateToTicketPage}
         >
             <Card elevation={3}>
@@ -460,20 +455,39 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                         },
                     }}
                 >
-                    <div css={classes.spinnerOverlayContainer}>
+                    <Box
+                        sx={{
+                            position: "relative",
+                        }}
+                    >
                         {isPerformingAction && (
-                            <div css={classes.spinnerOverlay}>
+                            <Box
+                                sx={{
+                                    height: "100%",
+                                    width: "100%",
+                                    position: "absolute",
+                                    bgcolor: "white",
+                                    opacity: 0.9,
+                                }}
+                            >
                                 <CenterLoadingSpinner size="small" />
-                            </div>
+                            </Box>
                         )}
-                        <div css={classes.titleAndOptionsIconContainer}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-betwen",
+                            }}
+                        >
                             <Typography>{props.ticket.title}</Typography>
-                            <div
-                                css={composeCSS(
-                                    isPerformingAction &&
-                                        classes.visibilityHidden,
-                                    classes.moreIconButtonContainer
-                                )}
+                            <Box
+                                sx={{
+                                    position: "relative",
+                                    bottom: "4px",
+                                    visibility: isPerformingAction
+                                        ? "hidden"
+                                        : "visible",
+                                }}
                             >
                                 <IconButton
                                     size="small"
@@ -481,7 +495,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 >
                                     <MoreHoriz />
                                 </IconButton>
-                            </div>
+                            </Box>
                             <Popover
                                 open={moreOptionsIsOpen}
                                 anchorEl={anchorEl}
@@ -492,25 +506,33 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                     onClose={onClose}
                                 />
                             </Popover>
-                        </div>
+                        </Box>
                         {!hidePointValue &&
                             props.ticket.pointValueFromTags !== -20000000 && (
-                                <div css={classes.assignedToContainer}>
+                                <Box sx={{}}>
                                     <Typography variant="caption">
                                         Priority Score:{" "}
                                         {props.ticket.pointValueFromTags}
                                     </Typography>
-                                </div>
+                                </Box>
                             )}
                         {!!props.ticket.assignedTo && (
-                            <div css={classes.assignedToContainer}>
+                            <Box
+                                sx={{
+                                    paddingTop: 0,
+                                }}
+                            >
                                 <Typography variant="caption">
                                     Assigned To: {props.ticket.assignedTo.name}
                                 </Typography>
-                            </div>
+                            </Box>
                         )}
                         {!!props.showCompletedDate && (
-                            <div css={classes.completedDateContainer}>
+                            <Box
+                                sx={{
+                                    paddingTop: 2,
+                                }}
+                            >
                                 <Typography variant="body2">
                                     Completed:
                                     {" " +
@@ -518,114 +540,11 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                             props.ticket.completedTimestamp
                                         )}
                                 </Typography>
-                            </div>
+                            </Box>
                         )}
-                        {/* {props.ticket.tags.length > 0 && (
-                            <div css={classes.tagsContainer}>
-                                {props.ticket.tags.map((tag) => {
-                                    return (
-                                        <div
-                                            css={
-                                                classes.individualChipContainer
-                                            }
-                                            key={tag.name}
-                                        >
-                                            <TagChip
-                                                size="small"
-                                                tagName={tag.name}
-                                                tagColor={tag.color}
-                                            />
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )} */}
-                    </div>
+                    </Box>
                 </CardContent>
             </Card>
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        cursor: pointer;
-    `;
-
-    const firstCard = css`
-        padding-top: 16px;
-    `;
-
-    const bottomCardPadding = css`
-        padding-bottom: 16px;
-    `;
-
-    const titleAndOptionsIconContainer = css`
-        display: flex;
-        justify-content: space-between;
-    `;
-
-    const moreIconButtonContainer = css`
-        position: relative;
-        bottom: 4px;
-    `;
-
-    const tagsContainer = css`
-        padding-top: 16px;
-    `;
-
-    const individualChipContainer = css`
-        margin-right: 4px;
-        margin-bottom: 4px;
-        display: inline-flex;
-    `;
-
-    const moreOptionsTextContainer = css`
-        padding: 8px 16px;
-    `;
-
-    const moreOptionsContentContainer = css`
-        width: 200px;
-    `;
-
-    const visibilityHidden = css`
-        visibility: hidden;
-    `;
-
-    const spinnerOverlayContainer = css`
-        position: relative;
-    `;
-
-    const spinnerOverlay = css`
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        background-color: white;
-        opacity: 0.9;
-    `;
-
-    const completedDateContainer = css`
-        padding-top: 16px;
-    `;
-
-    const assignedToContainer = css`
-        padding-top: 0px;
-    `;
-
-    return {
-        firstCard,
-        bottomCardPadding,
-        titleAndOptionsIconContainer,
-        moreIconButtonContainer,
-        tagsContainer,
-        individualChipContainer,
-        moreOptionsTextContainer,
-        moreOptionsContentContainer,
-        visibilityHidden,
-        spinnerOverlayContainer,
-        spinnerOverlay,
-        completedDateContainer,
-        assignedToContainer,
-        container,
-    };
-};

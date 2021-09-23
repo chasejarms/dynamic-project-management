@@ -26,6 +26,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
     return (
         <TextField
             {...props}
+            minRows={3}
             error={hasError}
             helperText={helperText}
             variant="outlined"
