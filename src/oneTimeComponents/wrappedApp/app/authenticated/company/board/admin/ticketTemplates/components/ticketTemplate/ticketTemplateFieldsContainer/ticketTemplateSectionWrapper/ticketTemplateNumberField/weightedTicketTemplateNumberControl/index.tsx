@@ -1,9 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { WrappedTextField } from "../../../../../../../../../../../components/wrappedTextField";
 import React from "react";
-import { Checkbox, FormControlLabel, Theme, useTheme } from "@mui/material";
+import { Box, Checkbox, FormControlLabel } from "@mui/material";
 
 export interface IWeightedTicketTemplateNumberControl {
     label: string;
@@ -36,10 +34,14 @@ export interface IWeightedTicketTemplateNumberControl {
 function NonMemoizedWeightedTicketTemplateNumberControl(
     props: IWeightedTicketTemplateNumberControl
 ) {
-    const theme = useTheme();
-    const classes = createClasses(theme);
     return (
-        <div css={classes.container}>
+        <Box
+            sx={{
+                padding: 2,
+                bgcolor: "grey.200",
+                borderRadius: "3px",
+            }}
+        >
             <WrappedTextField
                 value={props.label}
                 required
@@ -101,21 +103,9 @@ function NonMemoizedWeightedTicketTemplateNumberControl(
                     disabled={props.disabled}
                 />
             )}
-        </div>
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const container = css`
-        padding: 16px;
-        background-color: ${theme.palette.grey["200"]};
-        border-radius: 3px;
-    `;
-
-    return {
-        container,
-    };
-};
 
 export const WeightedTicketTemplateNumberControl = React.memo(
     NonMemoizedWeightedTicketTemplateNumberControl
