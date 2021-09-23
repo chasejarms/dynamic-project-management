@@ -1,33 +1,24 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React from "react";
 import NavBar, { INavBarItem, NavBarActionButtonTypeEnum } from "../navBar";
-import { useTheme, Theme } from "@mui/material";
+import { Box } from "@mui/material";
 
 export interface ILargeNavBarProps {
     navItems: INavBarItem[];
 }
 
 export function LargeNavBar(props: ILargeNavBarProps) {
-    const theme = useTheme();
-    const classes = createClasses(theme);
     return (
-        <div css={classes.container}>
+        <Box
+            sx={{
+                py: 0,
+                px: 4,
+                width: "100vw",
+            }}
+        >
             <NavBar
                 navItems={props.navItems}
                 actionButtonType={NavBarActionButtonTypeEnum.SignIn}
             />
-        </div>
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const container = css`
-        padding: 0px ${theme.spacing(4)};
-        width: 100vw;
-    `;
-
-    return {
-        container,
-    };
-};
