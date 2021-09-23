@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { useTheme, Theme, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 
 export interface IContentWithDynamicToolbarProps {
     toolbarContent: React.ReactNode;
@@ -11,39 +9,34 @@ export interface IContentWithDynamicToolbarProps {
 export function ContentWithDynamicToolbar(
     props: IContentWithDynamicToolbarProps
 ) {
-    const theme = useTheme();
-    const classes = createClasses(theme);
     return (
-        <div css={classes.container}>
+        <Box
+            sx={{
+                flexGrow: 1,
+                display: "grid",
+                height: "100%",
+                gridTemplateRows: "60px 1fr",
+                position: "relative",
+                flexDirection: "column",
+            }}
+        >
             {props.ticketDrawerRoutes}
-            <div css={classes.toolbarContainer}>{props.toolbarContent}</div>
-            <div css={classes.contentContainer}>{props.mainContent}</div>
-        </div>
+            <Box
+                sx={{
+                    display: "flex",
+                }}
+            >
+                {props.toolbarContent}
+            </Box>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    overflowX: "auto",
+                }}
+            >
+                {props.mainContent}
+            </Box>
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const container = css`
-        flex-grow: 1;
-        display: grid;
-        grid-template-rows: 60px 1fr;
-        position: relative;
-        flex-direction: column;
-    `;
-
-    const toolbarContainer = css`
-        display: flex;
-    `;
-
-    const contentContainer = css`
-        flex-grow: 1;
-        display: flex;
-        overflow-x: auto;
-    `;
-
-    return {
-        container,
-        toolbarContainer,
-        contentContainer,
-    };
-};
