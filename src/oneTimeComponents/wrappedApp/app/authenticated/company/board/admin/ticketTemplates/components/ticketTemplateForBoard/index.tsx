@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import {
     CardContent,
     Typography,
@@ -41,8 +39,6 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
         history.push(editTicketTemplateRoute);
     }
 
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const [optionsIsOpen, setOptionsIsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     function toggleMoreOptions(event: any) {
@@ -76,18 +72,28 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
     return (
         <Card>
             <CardContent>
-                <div css={classes.titleAndActionIconContainer}>
-                    <div css={classes.titleContainer}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            marginBottom: 2,
+                        }}
+                    >
                         <Typography variant="h5">
                             {ticketTemplate.name}
                         </Typography>
-                    </div>
+                    </Box>
                     <div>
                         <IconButton size="small" onClick={toggleMoreOptions}>
                             <MoreHoriz />
                         </IconButton>
                     </div>
-                </div>
+                </Box>
                 <Typography>{ticketTemplate.description}</Typography>
             </CardContent>
             <Popover open={optionsIsOpen} anchorEl={anchorEl} onClose={onClose}>
@@ -99,20 +105,3 @@ export function TicketTemplateForBoard(props: ITicketTemplateForBoardProps) {
         </Card>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const titleAndActionIconContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const titleContainer = css`
-        flex-grow: 1;
-        margin-bottom: ${theme.spacing(2)};
-    `;
-
-    return {
-        titleAndActionIconContainer,
-        titleContainer,
-    };
-};
