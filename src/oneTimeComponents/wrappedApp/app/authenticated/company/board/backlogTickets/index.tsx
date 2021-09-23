@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { TicketContainer } from "../components/ticketContainer";
 import { TicketForBoard } from "../components/ticketForBoard";
 import { TicketType } from "../../../../../../../models/ticket/ticketType";
@@ -22,11 +20,19 @@ export function BacklogTickets() {
     const backlogTickets =
         sortedAndMappedTickets[backlogColumnReservedId]?.tickets || [];
 
-    const classes = createClasses();
-
     return (
         <BoardContainer>
-            <div css={classes.pageContainer}>
+            <Box
+                sx={{
+                    padding: 2,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    position: "relative",
+                    height: "100%",
+                }}
+            >
                 <TicketDrawerRoutes
                     onUpdateTicket={onUpdateTicket}
                     onDeleteTicket={onDeleteTicket}
@@ -57,45 +63,28 @@ export function BacklogTickets() {
                             );
                         })
                     ) : (
-                        <div css={classes.noTicketsContainer}>
-                            <div css={classes.noTicketsTextContainer}>
+                        <Box
+                            sx={{
+                                height: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    textAlign: "center",
+                                }}
+                            >
                                 <Typography>
                                     There are currently no tickets in the
                                     backlog
                                 </Typography>
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
                     )}
                 </TicketContainer>
-            </div>
+            </Box>
         </BoardContainer>
     );
 }
-
-const createClasses = () => {
-    const pageContainer = css`
-        padding: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        position: relative;
-    `;
-
-    const noTicketsContainer = css`
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const noTicketsTextContainer = css`
-        text-align: center;
-    `;
-
-    return {
-        pageContainer,
-        noTicketsContainer,
-        noTicketsTextContainer,
-    };
-};
