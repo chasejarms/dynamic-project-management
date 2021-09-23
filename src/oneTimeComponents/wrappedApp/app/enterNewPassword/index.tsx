@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar } from "@mui/material";
+import { Typography, Snackbar, Box } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";
@@ -63,8 +61,6 @@ export function EnterNewPassword() {
     const showPasswordError =
         !passwordControl.isValid && passwordControl.isTouched;
 
-    const classes = createClasses();
-
     const [isConfirmingNewPassword, setIsConfirmingNewPassword] = useState(
         false
     );
@@ -120,21 +116,41 @@ export function EnterNewPassword() {
 
     return (
         <NonAuthenticatedPageContainer makeFullPage>
-            <div css={classes.pageContainer}>
-                <div css={classes.credentialsContainer}>
-                    <div css={classes.signUpContainer}>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <Box
+                    sx={{
+                        width: "300px",
+                        display: "grid",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                        }}
+                    >
                         <Typography variant="h5">
                             Enter Verification Code
                         </Typography>
-                    </div>
-                    <div css={classes.infoContainer}>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                        }}
+                    >
                         <Typography>
                             A verification code has been sent to{" "}
                             {cognitoUserSingleton.cognitoUser.getUsername()}. To
                             reset your password, enter the verification code as
                             well as the updated password.
                         </Typography>
-                    </div>
+                    </Box>
                     <WrappedTextField
                         value={verificationCodeControl.value}
                         label="Verification Code"
@@ -156,7 +172,13 @@ export function EnterNewPassword() {
                                 : ""
                         }
                     />
-                    <div css={classes.signInButtonContainer}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginTop: 2,
+                        }}
+                    >
                         <WrappedButton
                             variant="contained"
                             color="primary"
@@ -168,50 +190,14 @@ export function EnterNewPassword() {
                         >
                             Confirm New Password
                         </WrappedButton>
-                    </div>
+                    </Box>
                     <Snackbar
                         open={snackbarMetadata.open}
                         onClose={onCloseSnackbar}
                         message={snackbarMetadata.message}
                     />
-                </div>
-            </div>
+                </Box>
+            </Box>
         </NonAuthenticatedPageContainer>
     );
 }
-
-const createClasses = () => {
-    const pageContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const credentialsContainer = css`
-        width: 300px;
-        display: grid;
-    `;
-
-    const signInButtonContainer = css`
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 16px;
-    `;
-
-    const signUpContainer = css`
-        margin-bottom: 16px;
-    `;
-
-    const infoContainer = css`
-        margin-bottom: 16px;
-    `;
-
-    return {
-        pageContainer,
-        credentialsContainer,
-        signInButtonContainer,
-        signUpContainer,
-        infoContainer,
-    };
-};
