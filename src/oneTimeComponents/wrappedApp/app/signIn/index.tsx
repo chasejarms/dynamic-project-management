@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar, Theme, useTheme } from "@mui/material";
+import { Typography, Snackbar, Box } from "@mui/material";
 import { ChangeEvent, useState, useEffect } from "react";
 import * as AWSCognitoIdentity from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk/global";
@@ -41,8 +39,6 @@ export function SignIn() {
     });
     const showPasswordError =
         !passwordControl.isValid && passwordControl.isTouched;
-
-    const classes = createClasses();
 
     const [isSigningIn, setIsSigningIn] = useState(false);
     function triggerSignIn() {
@@ -196,12 +192,27 @@ export function SignIn() {
 
     return (
         <NonAuthenticatedPageContainer makeFullPage>
-            <div css={classes.pageContainer}>
+            <Box
+                sx={{
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
                 {!showNewPasswordInput ? (
-                    <div css={classes.contentMaxWidthContainer}>
-                        <div css={classes.headerTextContainer}>
+                    <Box
+                        sx={{
+                            width: "300px",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                marginBottom: 2,
+                            }}
+                        >
                             <Typography variant="h5">Sign In</Typography>
-                        </div>
+                        </Box>
                         <WrappedTextField
                             value={emailControl.value}
                             label="Email"
@@ -221,7 +232,13 @@ export function SignIn() {
                                     : ""
                             }
                         />
-                        <div css={classes.signInButtonContainer}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginTop: 2,
+                            }}
+                        >
                             <Typography
                                 onClick={navigateToResetPasswordPage}
                                 variant="caption"
@@ -243,28 +260,40 @@ export function SignIn() {
                             >
                                 Sign In
                             </WrappedButton>
-                        </div>
+                        </Box>
                         <Snackbar
                             open={snackbarMetadata.open}
                             onClose={onCloseSnackbar}
                             message={snackbarMetadata.message}
                         />
                         {/* TODO: probably put an error message in here to handle errors */}
-                    </div>
+                    </Box>
                 ) : (
-                    <div css={classes.contentMaxWidthContainer}>
-                        <div css={classes.headerTextContainer}>
+                    <Box
+                        sx={{
+                            width: "300px",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                marginBottom: 2,
+                            }}
+                        >
                             <Typography variant="h5">
                                 New Password Required
                             </Typography>
-                        </div>
-                        <div css={classes.headerTextContainer}>
+                        </Box>
+                        <Box
+                            sx={{
+                                marginBottom: 2,
+                            }}
+                        >
                             <Typography>
                                 A new password is required for newly added
                                 users. Type your updated password below and
                                 click Sign In.
                             </Typography>
-                        </div>
+                        </Box>
                         <WrappedTextField
                             value={passwordCreationControl.value}
                             label="New Password"
@@ -276,7 +305,12 @@ export function SignIn() {
                                     : ""
                             }
                         />
-                        <div css={classes.actionButtonContainer}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                            }}
+                        >
                             <WrappedButton
                                 variant="contained"
                                 color="primary"
@@ -289,47 +323,10 @@ export function SignIn() {
                             >
                                 Sign In
                             </WrappedButton>
-                        </div>
-                    </div>
+                        </Box>
+                    </Box>
                 )}
-            </div>
+            </Box>
         </NonAuthenticatedPageContainer>
     );
 }
-
-const createClasses = () => {
-    const pageContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const contentMaxWidthContainer = css`
-        width: 300px;
-        display: grid;
-    `;
-
-    const signInButtonContainer = css`
-        display: flex;
-        justify-content: space-between;
-        margin-top: 16px;
-    `;
-
-    const headerTextContainer = css`
-        margin-bottom: 16px;
-    `;
-
-    const actionButtonContainer = css`
-        display: flex;
-        justify-content: flex-end;
-    `;
-
-    return {
-        pageContainer,
-        contentMaxWidthContainer,
-        signInButtonContainer,
-        headerTextContainer,
-        actionButtonContainer,
-    };
-};

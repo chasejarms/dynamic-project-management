@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar } from "@mui/material";
+import { Typography, Snackbar, Box } from "@mui/material";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../api";
 import { StringValidator } from "../../../../classes/StringValidator";
@@ -40,8 +38,6 @@ export function SignUp() {
     });
     const showCompanyNameError =
         !companyNameControl.isValid && companyNameControl.isTouched;
-
-    const classes = createClasses();
 
     const [isSigningUp, setIsSigningUp] = useState(false);
     function triggerSignUp() {
@@ -98,11 +94,26 @@ export function SignUp() {
 
     return (
         <NonAuthenticatedPageContainer makeFullPage>
-            <div css={classes.pageContainer}>
-                <div css={classes.credentialsContainer}>
-                    <div css={classes.signUpContainer}>
+            <Box
+                sx={{
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <Box
+                    sx={{
+                        width: "300px",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                        }}
+                    >
                         <Typography variant="h5">Sign Up</Typography>
-                    </div>
+                    </Box>
                     <Typography>
                         Use Butter for 14 days at no cost. No credit card
                         required.
@@ -142,7 +153,13 @@ export function SignUp() {
                                 : ""
                         }
                     />
-                    <div css={classes.signInButtonContainer}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginTop: 2,
+                        }}
+                    >
                         <WrappedButton
                             variant="contained"
                             color="primary"
@@ -152,7 +169,7 @@ export function SignUp() {
                         >
                             Sign Up
                         </WrappedButton>
-                    </div>
+                    </Box>
                     {/* TODO: probably put an error message in here to handle errors */}
                     <Snackbar
                         open={snackbarIsOpen}
@@ -169,39 +186,8 @@ export function SignUp() {
                             "A verification link has been sent to your email."
                         }
                     />
-                </div>
-            </div>
+                </Box>
+            </Box>
         </NonAuthenticatedPageContainer>
     );
 }
-
-const createClasses = () => {
-    const pageContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const credentialsContainer = css`
-        width: 300px;
-        display: grid;
-    `;
-
-    const signInButtonContainer = css`
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 16px;
-    `;
-
-    const signUpContainer = css`
-        margin-bottom: 16px;
-    `;
-
-    return {
-        pageContainer,
-        credentialsContainer,
-        signInButtonContainer,
-        signUpContainer,
-    };
-};
