@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React, { useEffect } from "react";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
 import {
@@ -12,7 +10,7 @@ import { addBoardAction } from "../../../../../../../../redux/boards";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { createCompanyBoardKey } from "../../utils/createCompanyBoardKey";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useIsBoardAdmin } from "../../hooks/useIsBoardAdmin";
 import { RouteCreator } from "../../../../../utils/routeCreator";
 
@@ -75,34 +73,26 @@ export function BoardContainer(props: IBoardContainer) {
         },
     ].filter((tabValue) => !!tabValue) as IAuthenticatedNavItem[];
 
-    const classes = createClasses();
-
     return (
         <AuthenticatedPageContainer navItems={navItems}>
             {isLoadingBoard ? (
                 <CenterLoadingSpinner size="large" />
             ) : hasBeenDeleted ? (
-                <div css={classes.centerTextContainer}>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
                     <Typography variant="h6">
                         This board has been deleted
                     </Typography>
-                </div>
+                </Box>
             ) : (
                 props.children
             )}
         </AuthenticatedPageContainer>
     );
 }
-
-const createClasses = () => {
-    const centerTextContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    return {
-        centerTextContainer,
-    };
-};
