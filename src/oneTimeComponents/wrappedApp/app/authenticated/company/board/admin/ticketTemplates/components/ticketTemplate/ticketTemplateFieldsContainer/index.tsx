@@ -1,13 +1,11 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../../../../../redux/storeState";
-import { composeCSS } from "../../../../../../../../../../../styles/composeCSS";
 import { TicketTemplateNameField } from "./ticketTemplateNameField";
 import { TicketTemplateDescriptionField } from "./ticketTemplateDescriptionField";
 import { TicketTemplateTitleField } from "./ticketTemplateTitleField";
 import { TicketTemplateSummaryField } from "./ticketTemplateSummaryField";
 import { TicketTemplateSectionWrapper } from "./ticketTemplateSectionWrapper";
+import { Box } from "@mui/material";
 
 export interface ITicketTemplateFieldsContainerProps {
     disabled: boolean;
@@ -22,16 +20,16 @@ export function TicketTemplateFieldsContainer(
             .sections.length;
     });
 
-    const classes = createClasses();
-
     const sections = [];
     for (let i = 0; i < sectionLength; i++) {
         sections.push(
-            <div
-                css={composeCSS(
-                    classes.columnInputContainer,
-                    classes.sectionControlContainer
-                )}
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                    marginTop: 2,
+                }}
                 key={i}
             >
                 <TicketTemplateSectionWrapper
@@ -39,64 +37,70 @@ export function TicketTemplateFieldsContainer(
                     index={i}
                     ticketTemplateId={props.ticketTemplateId}
                 />
-            </div>
+            </Box>
         );
     }
 
     return (
-        <div css={classes.formBuilderContainer}>
-            <div css={classes.columnInputContainer}>
+        <Box
+            sx={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                padding: 4,
+                overflowY: "auto",
+                paddingRight: 2,
+            }}
+        >
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                }}
+            >
                 <TicketTemplateNameField
                     disabled={props.disabled}
                     ticketTemplateId={props.ticketTemplateId}
                 />
-            </div>
-            <div css={classes.columnInputContainer}>
+            </Box>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                }}
+            >
                 <TicketTemplateDescriptionField
                     disabled={props.disabled}
                     ticketTemplateId={props.ticketTemplateId}
                 />
-            </div>
-            <div css={classes.columnInputContainer}>
+            </Box>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                }}
+            >
                 <TicketTemplateTitleField
                     disabled={props.disabled}
                     ticketTemplateId={props.ticketTemplateId}
                 />
-            </div>
-            <div css={classes.columnInputContainer}>
+            </Box>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                }}
+            >
                 <TicketTemplateSummaryField
                     disabled={props.disabled}
                     ticketTemplateId={props.ticketTemplateId}
                 />
-            </div>
+            </Box>
             {sections}
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const formBuilderContainer = css`
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 32px;
-        overflow-y: auto;
-        padding-right: 16px;
-    `;
-
-    const columnInputContainer = css`
-        display: grid;
-        grid-template-columns: 1fr 96px;
-        grid-gap: 16px;
-    `;
-
-    const sectionControlContainer = css`
-        margin-top: 16px;
-    `;
-
-    return {
-        formBuilderContainer,
-        columnInputContainer,
-        sectionControlContainer,
-    };
-};
