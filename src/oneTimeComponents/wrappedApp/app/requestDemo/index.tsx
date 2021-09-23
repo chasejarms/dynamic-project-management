@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography, Snackbar } from "@mui/material";
+import { Typography, Snackbar, Box } from "@mui/material";
 import { ChangeEvent, useState, useEffect } from "react";
 import { StringValidator } from "../../../../classes/StringValidator";
 import { NonAuthenticatedPageContainer } from "../components/nonAuthenticatedPageContainer";
@@ -65,7 +63,6 @@ export function RequestDemo() {
             return event.target.value;
         },
     });
-    const classes = createClasses();
 
     const [isSendingEmail, setIsSendingEmail] = useState(false);
     function triggerIsSendingEmail() {
@@ -133,11 +130,26 @@ export function RequestDemo() {
 
     return (
         <NonAuthenticatedPageContainer makeFullPage>
-            <div css={classes.pageContainer}>
-                <div css={classes.contentMaxWidthContainer}>
-                    <div css={classes.headerTextContainer}>
+            <Box
+                sx={{
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <Box
+                    sx={{
+                        width: "300px",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                        }}
+                    >
                         <Typography variant="h5">Contact Us</Typography>
-                    </div>
+                    </Box>
                     <WrappedTextField
                         value={nameControl.value}
                         label="Name"
@@ -179,7 +191,12 @@ export function RequestDemo() {
                         multiline
                         disabled={isSendingEmail}
                     />
-                    <div css={classes.signInButtonContainer}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                        }}
+                    >
                         <WrappedButton
                             variant="contained"
                             color="primary"
@@ -189,52 +206,15 @@ export function RequestDemo() {
                         >
                             Send
                         </WrappedButton>
-                    </div>
+                    </Box>
                     <Snackbar
                         open={snackbarMetadata.open}
                         onClose={onCloseSnackbar}
                         message={snackbarMetadata.message}
                     />
                     {/* TODO: probably put an error message in here to handle errors */}
-                </div>
-            </div>
+                </Box>
+            </Box>
         </NonAuthenticatedPageContainer>
     );
 }
-
-const createClasses = () => {
-    const pageContainer = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const contentMaxWidthContainer = css`
-        width: 300px;
-        display: grid;
-    `;
-
-    const signInButtonContainer = css`
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 16px;
-    `;
-
-    const headerTextContainer = css`
-        margin-bottom: 16px;
-    `;
-
-    const actionButtonContainer = css`
-        display: flex;
-        justify-content: flex-end;
-    `;
-
-    return {
-        pageContainer,
-        contentMaxWidthContainer,
-        signInButtonContainer,
-        headerTextContainer,
-        actionButtonContainer,
-    };
-};
