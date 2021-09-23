@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { WrappedButton } from "../../../../../components/wrappedButton";
@@ -13,6 +11,7 @@ import { sortBy } from "lodash";
 import { NoDataWithActionButton } from "../../components/noDataWithActionButton";
 import { TicketDrawerContainer } from "../components/ticketDrawerContainer";
 import { TicketType } from "../../../../../../../../models/ticket/ticketType";
+import { Box } from "@mui/material";
 
 export interface ITicketImagesProps {
     ticketType: TicketType;
@@ -185,8 +184,6 @@ export function TicketImages(props: ITicketImagesProps) {
         };
     }, [isLoadingFiles]);
 
-    const classes = createClasses();
-
     function onDeleteFile(file: IFileForTicket) {
         return () => {
             setFilesForTicket((previousFilesForTicket) => {
@@ -228,8 +225,22 @@ export function TicketImages(props: ITicketImagesProps) {
                     }}
                 />
             ) : (
-                <div css={classes.container}>
-                    <div css={classes.actionButtonHeaderContainer}>
+                <Box
+                    sx={{
+                        width: "100%",
+                        display: "grid",
+                        gridTemplateRows: "auto 1fr",
+                        height: "100%",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            py: 2,
+                            px: 4,
+                        }}
+                    >
                         <WrappedButton
                             color="primary"
                             component="label"
@@ -246,8 +257,16 @@ export function TicketImages(props: ITicketImagesProps) {
                                 multiple
                             />
                         </WrappedButton>
-                    </div>
-                    <div css={classes.imagesContainer}>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr",
+                            gap: 2,
+                            padding: 4,
+                            paddingTop: 0,
+                        }}
+                    >
                         {filesForTicket.map((file, index) => {
                             const updatedFile = {
                                 ...file,
@@ -263,37 +282,9 @@ export function TicketImages(props: ITicketImagesProps) {
                                 />
                             );
                         })}
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             )}
         </TicketDrawerContainer>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        width: 100%;
-        display: grid;
-        grid-template-rows: auto 1fr;
-        height: 100%;
-    `;
-
-    const actionButtonHeaderContainer = css`
-        display: flex;
-        justify-content: flex-start;
-        padding: 16px 32px 16px 32px;
-    `;
-
-    const imagesContainer = css`
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-gap: 16px;
-        padding: 0px 32px 32px 32px;
-    `;
-
-    return {
-        container,
-        actionButtonHeaderContainer,
-        imagesContainer,
-    };
-};
