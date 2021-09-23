@@ -458,6 +458,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                     <Box
                         sx={{
                             position: "relative",
+                            width: "100%",
                         }}
                     >
                         {isPerformingAction && (
@@ -475,8 +476,9 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                         )}
                         <Box
                             sx={{
+                                width: "100%",
                                 display: "flex",
-                                justifyContent: "space-betwen",
+                                justifyContent: "space-between",
                             }}
                         >
                             <Typography>{props.ticket.title}</Typography>

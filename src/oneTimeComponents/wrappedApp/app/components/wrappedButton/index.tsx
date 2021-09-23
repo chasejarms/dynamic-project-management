@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { ButtonProps, Button, CircularProgress } from "@mui/material";
+import { ButtonProps, Button, CircularProgress, Box } from "@mui/material";
 
 export interface IWrappedButtonProps extends ButtonProps {
     showSpinner?: boolean;
@@ -14,36 +12,28 @@ export interface IWrappedButtonProps extends ButtonProps {
 export function WrappedButton(props: IWrappedButtonProps) {
     const { showSpinner, testIds, ...rest } = props;
 
-    const { buttonContainer, spinnerContainer } = createClasses();
-
     return (
-        <div css={buttonContainer}>
+        <Box
+            sx={{
+                position: "relative",
+            }}
+        >
             {props.showSpinner && (
-                <div css={spinnerContainer} data-testid={testIds?.spinner}>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                    data-testid={testIds?.spinner}
+                >
                     <CircularProgress color="primary" size={24} thickness={4} />
-                </div>
+                </Box>
             )}
             <Button {...rest} data-testid={testIds?.button} />
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const buttonContainer = css`
-        position: relative;
-    `;
-
-    const spinnerContainer = css`
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    return {
-        buttonContainer,
-        spinnerContainer,
-    };
-};
