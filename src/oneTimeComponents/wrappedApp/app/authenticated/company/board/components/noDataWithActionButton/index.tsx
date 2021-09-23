@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import {
     IWrappedButtonProps,
     WrappedButton,
@@ -12,10 +10,23 @@ export interface INoDataWithActionButtonProps {
 }
 
 export function NoDataWithActionButton(props: INoDataWithActionButtonProps) {
-    const classes = createClasses();
     return (
-        <div css={classes.centerContainer}>
-            <div css={classes.noTicketsContainer}>
+        <Box
+            sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <Box
+                sx={{
+                    display: "flex",
+                    width: "300px",
+                    flexDirection: "column",
+                }}
+            >
                 <Typography
                     variant="h6"
                     sx={{
@@ -25,40 +36,18 @@ export function NoDataWithActionButton(props: INoDataWithActionButtonProps) {
                     {props.text}
                 </Typography>
                 {!!props.wrappedButtonProps && (
-                    <div css={classes.wrappedButtonContainer}>
+                    <Box
+                        sx={{
+                            marginTop: 2,
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
                         <WrappedButton {...props.wrappedButtonProps} />
-                    </div>
+                    </Box>
                 )}
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const centerContainer = css`
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const noTicketsContainer = css`
-        display: flex;
-        width: 300px;
-        flex-direction: column;
-    `;
-
-    const wrappedButtonContainer = css`
-        margin-top: 16px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    `;
-
-    return {
-        centerContainer,
-        noTicketsContainer,
-        wrappedButtonContainer,
-    };
-};
