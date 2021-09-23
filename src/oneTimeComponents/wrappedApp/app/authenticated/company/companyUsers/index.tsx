@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import {
     Checkbox,
     Dialog,
@@ -16,6 +14,7 @@ import {
     TableRow,
     Toolbar,
     Typography,
+    Box,
 } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../api";
@@ -249,11 +248,16 @@ export function CompanyUsers() {
         });
     }
 
-    const classes = createClasses();
     return (
         <BoardsContainer>
             {!isLoadingUsers ? (
-                <div css={classes.tablePaperContainer}>
+                <Box
+                    sx={{
+                        padding: 4,
+                        width: "100%",
+                        height: "100%",
+                    }}
+                >
                     <Paper>
                         <Toolbar
                             sx={{
@@ -261,7 +265,13 @@ export function CompanyUsers() {
                                 paddingRight: 2,
                             }}
                         >
-                            <div css={classes.toolbarContainer}>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
                                 <Typography variant="h6">
                                     Company Users
                                 </Typography>
@@ -273,7 +283,7 @@ export function CompanyUsers() {
                                         Add User
                                     </WrappedButton>
                                 </div>
-                            </div>
+                            </Box>
                         </Toolbar>
                         <Table>
                             <TableHead>
@@ -294,15 +304,23 @@ export function CompanyUsers() {
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>{user.email}</TableCell>
                                             <TableCell>
-                                                <div
-                                                    css={
-                                                        classes.relativePositionedTableCell
-                                                    }
+                                                <Box
+                                                    sx={{
+                                                        position: "relative",
+                                                        height: "100%",
+                                                        width: "48px",
+                                                    }}
                                                 >
-                                                    <div
-                                                        css={
-                                                            classes.absolutePositionedTableCell
-                                                        }
+                                                    <Box
+                                                        sx={{
+                                                            position:
+                                                                "absolute",
+                                                            left: "-11px",
+                                                            height: "100%",
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                        }}
                                                     >
                                                         <Checkbox
                                                             checked={
@@ -315,19 +333,27 @@ export function CompanyUsers() {
                                                                 isCurrentSignedInUser
                                                             }
                                                         />
-                                                    </div>
-                                                </div>
+                                                    </Box>
+                                                </Box>
                                             </TableCell>
                                             <TableCell>
-                                                <div
-                                                    css={
-                                                        classes.relativePositionedTableCell
-                                                    }
+                                                <Box
+                                                    sx={{
+                                                        position: "relative",
+                                                        height: "100%",
+                                                        width: "48px",
+                                                    }}
                                                 >
-                                                    <div
-                                                        css={
-                                                            classes.absolutePositionedTableCell
-                                                        }
+                                                    <Box
+                                                        sx={{
+                                                            position:
+                                                                "absolute",
+                                                            left: "-11px",
+                                                            height: "100%",
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                        }}
                                                     >
                                                         {!isCurrentSignedInUser && (
                                                             <IconButton
@@ -338,8 +364,8 @@ export function CompanyUsers() {
                                                                 <Delete />
                                                             </IconButton>
                                                         )}
-                                                    </div>
-                                                </div>
+                                                    </Box>
+                                                </Box>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -361,7 +387,11 @@ export function CompanyUsers() {
                     >
                         <DialogTitle>Add User</DialogTitle>
                         <DialogContent>
-                            <div css={classes.textFieldContainer}>
+                            <Box
+                                sx={{
+                                    width: "300px",
+                                }}
+                            >
                                 <WrappedTextField
                                     value={emailControl.value}
                                     label="Email"
@@ -372,8 +402,12 @@ export function CompanyUsers() {
                                             : ""
                                     }
                                 />
-                            </div>
-                            <div css={classes.textFieldContainer}>
+                            </Box>
+                            <Box
+                                sx={{
+                                    width: "300px",
+                                }}
+                            >
                                 <WrappedTextField
                                     value={nameControl.value}
                                     autoFocus
@@ -385,8 +419,12 @@ export function CompanyUsers() {
                                             : ""
                                     }
                                 />
-                            </div>
-                            <div css={classes.textFieldContainer}>
+                            </Box>
+                            <Box
+                                sx={{
+                                    width: "300px",
+                                }}
+                            >
                                 <FormControlLabel
                                     control={
                                         <Checkbox
@@ -400,7 +438,7 @@ export function CompanyUsers() {
                                     }
                                     label="Can Modify Company Users"
                                 />
-                            </div>
+                            </Box>
                         </DialogContent>
                         <DialogActions>
                             <WrappedButton
@@ -432,50 +470,10 @@ export function CompanyUsers() {
                             onExited: onExitedUserDeleteDialog,
                         }}
                     />
-                </div>
+                </Box>
             ) : (
                 <CenterLoadingSpinner size="large" />
             )}
         </BoardsContainer>
     );
 }
-
-const createClasses = () => {
-    const tablePaperContainer = css`
-        padding: 32px;
-        width: 100%;
-        height: 100%;
-    `;
-
-    const relativePositionedTableCell = css`
-        position: relative;
-        height: 100%;
-        width: 48px;
-    `;
-
-    const absolutePositionedTableCell = css`
-        position: absolute;
-        left: -11px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    `;
-
-    const toolbarContainer = css`
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    `;
-
-    const textFieldContainer = css`
-        width: 300px;
-    `;
-
-    return {
-        tablePaperContainer,
-        relativePositionedTableCell,
-        absolutePositionedTableCell,
-        toolbarContainer,
-        textFieldContainer,
-    };
-};
