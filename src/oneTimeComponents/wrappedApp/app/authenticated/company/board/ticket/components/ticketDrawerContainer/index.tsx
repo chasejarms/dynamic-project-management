@@ -1,8 +1,6 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React from "react";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
-import { Tabs, Tab } from "@mui/material";
+import { Tabs, Tab, Box } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import { TicketType } from "../../../../../../../../../models/ticket/ticketType";
 import { DrawerContainer } from "../../../components/drawerContainer";
@@ -84,8 +82,6 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
             return tab.route === location.pathname;
         })?.route || false;
 
-    const classes = createClasses();
-
     function closeDrawer() {
         if (!props.disallowPageNavigation) {
             if (props.ticketType === TicketType.InProgress) {
@@ -106,7 +102,12 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
 
     return (
         <DrawerContainer darkOpacityOnClick={closeDrawer}>
-            <div css={classes.drawerAppBarContainer}>
+            <Box
+                sx={{
+                    flex: "0 0 auto",
+                    borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                }}
+            >
                 <Tabs
                     disabled={!!props.disallowPageNavigation}
                     value={matchingTabValue}
@@ -126,27 +127,15 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
                         );
                     })}
                 </Tabs>
-            </div>
-            <div css={classes.drawerInnerContentContainer}>
+            </Box>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                }}
+            >
                 {props.children}
-            </div>
+            </Box>
         </DrawerContainer>
     );
 }
-
-const createClasses = () => {
-    const drawerAppBarContainer = css`
-        flex: 0 0 auto;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    `;
-
-    const drawerInnerContentContainer = css`
-        flex-grow: 1;
-        display: flex;
-    `;
-
-    return {
-        drawerAppBarContainer,
-        drawerInnerContentContainer,
-    };
-};
