@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { INumberSection } from "../../../../../../../../../../../../../models/ticketTemplate/section/numberSection";
@@ -12,6 +10,7 @@ import {
 } from "../../../../../../../../../../../../../redux/ticketTemplates";
 import { WeightedPriorityTicketTemplateActions } from "../../weightedPriorityTicketTemplateActions";
 import { WeightedTicketTemplateNumberControl } from "./weightedTicketTemplateNumberControl";
+import { Box } from "@mui/material";
 
 export interface ITicketTemplateNumberFieldProps {
     disabled: boolean;
@@ -174,7 +173,6 @@ export function TicketTemplateNumberField(
         };
     }
 
-    const classes = createClasses();
     return (
         <>
             <div>
@@ -198,25 +196,19 @@ export function TicketTemplateNumberField(
                     maxError={section.maxError}
                 />
             </div>
-            <div css={classes.actionButtonContainerForNumberField}>
+            <Box
+                sx={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                }}
+            >
                 <WeightedPriorityTicketTemplateActions
                     disabled={props.disabled}
                     onClickAddAfter={onClickAddAfter(index)}
                     onClickDelete={onClickDelete(index)}
                 />
-            </div>
+            </Box>
         </>
     );
 }
-
-const createClasses = () => {
-    const actionButtonContainerForNumberField = css`
-        height: 100%;
-        display: flex;
-        align-items: center;
-    `;
-
-    return {
-        actionButtonContainerForNumberField,
-    };
-};

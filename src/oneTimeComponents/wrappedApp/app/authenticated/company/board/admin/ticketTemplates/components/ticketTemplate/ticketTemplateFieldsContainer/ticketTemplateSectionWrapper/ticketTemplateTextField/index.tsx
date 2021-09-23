@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
+import { Box } from "@mui/material";
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { INumberSection } from "../../../../../../../../../../../../../models/ticketTemplate/section/numberSection";
@@ -115,7 +114,6 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
         };
     }
 
-    const classes = createClasses();
     return (
         <>
             <div>
@@ -131,25 +129,19 @@ export function TicketTemplateTextField(props: ITicketTemplateTextFieldProps) {
                     onChangeRequiredValue={onChangeRequiredValue(index)}
                 />
             </div>
-            <div css={classes.actionButtonContainerForTextField}>
+            <Box
+                sx={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                }}
+            >
                 <WeightedPriorityTicketTemplateActions
                     disabled={props.disabled}
                     onClickAddAfter={onClickAddAfter(index)}
                     onClickDelete={onClickDelete(index)}
                 />
-            </div>
+            </Box>
         </>
     );
 }
-
-const createClasses = () => {
-    const actionButtonContainerForTextField = css`
-        height: 100%;
-        display: flex;
-        align-items: center;
-    `;
-
-    return {
-        actionButtonContainerForTextField,
-    };
-};
