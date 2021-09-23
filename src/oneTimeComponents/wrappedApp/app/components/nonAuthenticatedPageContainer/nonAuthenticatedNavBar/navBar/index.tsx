@@ -112,7 +112,7 @@ export default function NavBar(props: INavBarProps) {
 
 const createClasses = (theme: Theme) => {
     const navBar = css`
-        padding: ${Number(theme.spacing()) * 3}px;
+        padding: ${theme.spacing(3)};
         padding-left: 0;
         padding-right: 0;
         display: grid;
@@ -126,7 +126,7 @@ const createClasses = (theme: Theme) => {
     `;
 
     const navItemContainer = css`
-        margin: 0px ${Number(theme.spacing()) * 2}px;
+        margin: 0px ${theme.spacing(2)};
     `;
 
     const actionButtonContainer = css`

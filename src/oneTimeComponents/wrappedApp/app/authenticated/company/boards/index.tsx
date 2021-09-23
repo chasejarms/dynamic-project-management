@@ -150,8 +150,8 @@ const createClasses = (theme: Theme) => {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-auto-rows: min-content;
-        grid-gap: ${Number(theme.spacing()) * 2}px;
-        padding: ${Number(theme.spacing()) * 4}px;
+        grid-gap: ${theme.spacing(2)};
+        padding: ${theme.spacing(4)};
         width: 100%;
     `;
 

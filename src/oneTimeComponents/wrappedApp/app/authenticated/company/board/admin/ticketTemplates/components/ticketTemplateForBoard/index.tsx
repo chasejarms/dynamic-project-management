@@ -108,7 +108,7 @@ const createClasses = (theme: Theme) => {
 
     const titleContainer = css`
         flex-grow: 1;
-        margin-bottom: ${Number(Number(theme.spacing())) * 2}px;
+        margin-bottom: ${theme.spacing(2)};
     `;
 
     return {

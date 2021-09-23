@@ -120,7 +120,7 @@ const createClasses = (theme: Theme) => {
 
     const titleContainer = css`
         flex-grow: 1;
-        margin-bottom: ${Number(theme.spacing()) * 2}px;
+        margin-bottom: ${theme.spacing(2)};
     `;
 
     const actionButtonContainer = css`

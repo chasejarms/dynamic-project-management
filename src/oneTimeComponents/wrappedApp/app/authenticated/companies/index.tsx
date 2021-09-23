@@ -39,7 +39,7 @@ export function Companies() {
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr 1fr",
                     gridAutoRows: "min-content",
-                    padding: 32,
+                    padding: 4,
                     gridGap: 16,
                 }}
             >

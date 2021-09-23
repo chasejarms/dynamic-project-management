@@ -253,8 +253,8 @@ const createClasses = (theme: Theme) => {
         flex: 0 0 auto;
         display: flex;
         justify-content: space-between;
-        padding-left: ${Number(theme.spacing()) * 2}px;
-        padding-right: ${Number(theme.spacing()) * 2}px;
+        padding-left: ${theme.spacing(2)};
+        padding-right: ${theme.spacing(2)};
         align-items: center;
     `;
 
@@ -289,11 +289,11 @@ const createClasses = (theme: Theme) => {
     `;
 
     const rightPadding = css`
-        padding-right: ${Number(theme.spacing()) * 1.5}px;
+        padding-right: ${theme.spacing(1.5)};
     `;
 
     const leftPadding = css`
-        padding-left: ${Number(theme.spacing()) * 1.5}px;
+        padding-left: ${theme.spacing(1.5)};
     `;
 
     const breadcrumbAndIconContainer = css`

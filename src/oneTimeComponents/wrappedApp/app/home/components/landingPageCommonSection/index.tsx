@@ -80,18 +80,18 @@ export function LandingPageCommonSection(
 }
 
 const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
-    const fourTimes = Number(theme.spacing()) * 4;
-    const sixTimes = Number(theme.spacing()) * 6;
+    const fourTimes = theme.spacing(4);
+    const sixTimes = theme.spacing(6);
 
     const paddingTop = hideTopAndBottomPadding ? 0 : sixTimes;
     const paddingBottom = hideTopAndBottomPadding ? 0 : sixTimes;
     const container = css`
-        padding-top: ${paddingTop}px;
-        padding-right: ${fourTimes}px;
-        padding-bottom: ${paddingBottom}px;
-        padding-left: ${fourTimes}px;
+        padding-top: ${paddingTop};
+        padding-right: ${fourTimes};
+        padding-bottom: ${paddingBottom};
+        padding-left: ${fourTimes};
         display: grid;
-        grid-gap: ${Number(theme.spacing()) * 3}px;
+        grid-gap: ${theme.spacing(3)};
         width: 100vw;
     `;
 
@@ -105,17 +105,17 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
 
     const smallGridTemplateColumns = css`
         grid-template-columns: 1fr;
-        padding-left: ${Number(theme.spacing()) * 3}px;
-        padding-right: ${Number(theme.spacing()) * 3}px;
+        padding-left: ${theme.spacing(3)};
+        padding-right: ${theme.spacing(3)};
         padding-bottom: 0px;
     `;
 
     const bottomMargin24 = css`
-        margin-bottom: ${Number(theme.spacing()) * 3}px;
+        margin-bottom: ${theme.spacing(3)};
     `;
 
     const bottomMargin32 = css`
-        margin-bottom: ${Number(theme.spacing()) * 4}px;
+        margin-bottom: ${theme.spacing(4)};
     `;
 
     const wrappedButtonContainer = css`
@@ -143,7 +143,7 @@ const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
     `;
 
     const svgContainerSmallPadding = css`
-        padding-top: ${Number(theme.spacing()) * 3}px;
+        padding-top: ${theme.spacing(3)};
     `;
 
     return {
