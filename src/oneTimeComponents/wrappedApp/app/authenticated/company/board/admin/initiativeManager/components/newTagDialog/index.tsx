@@ -1,11 +1,9 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import {
     DialogTitle,
     DialogContent,
     DialogActions,
     Dialog,
-    useTheme,
+    Box,
 } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Api } from "../../../../../../../../../../api";
@@ -14,7 +12,6 @@ import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParam
 import { useControl } from "../../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../../../../models/tag";
 import { tagColors } from "../../../../../../../../../../models/tagColor";
-import { composeCSS } from "../../../../../../../../../../styles/composeCSS";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../../../../../../../components/wrappedButton";
@@ -27,7 +24,6 @@ export interface INewTagDialogProps {
 }
 
 export function NewTagDialog(props: INewTagDialogProps) {
-    const theme = useTheme();
     const { boardId, companyId } = useAppRouterParams();
 
     const newTagControl = useControl({
@@ -90,7 +86,6 @@ export function NewTagDialog(props: INewTagDialogProps) {
         };
     }, [isCreatingTag]);
 
-    const classes = createClasses();
     return (
         <Dialog
             open={props.open}
@@ -103,7 +98,11 @@ export function NewTagDialog(props: INewTagDialogProps) {
         >
             <DialogTitle>Create Tag</DialogTitle>
             <DialogContent>
-                <div css={classes.tagInputContainer}>
+                <Box
+                    sx={{
+                        width: 400,
+                    }}
+                >
                     <WrappedTextField
                         value={newTagControl.value}
                         label="Tag Name"
@@ -112,46 +111,56 @@ export function NewTagDialog(props: INewTagDialogProps) {
                             showNewTagError ? newTagControl.errorMessage : ""
                         }
                     />
-                </div>
-                <div css={classes.colorContainer}>
+                </Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        width: 400,
+                        marginBottom: 16,
+                        marginTop: 16,
+                    }}
+                >
                     {tagColors.map((color) => {
-                        const hexColor = mapColorToMaterialThemeColorLight(
+                        const bgInnerColor = mapColorToMaterialThemeColorLight(
                             color
                         );
-                        const individualColorContainer = css`
-                            background-color: ${hexColor};
-                        `;
 
-                        const hexColorMain = mapColorToMaterialThemeColorMain(
+                        const bgOuterColor = mapColorToMaterialThemeColorMain(
                             color
                         );
-                        const individualColorOuterContainer = css`
-                            background-color: ${hexColorMain};
-                        `;
-
                         const isSelected = colorControl.value === color;
+                        const actualBgOuterColor = isSelected
+                            ? bgOuterColor
+                            : "transparent";
 
                         return (
-                            <div
-                                css={composeCSS(
-                                    individualColorOuterContainer,
-                                    classes.commonIndividualColorOuterContainer,
-                                    !isSelected &&
-                                        classes.unselectedInvidualColorOuterContainer
-                                )}
+                            <Box
+                                sx={{
+                                    height: 40,
+                                    width: 40,
+                                    borderRadius: "50%",
+                                    marginRight: 16,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    bgcolor: actualBgOuterColor,
+                                }}
                                 key={color}
                             >
-                                <div
-                                    css={composeCSS(
-                                        individualColorContainer,
-                                        classes.commonIndividualColorContainer
-                                    )}
+                                <Box
+                                    sx={{
+                                        height: 32,
+                                        width: 32,
+                                        borderRadius: "50%",
+                                        cursor: "pointer",
+                                        bgcolor: bgInnerColor,
+                                    }}
                                     onClick={onChangeColor(color)}
-                                ></div>
-                            </div>
+                                />
+                            </Box>
                         );
                     })}
-                </div>
+                </Box>
             </DialogContent>
             <DialogActions>
                 <WrappedButton onClick={props.onClose} disabled={isCreatingTag}>
@@ -170,51 +179,3 @@ export function NewTagDialog(props: INewTagDialogProps) {
         </Dialog>
     );
 }
-
-const createClasses = () => {
-    const tagInputContainer = css`
-        width: 400px;
-    `;
-
-    const colorContainer = css`
-        display: flex;
-        width: 400px;
-        margin-bottom: 16px;
-        margin-top: 16px;
-    `;
-
-    const commonIndividualColorContainer = css`
-        height: 32px;
-        width: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-    `;
-
-    const commonIndividualColorOuterContainer = css`
-        height: 40px;
-        width: 40px;
-        border-radius: 50%;
-        margin-right: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const tagColorHeader = css`
-        margin-top: 16px;
-        margin-bottom: 16px;
-    `;
-
-    const unselectedInvidualColorOuterContainer = css`
-        background-color: transparent;
-    `;
-
-    return {
-        tagInputContainer,
-        colorContainer,
-        commonIndividualColorContainer,
-        tagColorHeader,
-        commonIndividualColorOuterContainer,
-        unselectedInvidualColorOuterContainer,
-    };
-};
