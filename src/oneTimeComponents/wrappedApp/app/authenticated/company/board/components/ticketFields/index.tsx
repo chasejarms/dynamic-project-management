@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSetTicketFromTicketTemplateChange } from "./hooks/useSetTicketFromTicketTemplateChange";
 import { IStoreState } from "../../../../../../../../redux/storeState";
@@ -8,9 +6,9 @@ import {
     updateTicketSummary,
     updateSectionValue,
 } from "../../../../../../../../redux/ticketControlMappedState";
-import { composeCSS } from "../../../../../../../../styles/composeCSS";
 import { WrappedTextField } from "../../../../../components/wrappedTextField";
 import { ChangeEventHandler } from "react";
+import { Box } from "@mui/material";
 
 export interface ITicketProps {
     ticketTemplateId: string;
@@ -40,8 +38,6 @@ export function TicketFields(props: ITicketProps) {
         ticket: { title, summary, sections },
         ticketTemplate,
     } = ticketState;
-
-    const classes = createClasses();
 
     const onChangeTicketTitle: ChangeEventHandler<
         HTMLInputElement | HTMLTextAreaElement
@@ -82,11 +78,13 @@ export function TicketFields(props: ITicketProps) {
     }
 
     return (
-        <div
-            css={composeCSS(
-                classes.ticketPreviewContentContainer,
-                !!props.removePadding && classes.noPadding
-            )}
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                overflow: "auto",
+                padding: !!props.removePadding ? 0 : 2,
+            }}
         >
             <WrappedTextField
                 value={title.value}
@@ -141,24 +139,6 @@ export function TicketFields(props: ITicketProps) {
                     );
                 }
             })}
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const ticketPreviewContentContainer = css`
-        display: flex;
-        flex-direction: column;
-        overflow: auto;
-        padding: 16px;
-    `;
-
-    const noPadding = css`
-        padding: 0;
-    `;
-
-    return {
-        ticketPreviewContentContainer,
-        noPadding,
-    };
-};
