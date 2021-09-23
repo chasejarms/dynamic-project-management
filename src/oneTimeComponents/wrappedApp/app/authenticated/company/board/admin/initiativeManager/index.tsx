@@ -188,8 +188,8 @@ export function InitiativeManager() {
                     <Paper>
                         <Toolbar
                             sx={{
-                                paddingLeft: 16,
-                                paddingRight: 16,
+                                paddingLeft: 2,
+                                paddingRight: 2,
                             }}
                         >
                             <Box

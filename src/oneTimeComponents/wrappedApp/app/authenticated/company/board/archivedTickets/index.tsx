@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
+import { Box } from "@mui/material";
 import { BoardContainer } from "../components/boardContainer";
 import { TicketContainer } from "../components/ticketContainer";
 import { TicketForBoard } from "../components/ticketForBoard";
@@ -20,11 +19,19 @@ export function ArchivedTickets() {
         columns,
     } = useArchivedTickets();
 
-    const classes = createClasses();
-
     return (
         <BoardContainer>
-            <div css={classes.pageContainer}>
+            <Box
+                sx={{
+                    padding: 2,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                    width: "100%",
+                    position: "relative",
+                }}
+            >
                 <TicketDrawerRoutes
                     onUpdateTicket={onUpdateTicket}
                     onDeleteTicket={onDeleteTicket}
@@ -69,22 +76,7 @@ export function ArchivedTickets() {
                         );
                     })}
                 </TicketContainer>
-            </div>
+            </Box>
         </BoardContainer>
     );
 }
-
-const createClasses = () => {
-    const pageContainer = css`
-        padding: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        position: relative;
-    `;
-
-    return {
-        pageContainer,
-    };
-};

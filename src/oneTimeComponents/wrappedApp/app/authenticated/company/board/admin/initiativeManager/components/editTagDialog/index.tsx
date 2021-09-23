@@ -129,8 +129,8 @@ export function EditTagDialog(props: IEditTagDialogProps) {
                     sx={{
                         display: "flex",
                         width: 400,
-                        marginBottom: 16,
-                        marginTop: 16,
+                        marginBottom: 2,
+                        marginTop: 2,
                     }}
                 >
                     {tagColors.map((color) => {
@@ -154,7 +154,7 @@ export function EditTagDialog(props: IEditTagDialogProps) {
                                     height: 40,
                                     width: 40,
                                     borderRadius: "50%",
-                                    marginRight: 16,
+                                    marginRight: 2,
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",

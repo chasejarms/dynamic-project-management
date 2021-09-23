@@ -124,10 +124,10 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
                 <CardContent
                     sx={{
                         "&:last-child": {
-                            paddingBottom: 8,
+                            paddingBottom: 1,
                         },
-                        paddingTop: 8,
-                        paddingRight: 8,
+                        paddingTop: 1,
+                        paddingRight: 1,
                     }}
                 >
                     <div css={classes.cardContentContainer}>

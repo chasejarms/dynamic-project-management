@@ -456,7 +456,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                 <CardContent
                     sx={{
                         "&:last-child": {
-                            paddingBottom: 16,
+                            paddingBottom: 2,
                         },
                     }}
                 >

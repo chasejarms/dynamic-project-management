@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { Snackbar } from "@mui/material";
 import { BoardAdminContainer } from "../../components/boardAdminContainer";
 import { CenterLoadingSpinner } from "../../../../../components/centerLoadingSpinner";
@@ -16,14 +14,10 @@ export function EditTicketTemplate() {
         isUpdatingTicketTemplate,
     } = useEditTicketTemplateEndpoints();
 
-    const classes = createClasses();
-
     return (
         <BoardAdminContainer>
             {isLoadingTicketTemplate ? (
-                <div css={classes.centerContainer}>
-                    <CenterLoadingSpinner size="large" />
-                </div>
+                <CenterLoadingSpinner size="large" />
             ) : (
                 <TicketTemplate
                     onClickActionButton={onClickUpdateTicketTemplate}
@@ -41,16 +35,3 @@ export function EditTicketTemplate() {
         </BoardAdminContainer>
     );
 }
-
-const createClasses = () => {
-    const centerContainer = css`
-        display: flex;
-        flex-grow: 1;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    return {
-        centerContainer,
-    };
-};

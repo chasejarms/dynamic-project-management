@@ -25,7 +25,7 @@ export const TagChip = React.forwardRef<any, ITagChipProps>(
                             : undefined,
                         borderWidth: 2,
                         marginRight: props.isUsedInVerticalList ? "auto" : 0,
-                        marginBottom: props.isUsedInVerticalList ? 8 : 0,
+                        marginBottom: props.isUsedInVerticalList ? 1 : 0,
                     }}
                     {...chipProps}
                 />
@@ -43,7 +43,7 @@ export const TagChip = React.forwardRef<any, ITagChipProps>(
                             : undefined,
                         borderWidth: 2,
                         marginRight: props.isUsedInVerticalList ? "auto" : 0,
-                        marginBottom: props.isUsedInVerticalList ? 8 : 0,
+                        marginBottom: props.isUsedInVerticalList ? 1 : 0,
                     }}
                     {...chipProps}
                 />
@@ -61,7 +61,7 @@ export const TagChip = React.forwardRef<any, ITagChipProps>(
                             : undefined,
                         borderWidth: 2,
                         marginRight: props.isUsedInVerticalList ? "auto" : 0,
-                        marginBottom: props.isUsedInVerticalList ? 8 : 0,
+                        marginBottom: props.isUsedInVerticalList ? 1 : 0,
                     }}
                     {...chipProps}
                 />
@@ -79,7 +79,7 @@ export const TagChip = React.forwardRef<any, ITagChipProps>(
                             : undefined,
                         borderWidth: 2,
                         marginRight: props.isUsedInVerticalList ? "auto" : 0,
-                        marginBottom: props.isUsedInVerticalList ? 8 : 0,
+                        marginBottom: props.isUsedInVerticalList ? 1 : 0,
                     }}
                     {...chipProps}
                 />
@@ -96,7 +96,7 @@ export const TagChip = React.forwardRef<any, ITagChipProps>(
                             ? "white"
                             : undefined,
                         marginRight: props.isUsedInVerticalList ? "auto" : 0,
-                        marginBottom: props.isUsedInVerticalList ? 8 : 0,
+                        marginBottom: props.isUsedInVerticalList ? 1 : 0,
                     }}
                     {...chipProps}
                 />
