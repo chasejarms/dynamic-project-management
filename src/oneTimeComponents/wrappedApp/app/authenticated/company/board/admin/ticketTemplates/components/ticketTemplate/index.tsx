@@ -47,13 +47,13 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                 />
                 <Box
                     sx={{
-                        padding: 32,
-                        paddingLeft: 16,
+                        padding: 4,
+                        paddingLeft: 2,
                     }}
                 >
                     <Box
                         sx={{
-                            paddingBottom: 16,
+                            paddingBottom: 2,
                         }}
                     >
                         <PriorityWeightingFunction

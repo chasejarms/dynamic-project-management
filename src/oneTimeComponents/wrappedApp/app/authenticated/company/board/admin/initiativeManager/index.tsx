@@ -180,7 +180,7 @@ export function InitiativeManager() {
             {!isLoadingTags ? (
                 <Box
                     sx={{
-                        padding: 32,
+                        padding: 4,
                         width: "100%",
                         height: "100%",
                     }}

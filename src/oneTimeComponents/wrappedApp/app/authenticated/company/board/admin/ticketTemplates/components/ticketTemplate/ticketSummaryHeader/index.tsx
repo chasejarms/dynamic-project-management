@@ -13,7 +13,7 @@ export function TicketSummaryHeader(props: ITicketSummaryHeaderProps) {
                 display: "flex",
                 justifyContent: "space-between",
                 bgcolor: "grey.200",
-                padding: 16,
+                padding: 2,
             }}
         >
             <Typography variant="h6">Ticket Preview</Typography>
