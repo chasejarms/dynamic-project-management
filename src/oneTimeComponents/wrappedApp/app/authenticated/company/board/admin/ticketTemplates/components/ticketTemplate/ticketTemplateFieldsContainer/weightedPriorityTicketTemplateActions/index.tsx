@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { IconButton, Popover } from "@mui/material";
+import { IconButton, Popover, Box } from "@mui/material";
 import React, { useState } from "react";
 import { Add, DeleteForever } from "@mui/icons-material";
 import {
@@ -17,8 +15,6 @@ export interface IWeightedPriorityTicketTemplateActions {
 export function WeightedPriorityTicketTemplateActions(
     props: IWeightedPriorityTicketTemplateActions
 ) {
-    const classes = createClasses();
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [popoverIsOpen, setPopoverIsOpen] = useState(false);
     function onClickAdd(event: any) {
@@ -46,7 +42,15 @@ export function WeightedPriorityTicketTemplateActions(
     ];
 
     return (
-        <div css={classes.container}>
+        <Box
+            sx={{
+                position: "relative",
+                width: "80px",
+                display: "grid",
+                gridAutoFlow: "column",
+                top: "8px",
+            }}
+        >
             <div>
                 <IconButton
                     disabled={props.disabled}
@@ -77,19 +81,6 @@ export function WeightedPriorityTicketTemplateActions(
                     onClose={onClosePopover}
                 />
             </Popover>
-        </div>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        position: relative;
-        width: 80px;
-        display: grid;
-        grid-auto-flow: column;
-    `;
-
-    return {
-        container,
-    };
-};
