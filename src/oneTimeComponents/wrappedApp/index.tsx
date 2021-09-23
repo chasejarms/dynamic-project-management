@@ -8,7 +8,14 @@ import { Provider as ReduxProvider } from "react-redux";
 import { store } from "../../redux/store";
 import { BreakpointProvider } from "./app/hooks/useBreakpoint";
 
-const theme = createTheme({ palette: { mode: "dark" } });
+const theme = createTheme({
+    palette: {
+        mode: "dark",
+        primary: {
+            main: "#3f51b5",
+        },
+    },
+});
 
 export function WrappedApp() {
     const queries = {

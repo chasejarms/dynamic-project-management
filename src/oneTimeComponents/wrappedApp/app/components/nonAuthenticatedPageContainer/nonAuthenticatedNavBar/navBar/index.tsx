@@ -1,7 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Typography, Button, Theme, useTheme } from "@mui/material";
-import { composeCSS } from "../../../../../../../styles/composeCSS";
+import { Typography, Button, Box } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import { CompanyLogo } from "../companyLogo";
 import { RouteCreator } from "../../../../utils/routeCreator";
@@ -25,8 +22,6 @@ export interface INavBarProps {
 }
 
 export default function NavBar(props: INavBarProps) {
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const history = useHistory();
     const location = useLocation();
 
@@ -42,39 +37,78 @@ export default function NavBar(props: INavBarProps) {
     }
 
     return (
-        <div css={classes.navBar}>
-            <div css={classes.logoContainer}>
-                <div css={classes.logoInnerContainer}>
+        <Box
+            sx={{
+                padding: 3,
+                paddingLeft: 0,
+                paddingRight: 0,
+                display: "grid",
+                position: "relative",
+            }}
+        >
+            <Box
+                sx={{
+                    position: "relative",
+                }}
+            >
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "-12px",
+                    }}
+                >
                     <CompanyLogo />
-                </div>
-            </div>
-            <div css={classes.innerNavBar}>
+                </Box>
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
                 {props.navItems?.map(({ label, route }) => {
                     const itemIsActive = location.pathname.endsWith(route);
 
                     return (
-                        <div
-                            css={composeCSS(
-                                classes.navItemContainer,
-                                classes.navInactiveItem,
-                                itemIsActive && classes.activeItem
-                            )}
+                        <Box
+                            sx={{
+                                my: 0,
+                                mx: 2,
+                                borderBottom: "3px solid transparent",
+                                borderBottomColor: itemIsActive
+                                    ? "primary.main"
+                                    : "transparent",
+                            }}
                             key={label}
                         >
-                            <div
+                            <Box
                                 onClick={navigateToRoute(route)}
-                                css={composeCSS(
-                                    classes.typographyContainer,
-                                    !!props.hideNavItems && classes.hideNavItems
-                                )}
+                                sx={{
+                                    "&:hover": {
+                                        cursor: "pointer",
+                                    },
+                                    visibility: !!props.hideNavItems
+                                        ? "hidden"
+                                        : "visible",
+                                }}
                             >
                                 <Typography>{label}</Typography>
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
                     );
                 })}
-            </div>
-            <div css={classes.actionButtonContainer}>
+            </Box>
+            <Box
+                sx={{
+                    position: "absolute",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    right: 0,
+                }}
+            >
                 {props.actionButtonType ===
                     NavBarActionButtonTypeEnum.SignIn && (
                     <Button
@@ -105,76 +139,7 @@ export default function NavBar(props: INavBarProps) {
                         Sign Out
                     </Button>
                 )}
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const navBar = css`
-        padding: ${theme.spacing(3)};
-        padding-left: 0;
-        padding-right: 0;
-        display: grid;
-        position: relative;
-    `;
-
-    const innerNavBar = css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const navItemContainer = css`
-        margin: 0px ${theme.spacing(2)};
-    `;
-
-    const actionButtonContainer = css`
-        position: absolute;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        right: 0;
-    `;
-
-    const typographyContainer = css`
-        &:hover {
-            cursor: pointer;
-        }
-    `;
-
-    const activeItem = css`
-        border-bottom-color: ${theme.palette.primary.main};
-    `;
-
-    const navInactiveItem = css`
-        border-bottom: 3px solid transparent;
-    `;
-
-    const hideNavItems = css`
-        visibility: hidden;
-    `;
-
-    const logoContainer = css`
-        position: relative;
-    `;
-
-    const logoInnerContainer = css`
-        position: absolute;
-        top: -12px;
-    `;
-
-    return {
-        navBar,
-        innerNavBar,
-        navItemContainer,
-        actionButtonContainer,
-        typographyContainer,
-        activeItem,
-        navInactiveItem,
-        hideNavItems,
-        logoInnerContainer,
-        logoContainer,
-    };
-};

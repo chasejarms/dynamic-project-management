@@ -1,10 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React, { useState } from "react";
 import { INavBarItem } from "../navBar";
-import { Theme, Typography, useTheme } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { Close, Menu } from "@mui/icons-material";
-import { composeCSS } from "../../../../../../../styles/composeCSS";
 import { useHistory } from "react-router-dom";
 import { CompanyLogo } from "../companyLogo";
 import { RouteCreator } from "../../../../utils/routeCreator";
@@ -15,8 +12,6 @@ interface ISmallNavBarProps {
 
 export function SmallNavBar(props: ISmallNavBarProps) {
     const history = useHistory();
-    const theme = useTheme();
-    const classes = createClasses(theme);
     const [open, setOpen] = useState(false);
     const internalNavItems = [...props.navItems].concat([
         {
@@ -26,53 +21,120 @@ export function SmallNavBar(props: ISmallNavBarProps) {
     ]);
 
     return (
-        <div css={classes.persistentNavBar}>
-            <div css={classes.logoContainer}>
-                <div css={classes.innerLogoContainer}>
+        <Box
+            sx={{
+                height: "60px",
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100vw",
+            }}
+        >
+            <Box
+                sx={{
+                    position: "relative",
+                }}
+            >
+                <Box
+                    sx={{
+                        position: "absolute",
+                        paddingLeft: 3,
+                        top: "8px",
+                        left: "-2px",
+                    }}
+                >
                     <CompanyLogo />
-                </div>
-            </div>
-            <div css={classes.openCloseIconContainer}>
+                </Box>
+            </Box>
+            <Box
+                sx={{
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    py: 0,
+                    px: 2,
+                    zIndex: 3,
+                }}
+            >
                 {!open && (
-                    <div css={classes.iconWrapper}>
+                    <Box
+                        sx={{
+                            cursor: "pointer",
+                        }}
+                    >
                         <Menu
-                            css={classes.icon}
                             onClick={() => {
                                 setOpen(true);
                             }}
                         />
-                    </div>
+                    </Box>
                 )}
-            </div>
+            </Box>
             {open && (
                 <>
-                    <div
-                        css={composeCSS(
-                            classes.persistentNavBar,
-                            classes.absolutePositionedPersistentNavBar
-                        )}
+                    <Box
+                        sx={{
+                            height: "60px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            width: "100vw",
+                            position: "absolute",
+                            zIndex: 3,
+                        }}
                     >
                         <div />
-                        <div
-                            css={composeCSS(
-                                classes.openCloseIconContainer,
-                                classes.whiteText
-                            )}
+                        <Box
+                            sx={{
+                                height: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                py: 0,
+                                px: 2,
+                                zIndex: 3,
+                                color: "white",
+                            }}
                         >
-                            <div css={classes.iconWrapper}>
+                            <Box
+                                sx={{
+                                    cursor: "pointer",
+                                }}
+                            >
                                 <Close
-                                    css={classes.icon}
                                     onClick={() => {
                                         setOpen(false);
                                     }}
                                 />
-                            </div>
-                        </div>
-                    </div>
-                    <div css={classes.fullPageNavContainer}>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            height: "100vh",
+                            width: "100vw",
+                            display: "grid",
+                            gridTemplateRows: "0 1fr",
+                            bgcolor: "primary.main",
+                            opacity: 0.95,
+                            position: "absolute",
+                            zIndex: 2,
+                        }}
+                    >
                         <div />
-                        <div css={classes.gridCenterContent}>
-                            <div css={classes.linkGrid}>
+                        <Box
+                            sx={{
+                                display: "grid",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: "grid",
+                                    gridTemplateRows: "min-content",
+                                    gap: "20px",
+                                }}
+                            >
                                 {internalNavItems.map(({ label, route }) => {
                                     const onClick = () => {
                                         setOpen(false);
@@ -80,119 +142,30 @@ export function SmallNavBar(props: ISmallNavBarProps) {
                                     };
                                     return (
                                         <div onClick={onClick} key={route}>
-                                            <div css={classes.linkContainer}>
+                                            <Box
+                                                sx={{
+                                                    cursor: "pointer",
+                                                }}
+                                            >
                                                 <Typography
                                                     variant="h4"
                                                     key={label}
                                                     sx={{
                                                         color: "white",
-                                                        zIndex: 2,
+                                                        zIndex: 3,
                                                     }}
                                                 >
                                                     {label}
                                                 </Typography>
-                                            </div>
+                                            </Box>
                                         </div>
                                     );
                                 })}
-                            </div>
-                        </div>
-                    </div>
+                            </Box>
+                        </Box>
+                    </Box>
                 </>
             )}
-        </div>
+        </Box>
     );
-}
-
-function createClasses(theme: Theme) {
-    const linkGrid = css`
-        display: grid;
-        grid-template-rows: min-content;
-        grid-gap: 20px;
-    `;
-
-    const persistentNavBar = css`
-        height: 60px;
-        display: flex;
-        justify-content: space-between;
-        width: 100vw;
-    `;
-
-    const fullPageNavContainer = css`
-        height: 100vh;
-        width: 100vw;
-        display: grid;
-        grid-template-rows: 0 1fr;
-        background-color: ${theme.palette.primary.main};
-        opacity: 0.95;
-        position: absolute;
-        z-index: 1;
-    `;
-
-    const absolutePositionedPersistentNavBar = css`
-        position: absolute;
-        z-index: 2;
-    `;
-
-    const navTextSmallNav = css`
-        color: white;
-    `;
-
-    const gridCenterContent = css`
-        display: grid;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const openCloseIconContainer = css`
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0px 16px;
-        z-index: 2;
-    `;
-
-    const whiteText = css`
-        color: white;
-    `;
-
-    const iconWrapper = css`
-        cursor: pointer;
-    `;
-
-    const linkContainer = css`
-        cursor: pointer;
-    `;
-
-    const icon = css`
-        /* font-size: 2rem; */
-    `;
-
-    const logoContainer = css`
-        position: relative;
-    `;
-
-    const innerLogoContainer = css`
-        position: absolute;
-        padding-left: 24px;
-        top: 8px;
-        left: -2px;
-    `;
-
-    return {
-        logoContainer,
-        innerLogoContainer,
-        persistentNavBar,
-        fullPageNavContainer,
-        navTextSmallNav,
-        linkGrid,
-        gridCenterContent,
-        openCloseIconContainer,
-        whiteText,
-        iconWrapper,
-        linkContainer,
-        icon,
-        absolutePositionedPersistentNavBar,
-    };
 }
