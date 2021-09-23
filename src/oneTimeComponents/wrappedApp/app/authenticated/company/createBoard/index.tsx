@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Api } from "../../../../../../api";
 import { StringValidator } from "../../../../../../classes/StringValidator";
@@ -15,12 +13,11 @@ import { setUserAsBoardAdmin } from "../../../../../../redux/appBootstrapInforma
 import { useDispatch } from "react-redux";
 import { BoardPriorityType } from "../../../../../../models/boardPriorityType";
 import { RouteCreator } from "../../../utils/routeCreator";
+import { Box } from "@mui/material";
 
 export function CreateBoard() {
-    const classes = createClasses();
-
     const history = useHistory();
-    const { companyId, boardId } = useAppRouterParams();
+    const { companyId } = useAppRouterParams();
 
     const boardNameControl = useControl({
         value: "",
@@ -120,10 +117,29 @@ export function CreateBoard() {
 
     return (
         <BoardsContainer>
-            <div css={classes.container}>
-                <div css={classes.controlsContainer}>
+            <Box
+                sx={{
+                    display: "flex",
+                    height: "100%",
+                    flexDirection: "column",
+                    width: "100%",
+                }}
+            >
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
                     <div>
-                        <div css={classes.columnInputContainer}>
+                        <Box
+                            sx={{
+                                width: "300px",
+                            }}
+                        >
                             <WrappedTextField
                                 value={boardNameControl.value}
                                 label="Board Name"
@@ -135,8 +151,12 @@ export function CreateBoard() {
                                 }
                                 disabled={isCreatingBoard}
                             />
-                        </div>
-                        <div css={classes.columnInputContainer}>
+                        </Box>
+                        <Box
+                            sx={{
+                                width: "300px",
+                            }}
+                        >
                             <WrappedTextField
                                 value={boardDescriptionControl.value}
                                 label="Board Description"
@@ -148,43 +168,11 @@ export function CreateBoard() {
                                 }
                                 disabled={isCreatingBoard}
                             />
-                        </div>
+                        </Box>
                     </div>
-                </div>
+                </Box>
                 <BottomPageToolbar wrappedButtonProps={wrappedButtonProps} />
-            </div>
+            </Box>
         </BoardsContainer>
     );
 }
-
-const createClasses = () => {
-    const container = css`
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-        width: 100%;
-    `;
-
-    const controlsContainer = css`
-        flex-grow: 1;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const columnInputContainer = css`
-        width: 300px;
-    `;
-
-    const bottomToolbarContainer = css`
-        width: 100%;
-    `;
-
-    return {
-        container,
-        columnInputContainer,
-        controlsContainer,
-        bottomToolbarContainer,
-    };
-};
