@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { WrappedButton } from "../../../../components/wrappedButton";
 import { EditableColumnCard } from "./components/editableColumnCard";
@@ -9,6 +7,7 @@ import { ContentWithDynamicToolbar } from "../components/contentWithDynamicToolb
 import { useBoardColumnEditState } from "./hooks/useBoardColumnEditState";
 import { CenterErrorMessage } from "./components/centerErrorMessage";
 import { boardEditTestIds } from "./boardEdit.testIds";
+import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
 
 export function BoardEdit() {
     return (
@@ -19,8 +18,6 @@ export function BoardEdit() {
 }
 
 export function BoardEditInnerContent() {
-    const classes = createClasses();
-
     const {
         isInErrorState,
         columnDataHasChanged,
@@ -36,7 +33,16 @@ export function BoardEditInnerContent() {
     } = useBoardColumnEditState();
 
     const toolbarContent = (
-        <div css={classes.toolbarContainer}>
+        <Box
+            sx={{
+                py: 0,
+                px: 3,
+                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+            }}
+        >
             <div>
                 <WrappedButton
                     disabled={columnDataHasChanged || isSavingColumns}
@@ -48,7 +54,13 @@ export function BoardEditInnerContent() {
                     Back To Board
                 </WrappedButton>
             </div>
-            <div css={classes.actionButtonContainer}>
+            <Box
+                sx={{
+                    display: "grid",
+                    gap: 1,
+                    gridTemplateColumns: "1fr 1fr",
+                }}
+            >
                 <WrappedButton
                     disabled={!columnDataHasChanged || isSavingColumns}
                     onClick={resetChanges}
@@ -72,32 +84,45 @@ export function BoardEditInnerContent() {
                 >
                     Save Changes
                 </WrappedButton>
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 
     const mainContent = (
-        <div css={classes.mainContentContainer}>
+        <Box
+            sx={{
+                height: "100%",
+            }}
+        >
             <DragDropContext onDragEnd={onDragEnd}>
-                <div css={classes.innerContentContainer}>
+                <Box
+                    sx={{
+                        height: "100%",
+                    }}
+                >
                     {isLoadingColumns ? (
-                        <div css={classes.spinnerContainer}>
-                            <CircularProgress
-                                color="primary"
-                                size={24}
-                                thickness={4}
-                            />
-                        </div>
+                        <CenterLoadingSpinner size="large" />
                     ) : (
-                        <div css={classes.columnAndHeaderContainer}>
+                        <Box
+                            sx={{
+                                width: "100%",
+                                height: "100%",
+                            }}
+                        >
                             <Droppable
                                 droppableId="board-columns"
                                 direction="horizontal"
                             >
                                 {(provided) => {
                                     return (
-                                        <div
-                                            css={classes.columnsContainer}
+                                        <Box
+                                            sx={{
+                                                width: "100%",
+                                                display: "flex",
+                                                overflow: "auto",
+                                                padding: 4,
+                                                paddingTop: 0,
+                                            }}
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
                                         >
@@ -125,15 +150,15 @@ export function BoardEditInnerContent() {
                                                 }
                                             )}
                                             {provided.placeholder}
-                                        </div>
+                                        </Box>
                                     );
                                 }}
                             </Droppable>
-                        </div>
+                        </Box>
                     )}
-                </div>
+                </Box>
             </DragDropContext>
-        </div>
+        </Box>
     );
 
     return (
@@ -148,58 +173,4 @@ export function BoardEditInnerContent() {
             )}
         </>
     );
-}
-
-function createClasses() {
-    const innerContentContainer = css`
-        height: 100%;
-    `;
-
-    const spinnerContainer = css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    `;
-
-    const columnsContainer = css`
-        width: 100%;
-        display: flex;
-        overflow: auto;
-        padding: 32px;
-        padding-top: 0;
-    `;
-
-    const columnAndHeaderContainer = css`
-        width: 100%;
-        height: 100%;
-    `;
-
-    const mainContentContainer = css`
-        flex-grow: 1;
-    `;
-
-    const toolbarContainer = css`
-        padding: 0px 24px 0 24px;
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    `;
-
-    const actionButtonContainer = css`
-        display: grid;
-        grid-gap: 8px;
-        grid-template-columns: 1fr 1fr;
-    `;
-
-    return {
-        innerContentContainer,
-        spinnerContainer,
-        columnsContainer,
-        columnAndHeaderContainer,
-        mainContentContainer,
-        toolbarContainer,
-        actionButtonContainer,
-    };
 }
