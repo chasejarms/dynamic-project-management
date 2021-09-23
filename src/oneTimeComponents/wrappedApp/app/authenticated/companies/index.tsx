@@ -40,7 +40,7 @@ export function Companies() {
                     gridTemplateColumns: "1fr 1fr 1fr",
                     gridAutoRows: "min-content",
                     padding: 4,
-                    gridGap: 16,
+                    gap: 2,
                 }}
             >
                 {companies?.map((company) => {

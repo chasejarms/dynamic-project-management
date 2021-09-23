@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Theme, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ErrorOutline } from "@mui/icons-material";
 
 export interface ICenterErrorMessageProps {
@@ -8,47 +6,37 @@ export interface ICenterErrorMessageProps {
 }
 
 export function CenterErrorMessage(props: ICenterErrorMessageProps) {
-    const classes = createClasses();
-    const theme = useTheme();
     return (
-        <div css={classes.centerErrorMessage}>
-            <div css={classes.innerContainer}>
+        <Box
+            sx={{
+                flexGrow: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "auto auto",
+                    gap: 1,
+                }}
+            >
                 <ErrorOutline
                     sx={{
                         bgcolor: "error.main",
                     }}
                     fontSize="large"
                 />
-                <div css={classes.messageContainer}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
                     <Typography>{props.message}</Typography>
-                </div>
-            </div>
-        </div>
+                </Box>
+            </Box>
+        </Box>
     );
 }
-
-const createClasses = () => {
-    const centerErrorMessage = css`
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const innerContainer = css`
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-gap: 8px;
-    `;
-
-    const messageContainer = css`
-        display: flex;
-        align-items: center;
-    `;
-
-    return {
-        centerErrorMessage,
-        innerContainer,
-        messageContainer,
-    };
-};

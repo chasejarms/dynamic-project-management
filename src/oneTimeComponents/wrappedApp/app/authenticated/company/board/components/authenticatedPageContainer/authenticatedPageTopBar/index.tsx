@@ -1,16 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import {
-    Typography,
-    useTheme,
-    Theme,
-    IconButton,
-    Popover,
-} from "@mui/material";
+import { Typography, IconButton, Popover, Box } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import { ArrowForwardIos, AccountCircle } from "@mui/icons-material";
-import { composeCSS } from "../../../../../../../../../styles/composeCSS";
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { cognitoUserSingleton } from "../../../../../../../../../classes/CognitoUserSingleton";
 import { useDispatch, useSelector } from "react-redux";
@@ -175,24 +166,49 @@ function NonMemoizedAuthenticatedPageTopBar(
         },
     ].filter((action) => !!action) as IIndentedAction[];
 
-    const theme = useTheme();
-    const classes = createClasses(theme);
     return (
-        <div css={classes.topBarContainer}>
-            <div css={classes.breadcrumbContainerAndLogoContainer}>
-                <div css={classes.logoIconOuterContainer}>
-                    <div css={classes.logoIconInnerContainer}>
+        <Box
+            sx={{
+                flex: "0 0 60px",
+                display: "flex",
+                justifyContent: "space-between",
+                paddingLeft: 2,
+                paddingRight: 2,
+                alignItems: "center",
+            }}
+        >
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                }}
+            >
+                <Box
+                    sx={{
+                        position: "relative",
+                        width: "60px",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            width: "60px",
+                            top: "-21px",
+                            left: "-8px",
+                        }}
+                    >
                         <CompanyLogoIcon />
-                    </div>
-                </div>
+                    </Box>
+                </Box>
                 {breadcrumbTrail.map((breadcrumb, index) => {
                     const isNotLastItem = breadcrumbTrail.length - 1 !== index;
                     return (
-                        <div
-                            css={composeCSS(
-                                isNotLastItem && classes.rightPadding,
-                                classes.breadcrumbAndIconContainer
-                            )}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                paddingRight: isNotLastItem ? 1.5 : "0px",
+                            }}
                             key={index}
                         >
                             <Typography
@@ -208,23 +224,34 @@ function NonMemoizedAuthenticatedPageTopBar(
                                 {breadcrumb.text}
                             </Typography>
                             {isNotLastItem && (
-                                <div
-                                    css={composeCSS(
-                                        classes.rightPadding,
-                                        classes.arrowContainer,
-                                        classes.leftPadding
-                                    )}
+                                <Box
+                                    sx={{
+                                        paddingRight: 1.5,
+                                        position: "relative",
+                                        paddingLeft: 1.5,
+                                    }}
                                 >
-                                    <div css={classes.arrowInnerContainer}>
+                                    <Box
+                                        sx={{
+                                            top: "5px",
+                                            position: "absolute",
+                                            fontSize: "12px",
+                                        }}
+                                    >
                                         <ArrowForwardIos fontSize={"inherit"} />
-                                    </div>
-                                </div>
+                                    </Box>
+                                </Box>
                             )}
-                        </div>
+                        </Box>
                     );
                 })}
-            </div>
-            <div css={classes.buttonContainer}>
+            </Box>
+            <Box
+                sx={{
+                    marginTop: "2px",
+                    marginBottom: "2px",
+                }}
+            >
                 <IconButton onClick={openAccountSettings}>
                     <AccountCircle />
                 </IconButton>
@@ -238,112 +265,10 @@ function NonMemoizedAuthenticatedPageTopBar(
                         onClose={onCloseAccountSettings}
                     />
                 </Popover>
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme) => {
-    const breadcrumbContainerAndLogoContainer = css`
-        display: flex;
-        justify-content: flex-start;
-    `;
-
-    const topBarContainer = css`
-        flex: 0 0 auto;
-        display: flex;
-        justify-content: space-between;
-        padding-left: ${theme.spacing(2)};
-        padding-right: ${theme.spacing(2)};
-        align-items: center;
-    `;
-
-    const navContainer = css`
-        flex: 0 0 auto;
-        display: flex;
-        justify-content: space-between;
-        padding: 16px;
-        padding-left: 0px;
-    `;
-
-    const innerContentContainer = css`
-        flex-grow: 1;
-    `;
-
-    const backToBoard = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const backToBoardsText = css`
-        position: relative;
-        top: 12px;
-        margin-left: 2px;
-    `;
-
-    const listsContainer = css`
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        height: 100%;
-    `;
-
-    const rightPadding = css`
-        padding-right: ${theme.spacing(1.5)};
-    `;
-
-    const leftPadding = css`
-        padding-left: ${theme.spacing(1.5)};
-    `;
-
-    const breadcrumbAndIconContainer = css`
-        display: flex;
-        flex-direction: row;
-    `;
-
-    const arrowContainer = css`
-        position: relative;
-    `;
-
-    const arrowInnerContainer = css`
-        top: 5px;
-        position: absolute;
-        font-size: 12px;
-    `;
-
-    const buttonContainer = css`
-        margin-top: 2px;
-        margin-bottom: 2px;
-    `;
-
-    const logoIconOuterContainer = css`
-        position: relative;
-        width: 60px;
-    `;
-
-    const logoIconInnerContainer = css`
-        position: absolute;
-        top: -19px;
-    `;
-
-    return {
-        navContainer,
-        innerContentContainer,
-        backToBoard,
-        backToBoardsText,
-        listsContainer,
-        breadcrumbContainerAndLogoContainer,
-        rightPadding,
-        breadcrumbAndIconContainer,
-        arrowContainer,
-        arrowInnerContainer,
-        leftPadding,
-        topBarContainer,
-        buttonContainer,
-        logoIconOuterContainer,
-        logoIconInnerContainer,
-    };
-};
 
 export const AuthenticatedPageTopBar = React.memo(
     NonMemoizedAuthenticatedPageTopBar

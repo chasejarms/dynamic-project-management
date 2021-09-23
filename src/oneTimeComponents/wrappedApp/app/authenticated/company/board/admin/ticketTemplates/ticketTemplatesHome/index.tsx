@@ -187,7 +187,7 @@ export function TicketTemplatesHome() {
                             display: "grid",
                             gridTemplateColumns: "1fr 1fr 1fr",
                             gridAutoRows: "min-content",
-                            gridGap: 2,
+                            gap: 2,
                             padding: 4,
                             width: "100%",
                             paddingTop: 2,
