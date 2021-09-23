@@ -1,6 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { IconButton, SelectChangeEvent } from "@mui/material";
+import { IconButton, SelectChangeEvent, Box } from "@mui/material";
 import { OpenInNew } from "@mui/icons-material";
 import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
@@ -36,7 +34,6 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
         window.open(ticketTemplateEditRoute, "_blank");
     }
 
-    const classes = createClasses(!!showOpenIcon);
     const options: IWrappedDropdownOption[] = ticketTemplates.map(
         (ticketTemplateFromDatabase) => {
             return {
@@ -50,8 +47,15 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
         }
     );
 
+    const gridTemplateColumns = !!props.showOpenIcon ? "1fr auto" : "1fr";
     return (
-        <div css={classes.container}>
+        <Box
+            sx={{
+                display: "grid",
+                gridTemplateColumns,
+                gap: 1,
+            }}
+        >
             <div>
                 <WrappedDropdown
                     value={ticketTemplate?.shortenedItemId || ""}
@@ -67,7 +71,12 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
             </div>
             <div>
                 {!!showOpenIcon && (
-                    <div css={classes.iconContainer}>
+                    <Box
+                        sx={{
+                            position: "relative",
+                            top: "8px",
+                        }}
+                    >
                         <IconButton
                             onClick={openTicketTemplateInNewTab}
                             disabled={ticketTemplate === null}
@@ -77,27 +86,9 @@ export function TicketTemplateDropdown(props: ITicketTemplateDropdownProps) {
                         >
                             <OpenInNew />
                         </IconButton>
-                    </div>
+                    </Box>
                 )}
             </div>
-        </div>
+        </Box>
     );
 }
-
-const createClasses = (showOpenIcon: boolean) => {
-    const container = css`
-        display: grid;
-        grid-template-columns: ${showOpenIcon ? "1fr auto" : "1fr"};
-        grid-gap: 8px;
-    `;
-
-    const iconContainer = css`
-        position: relative;
-        top: 8px;
-    `;
-
-    return {
-        container,
-        iconContainer,
-    };
-};
