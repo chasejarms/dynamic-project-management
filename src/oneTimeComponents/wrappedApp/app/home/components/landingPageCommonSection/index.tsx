@@ -1,9 +1,6 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
-import { Theme, Typography, useTheme } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import { useBreakpoint } from "../../../hooks/useBreakpoint";
-import { composeCSS } from "../../../../../../styles/composeCSS";
 import {
     IWrappedButtonProps,
     WrappedButton,
@@ -22,141 +19,85 @@ export function LandingPageCommonSection(
     props: ILandingPageCommonSectionProps
 ) {
     const breakpoints = useBreakpoint();
-    const theme = useTheme();
-    const classes = createClasses(theme, !!props.hideTopAndBottomPadding);
     const content = (
         <div>
-            <div css={classes.bottomMargin32}>
+            <Box
+                sx={{
+                    marginBottom: 4,
+                }}
+            >
                 <Typography variant="h4">{props.title}</Typography>
-            </div>
+            </Box>
             {props.textSections.map((text, index) => {
                 return (
-                    <div css={classes.bottomMargin24} key={index}>
+                    <Box
+                        sx={{
+                            marginBottom: 3,
+                        }}
+                        key={index}
+                    >
                         <Typography>{text}</Typography>
-                    </div>
+                    </Box>
                 );
             })}
             {!!props.wrappedButtonProps?.length && (
-                <div css={classes.wrappedButtonContainer}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                    }}
+                >
                     {props.wrappedButtonProps.map((buttonProps, index) => {
                         const isNotLastButton =
                             index !== props.wrappedButtonProps!.length - 1;
                         return (
-                            <div
-                                css={composeCSS(
-                                    isNotLastButton && classes.buttonMarginRight
-                                )}
+                            <Box
+                                sx={{
+                                    marginRight: isNotLastButton ? 1 : 0,
+                                }}
                             >
                                 <WrappedButton {...buttonProps} />
-                            </div>
+                            </Box>
                         );
                     })}
-                </div>
+                </Box>
             )}
         </div>
     );
+
+    const hideTopAndBottomPadding = !!props.hideTopAndBottomPadding;
+    const placeContentLeft = props.placeContent === "left";
+    const gridTemplateColumns = breakpoints.max768
+        ? "1fr"
+        : placeContentLeft
+        ? "3fr 2fr"
+        : "2fr 3fr";
 
     return (
-        <div
-            css={composeCSS(
-                classes.container,
-                props.placeContent === "left" && classes.containerLeftContent,
-                props.placeContent === "right" && classes.containerRightContent,
-                breakpoints.max768 && classes.smallGridTemplateColumns
-            )}
+        <Box
+            sx={{
+                paddingTop: hideTopAndBottomPadding ? 0 : 6,
+                px: breakpoints.max768 ? 3 : 4,
+                paddingBottom:
+                    hideTopAndBottomPadding || breakpoints.max768 ? 0 : 6,
+                display: "grid",
+                gap: 3,
+                width: "100vw",
+                gridTemplateColumns,
+            }}
         >
             {(breakpoints.max768 || props.placeContent === "left") && content}
-            <div
-                css={composeCSS(
-                    classes.svgContentContainer,
-                    breakpoints.max768 && classes.svgContainerSmallPadding
-                )}
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingTop: breakpoints.max768 ? 3 : 0,
+                }}
             >
                 {props.svgContent}
-            </div>
+            </Box>
             {props.placeContent === "right" && !breakpoints.max768 && content}
-        </div>
+        </Box>
     );
 }
-
-const createClasses = (theme: Theme, hideTopAndBottomPadding: boolean) => {
-    const fourTimes = theme.spacing(4);
-    const sixTimes = theme.spacing(6);
-
-    const paddingTop = hideTopAndBottomPadding ? 0 : sixTimes;
-    const paddingBottom = hideTopAndBottomPadding ? 0 : sixTimes;
-    const container = css`
-        padding-top: ${paddingTop};
-        padding-right: ${fourTimes};
-        padding-bottom: ${paddingBottom};
-        padding-left: ${fourTimes};
-        display: grid;
-        grid-gap: ${theme.spacing(3)};
-        width: 100vw;
-    `;
-
-    const containerLeftContent = css`
-        grid-template-columns: 3fr 2fr;
-    `;
-
-    const containerRightContent = css`
-        grid-template-columns: 2fr 3fr;
-    `;
-
-    const smallGridTemplateColumns = css`
-        grid-template-columns: 1fr;
-        padding-left: ${theme.spacing(3)};
-        padding-right: ${theme.spacing(3)};
-        padding-bottom: 0px;
-    `;
-
-    const bottomMargin24 = css`
-        margin-bottom: ${theme.spacing(3)};
-    `;
-
-    const bottomMargin32 = css`
-        margin-bottom: ${theme.spacing(4)};
-    `;
-
-    const wrappedButtonContainer = css`
-        display: flex;
-        justify-content: flex-start;
-    `;
-
-    const buttonMarginRight = css`
-        margin-right: 8px;
-    `;
-
-    const svgContentContainer = css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const svgInnerContainer = css`
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
-
-    const svgContainerSmallPadding = css`
-        padding-top: ${theme.spacing(3)};
-    `;
-
-    return {
-        container,
-        bottomMargin24,
-        containerLeftContent,
-        containerRightContent,
-        bottomMargin32,
-        wrappedButtonContainer,
-        buttonMarginRight,
-        svgContentContainer,
-        svgInnerContainer,
-        smallGridTemplateColumns,
-        svgContainerSmallPadding,
-    };
-};
