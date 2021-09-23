@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from "@emotion/react";
 import React from "react";
 import {
     Card,
@@ -8,6 +6,7 @@ import {
     IconButton,
     Typography,
     Popover,
+    Box,
 } from "@mui/material";
 import { MoreHoriz } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -29,7 +28,6 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
     const { companyId, boardId, ticketId } = useAppRouterParams();
 
     const { file } = props;
-    const classes = createClasses();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [actionsPopoverIsOpen, setActionsPopoverIsOpen] = useState(false);
@@ -130,16 +128,30 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
                         paddingRight: 1,
                     }}
                 >
-                    <div css={classes.cardContentContainer}>
-                        <div css={classes.imageTextContainer}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexDirection: "row",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                            }}
+                        >
                             <Typography>{file.fileName}</Typography>
-                        </div>
-                        <div css={classes.iconButtonContainer}>
+                        </Box>
+                        <Box
+                            sx={{
+                                flex: "0 0 auto",
+                            }}
+                        >
                             <IconButton disabled={isDeletingImage}>
                                 <MoreHoriz onClick={toggleMoreOptions} />
                             </IconButton>
-                        </div>
-                    </div>
+                        </Box>
+                    </Box>
                 </CardContent>
                 <Popover
                     open={actionsPopoverIsOpen}
@@ -166,27 +178,5 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
         </div>
     );
 }
-
-const createClasses = () => {
-    const cardContentContainer = css`
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-    `;
-
-    const iconButtonContainer = css`
-        flex: 0 0 auto;
-    `;
-
-    const imageTextContainer = css`
-        flex-grow: 1;
-    `;
-
-    return {
-        cardContentContainer,
-        iconButtonContainer,
-        imageTextContainer,
-    };
-};
 
 export const TicketImageContainer = React.memo(TicketImageContainerNotMemoized);
