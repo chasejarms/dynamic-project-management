@@ -1,6 +1,6 @@
+import { SelectChangeEvent } from "@mui/material";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ChangeEvent } from "react";
 import { IWrappedDropdownProps, WrappedDropdown } from "./";
 import { showDropdownOptionsFromRootTestId } from "./utils/showDropdownOptionsFromRootTestId";
 
@@ -36,7 +36,7 @@ describe("WrappedDropdown", () => {
 
     it("should show the label", () => {
         render(<WrappedDropdown {...wrappedDropdownProps} />);
-        screen.getByText("Label");
+        screen.getAllByText("Label");
     });
 
     describe("the disabled prop is true", () => {
@@ -60,12 +60,7 @@ describe("WrappedDropdown", () => {
     describe("the selected value changes", () => {
         it("should call the onChange function", () => {
             let updatedValue: any;
-            wrappedDropdownProps.onChange = (
-                event: ChangeEvent<{
-                    name?: string | undefined;
-                    value: unknown;
-                }>
-            ) => {
+            wrappedDropdownProps.onChange = (event: SelectChangeEvent<any>) => {
                 updatedValue = event.target.value;
             };
             render(<WrappedDropdown {...wrappedDropdownProps} />);
