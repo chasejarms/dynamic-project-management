@@ -8,6 +8,6 @@ export function mapColorToMaterialThemeColorMain(color: string) {
     } else if (color === "yellow") {
         return "warning.dark";
     } else {
-        return "grey.600";
+        return "action.active";
     }
 }

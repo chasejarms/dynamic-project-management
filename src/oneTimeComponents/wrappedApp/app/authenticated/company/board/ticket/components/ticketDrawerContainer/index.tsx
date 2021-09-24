@@ -115,8 +115,8 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
                     value={matchingTabValue}
                     variant="scrollable"
                     scrollButtons="auto"
-                    indicatorColor="secondary"
-                    textColor="secondary"
+                    indicatorColor="primary"
+                    textColor="primary"
                 >
                     {tabs.map(({ route, label }, index) => {
                         return (

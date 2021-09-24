@@ -116,7 +116,7 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
                     sx={{
                         height: "200px",
                         objectFit: "contain",
-                        bgcolor: "grey.300",
+                        bgcolor: "action.hover",
                     }}
                 />
                 <CardContent

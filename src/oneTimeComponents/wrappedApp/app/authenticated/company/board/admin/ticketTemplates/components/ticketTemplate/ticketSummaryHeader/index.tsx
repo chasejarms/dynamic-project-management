@@ -12,7 +12,7 @@ export function TicketSummaryHeader(props: ITicketSummaryHeaderProps) {
             sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                bgcolor: "grey.200",
+                bgcolor: "action.hover",
                 padding: 2,
             }}
         >

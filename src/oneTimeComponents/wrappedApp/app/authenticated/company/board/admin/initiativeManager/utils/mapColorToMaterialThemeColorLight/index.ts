@@ -8,6 +8,6 @@ export function mapColorToMaterialThemeColorLight(color: string) {
     } else if (color === "yellow") {
         return "warning.light";
     } else {
-        return "grey.300";
+        return "action.hover";
     }
 }

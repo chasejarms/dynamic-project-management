@@ -26,7 +26,7 @@ function NonMemoizedTicketTemplateTextControl(
         <Box
             sx={{
                 padding: 2,
-                bgcolor: "grey.200",
+                bgcolor: "action.hover",
                 borderRadius: "3px",
             }}
         >
