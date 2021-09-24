@@ -28,92 +28,75 @@ export function TicketContainer(props: ITicketContainerProps) {
                 width: "360px",
                 minWidth: "360px",
                 height: "100%",
+                borderWidth: "1px",
+                borderStyle: "solid",
+                borderColor: "divider",
+                borderRadius: "3px",
             }}
         >
-            <Card
+            <Box
                 sx={{
                     height: "100%",
-                    marginTop: "2px",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
-                <CardContent
+                <Box
                     sx={{
-                        padding: 0,
-                        height: "100%",
-                        "&:last-child": {
-                            paddingBottom: 0,
-                        },
+                        padding: 2,
+                        paddingBottom: 1,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        flex: "0 0 auto",
                     }}
                 >
-                    <Box
-                        sx={{
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                padding: 2,
-                                paddingBottom: 1,
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                flex: "0 0 auto",
-                            }}
-                        >
-                            <div>
-                                {props.title ? (
-                                    <Typography variant="h6">
-                                        {props.title}
-                                    </Typography>
-                                ) : (
-                                    <Box
-                                        sx={{
-                                            visibility: "hidden",
-                                        }}
-                                    >
-                                        <Typography variant="h6">
-                                            Hidden
-                                        </Typography>
-                                    </Box>
-                                )}
-                            </div>
-                            <div>{props.topRightIcon}</div>
-                        </Box>
-                        <Divider />
-                        {!!props.showCenterSpinner ? (
-                            <CenterLoadingSpinner size="small" />
+                    <div>
+                        {props.title ? (
+                            <Typography variant="h6">{props.title}</Typography>
                         ) : (
                             <Box
                                 sx={{
-                                    flexGrow: 1,
-                                    overflow: "auto",
-                                    py: "1px",
-                                    px: 2,
-                                    minHeight: 0,
+                                    visibility: "hidden",
                                 }}
                             >
-                                {props.children}
-                                {!!props.bottomLoadingSpinnerProps && (
-                                    <ReactVisibilitySensor
-                                        onChange={internalVisibilityOnChange}
-                                    >
-                                        <Box
-                                            sx={{
-                                                height: "60px",
-                                                display: "flex",
-                                            }}
-                                        >
-                                            <CenterLoadingSpinner size="small" />
-                                        </Box>
-                                    </ReactVisibilitySensor>
-                                )}
+                                <Typography variant="h6">Hidden</Typography>
                             </Box>
                         )}
+                    </div>
+                    <div>{props.topRightIcon}</div>
+                </Box>
+                <Divider />
+                {!!props.showCenterSpinner ? (
+                    <CenterLoadingSpinner size="small" />
+                ) : (
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            overflow: "auto",
+                            py: "1px",
+                            px: 2,
+                            minHeight: 0,
+                        }}
+                    >
+                        {props.children}
+                        {!!props.bottomLoadingSpinnerProps && (
+                            <ReactVisibilitySensor
+                                onChange={internalVisibilityOnChange}
+                            >
+                                <Box
+                                    sx={{
+                                        height: "60px",
+                                        display: "flex",
+                                    }}
+                                >
+                                    <CenterLoadingSpinner size="small" />
+                                </Box>
+                            </ReactVisibilitySensor>
+                        )}
                     </Box>
-                </CardContent>
-            </Card>
+                )}
+            </Box>
         </Box>
     );
 }

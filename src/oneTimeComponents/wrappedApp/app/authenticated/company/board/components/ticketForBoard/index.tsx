@@ -447,106 +447,106 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             }}
             onClick={navigateToTicketPage}
         >
-            <Card elevation={1}>
-                <CardContent
+            <Box
+                sx={{
+                    borderWidth: "2px",
+                    borderStyle: "solid",
+                    borderColor: "divider",
+                    borderRadius: "3px",
+                    padding: 2,
+                }}
+            >
+                <Box
                     sx={{
-                        "&:last-child": {
-                            paddingBottom: 2,
-                        },
+                        position: "relative",
+                        width: "100%",
                     }}
                 >
-                    <Box
-                        sx={{
-                            position: "relative",
-                            width: "100%",
-                        }}
-                    >
-                        {isPerformingAction && (
-                            <Box
-                                sx={{
-                                    height: "100%",
-                                    width: "100%",
-                                    position: "absolute",
-                                    bgcolor: "white",
-                                    opacity: 0.9,
-                                }}
-                            >
-                                <CenterLoadingSpinner size="small" />
-                            </Box>
-                        )}
+                    {isPerformingAction && (
                         <Box
                             sx={{
+                                height: "100%",
                                 width: "100%",
-                                display: "flex",
-                                justifyContent: "space-between",
+                                position: "absolute",
+                                bgcolor: "white",
+                                opacity: 0.9,
                             }}
                         >
-                            <Typography>{props.ticket.title}</Typography>
-                            <Box
-                                sx={{
-                                    position: "relative",
-                                    bottom: "4px",
-                                    visibility: isPerformingAction
-                                        ? "hidden"
-                                        : "visible",
-                                }}
-                            >
-                                <IconButton
-                                    size="small"
-                                    onClick={toggleMoreOptions}
-                                >
-                                    <MoreHoriz />
-                                </IconButton>
-                            </Box>
-                            <Popover
-                                open={moreOptionsIsOpen}
-                                anchorEl={anchorEl}
-                                onClose={onClose}
-                            >
-                                <QuickActionsPopoverContent
-                                    indentedActions={indentedActions}
-                                    onClose={onClose}
-                                />
-                            </Popover>
+                            <CenterLoadingSpinner size="small" />
                         </Box>
-                        {!hidePointValue &&
-                            props.ticket.pointValueFromTags !== -20000000 && (
-                                <Box sx={{}}>
-                                    <Typography variant="caption">
-                                        Priority Score:{" "}
-                                        {props.ticket.pointValueFromTags}
-                                    </Typography>
-                                </Box>
-                            )}
-                        {!!props.ticket.assignedTo && (
-                            <Box
-                                sx={{
-                                    paddingTop: 0,
-                                }}
+                    )}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Typography>{props.ticket.title}</Typography>
+                        <Box
+                            sx={{
+                                position: "relative",
+                                bottom: "4px",
+                                visibility: isPerformingAction
+                                    ? "hidden"
+                                    : "visible",
+                            }}
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={toggleMoreOptions}
                             >
-                                <Typography variant="caption">
-                                    Assigned To: {props.ticket.assignedTo.name}
-                                </Typography>
-                            </Box>
-                        )}
-                        {!!props.showCompletedDate && (
-                            <Box
-                                sx={{
-                                    paddingTop: 2,
-                                }}
-                            >
-                                <Typography variant="body2">
-                                    Completed:
-                                    {" " +
-                                        formattedDate(
-                                            props.ticket.completedTimestamp
-                                        )}
-                                </Typography>
-                            </Box>
-                        )}
+                                <MoreHoriz />
+                            </IconButton>
+                        </Box>
+                        <Popover
+                            open={moreOptionsIsOpen}
+                            anchorEl={anchorEl}
+                            onClose={onClose}
+                        >
+                            <QuickActionsPopoverContent
+                                indentedActions={indentedActions}
+                                onClose={onClose}
+                            />
+                        </Popover>
                     </Box>
-                </CardContent>
-            </Card>
+                    {!hidePointValue &&
+                        props.ticket.pointValueFromTags !== -20000000 && (
+                            <Box sx={{}}>
+                                <Typography variant="caption">
+                                    Priority Score:{" "}
+                                    {props.ticket.pointValueFromTags}
+                                </Typography>
+                            </Box>
+                        )}
+                    {!!props.ticket.assignedTo && (
+                        <Box
+                            sx={{
+                                paddingTop: 0,
+                            }}
+                        >
+                            <Typography variant="caption">
+                                Assigned To: {props.ticket.assignedTo.name}
+                            </Typography>
+                        </Box>
+                    )}
+                    {!!props.showCompletedDate && (
+                        <Box
+                            sx={{
+                                paddingTop: 2,
+                            }}
+                        >
+                            <Typography variant="body2">
+                                Completed:
+                                {" " +
+                                    formattedDate(
+                                        props.ticket.completedTimestamp
+                                    )}
+                            </Typography>
+                        </Box>
+                    )}
+                </Box>
+            </Box>
         </Box>
     );
 }
