@@ -13,13 +13,17 @@ export const ColorModeContext = React.createContext({
 });
 
 export function WrappedApp() {
-    const [mode, setMode] = React.useState<PaletteMode>("light");
+    const [mode, setMode] = React.useState<PaletteMode>(
+        localStorage.getItem("mode") === "dark" ? "dark" : "light"
+    );
     const colorMode = React.useMemo(
         () => ({
             toggleColorMode: () => {
-                setMode((prevMode) =>
-                    prevMode === "light" ? "dark" : "light"
-                );
+                setMode((prevMode) => {
+                    const updatedMode = prevMode === "light" ? "dark" : "light";
+                    localStorage.setItem("mode", updatedMode);
+                    return updatedMode;
+                });
             },
         }),
         []
