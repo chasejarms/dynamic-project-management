@@ -104,7 +104,7 @@ export function CreateBoard() {
         // create the board
     }, [isCreatingBoard]);
 
-    const wrappedButtonProps: IWrappedButtonProps[] = [
+    const rightWrappedButtonProps: IWrappedButtonProps[] = [
         {
             variant: "contained",
             onClick: createBoard,
@@ -171,7 +171,9 @@ export function CreateBoard() {
                         </Box>
                     </div>
                 </Box>
-                <BottomPageToolbar wrappedButtonProps={wrappedButtonProps} />
+                <BottomPageToolbar
+                    rightWrappedButtonProps={rightWrappedButtonProps}
+                />
             </Box>
         </BoardsContainer>
     );

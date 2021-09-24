@@ -56,7 +56,7 @@ export function TicketTemplateBottomToolbar(
         );
     });
 
-    const wrappedButtonProps: IWrappedButtonProps[] = [
+    const rightWrappedButtonProps: IWrappedButtonProps[] = [
         {
             variant: "contained",
             onClick: () => {
@@ -69,5 +69,5 @@ export function TicketTemplateBottomToolbar(
         },
     ];
 
-    return <BottomPageToolbar wrappedButtonProps={wrappedButtonProps} />;
+    return <BottomPageToolbar rightWrappedButtonProps={wrappedButtonProps} />;
 }

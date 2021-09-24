@@ -6,8 +6,8 @@ import {
 } from "../../../../components/wrappedButton";
 
 export interface IBottomPageToolbarProps {
-    wrappedButtonProps: IWrappedButtonProps[];
-    leftContent?: React.ReactNode;
+    rightWrappedButtonProps?: IWrappedButtonProps[];
+    leftWrappedButtonProps?: IWrappedButtonProps[];
 }
 
 export function BottomPageToolbar(props: IBottomPageToolbarProps) {
@@ -27,14 +27,36 @@ export function BottomPageToolbar(props: IBottomPageToolbarProps) {
                         flexDirection: "row",
                     }}
                 >
-                    <div>{props.leftContent}</div>
                     <Box
                         sx={{
                             display: "flex",
                             flexDirection: "row",
                         }}
                     >
-                        {props.wrappedButtonProps.map(
+                        {props.leftWrappedButtonProps?.map(
+                            (wrappedButtonProps, index) => {
+                                return (
+                                    <Box
+                                        key={index}
+                                        sx={{
+                                            marginRight: 1,
+                                        }}
+                                    >
+                                        <WrappedButton
+                                            {...wrappedButtonProps}
+                                        />
+                                    </Box>
+                                );
+                            }
+                        )}
+                    </Box>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                        }}
+                    >
+                        {props.rightWrappedButtonProps?.map(
                             (wrappedButtonProps, index) => {
                                 return (
                                     <Box
