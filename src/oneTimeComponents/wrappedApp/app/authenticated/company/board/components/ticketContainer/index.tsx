@@ -32,6 +32,7 @@ export function TicketContainer(props: ITicketContainerProps) {
                 borderStyle: "solid",
                 borderColor: "divider",
                 borderRadius: "3px",
+                bgcolor: "background.paper",
             }}
         >
             <Box

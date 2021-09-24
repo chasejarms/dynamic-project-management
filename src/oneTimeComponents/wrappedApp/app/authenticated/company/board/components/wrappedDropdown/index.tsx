@@ -41,6 +41,9 @@ export function WrappedDropdown(props: IWrappedDropdownProps) {
                 disabled={props.disabled}
                 data-testid={props.testIds?.select}
                 variant="outlined"
+                sx={{
+                    bgcolor: "background.paper",
+                }}
             >
                 {props.options.map(({ value, label, testId, key }, index) => {
                     return (

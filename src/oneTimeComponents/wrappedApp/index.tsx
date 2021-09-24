@@ -42,6 +42,9 @@ export function WrappedApp() {
                           secondary: {
                               main: pink[500],
                           },
+                          background: {
+                              default: grey[100],
+                          },
                       }
                     : {
                           primary: {

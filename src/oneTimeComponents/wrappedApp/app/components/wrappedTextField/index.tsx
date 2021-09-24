@@ -37,6 +37,11 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
             inputProps={{
                 "data-testid": props.testIds?.input,
             }}
+            InputProps={{
+                sx: {
+                    bgcolor: "background.paper",
+                },
+            }}
         />
     );
 }

@@ -5,6 +5,7 @@ import {
     Popover,
     IconButton,
     Box,
+    useTheme,
 } from "@mui/material";
 import { MoreHoriz } from "@mui/icons-material";
 import { useState, useEffect } from "react";
@@ -49,6 +50,7 @@ export interface ITicketForBoardProps {
 export function TicketForBoard(props: ITicketForBoardProps) {
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
+    const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false);
@@ -438,6 +440,8 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     }
 
     const hidePointValue = props.ticketType === TicketType.Done;
+    const bgcolor = theme.palette.mode === "light" ? "grey.100" : "grey.900";
+
     return (
         <Box
             sx={{
@@ -452,14 +456,15 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                     borderWidth: "2px",
                     borderStyle: "solid",
                     borderColor: "divider",
-                    borderRadius: "3px",
-                    padding: 2,
+                    borderRadius: "5px",
+                    bgcolor,
                 }}
             >
                 <Box
                     sx={{
                         position: "relative",
                         width: "100%",
+                        padding: 2,
                     }}
                 >
                     {isPerformingAction && (
@@ -468,8 +473,9 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 height: "100%",
                                 width: "100%",
                                 position: "absolute",
-                                bgcolor: "white",
+                                bgcolor: "background.default",
                                 opacity: 0.9,
+                                top: 0,
                             }}
                         >
                             <CenterLoadingSpinner size="small" />
