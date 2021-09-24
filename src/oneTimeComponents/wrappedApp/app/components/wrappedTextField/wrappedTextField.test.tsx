@@ -1,10 +1,10 @@
 import { WrappedTextField } from "./index";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe("wrappedTextField", () => {
     it("should display the passed in label", () => {
-        const renderResult = render(
+        render(
             <WrappedTextField
                 label={"label"}
                 value={""}
@@ -12,7 +12,7 @@ describe("wrappedTextField", () => {
             />
         );
 
-        renderResult.getByText("label");
+        screen.getAllByText("label");
     });
 
     it("should correctly call the on change method", () => {

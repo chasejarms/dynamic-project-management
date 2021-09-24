@@ -11,6 +11,7 @@ export interface IWrapperTextFieldProps {
     type?: string;
     testIds?: {
         input?: string;
+        helperTextContainer?: string;
     };
     disabled?: boolean;
     multiline?: boolean;
@@ -19,13 +20,15 @@ export interface IWrapperTextFieldProps {
 }
 
 export function WrappedTextField(props: IWrapperTextFieldProps) {
-    const hasError = !!props.error;
+    const { testIds, error, hint, ...rest } = props;
+
+    const hasError = !!error;
     // this ensures there is always spacing in place for the helper text
-    const helperText = props.error || props.hint || " ";
+    const helperText = error || hint || " ";
 
     return (
         <TextField
-            {...props}
+            {...rest}
             minRows={3}
             error={hasError}
             helperText={helperText}
@@ -35,13 +38,18 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
                 marginTop: 1,
             }}
             inputProps={{
-                "data-testid": props.testIds?.input,
+                "data-testid": testIds?.input,
             }}
             InputProps={{
                 sx: {
                     bgcolor: "background.paper",
                 },
             }}
+            FormHelperTextProps={
+                {
+                    "data-testid": testIds?.helperTextContainer,
+                } as any
+            }
         />
     );
 }
