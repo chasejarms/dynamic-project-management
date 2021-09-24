@@ -28,6 +28,8 @@ import {
 import { IUser } from "../../../../../../../../models/user";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 import { RouteCreator } from "../../../../../utils/routeCreator";
+import { defaultHiddenPriorityScoreValue } from "../../utils/ticketsToAugmentedUITickets";
+import { ticketForBoardTestIds } from "./ticketForBoard.testIds";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -518,11 +520,19 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                         </Popover>
                     </Box>
                     {!hidePointValue &&
-                        props.ticket.pointValueFromTags !== -20000000 && (
-                            <Box sx={{}}>
+                        props.ticket.pointValueFromTags !==
+                            defaultHiddenPriorityScoreValue && (
+                            <Box
+                                data-testid={
+                                    ticketForBoardTestIds.pointValueFromTagsContainer
+                                }
+                            >
                                 <Typography variant="caption">
                                     Priority Score:{" "}
-                                    {props.ticket.pointValueFromTags}
+                                    {props.ticket.pointValueFromTags ===
+                                    Infinity
+                                        ? "MAX"
+                                        : props.ticket.pointValueFromTags}
                                 </Typography>
                             </Box>
                         )}

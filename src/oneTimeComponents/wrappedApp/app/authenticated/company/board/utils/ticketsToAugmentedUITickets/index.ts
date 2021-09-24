@@ -3,6 +3,8 @@ import { ITicketTemplate } from "../../../../../../../../models/ticketTemplate";
 import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITicket";
 import mathEvaluator from "math-expression-evaluator";
 
+export const defaultHiddenPriorityScoreValue = -20000000;
+
 export function ticketsToAugmentedUITickets(
     tickets: ITicket[],
     ticketTemplatesMapping: {
@@ -14,7 +16,7 @@ export function ticketsToAugmentedUITickets(
             ticketTemplatesMapping[ticket.ticketTemplateShortenedItemId];
         let pointValue = 0;
         if (ticketTemplate.priorityWeightingCalculation.trim() === "") {
-            pointValue = -20000000;
+            pointValue = defaultHiddenPriorityScoreValue;
         } else {
             pointValue = createTicketPriorityScore(ticketTemplate, ticket);
         }
