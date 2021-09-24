@@ -17,11 +17,7 @@ import { CompanyLogoIcon } from "../companyLogoIcon";
 import { RouteCreator } from "../../../../../../utils/routeCreator";
 import { ColorModeIcon } from "./colorModeIcon";
 
-export interface IAuthenticatedPageTopBarProps {}
-
-function NonMemoizedAuthenticatedPageTopBar(
-    props: IAuthenticatedPageTopBarProps
-) {
+function NonMemoizedAuthenticatedPageTopBar() {
     const history = useHistory();
     const location = useLocation();
     const dispatch = useDispatch();
@@ -41,12 +37,7 @@ function NonMemoizedAuthenticatedPageTopBar(
         };
     }
 
-    const {
-        companyId,
-        boardId,
-        ticketId,
-        ticketTemplateId,
-    } = useAppRouterParams();
+    const { companyId, boardId } = useAppRouterParams();
 
     const companies = useSelector((state: IStoreState) => {
         return state.appBootstrapInformation.companies;
