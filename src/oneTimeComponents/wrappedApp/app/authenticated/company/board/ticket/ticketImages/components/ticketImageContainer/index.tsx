@@ -108,7 +108,7 @@ function TicketImageContainerNotMemoized(props: ITicketImageContainerProps) {
 
     return (
         <div>
-            <Card elevation={3}>
+            <Card elevation={1}>
                 <CardMedia
                     component="img"
                     src={file.signedGetUrl}

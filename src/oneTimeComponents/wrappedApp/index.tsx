@@ -2,7 +2,7 @@ import React from "react";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider, CssBaseline, PaletteMode } from "@mui/material";
-import { indigo, pink } from "@mui/material/colors";
+import { indigo, pink, grey } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import { App } from "./app";
 import { Provider as ReduxProvider } from "react-redux";

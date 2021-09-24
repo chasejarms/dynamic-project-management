@@ -447,7 +447,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
             }}
             onClick={navigateToTicketPage}
         >
-            <Card elevation={3}>
+            <Card elevation={1}>
                 <CardContent
                     sx={{
                         "&:last-child": {
