@@ -28,7 +28,9 @@ export function DrawerContentsWithActionBar(
             {!!props.title && (
                 <Box
                     sx={{
-                        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                        borderBottomWidth: "1px",
+                        borderBottomStyle: "solid",
+                        borderBottomColor: "divider",
                         flex: "0 0 60px",
                         display: "flex",
                         py: 0,
@@ -53,7 +55,9 @@ export function DrawerContentsWithActionBar(
             {wrappedButtonPropsExist && (
                 <Box
                     sx={{
-                        borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+                        borderTopWidth: "1px",
+                        borderTopStyle: "solid",
+                        borderTopColor: "divider",
                         flex: "0 0 60px",
                         overflow: "auto",
                         display: "flex",

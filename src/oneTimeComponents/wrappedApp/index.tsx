@@ -29,21 +29,31 @@ export function WrappedApp() {
         []
     );
 
-    const theme = React.useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode,
-                    primary: {
-                        main: "#3f51b5",
-                    },
-                    secondary: {
-                        main: "#f50057",
-                    },
-                },
-            }),
-        [mode]
-    );
+    const theme = React.useMemo(() => {
+        const theme = createTheme({
+            palette: {
+                mode,
+                ...(mode === "light"
+                    ? {
+                          primary: {
+                              main: "#3f51b5",
+                          },
+                          secondary: {
+                              main: "#f50057",
+                          },
+                      }
+                    : {
+                          primary: {
+                              main: "#3f51b5",
+                          },
+                          secondary: {
+                              main: "#f50057",
+                          },
+                      }),
+            },
+        });
+        return theme;
+    }, [mode]);
 
     const queries = {
         max768: "(max-width: 768px)",

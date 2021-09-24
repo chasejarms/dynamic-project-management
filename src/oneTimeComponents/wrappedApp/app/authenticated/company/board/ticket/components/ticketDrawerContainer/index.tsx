@@ -105,7 +105,9 @@ export function TicketDrawerContainer(props: TicketDrawerContainerProps) {
             <Box
                 sx={{
                     flex: "0 0 auto",
-                    borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    borderBottomColor: "divider",
                 }}
             >
                 <Tabs

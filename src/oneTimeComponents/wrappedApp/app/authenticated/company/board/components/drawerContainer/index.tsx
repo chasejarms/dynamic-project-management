@@ -28,7 +28,7 @@ export function DrawerContainer(props: IDrawerContainerProps) {
             ></Box>
             <Box
                 sx={{
-                    bgcolor: "white",
+                    bgcolor: "background.default",
                     boxShadow: 1,
                     display: "flex",
                     flexDirection: "column",
