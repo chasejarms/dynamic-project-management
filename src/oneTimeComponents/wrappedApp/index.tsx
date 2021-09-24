@@ -2,6 +2,7 @@ import React from "react";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider, CssBaseline, PaletteMode } from "@mui/material";
+import { indigo, pink } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import { App } from "./app";
 import { Provider as ReduxProvider } from "react-redux";
@@ -36,18 +37,18 @@ export function WrappedApp() {
                 ...(mode === "light"
                     ? {
                           primary: {
-                              main: "#3f51b5",
+                              main: indigo[500],
                           },
                           secondary: {
-                              main: "#f50057",
+                              main: pink[500],
                           },
                       }
                     : {
                           primary: {
-                              main: "#3f51b5",
+                              main: indigo["A200"],
                           },
                           secondary: {
-                              main: "#f50057",
+                              main: pink["A200"],
                           },
                       }),
             },
