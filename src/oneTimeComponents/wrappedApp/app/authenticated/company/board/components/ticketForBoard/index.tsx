@@ -476,6 +476,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                                 bgcolor: "background.default",
                                 opacity: 0.9,
                                 top: 0,
+                                right: 0,
                             }}
                         >
                             <CenterLoadingSpinner size="small" />
