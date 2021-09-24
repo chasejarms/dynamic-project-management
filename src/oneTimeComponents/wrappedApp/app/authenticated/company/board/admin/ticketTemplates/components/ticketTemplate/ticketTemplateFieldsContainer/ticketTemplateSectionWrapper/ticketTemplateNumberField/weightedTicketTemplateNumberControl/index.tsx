@@ -38,8 +38,11 @@ function NonMemoizedWeightedTicketTemplateNumberControl(
         <Box
             sx={{
                 padding: 2,
-                bgcolor: "action.hover",
-                borderRadius: "3px",
+                bgcolor: "background.default",
+                borderRadius: "5px",
+                borderWidth: "1px",
+                borderStyle: "solid",
+                borderColor: "divider",
             }}
         >
             <WrappedTextField
