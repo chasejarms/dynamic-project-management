@@ -6,19 +6,19 @@ import {
     Box,
 } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Api } from "../../../../../../../../../../api";
-import { StringValidator } from "../../../../../../../../../../classes/StringValidator";
-import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
-import { useControl } from "../../../../../../../hooks/useControl";
-import { ITag } from "../../../../../../../../../../models/tag";
+import { Api } from "../../../../../../../../../api";
+import { StringValidator } from "../../../../../../../../../classes/StringValidator";
+import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
+import { useControl } from "../../../../../../hooks/useControl";
+import { ITag } from "../../../../../../../../../models/tag";
 import {
     TagColor,
     tagColors,
-} from "../../../../../../../../../../models/tagColor";
+} from "../../../../../../../../../models/tagColor";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
-import { WrappedButton } from "../../../../../../../components/wrappedButton";
-import { WrappedTextField } from "../../../../../../../components/wrappedTextField";
+import { WrappedButton } from "../../../../../../components/wrappedButton";
+import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 
 export interface IEditTagDialogProps {
     open: boolean;

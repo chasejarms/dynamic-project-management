@@ -104,20 +104,6 @@ function NonMemoizedAuthenticatedPageTopBar(
                     route: RouteCreator.inProgressTickets(companyId, boardId),
                 });
             }
-
-            if (!!boardId && location.pathname.includes("/admin/")) {
-                breadcrumbs.push({
-                    text: "Admin",
-                    route: RouteCreator.boardAdmins(companyId, boardId),
-                });
-            }
-
-            if (!!ticketTemplateId) {
-                breadcrumbs.push({
-                    text: "Ticket Templates",
-                    route: RouteCreator.ticketTemplates(companyId, boardId),
-                });
-            }
         }
 
         return breadcrumbs;

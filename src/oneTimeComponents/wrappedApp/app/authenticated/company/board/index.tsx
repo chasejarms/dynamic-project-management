@@ -1,6 +1,5 @@
 import { useRouteMatch, Switch, Route } from "react-router-dom";
 import { useIsCheckingForBoardAccess } from "./hooks/useIsCheckingForBoardAccess";
-import { Admin } from "./admin";
 import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
 import { ArchivedTickets } from "./archivedTickets";
@@ -31,9 +30,6 @@ export function Board() {
             </Route>
             <Route path={`${url}/ticket-templates`}>
                 <TicketTemplates />
-            </Route>
-            <Route path={`${url}/admin`}>
-                <Admin />
             </Route>
         </Switch>
     );

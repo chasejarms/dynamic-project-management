@@ -13,17 +13,17 @@ import {
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { Api } from "../../../../../../../../api";
-import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
-import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
-import { ITag } from "../../../../../../../../models/tag";
-import { WrappedButton } from "../../../../../components/wrappedButton";
+import { Api } from "../../../../../../../api";
+import { CenterLoadingSpinner } from "../../../components/centerLoadingSpinner";
+import { useAppRouterParams } from "../../../../hooks/useAppRouterParams";
+import { ITag } from "../../../../../../../models/tag";
+import { WrappedButton } from "../../../../components/wrappedButton";
 import { NewTagDialog } from "./components/newTagDialog";
 import { sortBy } from "lodash";
 import { mapColorToMaterialThemeColorLight } from "./utils/mapColorToMaterialThemeColorLight";
-import { ConfirmDialog } from "../../../components/confirmDialog";
+import { ConfirmDialog } from "../../components/confirmDialog";
 import { EditTagDialog } from "./components/editTagDialog";
-import { BoardContainer } from "../../components/boardContainer";
+import { BoardContainer } from "../components/boardContainer";
 
 export function InitiativeManager() {
     const { companyId, boardId } = useAppRouterParams();
