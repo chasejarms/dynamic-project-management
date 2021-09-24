@@ -48,6 +48,7 @@ export function TicketTemplateFieldsContainer(
                 display: "flex",
                 flexDirection: "column",
                 padding: 4,
+                paddingLeft: 0,
                 overflowY: "auto",
                 paddingRight: 2,
             }}

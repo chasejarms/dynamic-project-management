@@ -38,17 +38,14 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                 sx={{
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr",
+                    gap: 4,
                     overflow: "auto",
                 }}
             >
-                <TicketTemplateFieldsContainer
-                    disabled={props.actionInProgress || props.fieldsAreDisabled}
-                    ticketTemplateId={props.ticketTemplateId}
-                />
                 <Box
                     sx={{
                         padding: 4,
-                        paddingLeft: 2,
+                        paddingRight: 0,
                     }}
                 >
                     <Box
@@ -62,7 +59,7 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                             ticketTemplateId={props.ticketTemplateId}
                         />
                     </Box>
-                    <Paper>
+                    <Paper elevation={4}>
                         <TicketSummaryHeader
                             ticketId={ticketPreviewId}
                             ticketTemplateId={props.ticketTemplateId}
@@ -83,6 +80,10 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                     </Paper>
                     <div />
                 </Box>
+                <TicketTemplateFieldsContainer
+                    disabled={props.actionInProgress || props.fieldsAreDisabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
             </Box>
             <TicketTemplateBottomToolbar
                 onClickActionButton={props.onClickActionButton}

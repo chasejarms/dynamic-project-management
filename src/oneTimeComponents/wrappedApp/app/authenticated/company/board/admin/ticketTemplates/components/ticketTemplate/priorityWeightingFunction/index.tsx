@@ -54,7 +54,7 @@ export function PriorityWeightingFunction(
         <div>
             <Box
                 sx={{
-                    paddingBottom: 1,
+                    paddingBottom: validAliasList.length === 0 ? 0 : 1,
                 }}
             >
                 {validAliasList.map((aliasName) => {
