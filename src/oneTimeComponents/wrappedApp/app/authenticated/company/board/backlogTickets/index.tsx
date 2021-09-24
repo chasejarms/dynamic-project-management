@@ -53,9 +53,9 @@ export function BacklogTickets() {
                                     onDeleteTicket={onDeleteTicket}
                                     ticketType={TicketType.Backlog}
                                     columnOptions={columns}
-                                    onMarkTicketAsDone={
-                                        onRemoveTicketFromCurrentUI
-                                    }
+                                    onMarkTicketAsDone={() => {
+                                        onDeleteTicket("", ticket.itemId);
+                                    }}
                                     onUpdateTicketColumn={() => {
                                         onDeleteTicket("", ticket.itemId);
                                     }}
