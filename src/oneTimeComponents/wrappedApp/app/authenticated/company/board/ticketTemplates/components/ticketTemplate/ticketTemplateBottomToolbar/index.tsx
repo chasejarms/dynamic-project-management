@@ -1,11 +1,16 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../../../../redux/storeState";
 import {
     ITicketTemplateTextSectionControlState,
     ITicketTemplateNumberSectionControlState,
+    createTicketTemplateId,
+    setWeightedTicketTemplateCreationFromExistingTicketTemplate,
 } from "../../../../../../../../../../redux/ticketTemplates";
 import { BottomPageToolbar } from "../../../../../components/bottomPageToolbar";
 import { IWrappedButtonProps } from "../../../../../../../components/wrappedButton";
+import { useHistory } from "react-router-dom";
+import { RouteCreator } from "../../../../../../../utils/routeCreator";
+import { useAppRouterParams } from "../../../../../../../hooks/useAppRouterParams";
 
 export interface ITicketTemplateBottomToolbarProps {
     onClickActionButton: () => void;
@@ -17,6 +22,8 @@ export interface ITicketTemplateBottomToolbarProps {
 export function TicketTemplateBottomToolbar(
     props: ITicketTemplateBottomToolbarProps
 ) {
+    const { companyId, boardId } = useAppRouterParams();
+    const history = useHistory();
     const allControlsAreValid = useSelector((store: IStoreState) => {
         const {
             name,
@@ -56,6 +63,34 @@ export function TicketTemplateBottomToolbar(
         );
     });
 
+    const dispatch = useDispatch();
+    const leftWrappedButtonProps: IWrappedButtonProps[] =
+        props.ticketTemplateId !== createTicketTemplateId
+            ? [
+                  {
+                      variant: "text",
+                      onClick: () => {
+                          const action = setWeightedTicketTemplateCreationFromExistingTicketTemplate(
+                              {
+                                  ticketTemplateId: props.ticketTemplateId,
+                              }
+                          );
+                          dispatch(action);
+                          const route = RouteCreator.createTicketTemplate(
+                              companyId,
+                              boardId,
+                              true
+                          );
+                          history.push(route);
+                      },
+                      color: "primary",
+                      disabled:
+                          props.showActionButtonSpinner || !allControlsAreValid,
+                      children: "Copy Template",
+                  },
+              ]
+            : [];
+
     const rightWrappedButtonProps: IWrappedButtonProps[] = [
         {
             variant: "contained",
@@ -69,5 +104,10 @@ export function TicketTemplateBottomToolbar(
         },
     ];
 
-    return <BottomPageToolbar rightWrappedButtonProps={wrappedButtonProps} />;
+    return (
+        <BottomPageToolbar
+            leftWrappedButtonProps={leftWrappedButtonProps}
+            rightWrappedButtonProps={rightWrappedButtonProps}
+        />
+    );
 }

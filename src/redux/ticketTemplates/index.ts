@@ -96,6 +96,23 @@ export const ticketTemplateSlice = createSlice({
         resetWeightedTicketTemplateCreationState: () => {
             return initialState;
         },
+        setWeightedTicketTemplateCreationFromExistingTicketTemplate: (
+            state: ITicketTemplateControlStateMapping,
+            action: PayloadAction<{
+                ticketTemplateId: string;
+            }>
+        ) => {
+            const { ticketTemplateId } = action.payload;
+            const existingTicketTemplateState = cloneDeep(
+                state[ticketTemplateId]
+            );
+            existingTicketTemplateState.name.value = `${existingTicketTemplateState.name.value} (Copy)`;
+            if (!existingTicketTemplateState) {
+                return state;
+            }
+            state[createTicketTemplateId] = existingTicketTemplateState;
+            return state;
+        },
         setWeightedTicketTemplate: (
             state: ITicketTemplateControlStateMapping,
             action: PayloadAction<{
@@ -588,6 +605,7 @@ function mappingFromTicketTemplateMetadata(
 }
 
 export const {
+    setWeightedTicketTemplateCreationFromExistingTicketTemplate,
     updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationDescription,
     resetWeightedTicketTemplateCreationState,

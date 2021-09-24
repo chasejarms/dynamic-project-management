@@ -2,7 +2,10 @@ import { Box, Paper } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ticketPreviewId } from "../../../../../../../../../redux/ticketControlMappedState";
-import { resetWeightedTicketTemplateCreationState } from "../../../../../../../../../redux/ticketTemplates";
+import {
+    createTicketTemplateId,
+    resetWeightedTicketTemplateCreationState,
+} from "../../../../../../../../../redux/ticketTemplates";
 import { PriorityWeightingFunction } from "./priorityWeightingFunction";
 import { TicketFields } from "../../../components/ticketFields";
 import { TicketSummaryHeader } from "./ticketSummaryHeader";
@@ -19,8 +22,10 @@ export interface ITicketTemplateProps {
 
 export function TicketTemplate(props: ITicketTemplateProps) {
     const dispatch = useDispatch();
+
     useEffect(() => {
         return () => {
+            if (props.ticketTemplateId !== createTicketTemplateId) return;
             const action = resetWeightedTicketTemplateCreationState();
             dispatch(action);
         };

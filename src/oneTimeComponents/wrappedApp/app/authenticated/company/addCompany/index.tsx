@@ -91,7 +91,7 @@ export function AddCompany() {
         // create the board
     }, [isCreatingNewCompany]);
 
-    const wrappedButtonProps: IWrappedButtonProps[] = [
+    const rightWrappedButtonProps: IWrappedButtonProps[] = [
         {
             variant: "contained",
             onClick: createCompany,
@@ -165,7 +165,9 @@ export function AddCompany() {
                         />
                     </Box>
                 </Box>
-                <BottomPageToolbar wrappedButtonProps={wrappedButtonProps} />
+                <BottomPageToolbar
+                    rightWrappedButtonProps={rightWrappedButtonProps}
+                />
             </Box>
         </BoardsContainer>
     );
