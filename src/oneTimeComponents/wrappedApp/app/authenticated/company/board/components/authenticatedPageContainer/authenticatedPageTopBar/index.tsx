@@ -15,6 +15,7 @@ import {
 } from "../../quickActionsPopoverContent";
 import { CompanyLogoIcon } from "../companyLogoIcon";
 import { RouteCreator } from "../../../../../../utils/routeCreator";
+import { ColorModeIcon } from "./colorModeIcon";
 
 export interface IAuthenticatedPageTopBarProps {}
 
@@ -250,8 +251,11 @@ function NonMemoizedAuthenticatedPageTopBar(
                 sx={{
                     marginTop: "2px",
                     marginBottom: "2px",
+                    display: "flex",
+                    flexDirection: "row",
                 }}
             >
+                <ColorModeIcon />
                 <IconButton onClick={openAccountSettings}>
                     <AccountCircle />
                 </IconButton>
