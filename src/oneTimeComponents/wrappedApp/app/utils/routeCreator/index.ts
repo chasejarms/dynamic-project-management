@@ -4,15 +4,15 @@ export class RouteCreator {
         boardId: string,
         shortenedTicketTemplateId: string
     ) {
-        return `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/${shortenedTicketTemplateId}`;
+        return `/app/company/${companyId}/board/${boardId}/ticket-templates/${shortenedTicketTemplateId}`;
     }
 
     public static ticketTemplates(companyId: string, boardId: string) {
-        return `/app/company/${companyId}/board/${boardId}/admin/ticket-templates`;
+        return `/app/company/${companyId}/board/${boardId}/ticket-templates`;
     }
 
     public static createTicketTemplate(companyId: string, boardId: string) {
-        return `/app/company/${companyId}/board/${boardId}/admin/ticket-templates/create-ticket-template`;
+        return `/app/company/${companyId}/board/${boardId}/ticket-templates/create-ticket-template`;
     }
 
     public static boards(companyId: string) {
@@ -20,7 +20,7 @@ export class RouteCreator {
     }
 
     public static boardAdmins(companyId: string, boardId: string) {
-        return `/app/company/${companyId}/board/${boardId}/admin/board-admins`;
+        return `/app/company/${companyId}/board/${boardId}/board-admins`;
     }
 
     public static archivedTickets(companyId: string, boardId: string) {

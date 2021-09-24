@@ -68,7 +68,11 @@ export function BoardContainer(props: IBoardContainer) {
             route: RouteCreator.archivedTickets(companyId, boardId),
         },
         isBoardAdmin && {
-            text: "Admin",
+            text: "Templates",
+            route: RouteCreator.ticketTemplates(companyId, boardId),
+        },
+        isBoardAdmin && {
+            text: "Admininstrators",
             route: RouteCreator.boardAdmins(companyId, boardId),
         },
     ].filter((tabValue) => !!tabValue) as IAuthenticatedNavItem[];

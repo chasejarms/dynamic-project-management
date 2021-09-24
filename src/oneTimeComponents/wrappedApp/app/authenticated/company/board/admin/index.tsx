@@ -1,7 +1,7 @@
 import { useRouteMatch, Switch, Route } from "react-router-dom";
 import { useIsCheckingForBoardAdminAccess } from "./hooks/useIsCheckingForBoardAdminAccess";
-import { BoardUsers } from "./boardUsers";
-import { TicketTemplates } from "./ticketTemplates";
+import { BoardUsers } from "../boardUsers";
+import { TicketTemplates } from "../ticketTemplates";
 
 export function Admin() {
     const { url } = useRouteMatch();

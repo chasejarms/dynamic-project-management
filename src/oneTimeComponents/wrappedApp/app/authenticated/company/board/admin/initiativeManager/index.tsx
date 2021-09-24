@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import { Api } from "../../../../../../../../api";
 import { CenterLoadingSpinner } from "../../../../components/centerLoadingSpinner";
 import { useAppRouterParams } from "../../../../../hooks/useAppRouterParams";
-import { BoardAdminContainer } from "../components/boardAdminContainer";
 import { ITag } from "../../../../../../../../models/tag";
 import { WrappedButton } from "../../../../../components/wrappedButton";
 import { NewTagDialog } from "./components/newTagDialog";
@@ -24,6 +23,7 @@ import { sortBy } from "lodash";
 import { mapColorToMaterialThemeColorLight } from "./utils/mapColorToMaterialThemeColorLight";
 import { ConfirmDialog } from "../../../components/confirmDialog";
 import { EditTagDialog } from "./components/editTagDialog";
+import { BoardContainer } from "../../components/boardContainer";
 
 export function InitiativeManager() {
     const { companyId, boardId } = useAppRouterParams();
@@ -176,7 +176,7 @@ export function InitiativeManager() {
     }, [isDeletingTag]);
 
     return (
-        <BoardAdminContainer>
+        <BoardContainer>
             {!isLoadingTags ? (
                 <Box
                     sx={{
@@ -328,6 +328,6 @@ export function InitiativeManager() {
             ) : (
                 <CenterLoadingSpinner size="large" />
             )}
-        </BoardAdminContainer>
+        </BoardContainer>
     );
 }

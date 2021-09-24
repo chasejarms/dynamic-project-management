@@ -5,6 +5,8 @@ import { BacklogTickets } from "./backlogTickets";
 import { BoardHome } from "./boardHome";
 import { ArchivedTickets } from "./archivedTickets";
 import { BoardEdit } from "./boardEdit";
+import { BoardUsers } from "./boardUsers";
+import { TicketTemplates } from "./ticketTemplates";
 
 export function Board() {
     const { url } = useRouteMatch();
@@ -15,7 +17,7 @@ export function Board() {
             <Route path={`${url}/tickets`}>
                 <BoardHome />
             </Route>
-            <Route path={`${url}/edit-board`}>
+            <Route path={`${url}/edit-board`} exact>
                 <BoardEdit />
             </Route>
             <Route path={`${url}/backlog-tickets`}>
@@ -23,6 +25,12 @@ export function Board() {
             </Route>
             <Route path={`${url}/archived-tickets`}>
                 <ArchivedTickets />
+            </Route>
+            <Route path={`${url}/board-admins`} exact>
+                <BoardUsers />
+            </Route>
+            <Route path={`${url}/ticket-templates`}>
+                <TicketTemplates />
             </Route>
             <Route path={`${url}/admin`}>
                 <Admin />
