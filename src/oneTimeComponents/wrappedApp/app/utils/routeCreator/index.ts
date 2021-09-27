@@ -11,11 +11,7 @@ export class RouteCreator {
         return `/app/company/${companyId}/board/${boardId}/ticket-templates`;
     }
 
-    public static createTicketTemplate(
-        companyId: string,
-        boardId: string,
-        isCopy: boolean = false
-    ) {
+    public static createTicketTemplate(companyId: string, boardId: string) {
         return `/app/company/${companyId}/board/${boardId}/ticket-templates/create-ticket-template`;
     }
 
