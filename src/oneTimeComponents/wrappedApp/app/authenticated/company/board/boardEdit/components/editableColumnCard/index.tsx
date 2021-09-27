@@ -36,7 +36,6 @@ function NonMemoizedEditableColumnCard(props: IEditableColumnCardProps) {
                             marginRight: !!props.isLastColumn ? 0 : 2,
                             width: "360px",
                             minWidth: "360px",
-                            padding: "2px",
                         }}
                         {...provided.draggableProps}
                         ref={provided.innerRef}

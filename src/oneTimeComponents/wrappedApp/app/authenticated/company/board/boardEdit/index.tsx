@@ -120,7 +120,7 @@ export function BoardEditInnerContent() {
                                                 width: "100%",
                                                 display: "flex",
                                                 overflow: "auto",
-                                                padding: 4,
+                                                padding: 3,
                                                 paddingTop: 0,
                                             }}
                                             {...provided.droppableProps}

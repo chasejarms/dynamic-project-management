@@ -59,7 +59,7 @@ export interface ITicketTemplateControlStateMapping {
 }
 
 const defaultRequiredError = "This field is required";
-const initialState: ITicketTemplateControlStateMapping = {
+export const initialTicketTemplateControlStateMapping: ITicketTemplateControlStateMapping = {
     [createTicketTemplateId]: {
         name: {
             value: "",
@@ -91,10 +91,10 @@ const initialState: ITicketTemplateControlStateMapping = {
 
 export const ticketTemplateSlice = createSlice({
     name: "ticketTemplate",
-    initialState,
+    initialState: initialTicketTemplateControlStateMapping,
     reducers: {
         resetWeightedTicketTemplateCreationState: () => {
-            return initialState;
+            return initialTicketTemplateControlStateMapping;
         },
         setWeightedTicketTemplateCreationFromExistingTicketTemplate: (
             state: ITicketTemplateControlStateMapping,
