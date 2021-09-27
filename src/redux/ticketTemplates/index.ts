@@ -64,6 +64,9 @@ export const ticketTemplatesControlStateErrors = {
     name: "A name is required",
     description: "A description is required",
     generic: "This field is required",
+    minError: "Min is greater than max",
+    maxError: "Max is less than min",
+    aliasError: "The alias must be one word and only characters a through z.",
 };
 
 export const initialTicketTemplateControlStateMapping: ITicketTemplateControlStateMapping = {
@@ -257,19 +260,10 @@ export const ticketTemplateSlice = createSlice({
             const ticketTemplate = state[ticketTemplateId];
 
             const clonedSections = cloneDeep(ticketTemplate.sections);
+            const controlState = controlStateFromSection(updatedValue);
+            clonedSections[index] = controlState;
 
-            if (updatedValue.type === "text") {
-                const weightedTextSection = updatedValue as ITextSection;
-                const updatedError = new StringValidator()
-                    .required(ticketTemplatesControlStateErrors.generic)
-                    .validate(updatedValue.label);
-
-                const updatedSection: ITicketTemplateTextSectionControlState = {
-                    value: weightedTextSection,
-                    error: updatedError,
-                };
-
-                clonedSections[index] = updatedSection;
+            if (controlState.value.type === "text") {
                 return {
                     ...state,
                     [ticketTemplateId]: {
@@ -277,46 +271,12 @@ export const ticketTemplateSlice = createSlice({
                         sections: clonedSections,
                     },
                 };
-            } else if (updatedValue.type === "number") {
-                const weightedNumberSection = updatedValue as INumberSection;
-                const updatedLabelError = new StringValidator()
-                    .required(ticketTemplatesControlStateErrors.generic)
-                    .validate(updatedValue.label);
-
-                const minExists = weightedNumberSection.minValue !== undefined;
-                const maxExists = weightedNumberSection.maxValue !== undefined;
-                const updatedMinError =
-                    minExists &&
-                    maxExists &&
-                    updatedValue.minValue! > updatedValue.maxValue!
-                        ? "Min is greater than max"
-                        : "";
-                const updatedMaxError =
-                    minExists &&
-                    maxExists &&
-                    updatedValue.maxValue! < updatedValue.minValue!
-                        ? "Max is less than min"
-                        : "";
-
-                const aliasError = new StringValidator()
-                    .onlyAThroughZ(
-                        "The alias must be one word and only characters a through z."
-                    )
-                    .validate(updatedValue.alias);
-
-                const updatedSection: ITicketTemplateNumberSectionControlState = {
-                    value: weightedNumberSection,
-                    labelError: updatedLabelError,
-                    minError: updatedMinError,
-                    maxError: updatedMaxError,
-                    aliasError,
-                };
-
-                clonedSections[index] = updatedSection;
+            } else {
                 const error = priorityWeightingCalculationError(
                     clonedSections,
                     ticketTemplate.priorityWeightingCalculation.value
                 );
+
                 return {
                     ...state,
                     [ticketTemplateId]: {
@@ -609,6 +569,51 @@ function mappingFromTicketTemplateMetadata(
         ...state,
         ...ticketTemplateObject,
     };
+}
+
+function controlStateFromSection(section: Section) {
+    if (section.type === "text") {
+        const weightedTextSection = section as ITextSection;
+        const updatedError = new StringValidator()
+            .required(ticketTemplatesControlStateErrors.generic)
+            .validate(section.label);
+
+        const controlState: ITicketTemplateTextSectionControlState = {
+            value: weightedTextSection,
+            error: updatedError,
+        };
+
+        return controlState;
+    } else {
+        const weightedNumberSection = section as INumberSection;
+        const updatedLabelError = new StringValidator()
+            .required(ticketTemplatesControlStateErrors.generic)
+            .validate(section.label);
+
+        const minExists = weightedNumberSection.minValue !== undefined;
+        const maxExists = weightedNumberSection.maxValue !== undefined;
+        const updatedMinError =
+            minExists && maxExists && section.minValue! > section.maxValue!
+                ? ticketTemplatesControlStateErrors.minError
+                : "";
+        const updatedMaxError =
+            minExists && maxExists && section.maxValue! < section.minValue!
+                ? ticketTemplatesControlStateErrors.maxError
+                : "";
+
+        const aliasError = new StringValidator()
+            .onlyAThroughZ(ticketTemplatesControlStateErrors.aliasError)
+            .validate(section.alias);
+
+        const numberControlState: ITicketTemplateNumberSectionControlState = {
+            value: weightedNumberSection,
+            labelError: updatedLabelError,
+            minError: updatedMinError,
+            maxError: updatedMaxError,
+            aliasError,
+        };
+        return numberControlState;
+    }
 }
 
 export const {

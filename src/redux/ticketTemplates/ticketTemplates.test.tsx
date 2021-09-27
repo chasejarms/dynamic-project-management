@@ -570,18 +570,18 @@ describe("Ticket Templates", () => {
 
     describe("overrideWeightedTicketCreationSection", () => {
         let ticketTemplateControlState: ITicketTemplateControlState;
-        let textSection: ITextSection;
-
-        beforeEach(() => {
-            textSection = {
-                type: "text",
-                label: "",
-                multiline: false,
-                required: false,
-            };
-        });
 
         describe("text section", () => {
+            let textSection: ITextSection;
+            beforeEach(() => {
+                textSection = {
+                    type: "text",
+                    label: "",
+                    multiline: false,
+                    required: false,
+                };
+            });
+
             describe("the label is an empty string", () => {
                 beforeEach(() => {
                     const clonedInitialState = cloneDeep(
@@ -648,6 +648,166 @@ describe("Ticket Templates", () => {
                         .sections[0] as ITicketTemplateTextSectionControlState)
                         .value;
                     expect(isEqual(controlValue, textSection)).toBe(true);
+                });
+            });
+        });
+
+        describe("number section", () => {
+            let numberSection: INumberSection;
+            beforeEach(() => {
+                numberSection = {
+                    type: "number",
+                    label: "Label",
+                    required: false,
+                    allowOnlyIntegers: false,
+                    alias: "",
+                };
+            });
+
+            describe("the label is an empty string", () => {
+                beforeEach(() => {
+                    numberSection.label = "";
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    const action = overrideWeightedTicketCreationSection({
+                        value: numberSection,
+                        index: 1,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                });
+
+                it("should return an error for the number section", () => {
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[1] as ITicketTemplateNumberSectionControlState)
+                            .labelError
+                    ).toBe(ticketTemplatesControlStateErrors.generic);
+                });
+
+                it("should update the value", () => {
+                    const controlValue = (ticketTemplateControlState
+                        .sections[1] as ITicketTemplateNumberSectionControlState)
+                        .value;
+                    expect(isEqual(controlValue, numberSection)).toBe(true);
+                });
+            });
+
+            describe("the label is NOT empty string", () => {
+                beforeEach(() => {
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    numberSection.label = "A";
+                    const action = overrideWeightedTicketCreationSection({
+                        value: numberSection,
+                        index: 1,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                });
+
+                it("should return an empty error string for the number section", () => {
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[1] as ITicketTemplateNumberSectionControlState)
+                            .labelError
+                    ).toBe("");
+                });
+
+                it("should update the value", () => {
+                    const controlValue = (ticketTemplateControlState
+                        .sections[1] as ITicketTemplateNumberSectionControlState)
+                        .value;
+                    expect(isEqual(controlValue, numberSection)).toBe(true);
+                });
+            });
+
+            describe("the min is greater than the max", () => {
+                it("should return a min error", () => {
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    numberSection.maxValue = 1;
+                    numberSection.minValue = 2;
+                    const action = overrideWeightedTicketCreationSection({
+                        value: numberSection,
+                        index: 1,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[1] as ITicketTemplateNumberSectionControlState)
+                            .minError
+                    ).toBe(ticketTemplatesControlStateErrors.minError);
+                });
+            });
+
+            describe("the max is greater than the min", () => {
+                it("should return a max error", () => {
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    numberSection.maxValue = 1;
+                    numberSection.minValue = 2;
+                    const action = overrideWeightedTicketCreationSection({
+                        value: numberSection,
+                        index: 1,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[1] as ITicketTemplateNumberSectionControlState)
+                            .maxError
+                    ).toBe(ticketTemplatesControlStateErrors.maxError);
+                });
+            });
+
+            describe("the alias is an invalid string", () => {
+                it("should return an alias error", () => {
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    numberSection.alias = "Invalid alias";
+                    const action = overrideWeightedTicketCreationSection({
+                        value: numberSection,
+                        index: 1,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[1] as ITicketTemplateNumberSectionControlState)
+                            .aliasError
+                    ).toBe(ticketTemplatesControlStateErrors.aliasError);
                 });
             });
         });
