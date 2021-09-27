@@ -1,17 +1,11 @@
 import { useEffect } from "react";
-import {
-    Card,
-    CardContent,
-    Typography,
-    CardActions,
-    Button,
-    Box,
-} from "@mui/material";
+import { Card, CardContent, Typography, CardActions, Box } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../redux/storeState";
 import { CompaniesContainer } from "./components/companiesContainer";
 import { RouteCreator } from "../../utils/routeCreator";
+import { WrappedButton } from "../../components/wrappedButton";
 
 export function Companies() {
     const history = useHistory();
@@ -65,14 +59,14 @@ export function Companies() {
                                         width: "100%",
                                     }}
                                 >
-                                    <Button
+                                    <WrappedButton
                                         onClick={openBoards(
                                             company.shortenedItemId
                                         )}
                                         color="primary"
                                     >
                                         Go To Boards
-                                    </Button>
+                                    </WrappedButton>
                                 </Box>
                             </CardActions>
                         </Card>

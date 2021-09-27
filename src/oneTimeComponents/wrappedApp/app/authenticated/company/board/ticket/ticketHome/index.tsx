@@ -197,7 +197,7 @@ export function TicketHome(props: ITicketHomeProps) {
     const ticketUpdateInProgress = !!ticketUpdateRequest;
     const leftWrappedButtonProps: IWrappedButtonProps[] = [
         {
-            variant: "text",
+            variant: "outlined",
             onClick: onClickDeleteTicketButton,
             color: "secondary",
             disabled: ticketUpdateInProgress || isDeletingTicket,

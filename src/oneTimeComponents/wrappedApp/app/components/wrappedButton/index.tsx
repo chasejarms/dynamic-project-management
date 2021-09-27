@@ -7,10 +7,13 @@ export interface IWrappedButtonProps extends ButtonProps {
         button?: string;
         spinner?: string;
     };
+    // eliminating the text button as it's difficult to see in dark mode
+    variant?: "contained" | "outlined";
 }
 
 export function WrappedButton(props: IWrappedButtonProps) {
-    const { showSpinner, testIds, ...rest } = props;
+    const { showSpinner, testIds, variant, ...rest } = props;
+    const actualVariant = variant || "outlined";
 
     return (
         <Box
@@ -33,7 +36,11 @@ export function WrappedButton(props: IWrappedButtonProps) {
                     <CircularProgress color="primary" size={24} thickness={4} />
                 </Box>
             )}
-            <Button {...rest} data-testid={testIds?.button} />
+            <Button
+                variant={actualVariant}
+                {...rest}
+                data-testid={testIds?.button}
+            />
         </Box>
     );
 }

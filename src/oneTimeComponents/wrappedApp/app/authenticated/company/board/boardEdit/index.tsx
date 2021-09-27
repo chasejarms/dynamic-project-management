@@ -47,7 +47,7 @@ export function BoardEditInnerContent() {
                 <WrappedButton
                     disabled={columnDataHasChanged || isSavingColumns}
                     onClick={navigateBackToBoard}
-                    variant="text"
+                    variant="outlined"
                     color="primary"
                     testIds={boardEditTestIds.backToBoardButton}
                 >
@@ -64,7 +64,7 @@ export function BoardEditInnerContent() {
                 <WrappedButton
                     disabled={!columnDataHasChanged || isSavingColumns}
                     onClick={resetChanges}
-                    variant="text"
+                    variant="outlined"
                     color="secondary"
                     testIds={boardEditTestIds.resetChangesButton}
                 >

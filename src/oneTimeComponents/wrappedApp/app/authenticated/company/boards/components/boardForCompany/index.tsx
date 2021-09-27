@@ -1,7 +1,6 @@
 import {
     CardContent,
     Typography,
-    Button,
     Card,
     IconButton,
     CardActions,
@@ -18,6 +17,7 @@ import {
     QuickActionsPopoverContent,
 } from "../../../board/components/quickActionsPopoverContent";
 import { RouteCreator } from "../../../../../utils/routeCreator";
+import { WrappedButton } from "../../../../../components/wrappedButton";
 
 export interface IBoardForCompanyProps {
     board: IBoard;
@@ -105,12 +105,12 @@ export function BoardForCompany(props: IBoardForCompanyProps) {
                         justifyContent: "flex-end",
                     }}
                 >
-                    <Button
+                    <WrappedButton
                         onClick={openBoard(board.shortenedItemId)}
                         color="primary"
                     >
                         Open Board
-                    </Button>
+                    </WrappedButton>
                 </Box>
             </CardActions>
             <Popover open={optionsIsOpen} anchorEl={anchorEl} onClose={onClose}>

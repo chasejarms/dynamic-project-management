@@ -62,7 +62,7 @@ export function BoardHome() {
                         >
                             <div>
                                 <WrappedButton
-                                    variant="outlined"
+                                    variant="contained"
                                     onClick={navigateToTicketCreationPage}
                                     color="primary"
                                 >
@@ -71,7 +71,7 @@ export function BoardHome() {
                             </div>
                             <div>
                                 <WrappedButton
-                                    variant="text"
+                                    variant="outlined"
                                     onClick={navigateToEditBoardPage}
                                     color="primary"
                                 >

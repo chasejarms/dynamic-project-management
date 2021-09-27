@@ -30,7 +30,7 @@ export function useTicketTemplateBottomToolbarLogic(
         props.ticketTemplateId !== createTicketTemplateId
             ? [
                   {
-                      variant: "text",
+                      variant: "outlined",
                       onClick: () => {
                           const action = setWeightedTicketTemplateCreationFromExistingTicketTemplate(
                               {

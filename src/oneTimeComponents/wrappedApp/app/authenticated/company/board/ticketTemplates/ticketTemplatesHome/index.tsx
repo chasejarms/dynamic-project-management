@@ -145,6 +145,7 @@ export function TicketTemplatesHome() {
         color: "primary",
         onClick: navigateToCreateTicketTemplatePage,
         children: "Add Ticket Template",
+        variant: "contained",
     };
 
     return (

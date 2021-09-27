@@ -1,7 +1,8 @@
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import { CompanyLogo } from "../companyLogo";
 import { RouteCreator } from "../../../../utils/routeCreator";
+import { WrappedButton } from "../../../wrappedButton";
 
 export interface INavBarItem {
     label: string;
@@ -111,33 +112,33 @@ export default function NavBar(props: INavBarProps) {
             >
                 {props.actionButtonType ===
                     NavBarActionButtonTypeEnum.SignIn && (
-                    <Button
+                    <WrappedButton
                         variant="contained"
                         color="primary"
                         onClick={navigateToRoute(RouteCreator.signIn())}
                     >
                         Sign In
-                    </Button>
+                    </WrappedButton>
                 )}
                 {props.actionButtonType ===
                     NavBarActionButtonTypeEnum.SignUp && (
-                    <Button
+                    <WrappedButton
                         variant="contained"
                         color="primary"
                         onClick={navigateToRoute(RouteCreator.signUp())}
                     >
                         Sign Up
-                    </Button>
+                    </WrappedButton>
                 )}
                 {props.actionButtonType ===
                     NavBarActionButtonTypeEnum.SignOut && (
-                    <Button
+                    <WrappedButton
                         variant="contained"
                         color="primary"
                         onClick={signOut}
                     >
                         Sign Out
-                    </Button>
+                    </WrappedButton>
                 )}
             </Box>
         </Box>
