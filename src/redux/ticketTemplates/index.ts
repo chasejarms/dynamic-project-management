@@ -67,6 +67,14 @@ export const ticketTemplatesControlStateErrors = {
     minError: "Min is greater than max",
     maxError: "Max is less than min",
     aliasError: "The alias must be one word and only characters a through z.",
+    priorityWeightingErrors: {
+        providedAliasNotValid: "The provided aliases are not valid.",
+        providedAliasDoNotExistOnTemplate:
+            "The provided aliases do not exist on the ticket template",
+        simpleMathOnly:
+            "Only simple math values are allowed (parenthesis, decimals, +, -, /, *)",
+        calculationError: "There is an error with the calculation setup",
+    },
 };
 
 export const initialTicketTemplateControlStateMapping: ITicketTemplateControlStateMapping = {
@@ -465,7 +473,8 @@ function priorityWeightingCalculationError(
             : true;
 
         if (!wordsAreValid) {
-            return "The provided aliases are not valid.";
+            return ticketTemplatesControlStateErrors.priorityWeightingErrors
+                .providedAliasNotValid;
         }
 
         const validAliasMapping = validAliasList.reduce<{
@@ -481,14 +490,16 @@ function priorityWeightingCalculationError(
               })
             : true;
         if (!aliasesExist) {
-            return "The provided aliases do not exist on the ticket template";
+            return ticketTemplatesControlStateErrors.priorityWeightingErrors
+                .providedAliasDoNotExistOnTemplate;
         }
 
         const onlyAllowedCharactersArePresent = priorityWeightingCalculation.match(
             /^$|^[a-zA-Z0-9\.\+\-\*\/() ]+$/
         );
         if (!onlyAllowedCharactersArePresent) {
-            return "Only simple math values are allowed (parenthesis, decimals, +, -, /, *)";
+            return ticketTemplatesControlStateErrors.priorityWeightingErrors
+                .simpleMathOnly;
         }
 
         try {
@@ -501,7 +512,8 @@ function priorityWeightingCalculationError(
             });
             mathEvaluator.eval(expressionToEvaluate);
         } catch (e) {
-            return "There is an error with the calculation setup";
+            return ticketTemplatesControlStateErrors.priorityWeightingErrors
+                .calculationError;
         }
 
         return "";
