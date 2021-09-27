@@ -311,57 +311,7 @@ export const ticketTemplateSlice = createSlice({
             const { index, value, ticketTemplateId } = action.payload;
             const ticketTemplate = state[ticketTemplateId];
             const clonedSections = cloneDeep(ticketTemplate.sections);
-            let sectionWithControls: TicketTemplateSectionsWithControlState;
-
-            if (value.type === "text") {
-                const weightedTextSection = value as ITextSection;
-                const weightedTextSectionWithControls: ITicketTemplateTextSectionControlState = {
-                    value: weightedTextSection,
-                    error: new StringValidator()
-                        .required(ticketTemplatesControlStateErrors.generic)
-                        .validate(value.label),
-                };
-                sectionWithControls = weightedTextSectionWithControls;
-            } else if (value.type === "number") {
-                const weightedNumberSection = value as INumberSection;
-
-                const updatedLabelError = new StringValidator()
-                    .required(ticketTemplatesControlStateErrors.generic)
-                    .validate(weightedNumberSection.label);
-
-                const minExists = weightedNumberSection.minValue !== undefined;
-                const maxExists = weightedNumberSection.maxValue !== undefined;
-                const updatedMinError =
-                    minExists &&
-                    maxExists &&
-                    weightedNumberSection.minValue! >
-                        weightedNumberSection.maxValue!
-                        ? "Min is greater than max"
-                        : "";
-                const updatedMaxError =
-                    minExists &&
-                    maxExists &&
-                    weightedNumberSection.maxValue! <
-                        weightedNumberSection.minValue!
-                        ? "Max is less than min"
-                        : "";
-
-                const aliasError = new StringValidator()
-                    .onlyAThroughZ(
-                        "The alias must be one word and only characters a through z."
-                    )
-                    .validate(weightedNumberSection.alias);
-
-                const weightedNumberSectionWithControls: ITicketTemplateNumberSectionControlState = {
-                    value: weightedNumberSection,
-                    labelError: updatedLabelError,
-                    minError: updatedMinError,
-                    maxError: updatedMaxError,
-                    aliasError,
-                };
-
-                sectionWithControls = weightedNumberSectionWithControls;
-            }
+            const sectionWithControls = controlStateFromSection(value);
 
             if (!sectionWithControls!) {
                 return state;
