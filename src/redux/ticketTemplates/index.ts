@@ -58,18 +58,25 @@ export interface ITicketTemplateControlStateMapping {
     [ticketTemplateId: string]: ITicketTemplateControlState;
 }
 
-const defaultRequiredError = "This field is required";
+export const ticketTemplatesControlStateErrors = {
+    title: "A title is required",
+    summary: "A summary is required",
+    name: "A name is required",
+    description: "A description is required",
+    generic: "This field is required",
+};
+
 export const initialTicketTemplateControlStateMapping: ITicketTemplateControlStateMapping = {
     [createTicketTemplateId]: {
         name: {
             value: "",
             touched: false,
-            error: defaultRequiredError,
+            error: ticketTemplatesControlStateErrors.title,
         },
         description: {
             value: "",
             touched: false,
-            error: defaultRequiredError,
+            error: ticketTemplatesControlStateErrors.summary,
         },
         title: {
             value: "Title",
@@ -151,7 +158,7 @@ export const ticketTemplateSlice = createSlice({
         ) => {
             const { title, ticketTemplateId } = action.payload;
             const error = new StringValidator()
-                .required(defaultRequiredError)
+                .required(ticketTemplatesControlStateErrors.title)
                 .validate(title);
             return {
                 ...state,
@@ -174,7 +181,7 @@ export const ticketTemplateSlice = createSlice({
         ) => {
             const { name, ticketTemplateId } = action.payload;
             const error = new StringValidator()
-                .required(defaultRequiredError)
+                .required(ticketTemplatesControlStateErrors.name)
                 .validate(name);
             return {
                 ...state,
@@ -197,7 +204,7 @@ export const ticketTemplateSlice = createSlice({
         ) => {
             const { description, ticketTemplateId } = action.payload;
             const error = new StringValidator()
-                .required(defaultRequiredError)
+                .required(ticketTemplatesControlStateErrors.description)
                 .validate(description);
             return {
                 ...state,
@@ -220,7 +227,7 @@ export const ticketTemplateSlice = createSlice({
         ) => {
             const { summary, ticketTemplateId } = action.payload;
             const error = new StringValidator()
-                .required(defaultRequiredError)
+                .required(ticketTemplatesControlStateErrors.summary)
                 .validate(summary);
             return {
                 ...state,
@@ -254,7 +261,7 @@ export const ticketTemplateSlice = createSlice({
             if (updatedValue.type === "text") {
                 const weightedTextSection = updatedValue as ITextSection;
                 const updatedError = new StringValidator()
-                    .required(defaultRequiredError)
+                    .required(ticketTemplatesControlStateErrors.generic)
                     .validate(updatedValue.label);
 
                 const updatedSection: ITicketTemplateTextSectionControlState = {
@@ -273,7 +280,7 @@ export const ticketTemplateSlice = createSlice({
             } else if (updatedValue.type === "number") {
                 const weightedNumberSection = updatedValue as INumberSection;
                 const updatedLabelError = new StringValidator()
-                    .required(defaultRequiredError)
+                    .required(ticketTemplatesControlStateErrors.generic)
                     .validate(updatedValue.label);
 
                 const minExists = weightedNumberSection.minValue !== undefined;
@@ -343,7 +350,7 @@ export const ticketTemplateSlice = createSlice({
                 const weightedTextSectionWithControls: ITicketTemplateTextSectionControlState = {
                     value: weightedTextSection,
                     error: new StringValidator()
-                        .required(defaultRequiredError)
+                        .required(ticketTemplatesControlStateErrors.generic)
                         .validate(value.label),
                 };
                 sectionWithControls = weightedTextSectionWithControls;
@@ -351,7 +358,7 @@ export const ticketTemplateSlice = createSlice({
                 const weightedNumberSection = value as INumberSection;
 
                 const updatedLabelError = new StringValidator()
-                    .required(defaultRequiredError)
+                    .required(ticketTemplatesControlStateErrors.generic)
                     .validate(weightedNumberSection.label);
 
                 const minExists = weightedNumberSection.minValue !== undefined;

@@ -2,12 +2,15 @@ import { cloneDeep, isEqual } from "lodash";
 import weightedTicketTemplateCreationReducer, {
     createTicketTemplateId,
     initialTicketTemplateControlStateMapping,
+    ITicketTemplateControlState,
     ITicketTemplateNumberSectionControlState,
     ITicketTemplateTextSectionControlState,
     resetWeightedTicketTemplateCreationState,
     setWeightedTicketTemplate,
     setWeightedTicketTemplateCreationFromExistingTicketTemplate,
     setWeightedTicketTemplates,
+    ticketTemplatesControlStateErrors,
+    updateWeightedTicketTemplateCreationTitle,
 } from ".";
 import { ITicketTemplate } from "../../models/ticketTemplate";
 import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
@@ -298,6 +301,70 @@ describe("Ticket Templates", () => {
 
             expect(priorityWeightingCalculationTwo.value).toBe("");
             expect(priorityWeightingCalculationTwo.error).toBe("");
+        });
+    });
+
+    describe("updateWeightedTicketTemplateCreationTitle", () => {
+        let ticketTemplateControlState: ITicketTemplateControlState;
+
+        describe("the title is an empty string", () => {
+            beforeEach(() => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                const action = updateWeightedTicketTemplateCreationTitle({
+                    title: "",
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+            });
+
+            it("should return the title error", () => {
+                expect(ticketTemplateControlState.title.error).toBe(
+                    ticketTemplatesControlStateErrors.title
+                );
+            });
+
+            it("should set touched to true", () => {
+                expect(ticketTemplateControlState.title.touched).toBe(true);
+            });
+
+            it("should return the correct title value", () => {
+                expect(ticketTemplateControlState.title.value).toBe("");
+            });
+        });
+
+        describe("the title is NOT an empty string", () => {
+            beforeEach(() => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                const action = updateWeightedTicketTemplateCreationTitle({
+                    title: "A",
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+            });
+
+            it("should return an empty string for the title error", () => {
+                expect(ticketTemplateControlState.title.error).toBe("");
+            });
+
+            it("should set touched to true", () => {
+                expect(ticketTemplateControlState.title.touched).toBe(true);
+            });
+
+            it("should return the correct title value", () => {
+                expect(ticketTemplateControlState.title.value).toBe("A");
+            });
         });
     });
 });
