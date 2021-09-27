@@ -1,553 +1,357 @@
+import { renderHook } from "@testing-library/react-hooks";
+import { MemoryRouter } from "react-router-dom";
 import {
     ITicketTemplateBottomToolbarLogicProps,
     useTicketTemplateBottomToolbarLogic,
 } from ".";
-import { renderHook } from "@testing-library/react-hooks";
-import { createStore } from "../../../../../../../../../../../../redux/store";
-import { MemoryRouter } from "react-router-dom";
-import { Provider as ReduxProvider } from "react-redux";
 import { RouteCreator } from "../../../../../../../../../utils/routeCreator";
-import {
-    createTicketTemplateId,
-    ITicketTemplateControlState,
-    ITicketTemplateNumberSectionControlState,
-    ITicketTemplateTextSectionControlState,
-} from "../../../../../../../../../../../../redux/ticketTemplates";
+import * as useTicketTemplateControlsAreValidModule from "./hooks/useTicketTemplateControlsAreValid";
+import { Provider as ReduxProvider } from "react-redux";
+import { createStore } from "../../../../../../../../../../../../redux/store";
+import { createTicketTemplateId } from "../../../../../../../../../../../../redux/ticketTemplates";
 
 describe("useTicketTemplateBottomToolbarLogic", () => {
     let props: ITicketTemplateBottomToolbarLogicProps;
-    let ticketTemplateControlState: ITicketTemplateControlState;
-
     beforeEach(() => {
         props = {
             onClickActionButton: () => null,
             actionButtonText: "Create",
             showActionButtonSpinner: false,
-            ticketTemplateId: "",
+            ticketTemplateId: "123",
         };
 
-        ticketTemplateControlState = {
-            name: {
-                value: "",
-                touched: false,
-                error: "",
-            },
-            description: {
-                value: "",
-                touched: false,
-                error: "",
-            },
-            title: {
-                value: "Title",
-                touched: false,
-                error: "",
-            },
-            summary: {
-                value: "Summary",
-                touched: false,
-                error: "",
-            },
-            sections: [
-                {
-                    value: {
-                        type: "text",
-                        label: "Text Label",
-                        multiline: false,
-                        required: false,
-                    },
-                    error: "",
-                },
-                {
-                    value: {
-                        type: "number",
-                        label: "Number Section",
-                        required: false,
-                        allowOnlyIntegers: false,
-                        alias: "",
-                    },
-                    labelError: "",
-                    minError: "",
-                    maxError: "",
-                    aliasError: "",
-                },
-            ],
-            priorityWeightingCalculation: {
-                value: "",
-                error: "",
-            },
-        };
-    });
-
-    describe("all controls are valid", () => {
-        it("should enable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(false);
+        jest.spyOn(
+            useTicketTemplateControlsAreValidModule,
+            "useTicketTemplateControlsAreValid"
+        ).mockImplementation(() => {
+            return true;
         });
     });
 
-    describe("the name is not valid but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            ticketTemplateControlState.name.error = "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
+    describe("the useTicketTemplateControlsAreValid hook returns true", () => {
+        beforeEach(() => {
+            jest.spyOn(
+                useTicketTemplateControlsAreValidModule,
+                "useTicketTemplateControlsAreValid"
+            ).mockImplementation(() => {
+                return true;
+            });
+        });
+
+        describe("the showActionButtonSpinner prop is true", () => {
+            beforeEach(() => {
+                props.showActionButtonSpinner = true;
+            });
+
+            it("should disable the right action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
                     },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.createTicketTemplate(
+                                            "123",
+                                            "456"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.rightWrappedButtonProps[0]
+                        .disabled
+                ).toBe(true);
+            });
+
+            it("should disable the left action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
+                    },
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.ticketTemplateEdit(
+                                            "123",
+                                            "456",
+                                            "123"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.leftWrappedButtonProps[0]
+                        .disabled
+                ).toBe(true);
+            });
+        });
+
+        describe("the showActionButtonSpinner prop is false", () => {
+            beforeEach(() => {
+                props.showActionButtonSpinner = false;
+            });
+
+            it("should enable the right action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
+                    },
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.createTicketTemplate(
+                                            "123",
+                                            "456"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.rightWrappedButtonProps[0]
+                        .disabled
+                ).toBe(false);
+            });
+
+            it("should enable the left action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
+                    },
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.ticketTemplateEdit(
+                                            "123",
+                                            "456",
+                                            "123"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.leftWrappedButtonProps[0]
+                        .disabled
+                ).toBe(false);
+            });
         });
     });
 
-    describe("the description is not valid but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            ticketTemplateControlState.description.error = "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
+    describe("the useTicketTemplateControlsAreValid hook returns false", () => {
+        beforeEach(() => {
+            jest.spyOn(
+                useTicketTemplateControlsAreValidModule,
+                "useTicketTemplateControlsAreValid"
+            ).mockImplementation(() => {
+                return false;
+            });
+        });
+
+        describe("the showActionButtonSpinner prop is true", () => {
+            beforeEach(() => {
+                props.showActionButtonSpinner = true;
+            });
+
+            it("should disable the right action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
                     },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.createTicketTemplate(
+                                            "123",
+                                            "456"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.rightWrappedButtonProps[0]
+                        .disabled
+                ).toBe(true);
+            });
+
+            it("should disable the left action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
+                    },
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.ticketTemplateEdit(
+                                            "123",
+                                            "456",
+                                            "123"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.leftWrappedButtonProps[0]
+                        .disabled
+                ).toBe(true);
+            });
+        });
+
+        describe("the showActionButtonSpinner prop is false", () => {
+            beforeEach(() => {
+                props.showActionButtonSpinner = false;
+            });
+
+            it("should disable the right action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
+                    },
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.createTicketTemplate(
+                                            "123",
+                                            "456"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.rightWrappedButtonProps[0]
+                        .disabled
+                ).toBe(true);
+            });
+
+            it("should disable the left action button", () => {
+                const renderHookResult = renderHook(
+                    () => {
+                        return useTicketTemplateBottomToolbarLogic(props);
+                    },
+                    {
+                        wrapper: ({ children }) => {
+                            const store = createStore();
+                            return (
+                                <MemoryRouter
+                                    initialEntries={[
+                                        RouteCreator.ticketTemplateEdit(
+                                            "123",
+                                            "456",
+                                            "123"
+                                        ),
+                                    ]}
+                                >
+                                    <ReduxProvider store={store}>
+                                        {children}
+                                    </ReduxProvider>
+                                </MemoryRouter>
+                            );
+                        },
+                    }
+                );
+
+                expect(
+                    renderHookResult.result.current.leftWrappedButtonProps[0]
+                        .disabled
+                ).toBe(true);
+            });
         });
     });
 
-    describe("the title is not valid but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            ticketTemplateControlState.title.error = "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the summary is not valid but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            ticketTemplateControlState.summary.error = "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the text section is not valid but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            (ticketTemplateControlState
-                .sections[0] as ITicketTemplateTextSectionControlState).error =
-                "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the number section has a label error but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            (ticketTemplateControlState
-                .sections[1] as ITicketTemplateNumberSectionControlState).labelError =
-                "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the number section has a min error but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            (ticketTemplateControlState
-                .sections[1] as ITicketTemplateNumberSectionControlState).minError =
-                "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the number section has a max error but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            (ticketTemplateControlState
-                .sections[1] as ITicketTemplateNumberSectionControlState).maxError =
-                "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the number section has an alias error but all other controls are valid", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            (ticketTemplateControlState
-                .sections[1] as ITicketTemplateNumberSectionControlState).aliasError =
-                "Invalid";
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the controls are valid and the show action button spinner props is true", () => {
-        it("should disable the right action button", () => {
-            const ticketTemplateId = "567";
-            props.ticketTemplateId = ticketTemplateId;
-            props.showActionButtonSpinner = true;
-            const renderHookResult = renderHook(
-                () => {
-                    return useTicketTemplateBottomToolbarLogic(props);
-                },
-                {
-                    wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
-                        return (
-                            <MemoryRouter
-                                initialEntries={[
-                                    RouteCreator.createTicketTemplate(
-                                        "123",
-                                        "456"
-                                    ),
-                                ]}
-                            >
-                                <ReduxProvider store={store}>
-                                    {children}
-                                </ReduxProvider>
-                            </MemoryRouter>
-                        );
-                    },
-                }
-            );
-            expect(
-                renderHookResult.result.current.rightWrappedButtonProps[0]
-                    .disabled
-            ).toBe(true);
-        });
-    });
-
-    describe("the ticket template id is the create ticket template id", () => {
+    describe("ticket template id is equal to the createTicketTemplateId", () => {
         it("should hide the copy button", () => {
             props.ticketTemplateId = createTicketTemplateId;
-            props.showActionButtonSpinner = true;
+
             const renderHookResult = renderHook(
                 () => {
                     return useTicketTemplateBottomToolbarLogic(props);
                 },
                 {
                     wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [createTicketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
+                        const store = createStore();
                         return (
                             <MemoryRouter
                                 initialEntries={[
-                                    RouteCreator.createTicketTemplate(
+                                    RouteCreator.ticketTemplateEdit(
                                         "123",
-                                        "456"
+                                        "456",
+                                        "123"
                                     ),
                                 ]}
                             >
@@ -566,28 +370,24 @@ describe("useTicketTemplateBottomToolbarLogic", () => {
         });
     });
 
-    describe("the ticket template id is NOT the create ticket template id", () => {
+    describe("ticket template id is NOT equal to the createTicketTemplateId", () => {
         it("should show the copy button", () => {
-            const ticketTemplateId = "678";
-            props.ticketTemplateId = ticketTemplateId;
-            props.showActionButtonSpinner = true;
+            props.ticketTemplateId = "2334";
+
             const renderHookResult = renderHook(
                 () => {
                     return useTicketTemplateBottomToolbarLogic(props);
                 },
                 {
                     wrapper: ({ children }) => {
-                        const store = createStore({
-                            weightedTicketTemplateCreation: {
-                                [ticketTemplateId]: ticketTemplateControlState,
-                            },
-                        });
+                        const store = createStore();
                         return (
                             <MemoryRouter
                                 initialEntries={[
-                                    RouteCreator.createTicketTemplate(
+                                    RouteCreator.ticketTemplateEdit(
                                         "123",
-                                        "456"
+                                        "456",
+                                        "123"
                                     ),
                                 ]}
                             >
@@ -603,6 +403,74 @@ describe("useTicketTemplateBottomToolbarLogic", () => {
             expect(
                 renderHookResult.result.current.leftWrappedButtonProps.length
             ).toBe(1);
+        });
+    });
+
+    it("should show the correct action button text", () => {
+        props.actionButtonText = "Action Button Text";
+
+        const renderHookResult = renderHook(
+            () => {
+                return useTicketTemplateBottomToolbarLogic(props);
+            },
+            {
+                wrapper: ({ children }) => {
+                    const store = createStore();
+                    return (
+                        <MemoryRouter
+                            initialEntries={[
+                                RouteCreator.ticketTemplateEdit(
+                                    "123",
+                                    "456",
+                                    "123"
+                                ),
+                            ]}
+                        >
+                            <ReduxProvider store={store}>
+                                {children}
+                            </ReduxProvider>
+                        </MemoryRouter>
+                    );
+                },
+            }
+        );
+
+        expect(
+            renderHookResult.result.current.rightWrappedButtonProps[0].children
+        ).toBe("Action Button Text");
+    });
+
+    describe("the user clicks the copy template button", () => {
+        it("should dispatch the correct action and navigate to the correct route", () => {
+            const renderHookResult = renderHook(
+                () => {
+                    return useTicketTemplateBottomToolbarLogic(props);
+                },
+                {
+                    wrapper: ({ children }) => {
+                        const store = createStore();
+                        return (
+                            <MemoryRouter
+                                initialEntries={[
+                                    RouteCreator.ticketTemplateEdit(
+                                        "123",
+                                        "456",
+                                        "123"
+                                    ),
+                                ]}
+                            >
+                                <ReduxProvider store={store}>
+                                    {children}
+                                </ReduxProvider>
+                            </MemoryRouter>
+                        );
+                    },
+                }
+            );
+
+            const onClickCopy = renderHookResult.result.current
+                .rightWrappedButtonProps[0].onClick!;
+            onClickCopy({} as any);
         });
     });
 });
