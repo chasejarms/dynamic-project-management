@@ -10,6 +10,7 @@ import weightedTicketTemplateCreationReducer, {
     setWeightedTicketTemplateCreationFromExistingTicketTemplate,
     setWeightedTicketTemplates,
     ticketTemplatesControlStateErrors,
+    updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationSummary,
     updateWeightedTicketTemplateCreationTitle,
 } from ".";
@@ -429,6 +430,70 @@ describe("Ticket Templates", () => {
 
             it("should return the correct summary value", () => {
                 expect(ticketTemplateControlState.summary.value).toBe("A");
+            });
+        });
+    });
+
+    describe("updateWeightedTicketTemplateCreationName", () => {
+        let ticketTemplateControlState: ITicketTemplateControlState;
+
+        describe("the name is an empty string", () => {
+            beforeEach(() => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                const action = updateWeightedTicketTemplateCreationName({
+                    name: "",
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+            });
+
+            it("should return the name error", () => {
+                expect(ticketTemplateControlState.name.error).toBe(
+                    ticketTemplatesControlStateErrors.name
+                );
+            });
+
+            it("should set touched to true", () => {
+                expect(ticketTemplateControlState.name.touched).toBe(true);
+            });
+
+            it("should return the correct name value", () => {
+                expect(ticketTemplateControlState.name.value).toBe("");
+            });
+        });
+
+        describe("the name is NOT an empty string", () => {
+            beforeEach(() => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                const action = updateWeightedTicketTemplateCreationName({
+                    name: "A",
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+            });
+
+            it("should return an empty string for the name error", () => {
+                expect(ticketTemplateControlState.name.error).toBe("");
+            });
+
+            it("should set touched to true", () => {
+                expect(ticketTemplateControlState.name.touched).toBe(true);
+            });
+
+            it("should return the correct name value", () => {
+                expect(ticketTemplateControlState.name.value).toBe("A");
             });
         });
     });
