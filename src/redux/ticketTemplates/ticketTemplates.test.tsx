@@ -5,6 +5,7 @@ import weightedTicketTemplateCreationReducer, {
     ITicketTemplateControlState,
     ITicketTemplateNumberSectionControlState,
     ITicketTemplateTextSectionControlState,
+    overrideWeightedTicketCreationSection,
     resetWeightedTicketTemplateCreationState,
     setWeightedTicketTemplate,
     setWeightedTicketTemplateCreationFromExistingTicketTemplate,
@@ -563,6 +564,91 @@ describe("Ticket Templates", () => {
 
             it("should return the correct description value", () => {
                 expect(ticketTemplateControlState.description.value).toBe("A");
+            });
+        });
+    });
+
+    describe("overrideWeightedTicketCreationSection", () => {
+        let ticketTemplateControlState: ITicketTemplateControlState;
+        let textSection: ITextSection;
+
+        beforeEach(() => {
+            textSection = {
+                type: "text",
+                label: "",
+                multiline: false,
+                required: false,
+            };
+        });
+
+        describe("text section", () => {
+            describe("the label is an empty string", () => {
+                beforeEach(() => {
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    const action = overrideWeightedTicketCreationSection({
+                        value: textSection,
+                        index: 0,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                });
+
+                it("should return an error for the text section", () => {
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[0] as ITicketTemplateTextSectionControlState)
+                            .error
+                    ).toBe(ticketTemplatesControlStateErrors.generic);
+                });
+
+                it("should update the value", () => {
+                    const controlValue = (ticketTemplateControlState
+                        .sections[0] as ITicketTemplateTextSectionControlState)
+                        .value;
+                    expect(isEqual(controlValue, textSection)).toBe(true);
+                });
+            });
+
+            describe("the label is NOT empty string", () => {
+                beforeEach(() => {
+                    const clonedInitialState = cloneDeep(
+                        initialTicketTemplateControlStateMapping
+                    );
+
+                    textSection.label = "A";
+                    const action = overrideWeightedTicketCreationSection({
+                        value: textSection,
+                        index: 0,
+                        ticketTemplateId: createTicketTemplateId,
+                    });
+                    const state = weightedTicketTemplateCreationReducer(
+                        clonedInitialState,
+                        action
+                    );
+                    ticketTemplateControlState = state[createTicketTemplateId];
+                });
+
+                it("should return an empty error string for the text section", () => {
+                    expect(
+                        (ticketTemplateControlState
+                            .sections[0] as ITicketTemplateTextSectionControlState)
+                            .error
+                    ).toBe("");
+                });
+
+                it("should update the value", () => {
+                    const controlValue = (ticketTemplateControlState
+                        .sections[0] as ITicketTemplateTextSectionControlState)
+                        .value;
+                    expect(isEqual(controlValue, textSection)).toBe(true);
+                });
             });
         });
     });
