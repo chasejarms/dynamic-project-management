@@ -10,6 +10,7 @@ import weightedTicketTemplateCreationReducer, {
     setWeightedTicketTemplateCreationFromExistingTicketTemplate,
     setWeightedTicketTemplates,
     ticketTemplatesControlStateErrors,
+    updateWeightedTicketTemplateCreationDescription,
     updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationSummary,
     updateWeightedTicketTemplateCreationTitle,
@@ -494,6 +495,74 @@ describe("Ticket Templates", () => {
 
             it("should return the correct name value", () => {
                 expect(ticketTemplateControlState.name.value).toBe("A");
+            });
+        });
+    });
+
+    describe("updateWeightedTicketTemplateCreationDescription", () => {
+        let ticketTemplateControlState: ITicketTemplateControlState;
+
+        describe("the description is an empty string", () => {
+            beforeEach(() => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                const action = updateWeightedTicketTemplateCreationDescription({
+                    description: "",
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+            });
+
+            it("should return the description error", () => {
+                expect(ticketTemplateControlState.description.error).toBe(
+                    ticketTemplatesControlStateErrors.description
+                );
+            });
+
+            it("should set touched to true", () => {
+                expect(ticketTemplateControlState.description.touched).toBe(
+                    true
+                );
+            });
+
+            it("should return the correct description value", () => {
+                expect(ticketTemplateControlState.description.value).toBe("");
+            });
+        });
+
+        describe("the description is NOT an empty string", () => {
+            beforeEach(() => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                const action = updateWeightedTicketTemplateCreationDescription({
+                    description: "A",
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+            });
+
+            it("should return an empty string for the description error", () => {
+                expect(ticketTemplateControlState.description.error).toBe("");
+            });
+
+            it("should set touched to true", () => {
+                expect(ticketTemplateControlState.description.touched).toBe(
+                    true
+                );
+            });
+
+            it("should return the correct description value", () => {
+                expect(ticketTemplateControlState.description.value).toBe("A");
             });
         });
     });
