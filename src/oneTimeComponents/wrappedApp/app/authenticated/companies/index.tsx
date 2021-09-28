@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { Card, CardContent, Typography, CardActions, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../redux/storeState";
 import { CompaniesContainer } from "./components/companiesContainer";
 import { RouteCreator } from "../../utils/routeCreator";
-import { WrappedButton } from "../../components/wrappedButton";
+import { ClickableCard } from "../components/clickableCard";
 
 export function Companies() {
     const history = useHistory();
@@ -39,37 +39,10 @@ export function Companies() {
             >
                 {companies?.map((company) => {
                     return (
-                        <Card key={company.shortenedItemId}>
-                            <CardContent>
-                                <Box
-                                    sx={{
-                                        marginBottom: 2,
-                                    }}
-                                >
-                                    <Typography variant="h5">
-                                        {company.name}
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-                            <CardActions>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                        width: "100%",
-                                    }}
-                                >
-                                    <WrappedButton
-                                        onClick={openBoards(
-                                            company.shortenedItemId
-                                        )}
-                                        color="primary"
-                                    >
-                                        Go To Boards
-                                    </WrappedButton>
-                                </Box>
-                            </CardActions>
-                        </Card>
+                        <ClickableCard
+                            title={company.name}
+                            onClick={openBoards(company.shortenedItemId)}
+                        />
                     );
                 })}
             </Box>

@@ -447,7 +447,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     return (
         <Box
             sx={{
-                cursor: "pointer",
                 paddingBottom: 2,
                 paddingTop: props.isFirstTicket ? 2 : 0,
             }}
@@ -460,6 +459,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                     borderColor: "divider",
                     borderRadius: "5px",
                     bgcolor,
+                    cursor: "pointer",
+                    "&:hover": {
+                        borderColor: "primary.main",
+                    },
                 }}
             >
                 <Box
