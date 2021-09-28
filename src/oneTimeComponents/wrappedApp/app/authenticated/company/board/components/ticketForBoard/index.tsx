@@ -450,7 +450,6 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                 paddingBottom: 2,
                 paddingTop: props.isFirstTicket ? 2 : 0,
             }}
-            onClick={navigateToTicketPage}
         >
             <Box
                 sx={{
@@ -464,6 +463,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                         borderColor: "primary.main",
                     },
                 }}
+                onClick={navigateToTicketPage}
             >
                 <Box
                     sx={{
