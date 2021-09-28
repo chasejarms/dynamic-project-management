@@ -57,13 +57,14 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                     ticketTemplateId={props.ticketTemplateId}
                 />
             </Box>
-            <Box
+            <Paper
                 sx={{
                     height: "100%",
                     overflow: "auto",
                     display: "grid",
                     gridTemplateRows: "1fr auto",
                 }}
+                square
             >
                 <Box
                     sx={{
@@ -86,7 +87,7 @@ export function TicketTemplate(props: ITicketTemplateProps) {
                     actionButtonText={props.actionButtonText}
                     ticketTemplateId={props.ticketTemplateId}
                 />
-            </Box>
+            </Paper>
         </Box>
     );
 }
