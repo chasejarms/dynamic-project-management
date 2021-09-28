@@ -2,6 +2,7 @@ import { cloneDeep, isEqual } from "lodash";
 import weightedTicketTemplateCreationReducer, {
     createTicketTemplateId,
     initialTicketTemplateControlStateMapping,
+    insertWeightedTicketCreationSection,
     ITicketTemplateControlState,
     ITicketTemplateNumberSectionControlState,
     ITicketTemplateTextSectionControlState,
@@ -809,6 +810,95 @@ describe("Ticket Templates", () => {
                             .aliasError
                     ).toBe(ticketTemplatesControlStateErrors.aliasError);
                 });
+            });
+        });
+    });
+
+    describe("insertWeightedTicketCreationSection", () => {
+        let ticketTemplateControlState: ITicketTemplateControlState;
+        let numberSection: INumberSection;
+        beforeEach(() => {
+            numberSection = {
+                type: "number",
+                label: "Label",
+                required: false,
+                allowOnlyIntegers: false,
+                alias: "",
+            };
+        });
+
+        // most of this is already covered in the overrideWeightedTicketCreationSection action tests
+        // so I'm just writing a test to ensure a new section is added in the correct spots
+
+        describe("the index is -1", () => {
+            it("should add the new section to the beginning of the sections list", () => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                clonedInitialState[createTicketTemplateId].sections = [
+                    {
+                        value: cloneDeep(numberSection),
+                        labelError: "",
+                        minError: "",
+                        maxError: "",
+                        aliasError: "",
+                    },
+                ];
+
+                numberSection.label = "Added Section Label";
+
+                const action = insertWeightedTicketCreationSection({
+                    value: numberSection,
+                    index: -1,
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+                expect(ticketTemplateControlState.sections.length).toBe(2);
+                expect(
+                    (ticketTemplateControlState
+                        .sections[0] as ITicketTemplateNumberSectionControlState)
+                        .value.label
+                ).toBe("Added Section Label");
+            });
+        });
+
+        describe("the index is not -1", () => {
+            it("should add the new section to the correct location of the sections list", () => {
+                const clonedInitialState = cloneDeep(
+                    initialTicketTemplateControlStateMapping
+                );
+                clonedInitialState[createTicketTemplateId].sections = [
+                    {
+                        value: cloneDeep(numberSection),
+                        labelError: "",
+                        minError: "",
+                        maxError: "",
+                        aliasError: "",
+                    },
+                ];
+
+                numberSection.label = "Added Section Label";
+
+                const action = insertWeightedTicketCreationSection({
+                    value: numberSection,
+                    index: 0,
+                    ticketTemplateId: createTicketTemplateId,
+                });
+                const state = weightedTicketTemplateCreationReducer(
+                    clonedInitialState,
+                    action
+                );
+                ticketTemplateControlState = state[createTicketTemplateId];
+                expect(ticketTemplateControlState.sections.length).toBe(2);
+                expect(
+                    (ticketTemplateControlState
+                        .sections[1] as ITicketTemplateNumberSectionControlState)
+                        .value.label
+                ).toBe("Added Section Label");
             });
         });
     });
