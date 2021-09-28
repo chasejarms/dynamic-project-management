@@ -49,6 +49,7 @@ export function useCreateTicketTemplateCall() {
                 }),
                 priorityWeightingCalculation:
                     weightedTicketTemplate.priorityWeightingCalculation.value,
+                color: weightedTicketTemplate.color,
             })
             .then(() => {
                 if (didCancel) return;
