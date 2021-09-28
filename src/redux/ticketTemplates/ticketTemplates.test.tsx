@@ -13,6 +13,7 @@ import weightedTicketTemplateCreationReducer, {
     setWeightedTicketTemplateCreationFromExistingTicketTemplate,
     setWeightedTicketTemplates,
     ticketTemplatesControlStateErrors,
+    updatePriorityWeightingCalculation,
     updateWeightedTicketTemplateCreationDescription,
     updateWeightedTicketTemplateCreationName,
     updateWeightedTicketTemplateCreationSummary,
@@ -937,6 +938,29 @@ describe("Ticket Templates", () => {
             );
             const ticketTemplateControlState = state[createTicketTemplateId];
             expect(ticketTemplateControlState.sections.length).toBe(0);
+        });
+    });
+
+    describe("updatePriorityWeightingCalculation", () => {
+        it("should correctly set the value", () => {
+            const clonedInitialState = cloneDeep(
+                initialTicketTemplateControlStateMapping
+            );
+
+            const action = updatePriorityWeightingCalculation({
+                priorityWeightingCalculation: "hello",
+                ticketTemplateId: createTicketTemplateId,
+            });
+
+            const state = weightedTicketTemplateCreationReducer(
+                clonedInitialState,
+                action
+            );
+
+            const ticketTemplateControlState = state[createTicketTemplateId];
+            expect(
+                ticketTemplateControlState.priorityWeightingCalculation.value
+            ).toBe("hello");
         });
     });
 });
