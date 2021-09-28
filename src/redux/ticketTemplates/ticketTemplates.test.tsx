@@ -1,6 +1,7 @@
 import { cloneDeep, isEqual } from "lodash";
 import weightedTicketTemplateCreationReducer, {
     createTicketTemplateId,
+    deleteWeightedTicketTemplateCreationSection,
     initialTicketTemplateControlStateMapping,
     insertWeightedTicketCreationSection,
     ITicketTemplateControlState,
@@ -900,6 +901,42 @@ describe("Ticket Templates", () => {
                         .value.label
                 ).toBe("Added Section Label");
             });
+        });
+    });
+
+    describe("deleteWeightedTicketTemplateCreationSection", () => {
+        it("should remove the correct section", () => {
+            const numberSection: INumberSection = {
+                type: "number",
+                label: "Label",
+                required: false,
+                allowOnlyIntegers: false,
+                alias: "",
+            };
+
+            const clonedInitialState = cloneDeep(
+                initialTicketTemplateControlStateMapping
+            );
+            clonedInitialState[createTicketTemplateId].sections = [
+                {
+                    value: numberSection,
+                    labelError: "",
+                    minError: "",
+                    maxError: "",
+                    aliasError: "",
+                },
+            ];
+
+            const action = deleteWeightedTicketTemplateCreationSection({
+                index: 0,
+                ticketTemplateId: createTicketTemplateId,
+            });
+            const state = weightedTicketTemplateCreationReducer(
+                clonedInitialState,
+                action
+            );
+            const ticketTemplateControlState = state[createTicketTemplateId];
+            expect(ticketTemplateControlState.sections.length).toBe(0);
         });
     });
 });
