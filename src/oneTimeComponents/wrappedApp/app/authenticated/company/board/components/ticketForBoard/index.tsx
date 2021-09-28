@@ -459,7 +459,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     // need to use this in a different way
     const templateLineColor =
         ticketTemplateColor === Color.Grey
-            ? "transparent"
+            ? null
             : mapColorToMaterialThemeColorLight(ticketTemplateColor);
 
     return (
@@ -505,6 +505,19 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                             <CenterLoadingSpinner size="small" />
                         </Box>
                     )}
+                    {templateLineColor && (
+                        <Box
+                            sx={{
+                                width: "24px",
+                                height: "8px",
+                                borderRadius: "5px",
+                                bgcolor: templateLineColor,
+                                position: "absolute",
+                                left: "16px",
+                                top: "4px",
+                            }}
+                        />
+                    )}
                     <Box
                         sx={{
                             width: "100%",
@@ -540,6 +553,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                             />
                         </Popover>
                     </Box>
+
                     {!hidePointValue &&
                         props.ticket.pointValueFromTags !==
                             defaultHiddenPriorityScoreValue && (
