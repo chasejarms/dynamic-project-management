@@ -11,7 +11,7 @@ import { StringValidator } from "../../../../../../../../../classes/StringValida
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../../../models/tag";
-import { tagColors } from "../../../../../../../../../models/tagColor";
+import { colors } from "../../../../../../../../../models/color";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
@@ -120,7 +120,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
                         marginTop: 2,
                     }}
                 >
-                    {tagColors.map((color) => {
+                    {colors.map((color) => {
                         const bgInnerColor = mapColorToMaterialThemeColorLight(
                             color
                         );

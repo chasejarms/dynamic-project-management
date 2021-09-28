@@ -1,14 +1,11 @@
 import { Box, FormControl, InputLabel, Typography } from "@mui/material";
-import {
-    TagColor,
-    tagColors,
-} from "../../../../../../../../../../../models/tagColor";
+import { Color, colors } from "../../../../../../../../../../../models/color";
 import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
 import { mapColorToMaterialThemeColorLight } from "../../../../../initiativeManager/utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../../../../initiativeManager/utils/mapColorToMaterialThemeColorMain";
 
 export function TicketTemplateColorField() {
-    function onChangeColor(color: TagColor) {
+    function onChangeColor(color: Color) {
         return () => {
             // do something with that information
         };
@@ -46,7 +43,7 @@ export function TicketTemplateColorField() {
                         marginLeft: 2,
                     }}
                 >
-                    {tagColors.map((color) => {
+                    {colors.map((color) => {
                         const bgInnerColor = mapColorToMaterialThemeColorLight(
                             color
                         );
@@ -54,7 +51,7 @@ export function TicketTemplateColorField() {
                         const bgOuterColor = mapColorToMaterialThemeColorMain(
                             color
                         );
-                        const isSelected = true;
+                        const isSelected = color === Color.Blue;
                         // const isSelected = colorControl.value === color;
                         const actualBgOuterColor = isSelected
                             ? bgOuterColor

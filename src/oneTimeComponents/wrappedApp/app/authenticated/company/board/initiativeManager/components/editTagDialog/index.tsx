@@ -11,10 +11,7 @@ import { StringValidator } from "../../../../../../../../../classes/StringValida
 import { useAppRouterParams } from "../../../../../../hooks/useAppRouterParams";
 import { useControl } from "../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../../../models/tag";
-import {
-    TagColor,
-    tagColors,
-} from "../../../../../../../../../models/tagColor";
+import { Color, colors } from "../../../../../../../../../models/color";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
 import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
@@ -47,7 +44,7 @@ export function EditTagDialog(props: IEditTagDialogProps) {
         tagNameControl.isTouched && !tagNameControl.isValid;
 
     const colorControl = useControl({
-        value: TagColor.Grey,
+        value: Color.Grey,
         onChange: (color: string) => {
             return color;
         },
@@ -59,7 +56,7 @@ export function EditTagDialog(props: IEditTagDialogProps) {
 
     useEffect(() => {
         tagNameControl.resetControlState(props.tag?.name || "");
-        colorControl.resetControlState(props.tag?.color || TagColor.Grey);
+        colorControl.resetControlState(props.tag?.color || Color.Grey);
     }, [props.tag]);
 
     const [isEditingTag, setIsEditingTag] = useState(false);
@@ -133,7 +130,7 @@ export function EditTagDialog(props: IEditTagDialogProps) {
                         marginTop: 2,
                     }}
                 >
-                    {tagColors.map((color) => {
+                    {colors.map((color) => {
                         const bgInnerColor = mapColorToMaterialThemeColorLight(
                             color
                         );
