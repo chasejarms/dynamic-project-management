@@ -8,6 +8,7 @@ import { TicketTemplateSectionWrapper } from "./ticketTemplateSectionWrapper";
 import { Box, Typography } from "@mui/material";
 import { PriorityWeightingFunction } from "../priorityWeightingFunction";
 import { ticketPreviewId } from "../../../../../../../../../../redux/ticketControlMappedState";
+import { TicketTemplateColorField } from "./ticketTemplateColorField";
 
 export interface ITicketTemplateFieldsContainerProps {
     disabled: boolean;
@@ -83,6 +84,15 @@ export function TicketTemplateFieldsContainer(
                     disabled={props.disabled}
                     ticketTemplateId={props.ticketTemplateId}
                 />
+            </Box>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                }}
+            >
+                <TicketTemplateColorField />
             </Box>
             <Box
                 sx={{

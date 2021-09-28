@@ -17,10 +17,11 @@ export interface IWrapperTextFieldProps {
     multiline?: boolean;
     placeholder?: string;
     required?: boolean;
+    minRows?: number;
 }
 
 export function WrappedTextField(props: IWrapperTextFieldProps) {
-    const { testIds, error, hint, ...rest } = props;
+    const { testIds, error, hint, minRows, ...rest } = props;
 
     const hasError = !!error;
     // this ensures there is always spacing in place for the helper text
@@ -29,7 +30,7 @@ export function WrappedTextField(props: IWrapperTextFieldProps) {
     return (
         <TextField
             {...rest}
-            minRows={3}
+            minRows={minRows === undefined ? 3 : minRows}
             error={hasError}
             helperText={helperText}
             variant="outlined"
