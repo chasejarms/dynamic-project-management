@@ -15,7 +15,6 @@ export interface ITicketProps {
     ticketId: string;
     isTicketPreview: boolean;
     disabled: boolean;
-    removePadding?: boolean;
 }
 
 export function TicketFields(props: ITicketProps) {
@@ -83,7 +82,6 @@ export function TicketFields(props: ITicketProps) {
                 display: "flex",
                 flexDirection: "column",
                 overflow: "auto",
-                padding: !!props.removePadding ? 0 : 2,
             }}
         >
             <WrappedTextField

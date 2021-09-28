@@ -323,7 +323,6 @@ export function CreateTicket(props: ICreateTicketProps) {
                                         ticketId={ticketPreviewId}
                                         isTicketPreview={true}
                                         disabled={!!ticketCreateRequest}
-                                        removePadding
                                     />
                                     <WrappedDropdown
                                         value={startingColumn}

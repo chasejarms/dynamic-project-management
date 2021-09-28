@@ -5,7 +5,9 @@ import { TicketTemplateDescriptionField } from "./ticketTemplateDescriptionField
 import { TicketTemplateTitleField } from "./ticketTemplateTitleField";
 import { TicketTemplateSummaryField } from "./ticketTemplateSummaryField";
 import { TicketTemplateSectionWrapper } from "./ticketTemplateSectionWrapper";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { PriorityWeightingFunction } from "../priorityWeightingFunction";
+import { ticketPreviewId } from "../../../../../../../../../../redux/ticketControlMappedState";
 
 export interface ITicketTemplateFieldsContainerProps {
     disabled: boolean;
@@ -29,6 +31,7 @@ export function TicketTemplateFieldsContainer(
                     gridTemplateColumns: "1fr 96px",
                     gap: 2,
                     marginTop: 2,
+                    marginBottom: 2,
                 }}
                 key={i}
             >
@@ -47,12 +50,16 @@ export function TicketTemplateFieldsContainer(
                 flexGrow: 1,
                 display: "flex",
                 flexDirection: "column",
-                padding: 4,
-                paddingLeft: 0,
                 overflowY: "auto",
-                paddingRight: 2,
             }}
         >
+            <Box
+                sx={{
+                    paddingBottom: 2,
+                }}
+            >
+                <Typography variant="h5">Template</Typography>
+            </Box>
             <Box
                 sx={{
                     display: "grid",
@@ -102,6 +109,19 @@ export function TicketTemplateFieldsContainer(
                 />
             </Box>
             {sections}
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 96px",
+                    gap: 2,
+                }}
+            >
+                <PriorityWeightingFunction
+                    ticketId={ticketPreviewId}
+                    disabled={props.disabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
+            </Box>
         </Box>
     );
 }

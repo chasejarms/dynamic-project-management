@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { IStoreState } from "../../../../../../../../../../../redux/storeState";
@@ -84,5 +84,16 @@ export function TicketPriorityScore(props: ITicketPriorityScore) {
         }
     }, [priorityWeightingCalculationFunction, ticketAndTicketTemplate]);
 
-    return <Typography>Priority Score: {priorityScore}</Typography>;
+    return (
+        <Box
+            sx={{
+                position: "relative",
+                bottom: "5px",
+            }}
+        >
+            <Typography variant="body2">
+                Priority Score: {priorityScore}
+            </Typography>
+        </Box>
+    );
 }

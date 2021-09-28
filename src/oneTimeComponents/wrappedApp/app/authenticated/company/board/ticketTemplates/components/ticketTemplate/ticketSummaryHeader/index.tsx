@@ -8,29 +8,31 @@ export interface ITicketSummaryHeaderProps {
 
 export function TicketSummaryHeader(props: ITicketSummaryHeaderProps) {
     return (
-        <Box>
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "space-between",
+            }}
+        >
+            <Box
+                sx={{
+                    paddingBottom: 2,
+                }}
+            >
+                <Typography variant="h5">Ticket Preview</Typography>
+            </Box>
             <Box
                 sx={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    padding: 2,
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
-                <Typography variant="h6">Ticket Preview</Typography>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <TicketPriorityScore
-                        ticketTemplateId={props.ticketTemplateId}
-                        ticketId={props.ticketId}
-                    />
-                </Box>
+                <TicketPriorityScore
+                    ticketTemplateId={props.ticketTemplateId}
+                    ticketId={props.ticketId}
+                />
             </Box>
-            <Divider />
         </Box>
     );
 }

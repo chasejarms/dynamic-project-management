@@ -6,7 +6,6 @@ import {
     createTicketTemplateId,
     resetWeightedTicketTemplateCreationState,
 } from "../../../../../../../../../redux/ticketTemplates";
-import { PriorityWeightingFunction } from "./priorityWeightingFunction";
 import { TicketFields } from "../../../components/ticketFields";
 import { TicketSummaryHeader } from "./ticketSummaryHeader";
 import { TicketTemplateBottomToolbar } from "./ticketTemplateBottomToolbar";
@@ -36,66 +35,58 @@ export function TicketTemplate(props: ITicketTemplateProps) {
             sx={{
                 height: "100%",
                 display: "grid",
-                gridTemplateRows: "1fr auto",
+                gridTemplateColumns: "1fr 1fr",
             }}
         >
             <Box
                 sx={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: 4,
+                    height: "100%",
                     overflow: "auto",
+                    bgcolor: "action.selected",
+                    padding: 4,
+                }}
+            >
+                <TicketSummaryHeader
+                    ticketId={ticketPreviewId}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
+                <TicketFields
+                    ticketId={ticketPreviewId}
+                    isTicketPreview={true}
+                    disabled={props.actionInProgress}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
+            </Box>
+            <Box
+                sx={{
+                    height: "100%",
+                    overflow: "auto",
+                    display: "grid",
+                    gridTemplateRows: "1fr auto",
                 }}
             >
                 <Box
                     sx={{
                         padding: 4,
-                        paddingRight: 0,
+                        paddingRight: 2,
+                        height: "100%",
+                        overflow: "auto",
                     }}
                 >
-                    <Box
-                        sx={{
-                            paddingBottom: 2,
-                        }}
-                    >
-                        <PriorityWeightingFunction
-                            ticketId={ticketPreviewId}
-                            disabled={props.actionInProgress}
-                            ticketTemplateId={props.ticketTemplateId}
-                        />
-                    </Box>
-                    <Paper elevation={4}>
-                        <TicketSummaryHeader
-                            ticketId={ticketPreviewId}
-                            ticketTemplateId={props.ticketTemplateId}
-                        />
-                        <Box
-                            sx={{
-                                height: "300px",
-                                overflow: "auto",
-                            }}
-                        >
-                            <TicketFields
-                                ticketId={ticketPreviewId}
-                                isTicketPreview={true}
-                                disabled={props.actionInProgress}
-                                ticketTemplateId={props.ticketTemplateId}
-                            />
-                        </Box>
-                    </Paper>
-                    <div />
+                    <TicketTemplateFieldsContainer
+                        disabled={
+                            props.actionInProgress || props.fieldsAreDisabled
+                        }
+                        ticketTemplateId={props.ticketTemplateId}
+                    />
                 </Box>
-                <TicketTemplateFieldsContainer
-                    disabled={props.actionInProgress || props.fieldsAreDisabled}
+                <TicketTemplateBottomToolbar
+                    onClickActionButton={props.onClickActionButton}
+                    showActionButtonSpinner={props.actionInProgress}
+                    actionButtonText={props.actionButtonText}
                     ticketTemplateId={props.ticketTemplateId}
                 />
             </Box>
-            <TicketTemplateBottomToolbar
-                onClickActionButton={props.onClickActionButton}
-                showActionButtonSpinner={props.actionInProgress}
-                actionButtonText={props.actionButtonText}
-                ticketTemplateId={props.ticketTemplateId}
-            />
         </Box>
     );
 }

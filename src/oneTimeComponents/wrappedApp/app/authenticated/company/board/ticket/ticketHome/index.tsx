@@ -249,7 +249,6 @@ export function TicketHome(props: ITicketHomeProps) {
                         ticketId={ticketId}
                         isTicketPreview={false}
                         disabled={ticketUpdateInProgress || isDeletingTicket}
-                        removePadding
                     />
                 </DrawerContentsWithActionBar>
             )}
