@@ -1,4 +1,4 @@
-export function mapColorToMaterialThemeColorMain(color: string) {
+export function mapColorToMaterialThemeColorDark(color: string) {
     if (color === "red") {
         return "error.dark";
     } else if (color === "green") {
@@ -8,6 +8,6 @@ export function mapColorToMaterialThemeColorMain(color: string) {
     } else if (color === "yellow") {
         return "warning.dark";
     } else {
-        return "action.active";
+        return "grey.700";
     }
 }

@@ -1,3 +1,4 @@
+import { Color } from "../color";
 import { Section } from "./section";
 
 export interface ITicketTemplateCreateRequest {
@@ -11,4 +12,5 @@ export interface ITicketTemplateCreateRequest {
     };
     sections: Section[];
     priorityWeightingCalculation: string;
+    color?: Color;
 }

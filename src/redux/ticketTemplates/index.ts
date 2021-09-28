@@ -6,6 +6,7 @@ import { ITextSection } from "../../models/ticketTemplate/section/textSection";
 import { INumberSection } from "../../models/ticketTemplate/section/numberSection";
 import mathEvaluator from "math-expression-evaluator";
 import { ITicketTemplate } from "../../models/ticketTemplate";
+import { Color } from "../../models/color";
 
 export interface ITicketTemplateTextSectionControlState {
     value: ITextSection;
@@ -52,6 +53,7 @@ export interface ITicketTemplateControlState {
         value: string;
         error: string;
     };
+    color?: Color;
 }
 
 export interface ITicketTemplateControlStateMapping {
@@ -104,6 +106,7 @@ export const initialTicketTemplateControlStateMapping: ITicketTemplateControlSta
             value: "",
             error: "",
         },
+        color: Color.Grey,
     },
 };
 
@@ -392,6 +395,24 @@ export const ticketTemplateSlice = createSlice({
                 },
             };
         },
+        setTemplateColor: (
+            state: ITicketTemplateControlStateMapping,
+            action: PayloadAction<{
+                color: Color;
+                ticketTemplateId: string;
+            }>
+        ) => {
+            const { color, ticketTemplateId } = action.payload;
+            const ticketTemplate = state[ticketTemplateId];
+
+            return {
+                ...state,
+                [ticketTemplateId]: {
+                    ...ticketTemplate,
+                    color,
+                },
+            };
+        },
     },
 });
 
@@ -591,6 +612,7 @@ export const {
     updatePriorityWeightingCalculation,
     setWeightedTicketTemplate,
     setWeightedTicketTemplates,
+    setTemplateColor,
 } = ticketTemplateSlice.actions;
 
 export default ticketTemplateSlice.reducer;

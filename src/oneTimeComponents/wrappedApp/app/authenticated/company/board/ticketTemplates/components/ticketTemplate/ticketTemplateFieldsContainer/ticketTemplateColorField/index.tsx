@@ -1,13 +1,35 @@
-import { Box, FormControl, InputLabel, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { Color, colors } from "../../../../../../../../../../../models/color";
+import { IStoreState } from "../../../../../../../../../../../redux/storeState";
+import { setTemplateColor } from "../../../../../../../../../../../redux/ticketTemplates";
 import { WrappedTextField } from "../../../../../../../../components/wrappedTextField";
 import { mapColorToMaterialThemeColorLight } from "../../../../../initiativeManager/utils/mapColorToMaterialThemeColorLight";
-import { mapColorToMaterialThemeColorMain } from "../../../../../initiativeManager/utils/mapColorToMaterialThemeColorMain";
+import { mapColorToMaterialThemeColorDark } from "../../../../../initiativeManager/utils/mapColorToMaterialThemeColorDark";
 
-export function TicketTemplateColorField() {
+export interface ITicketTemplateColorFieldProps {
+    disabled: boolean;
+    ticketTemplateId: string;
+}
+
+export function TicketTemplateColorField(
+    props: ITicketTemplateColorFieldProps
+) {
+    const selectedColor =
+        useSelector((store: IStoreState) => {
+            return store.weightedTicketTemplateCreation[props.ticketTemplateId]
+                .color;
+        }) || Color.Grey;
+
+    const dispatch = useDispatch();
     function onChangeColor(color: Color) {
         return () => {
-            // do something with that information
+            if (props.disabled) return;
+            const action = setTemplateColor({
+                color,
+                ticketTemplateId: props.ticketTemplateId,
+            });
+            dispatch(action);
         };
     }
 
@@ -48,11 +70,10 @@ export function TicketTemplateColorField() {
                             color
                         );
 
-                        const bgOuterColor = mapColorToMaterialThemeColorMain(
+                        const bgOuterColor = mapColorToMaterialThemeColorDark(
                             color
                         );
-                        const isSelected = color === Color.Blue;
-                        // const isSelected = colorControl.value === color;
+                        const isSelected = selectedColor === color;
                         const actualBgOuterColor = isSelected
                             ? bgOuterColor
                             : "transparent";
@@ -76,7 +97,9 @@ export function TicketTemplateColorField() {
                                         height: 32,
                                         width: 32,
                                         borderRadius: "50%",
-                                        cursor: "pointer",
+                                        cursor: props.disabled
+                                            ? "auto"
+                                            : "pointer",
                                         bgcolor: bgInnerColor,
                                     }}
                                     onClick={onChangeColor(color)}

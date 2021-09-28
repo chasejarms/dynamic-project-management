@@ -13,7 +13,7 @@ import { useControl } from "../../../../../../hooks/useControl";
 import { ITag } from "../../../../../../../../../models/tag";
 import { colors } from "../../../../../../../../../models/color";
 import { mapColorToMaterialThemeColorLight } from "../../utils/mapColorToMaterialThemeColorLight";
-import { mapColorToMaterialThemeColorMain } from "../../utils/mapColorToMaterialThemeColorMain";
+import { mapColorToMaterialThemeColorDark } from "../../utils/mapColorToMaterialThemeColorDark";
 import { WrappedButton } from "../../../../../../components/wrappedButton";
 import { WrappedTextField } from "../../../../../../components/wrappedTextField";
 
@@ -125,7 +125,7 @@ export function NewTagDialog(props: INewTagDialogProps) {
                             color
                         );
 
-                        const bgOuterColor = mapColorToMaterialThemeColorMain(
+                        const bgOuterColor = mapColorToMaterialThemeColorDark(
                             color
                         );
                         const isSelected = colorControl.value === color;

@@ -92,7 +92,10 @@ export function TicketTemplateFieldsContainer(
                     gap: 2,
                 }}
             >
-                <TicketTemplateColorField />
+                <TicketTemplateColorField
+                    disabled={props.disabled}
+                    ticketTemplateId={props.ticketTemplateId}
+                />
             </Box>
             <Box
                 sx={{
