@@ -545,6 +545,7 @@ function mappingFromTicketTemplateMetadata(
                 value: ticketTemplate.priorityWeightingCalculation,
                 error: "",
             },
+            color: ticketTemplate.color || Color.Grey,
         };
         return mapping;
     }, {});

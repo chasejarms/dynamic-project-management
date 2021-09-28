@@ -34,6 +34,7 @@ import { IStoreState } from "../../../../../../../../redux/storeState";
 import { useSelector } from "react-redux";
 import { Color } from "../../../../../../../../models/color";
 import { mapColorToMaterialThemeColorDark } from "../../initiativeManager/utils/mapColorToMaterialThemeColorDark";
+import { mapColorToMaterialThemeColorLight } from "../../initiativeManager/utils/mapColorToMaterialThemeColorLight";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -455,10 +456,11 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 
     const hidePointValue = props.ticketType === TicketType.Done;
     const bgcolor = theme.palette.mode === "light" ? "grey.100" : "grey.900";
-    const borderColor =
+    // need to use this in a different way
+    const templateLineColor =
         ticketTemplateColor === Color.Grey
-            ? "divider"
-            : mapColorToMaterialThemeColorDark(ticketTemplateColor);
+            ? "transparent"
+            : mapColorToMaterialThemeColorLight(ticketTemplateColor);
 
     return (
         <Box
@@ -471,7 +473,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                 sx={{
                     borderWidth: "2px",
                     borderStyle: "solid",
-                    borderColor: borderColor,
+                    borderColor: "divider",
                     borderRadius: "5px",
                     bgcolor,
                     cursor: "pointer",

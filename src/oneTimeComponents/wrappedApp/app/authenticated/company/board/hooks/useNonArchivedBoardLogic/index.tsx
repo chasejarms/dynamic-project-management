@@ -18,6 +18,7 @@ import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITi
 import { setInitialBoardColumnState } from "../../../../../../../../redux/boardColumnEditMappedState";
 import { useDispatch } from "react-redux";
 import { RouteCreator } from "../../../../../utils/routeCreator";
+import { setWeightedTicketTemplates } from "../../../../../../../../redux/ticketTemplates";
 
 export function useNonArchivedBoardLogic(
     ticketType: TicketType.Backlog | TicketType.InProgress
@@ -73,6 +74,11 @@ export function useNonArchivedBoardLogic(
                     ticketTemplates,
                 ]) => {
                     if (didCancel) return;
+
+                    const setWeightedTicketTemplatesAction = setWeightedTicketTemplates(
+                        ticketTemplates
+                    );
+                    dispatch(setWeightedTicketTemplatesAction);
 
                     const ticketTemplatesMapping: {
                         [
