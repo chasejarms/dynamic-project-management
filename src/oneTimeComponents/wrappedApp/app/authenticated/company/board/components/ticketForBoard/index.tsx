@@ -30,6 +30,10 @@ import { IAugmentedUITicket } from "../../../../../../../../models/augmentedUITi
 import { RouteCreator } from "../../../../../utils/routeCreator";
 import { defaultHiddenPriorityScoreValue } from "../../utils/ticketsToAugmentedUITickets";
 import { ticketForBoardTestIds } from "./ticketForBoard.testIds";
+import { IStoreState } from "../../../../../../../../redux/storeState";
+import { useSelector } from "react-redux";
+import { Color } from "../../../../../../../../models/color";
+import { mapColorToMaterialThemeColorDark } from "../../initiativeManager/utils/mapColorToMaterialThemeColorDark";
 
 export interface ITicketForBoardProps {
     ticket: IAugmentedUITicket;
@@ -53,6 +57,14 @@ export function TicketForBoard(props: ITicketForBoardProps) {
     const history = useHistory();
     const { companyId, boardId } = useAppRouterParams();
     const theme = useTheme();
+
+    const ticketTemplateColor = useSelector((store: IStoreState) => {
+        const ticketTemplate =
+            store.weightedTicketTemplateCreation[
+                props.ticket.ticketTemplateShortenedItemId
+            ];
+        return ticketTemplate?.color || Color.Grey;
+    });
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false);
@@ -443,6 +455,10 @@ export function TicketForBoard(props: ITicketForBoardProps) {
 
     const hidePointValue = props.ticketType === TicketType.Done;
     const bgcolor = theme.palette.mode === "light" ? "grey.100" : "grey.900";
+    const borderColor =
+        ticketTemplateColor === Color.Grey
+            ? "divider"
+            : mapColorToMaterialThemeColorDark(ticketTemplateColor);
 
     return (
         <Box
@@ -455,7 +471,7 @@ export function TicketForBoard(props: ITicketForBoardProps) {
                 sx={{
                     borderWidth: "2px",
                     borderStyle: "solid",
-                    borderColor: "divider",
+                    borderColor: borderColor,
                     borderRadius: "5px",
                     bgcolor,
                     cursor: "pointer",
