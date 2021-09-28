@@ -48,7 +48,7 @@ export function WeightedPriorityTicketTemplateActions(
                 width: "80px",
                 display: "grid",
                 gridAutoFlow: "column",
-                top: "8px",
+                top: "16px",
             }}
         >
             <div>
