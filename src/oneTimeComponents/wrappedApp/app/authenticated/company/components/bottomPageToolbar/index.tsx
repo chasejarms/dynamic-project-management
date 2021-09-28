@@ -17,7 +17,7 @@ export function BottomPageToolbar(props: IBottomPageToolbarProps) {
                 flex: "0 0 auto",
             }}
         >
-            <Paper elevation={10}>
+            <Paper elevation={10} square>
                 <Box
                     sx={{
                         display: "flex",
